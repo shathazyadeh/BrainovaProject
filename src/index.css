@@ -1,0 +1,85 @@
+:root {
+  --primary-color: rgb(231,29,23);
+  --dark-red-color:rgb(179,0,0);
+  --secondary-color: rgb(142, 149, 162);
+  --dark-gray-color:rgb(26,26,26);
+  --navy-color: rgb(1,2,5);
+}
+a {
+    text-decoration: none !important;
+}
+.upper_case{
+  text-transform: capitalize !important;
+}
+.flex_column{
+  display: flex;
+  flex-direction: column;
+}
+.auth_btn{ /*للبوتوز الي الاحمر تاعها بغمق عند الهوفر*/
+    transition: all 0.5s !important;
+}
+.auth_btn:hover{
+    background-color: rgb(117, 27, 27);
+}
+.auth_link, .verify_link { /*للينكس الي بتصير ابيض عند الهوفر : الاولى
+                           للبنكس الي بتصير احمر عند الهوفر : الثانية*/
+    transition: all 0.5s;
+}
+.auth_link:hover{
+    color: #fff;
+}
+.verify_link:hover{
+  color:rgb(189, 39, 39);
+  font-weight: 700;
+}
+.fx_fill { /*فكرة البوتون الي بتصير فل بس نعمل عليها هوفر*/
+  position: relative; 
+  /* نخلي العنصر مرجع للـ ::before عشان يتموضع داخله */
+  color: white !important; 
+  /* لون النص أبيض*/
+  z-index: 1; 
+  /* نخلي النص فوق طبقة ::before */
+}
+.fx_fill::before {
+  content: ""; 
+  /* ضروري لإنشاء pseudo-element */
+
+  position: absolute; 
+  /* يتموضع بحرية داخل .fx-fill */
+
+  inset: 0; 
+  /* يغطي العنصر بالكامل (top/right/bottom/left = 0) */
+
+  background: #000000; 
+  /* لون التعبئة اللي رح تظهر عند hover */
+
+  border-radius: 4px; 
+  /* يخلي الزوايا مدورة مثل العنصر الأصلي */
+
+  transform: scaleX(0); 
+  /* عرض الخلفية = صفر (مختفية بالبداية) */
+
+  transform-origin: left; 
+  /* نقطة بداية التمدد من اليسار */
+
+  transition: transform .4s ease; 
+  /* حركة ناعمة لمدة 0.4 ثانية عند تغير الحجم */
+
+  z-index: -1; 
+  /* يخلي الخلفية وراء النص */
+}
+.fx_fill:hover::before {
+  transform: scaleX(1); 
+  /* عند hover تتمدد الخلفية لعرض كامل (100%) */
+}
+.gray_boxShadow_onHover{ /*البوكس الي بصير اله بوكس شادو عند الهوفر*/
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 16px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25); 
+  transition: all 0.8s ease;
+}
+.gray_boxShadow_onHover:hover {
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.37);
+}
