@@ -1,10 +1,9 @@
+import Box from '@mui/material/Box'
 import React from 'react'
 
 function Home() {
   return (
-    <div>
-      home
-    </div>
+    <Box >home</Box>
   )
 }
 

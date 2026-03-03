@@ -25,6 +25,7 @@ a {
                            للبنكس الي بتصير احمر عند الهوفر : الثانية*/
     transition: all 0.5s;
 }
+
 .auth_link:hover{
     color: #fff;
 }

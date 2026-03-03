@@ -12,7 +12,8 @@ import PredictTumor from "./pages/predictTumor/predictTumor.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
-    element:<MainLayout/>,
+    element:<MainLayout />,
+
     children:[
         {
             path:"home",

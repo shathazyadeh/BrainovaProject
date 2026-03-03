@@ -1,0 +1,8 @@
+.navbar_btn{
+    transition: all 0.5s;
+}
+.navbar_btn:hover{
+    background-color:transparent;
+    color: rgb(218, 39, 39);
+
+}

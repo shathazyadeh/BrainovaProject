@@ -1,11 +1,221 @@
-import React from 'react'
+
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import AdbIcon from '@mui/icons-material/Adb';
+import { Link as RouterLink } from 'react-router-dom';
+import GlowCard from '../reactBitsComponents/glowCard/GlowCard';
+import StarsBackground from '../reactBitsComponents/starsBackground/StarsBackground';
+import style from "./Navbar.module.css"
+
+const pages = ['HOME', 'ANALYSIS', 'LEARNING HUB '];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
-  return (
-    <div>
-      navbar
-    </div>
-  )
-}
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-export default Navbar
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  return (
+    <AppBar position="static" sx={{
+      marginRight:'7px',
+      borderRadius:'29px',
+      marginLeft: '7px',
+      
+      width: 'calc(100% - 14px)',
+      
+      //لعمل الناف بار شفاف
+      background: "rgba(255,255,255,0.04)", // أقل شفافية
+      backdropFilter: "blur(20px)",        // بلور أقوى
+      border: "1px solid rgba(255,255,255,0.15)",
+      boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
+      
+      
+    }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+           <StarsBackground> {/*stars effect from react bit*/}
+          </StarsBackground>
+          
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="#app-bar-with-responsive-menu"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 800,
+              fontSize:25,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+              display:'flex',
+              gap:'10px',
+              
+            }}
+          >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="35"
+                height="35"
+                viewBox="0 0 24 24"
+                fill="white"
+                stroke="var(--primary-color)"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-brain w-8 h-8 text-red-500"
+                data-fg-caxq9="1.21:1.9465:/src/app/components/Login.tsx:32:17:1540:42:e:Brain::::::42K"
+              >
+                <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path>
+                <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"></path>
+                <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"></path>
+                <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"></path>
+                <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"></path>
+                <path d="M3.477 10.896a4 4 0 0 1 .585-.396"></path>
+                <path d="M19.938 10.5a4 4 0 0 1 .585.396"></path>
+                <path d="M6 18a4 4 0 0 1-1.967-.516"></path>
+                <path d="M19.967 17.484A4 4 0 0 1 18 18"></path>
+              </svg>
+            BRAINOVA
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{ display: { xs: 'block', md: 'none' } }}
+               slotProps={{ paper: {    sx:{  //sotprops بسيتخدمها مكون مينيو   mui داخليا  خاصية 
+                  //لعمل الناف بار شفاف
+                 background: "rgba(255,255,255,0.04)", // أقل شفافية
+                 backdropFilter: "blur(20px)",        // بلور أقوى
+                 border: "1px solid rgba(255,255,255,0.15)",
+                 boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
+                }} }}
+            >
+              <StarsBackground></StarsBackground> {/*star effect from react bits library */}
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Typography sx={{ textAlign: 'center',color:'white' }}>{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' },justifyContent:'center',gap:'12px' }}>
+            {pages.map((page) => (
+              <Button
+              component={RouterLink}
+                key={page}
+                onClick={handleCloseNavMenu}
+                className={`upper_case ${style.navbar_btn}`}
+               
+                sx={{ my: 2, color: 'white', display: 'block',fontFamily:'revert',fontSize:'18px',fontWeight:'600' }}
+              
+               to={
+               page == 'HOME' ? '/home' :
+                page == 'ANALYSIS' ? '/predict-tumor':
+                '/'
+              }
+              >
+                {page}
+              </Button>
+            ))}
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              </IconButton>
+            </Tooltip>
+            
+            <Menu
+            
+           
+              sx={{ mt: '45px', }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+              slotProps={{ paper: {    sx:{  //sotprops بسيتخدمها مكون مينيو   mui داخليا  خاصية 
+                  //لعمل الناف بار شفاف
+                 background: "rgba(255,255,255,0.04)", // أقل شفافية
+                 backdropFilter: "blur(20px)",        // بلور أقوى
+                 border: "1px solid rgba(255,255,255,0.15)",
+                 boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
+                }} }}
+             
+        
+            >
+              <StarsBackground> {/*stars effect from react bit*/}
+          </StarsBackground>
+              {settings.map((setting) => (
+                <MenuItem  key={setting} onClick={handleCloseUserMenu}>
+                  <Typography  sx={{ color:'white',textAlign: 'center' }}>{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
+    
+  );
+}
+export default Navbar;
