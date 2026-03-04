@@ -1,10 +1,11 @@
-import Box from '@mui/material/Box'
-import React from 'react'
+import Hero from "../../components/hero/Hero"
 
 function Home() {
   return (
-    <Box >home</Box>
+   <Hero/>
+   
   )
 }
 
 export default Home
+
