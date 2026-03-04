@@ -1,0 +1,13 @@
+/*hover on feature card*/
+.featuers:hover {
+
+    background:
+        radial-gradient(circle at bottom right,
+            rgba(255, 80, 60, 0.12),
+            rgba(255, 60, 40, 0.06) 25%,
+            rgba(255, 40, 30, 0.03) 45%,
+            transparent 65%),
+        rgba(10, 10, 15, 0.85);
+
+    backdrop-filter: blur(14px);
+}

@@ -1,9 +1,17 @@
+import { Container } from "@mui/material"
 import Hero from "../../components/hero/Hero"
+import CoreFeature from "../../components/coreFeatures/CoreFeatures"
 
 function Home() {
   return (
-   <Hero/>
-   
+    <>
+      <Hero />
+
+      <Container maxWidth='xl'>
+        <CoreFeature />
+
+      </Container>
+    </>
   )
 }
 
