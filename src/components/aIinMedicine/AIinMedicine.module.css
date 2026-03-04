@@ -1,0 +1,4 @@
+/*الاضاءةة خلف الصورة */
+.drop_shadow {
+    filter: drop-shadow(15px 15px 100px rgba(189, 182, 182, 0.915));
+}

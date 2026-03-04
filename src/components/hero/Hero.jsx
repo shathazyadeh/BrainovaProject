@@ -46,7 +46,7 @@ function Hero() {
         </Grid>
 
         < Grid item className='hero_img' size={{ sm: 12, lg: 6 }} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', }}>
-          <img src={heroPic} className={style.drop_shadow} style={{ paddingRight: '20px', maxWidth: '800px' }} ></img>
+          <img src={heroPic} className={`${style.animatedImage} ${style.drop_shadow}`}  style={{ paddingRight: '20px', maxWidth: '800px' }} draggable={false} ></img>
         </Grid>
 
 

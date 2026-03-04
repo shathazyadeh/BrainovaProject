@@ -55,3 +55,26 @@
     background-color: rgba(9, 9, 9, 0.9);
 
 }
+/* تعريف حركة باسم float */
+@keyframes float {
+  0% { 
+    transform: translateY(0); /* بداية الحركة: الصورة بمكانها الطبيعي */
+  }
+
+  50% { 
+    transform: translateY(-11px); /* في منتصف الحركة: تطلع لفوق 11px */
+  }
+
+  100% { 
+    transform: translateY(0); /* نهاية الحركة: ترجع لمكانها */
+  }
+}
+
+/* تطبيق الحركة على الصورة */
+.animatedImage {
+  animation: float 3s ease-in-out infinite;
+  /* float → اسم الحركة
+     3s → مدة الحركة 3 ثواني
+     ease-in-out → حركة ناعمة (بداية ونهاية بطيئة)
+     infinite → تتكرر للأبد */
+}
