@@ -11,22 +11,26 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import StarsBackground from '../reactBitsComponents/starsBackground/StarsBackground';
 import { LuBrain } from "react-icons/lu";
 import { IoBookOutline } from "react-icons/io5";
 import { FiUpload } from "react-icons/fi";
 import style from "./Navbar.module.css"
-
+import useAuthStore from '../../store/useAuthStore';
 
 const pages = [
   { name: "Home", icon: <LuBrain size={20}/> },
   { name: "Analysis", icon: <FiUpload size={20}/> },
   { name: "Learning Hub", icon: <IoBookOutline size={20}/> },
 ];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Logout'];
 
 function Navbar() {
+  const user = useAuthStore((state)=>state.user);
+  const logout = useAuthStore((state)=>state.logout);
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -44,6 +48,12 @@ function Navbar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleLogout = ()=>{
+    console.log('hi');
+    logout();
+    navigate('/auth/login');
+  }
 
   return (
     <AppBar position="static" sx={{
@@ -192,14 +202,12 @@ function Navbar() {
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
+                <Avatar sx={{ bgcolor: 'var(--secondary-color)' }}>{user.name.charAt(0).toUpperCase()}</Avatar>
               </IconButton>
             </Tooltip>
 
             <Menu
-
-
               sx={{ mt: '45px', }}
               id="menu-appbar"
               anchorEl={anchorElUser}
@@ -226,17 +234,17 @@ function Navbar() {
                   }
                 }
               }}
-
-
             >
-
               {settings.map((setting) => (
                 <MenuItem key={setting} sx={{
                   "&:hover": {
                     backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
                   }
                 }} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ color: 'white', textAlign: 'center' }}>{setting}</Typography>
+                  <Typography sx={{ color: 'white', textAlign: 'center' }}
+                  onClick={()=> {if (setting==='Logout') handleLogout()}}
+                   >{setting}
+                   </Typography>
                 </MenuItem>
               ))}
             </Menu>

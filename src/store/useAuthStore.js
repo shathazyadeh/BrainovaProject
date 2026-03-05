@@ -12,9 +12,14 @@ const useAuthStore = create((set) => ({
     localStorage.setItem('user', JSON.stringify(user)); // خزنها في اللوكال ستوريج عشان لما يصير رفرش
     set({user});
   },
-  logout: ()=>{ //لسه ما استخدمناها
+  logout: ()=>{ 
     localStorage.removeItem('accessToken');
-    set({accessToken:null});
+    localStorage.removeItem('user');
+    set(
+      {
+        accessToken:null,
+        user:null
+      });
   }
 }));
 
