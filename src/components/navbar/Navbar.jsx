@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,13 +11,19 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { Link as RouterLink } from 'react-router-dom';
-import GlowCard from '../reactBitsComponents/glowCard/GlowCard';
 import StarsBackground from '../reactBitsComponents/starsBackground/StarsBackground';
+import { LuBrain } from "react-icons/lu";
+import { IoBookOutline } from "react-icons/io5";
+import { FiUpload } from "react-icons/fi";
 import style from "./Navbar.module.css"
 
-const pages = ['HOME', 'ANALYSIS', 'LEARNING HUB '];
+
+const pages = [
+  { name: "Home", icon: <LuBrain size={20}/> },
+  { name: "Analysis", icon: <FiUpload size={20}/> },
+  { name: "Learning Hub", icon: <IoBookOutline size={20}/> },
+];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function Navbar() {
@@ -45,16 +50,12 @@ function Navbar() {
       marginRight: '7px',
       borderRadius: '29px',
       marginLeft: '7px',
-
       width: 'calc(100% - 14px)',
-
       //لعمل الناف بار شفاف
       background: "rgba(255,255,255,0.04)", // أقل شفافية
       backdropFilter: "blur(20px)",        // بلور أقوى
       border: "1px solid rgba(255,255,255,0.15)",
       boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
-
-
     }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -142,18 +143,28 @@ function Navbar() {
                     boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
                   }
                 }
-              }}
+              }
+              }
             >
 
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.name} sx={{
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
+                  }
+                }} onClick={handleCloseNavMenu}>
                   <Typography component={RouterLink}
                     to={
-                      page == 'HOME' ? '/home' :
-                        page == 'ANALYSIS' ? '/predict-tumor' :
+                      page.name == 'Home' ? '/home' :
+                        page.name == 'Analysis' ? '/predict-tumor' :
                           '/'
                     }
-                    sx={{ textAlign: 'center', color: 'white' }}>{page}</Typography>
+                    sx={{ textAlign: 'center', color: 'white',
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px"}}>
+                      {page.name}
+                    </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -163,19 +174,19 @@ function Navbar() {
             {pages.map((page) => (
               <Button
                 component={RouterLink}
-                key={page}
+                key={page.name}
                 onClick={handleCloseNavMenu}
                 className={`upper_case ${style.navbar_btn}`}
 
-                sx={{ my: 2, color: 'white', display: 'block', fontFamily: 'revert', fontSize: '18px', fontWeight: '600' }}
-
+                sx={{ my: 2, color: 'white', display: 'flex', alignItems:'center' , gap:'6px', fontFamily: 'revert', fontSize: '18px', fontWeight: '600' }}
                 to={
-                  page == 'HOME' ? '/home' :
-                    page == 'ANALYSIS' ? '/predict-tumor' :
-                      '/'
-                }
+                      page.name == 'Home' ? '/home' :
+                        page.name == 'Analysis' ? '/predict-tumor' :
+                          '/'
+                    }
               >
-                {page}
+                {page.icon}
+                {page.name}
               </Button>
             ))}
           </Box>
@@ -211,6 +222,7 @@ function Navbar() {
                     backdropFilter: "blur(20px)",        // بلور أقوى
                     border: "1px solid rgba(255,255,255,0.15)",
                     boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
+
                   }
                 }
               }}
@@ -219,7 +231,11 @@ function Navbar() {
             >
 
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} sx={{
+                  "&:hover": {
+                    backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
+                  }
+                }} onClick={handleCloseUserMenu}>
                   <Typography sx={{ color: 'white', textAlign: 'center' }}>{setting}</Typography>
                 </MenuItem>
               ))}

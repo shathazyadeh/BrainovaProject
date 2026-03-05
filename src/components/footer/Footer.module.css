@@ -1,0 +1,14 @@
+.background_footer {
+  background-image: url('./../../assets/images/footer/footerImg.webp');
+  background-size: cover;        /* تغطي كامل السكشن */
+  background-position: center;   /* تضل بالصّف بالنص دايماً */
+  background-repeat: no-repeat;  /* ما تعيد الصورة */
+  
+  position: relative;            /* مهم عشان نقدر نتحكم بالمحتوى */
+}
+.footer_link{
+    transition: all 0.5s;
+}
+.footer_link:hover{
+    color: var(--primary-color) !important;
+}

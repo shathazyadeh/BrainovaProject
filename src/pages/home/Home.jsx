@@ -8,7 +8,7 @@ function Home() {
     <>
       <Hero />
 
-      <Container maxWidth='xl'>
+      <Container maxWidth='lg'>
         <CoreFeature />
         <AIinMedicine />
 

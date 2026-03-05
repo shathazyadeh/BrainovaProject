@@ -1,5 +1,5 @@
 .navbar_btn{
-    transition: all 0.5s !important;
+    transition: all 0.4s !important;
 }
 .navbar_btn:hover{
     background-color:transparent;

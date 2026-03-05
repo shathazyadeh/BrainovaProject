@@ -7,7 +7,11 @@
   --light-red-color: rgb(239, 68, 68);
   /* home*/
 }
-
+body{
+  overflow-x: hidden;
+  overflow-x: hidden;
+  user-select: none;
+}
 a {
   text-decoration: none !important;
 }
