@@ -1,31 +1,25 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import { visuallyHidden } from '@mui/utils';
-
-function createData(fullName, userName, email, phoneNumber, roleName, emailConfirmed, isBlocked) {
-  return {
-    fullName, userName, email, phoneNumber, roleName, emailConfirmed, isBlocked
-  };
-}
-
+import * as React from "react";
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import DeleteIcon from "@mui/icons-material/Delete";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import { FaCheckCircle } from "react-icons/fa";
+import { TiDelete } from "react-icons/ti";
+import { visuallyHidden } from "@mui/utils";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -38,59 +32,65 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 const headCells = [
   {
-    id: 'fullName',
+    id: "fullName",
     numeric: false,
     disablePadding: true,
-    label: 'Full Name',
+    label: "Full Name",
   },
   {
-    id: 'userName',
+    id: "userName",
     numeric: true,
     disablePadding: false,
-    label: 'User Name',
+    label: "User Name",
   },
   {
-    id: 'email',
+    id: "email",
     numeric: true,
     disablePadding: false,
-    label: 'Email',
+    label: "Email",
   },
   {
-    id: 'phoneNumber',
+    id: "phoneNumber",
     numeric: true,
     disablePadding: false,
-    label: 'Phone Number',
+    label: "Phone Number",
   },
   {
-    id: 'roleName',
+    id: "roleName",
     numeric: true,
     disablePadding: false,
-    label: 'Role Name',
+    label: "Role Name",
   },
   {
-    id: 'emailConfirmed',
+    id: "emailConfirmed",
     numeric: true,
     disablePadding: false,
-    label: 'Email Verified',
+    label: "Email Verified",
   },
   {
-    id: 'isBlocked',
+    id: "isBlocked",
     numeric: true,
     disablePadding: false,
-    label: 'Status',
-  }
+    label: "Status",
+  },
 ];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -100,31 +100,53 @@ function EnhancedTableHead(props) {
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
-            color="primary"
+            sx={{
+              color: "#fff", // لون البوردر قبل التحديد
+              "&.Mui-checked": {
+                color: "red", // لون المربع بعد التحديد
+              },
+              "&.MuiCheckbox-indeterminate": {
+                color: "red", // لون المربع لما يكون نصف محدد (اللون الأزرق اللي تقصده)
+              },
+            }}
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': 'select all desserts',
+              "aria-label": "select all desserts",
             }}
           />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
+            sx={{ color: "#fff", textAlign: "left" }}
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            align={"left"}
+            padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              iconPosition="end"
+              sx={{
+                color: "#fff !important",
+                "&:hover": {
+                  color: "#fff",
+                },
+                "&.Mui-active": {
+                  color: "#fff",
+                },
+                "& .MuiTableSortLabel-icon": {
+                  color: "#fff !important",
+                },
+              }}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
                 <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>
               ) : null}
             </TableSortLabel>
@@ -139,7 +161,7 @@ EnhancedTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
@@ -152,16 +174,17 @@ function EnhancedTableToolbar(props) {
         {
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
+          bgcolor: "var(--navy-color)",
+          color: "#fff",
         },
         numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          bgcolor: "var(--navy-color)",
         },
       ]}
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: "1 1 100%", bgcolor: "var(--navy-color)" }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -170,22 +193,23 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-        </Typography>
+  sx={{ flex: '1 1 100%' ,marginTop:'20px',fontSize:'25px'}}
+  variant="h6"
+  id="tableTitle"
+  component="div"
+>
+  All users 
+</Typography>
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton sx={{ color: "#fff" }}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
-          <IconButton>
+          <IconButton sx={{ color: "#fff" }}>
             <FilterListIcon />
           </IconButton>
         </Tooltip>
@@ -199,21 +223,25 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ rows }) {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+    const filteredRows = React.useMemo( // هون فلترت التيبل لتيبل تحوي فقط المستخدم الي بكون طالب او سوبر فايزر لعرضهم لداش بورد الادمن
+  () => rows.filter(user => user.roleName !== "Admin" && user.roleName !== "SuperAdmin"),
+  [rows]
+   );
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("fullName");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = filteredRows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -248,28 +276,58 @@ export default function EnhancedTable({ rows }) {
     setPage(0);
   };
 
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
-  const visibleRows = React.useMemo(
+  const visibleRows = React.useMemo( 
     () =>
-      [...rows]
+      [...filteredRows]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage,filteredRows],
   );
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+    <Box sx={{ width: "100%" }}>
+      <Paper
+        sx={{
+          width: "100%",
+          mb: 2,
+          borderRadius: "25px",
+          overflow: "hidden",
+          bgcolor: "var(--navy-color)",
+        }}
+      >
         <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
+        <TableContainer
+          sx={{
+            "&::-webkit-scrollbar": {
+              width: "10px",
+              height: "10px",
+            },
+            "&::-webkit-scrollbar-track": {
+              background: "var(--navy-color)",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "#ffffff55",
+              borderRadius: "10px",
+            },
+            "&::-webkit-scrollbar-thumb:hover": {
+              background: "#ffffff88",
+            },
+          }}
+        >
           <Table
-            sx={{ minWidth: 750 }}
+            sx={{
+              minWidth: 750,
+              bgcolor: "var(--navy-color)",
+              "& .MuiTableCell-root": {
+                borderBottom: "1px solid rgba(97, 89, 89, 0.6)",
+              },
+            }}
             aria-labelledby="tableTitle"
-            size='medium'
+            size="medium"
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -277,7 +335,7 @@ export default function EnhancedTable({ rows }) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={filteredRows.length}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -293,18 +351,37 @@ export default function EnhancedTable({ rows }) {
                     tabIndex={-1}
                     key={row.id}
                     selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
+                    sx={{
+                      cursor: "pointer",
+                      "&:hover": {
+                        backgroundColor: "var(--dark-gray-color) !important",
+                      }
+                      ,
+
+    "&.Mui-selected": {
+      backgroundColor: "rgba(255,0,0,0.08)", // احمر شفاف جدا
+    },
+                      "&.Mui-selected:hover": {
+                        backgroundColor: "var(--dark-gray-color) !important",
+                      },
+                    }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        color="primary"
+                        sx={{
+                          color: "var(--secondary-color)", // لون البوردر قبل التحديد
+                          "&.Mui-checked": {
+                            color: "red", // لون المربع بعد التحديد
+                          },
+                        }}
                         checked={isItemSelected}
                         inputProps={{
-                          'aria-labelledby': labelId,
+                          "aria-labelledby": labelId,
                         }}
                       />
                     </TableCell>
                     <TableCell
+                      sx={{ color: "#fff", textAlign: "left" }}
                       component="th"
                       id={labelId}
                       scope="row"
@@ -312,19 +389,66 @@ export default function EnhancedTable({ rows }) {
                     >
                       {row.fullName}
                     </TableCell>
-                    <TableCell align="right">{row.userName}</TableCell>
-                    <TableCell align="right">{row.email}</TableCell>
-                    <TableCell align="right">{row.phoneNumber}</TableCell>
-                    <TableCell align="right">{row.roleName}</TableCell>
-                    <TableCell align="right">{row.emailConfirmed ? "Verified" : "Not Verified"}</TableCell> {/*لو كانت true أو false أحيانًا تظهر كأنها فارغة في الجدول. */}
-                    <TableCell align="right">{row.isBlocked ? "Blocked" : "Active"}</TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ color: "#fff", textAlign: "left" }}
+                    >
+                      {row.userName}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{
+                         color: "var(--secondary-color)",
+                          textAlign: "left" }}
+                    >
+                      {row.email}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ color: "#fff", textAlign: "left" }}
+                    >
+                      {row.phoneNumber}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ color: "#fff", textAlign: "left" }}
+                    >
+                      {row.roleName}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ color: "#fff", textAlign: "left" }}
+                    >
+                      {row.emailConfirmed 
+                      ? 
+                      <Typography 
+                      sx={{ border:"1px solid #22c55e",width:'fit-content',paddingX:'20px',paddingY:'5px',borderRadius:'20px',backgroundColor:'rgba(34, 197, 94, 0.12)',fontSize:'12px'}}>
+                        Verified
+                       </Typography> 
+                      :
+                      <Typography 
+                      sx={{ border:"1px solid  #ef4444",width:'fit-content',paddingX:'20px',paddingY:'5px',borderRadius:'20px',backgroundColor:'rgba(239, 68, 68, 0.12)',fontSize:'12px'}}>
+                        Not Verified
+                      </Typography>}
+                    </TableCell>{" "}
+                    {/*لو كانت true أو false أحيانًا تظهر كأنها فارغة في الجدول. */}
+                    <TableCell
+                      align="right"
+                      sx={{ color: "#fff", textAlign: "left" }}
+                    >
+                      {row.isBlocked ? 
+                       <TiDelete size={20} fill="#ef4444"/>
+                      :
+                      <FaCheckCircle size={21} fill="#09ab44"/> 
+                    }
+                    </TableCell>
                   </TableRow>
                 );
               })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 53 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -334,13 +458,36 @@ export default function EnhancedTable({ rows }) {
           </Table>
         </TableContainer>
         <TablePagination
+          sx={{ bgcolor: "var(--navy-color)", color: "#fff" }}
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={filteredRows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          SelectProps={{
+            MenuProps: {
+              PaperProps: {
+                sx: {
+                  bgcolor: "var(--navy-color)",
+                  color: "#fff",
+
+                  // hover على العناصر
+                  "& .MuiMenuItem-root:hover": {
+                    bgcolor: "var(--dark-gray-color)",
+                    color: "#fff",
+                  },
+
+                  // العنصر المختار
+                  "& .Mui-selected": {
+                    bgcolor: "var(--dark-gray-color) !important",
+                    color: "#fff",
+                  },
+                },
+              },
+            },
+          }}
         />
       </Paper>
     </Box>
