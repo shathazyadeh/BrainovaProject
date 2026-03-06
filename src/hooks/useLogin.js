@@ -23,7 +23,9 @@ export default function useLogin(){
       id: decoded.Id
     };
     setUser(user);
-    navigate('/home');
+    if (user.role === "Student") navigate('/home');
+    else if(user.role === "Supervisor") navigate('/dashboard/supervisor');
+    else if(user.role === "Admin") navigate('/dashboard/admin')
   };
 
     const {serverErrors,authMutation} = useAuth('Identity/Auths/login',null // ما بدنا navigate من useAuth

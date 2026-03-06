@@ -9,11 +9,13 @@ import ResetPassword from "./pages/resetPassword/ResetPassword.jsx";
 import SetPasswordAdminOrSup from "./pages/setPasswordAdminOrSup/SetPasswordAdminOrSup.jsx";
 import ConfirmEmail from "./pages/confirmEmail/ConfirmEmail.jsx";
 import PredictTumor from "./pages/predictTumor/predictTumor.jsx";
+import DashboardLayout from "./layout/DashboardLayout.jsx";
+import SupervisorDashboard from "./pages/supervisorDashboard/SupervisorDashboard.jsx";
+import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
-    element:<MainLayout />,
-
+    element:<MainLayout/>,
     children:[
         {
             path:"home",
@@ -51,6 +53,18 @@ const router = createBrowserRouter([
             element:<ConfirmEmail/>
         }
      ]
+   },
+   { path:"dashboard/",
+    element: <DashboardLayout/>,
+    children:[
+       { 
+        path:"supervisor",
+        element:<SupervisorDashboard/>
+       },{
+        path:"admin",
+        element:<AdminDashboard/>
+       }
+    ]
    }
 ]);
 export default router;
