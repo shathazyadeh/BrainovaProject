@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
- import { GrEdit } from "react-icons/gr";
+import { GrEdit } from "react-icons/gr";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -26,6 +26,7 @@ import { FaUnlockAlt } from "react-icons/fa";
 import useBlockUser from "../../hooks/useBlockUser";
 import { Button } from "@mui/material";
 import useUnBlockUser from "../../hooks/useUnBlockUser";
+import useDeleteUser from "../../hooks/useDeleteUser";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -85,13 +86,13 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: "Status",
-  },{
-
+  },
+  {
     id: "Blocke",
     numeric: false,
     disablePadding: false,
     label: "Action",
-  }
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -141,7 +142,7 @@ function EnhancedTableHead(props) {
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
-              iconPosition="end"
+              iconPosition="end" // حطيناها عشان السهم الي جنب كل عمود يصير بعد اسم العمود مش قبله
               sx={{
                 color: "#fff !important",
                 "&:hover": {
@@ -179,7 +180,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
+  const { numSelected, onDelete } = props; //اون ديليت هو بروب يستقبل الفنكشن هاندل ديليت يوزر من تحت تحت بالفنكشن الاساسي للتيبل حيث تم تعريفه
   return (
     <Toolbar
       sx={[
@@ -205,17 +206,19 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-  sx={{ flex: '1 1 100%' ,marginTop:'20px',fontSize:'25px'}}
-  variant="h6"
-  id="tableTitle"
-  component="div"
->
-  All users 
-</Typography>
+          sx={{ flex: "1 1 100%", marginTop: "20px", fontSize: "25px" }}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
+          All users
+        </Typography>
       )}
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton sx={{ color: "#fff" }}>
+          <IconButton sx={{ color: "#fff" }} onClick={onDelete}>
+            {" "}
+            {/*هون بس بنحكيله انه لما ينضغط عليها استعدي اون ديليت الي هي بتساوي هاندل ديليت يوزر */}
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -235,23 +238,30 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ rows }) {
-const { usePatchMutation: blockMutation } = useBlockUser();  //عملنالها اعادة تسمية 
-const { usePatchMutation: unBlockMutation } = useUnBlockUser();
+  const { usePatchMutation: blockMutation } = useBlockUser(); //عملنالها اعادة تسمية
+  const { usePatchMutation: unBlockMutation } = useUnBlockUser();
 
-const handelBlock = async (id) => {
-  await blockMutation.mutateAsync(id);
-  console.log(id);
-};
+  const handelBlock = async (id) => {
+    await blockMutation.mutateAsync(id);
+  };
 
-const handelUnBlock = async (id) => {
-  await unBlockMutation.mutateAsync(id);
-  console.log(id);
-};
+  const handelUnBlock = async (id) => {
+    await unBlockMutation.mutateAsync(id);
+  };
+  const { deleteUserMutation } = useDeleteUser();
+  const handleDeleteUser = async () => {
+    //الفنكشن الي بنادي عالباك للحذف
+    await deleteUserMutation.mutateAsync(selected); //هاي الاريه هو معرفها هون بتحوي اي ديز المستخدمين الي انعملهم سيليكت
+  };
 
-  const filteredRows = React.useMemo( // هون فلترت التيبل لتيبل تحوي فقط المستخدم الي بكون طالب او سوبر فايزر لعرضهم لداش بورد الادمن
-  () => rows.filter(user => user.roleName !== "Admin" && user.roleName !== "SuperAdmin"),
-  [rows]
-   );
+  const filteredRows = React.useMemo(
+    // هون فلترت التيبل لتيبل تحوي فقط المستخدم الي بكون طالب او سوبر فايزر لعرضهم لداش بورد الادمن
+    () =>
+      rows.filter(
+        (user) => user.roleName !== "Admin" && user.roleName !== "SuperAdmin",
+      ),
+    [rows],
+  );
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("fullName");
@@ -306,12 +316,12 @@ const handelUnBlock = async (id) => {
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
-  const visibleRows = React.useMemo( 
+  const visibleRows = React.useMemo(
     () =>
       [...filteredRows]
         .sort(getComparator(order, orderBy))
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [order, orderBy, page, rowsPerPage,filteredRows],
+    [order, orderBy, page, rowsPerPage, filteredRows],
   );
 
   return (
@@ -325,7 +335,11 @@ const handelUnBlock = async (id) => {
           bgcolor: "var(--navy-color)",
         }}
       >
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          onDelete={handleDeleteUser}
+        />{" "}
+        {/*هون بعثنا لتوول بار الي فيها ايقونة الديليت الفنكشن تاع هندلة الحذف الي عرفناه هون */}
         <TableContainer
           sx={{
             "&::-webkit-scrollbar": {
@@ -381,12 +395,10 @@ const handelUnBlock = async (id) => {
                       cursor: "pointer",
                       "&:hover": {
                         backgroundColor: "var(--dark-gray-color) !important",
-                      }
-                      ,
-
-    "&.Mui-selected": {
-      backgroundColor: "rgba(255,0,0,0.08)", // احمر شفاف جدا
-    },
+                      },
+                      "&.Mui-selected": {
+                        backgroundColor: "rgba(255,0,0,0.08)", // احمر شفاف جدا
+                      },
                       "&.Mui-selected:hover": {
                         backgroundColor: "var(--dark-gray-color) !important",
                       },
@@ -424,8 +436,9 @@ const handelUnBlock = async (id) => {
                     <TableCell
                       align="right"
                       sx={{
-                         color: "var(--secondary-color)",
-                          textAlign: "left" }}
+                        color: "var(--secondary-color)",
+                        textAlign: "left",
+                      }}
                     >
                       {row.email}
                     </TableCell>
@@ -445,39 +458,73 @@ const handelUnBlock = async (id) => {
                       align="right"
                       sx={{ color: "#fff", textAlign: "left" }}
                     >
-                      {row.emailConfirmed 
-                      ? 
-                      <Typography 
-                      sx={{ border:"1px solid #22c55e",width:'fit-content',paddingX:'20px',paddingY:'5px',borderRadius:'20px',backgroundColor:'rgba(34, 197, 94, 0.12)',fontSize:'12px'}}>
-                        Verified
-                       </Typography> 
-                      :
-                      <Typography 
-                      sx={{ border:"1px solid  #ef4444",width:'fit-content',paddingX:'20px',paddingY:'5px',borderRadius:'20px',backgroundColor:'rgba(239, 68, 68, 0.12)',fontSize:'12px'}}>
-                        Not Verified
-                      </Typography>}
-                    </TableCell>{" "}
+                      {row.emailConfirmed ? (
+                        <Typography
+                          sx={{
+                            border: "1px solid #22c55e",
+                            width: "fit-content",
+                            paddingX: "20px",
+                            paddingY: "5px",
+                            borderRadius: "20px",
+                            backgroundColor: "rgba(34, 197, 94, 0.12)",
+                            fontSize: "12px",
+                          }}
+                        >
+                          Verified
+                        </Typography>
+                      ) : (
+                        <Typography
+                          sx={{
+                            border: "1px solid  #ef4444",
+                            width: "fit-content",
+                            paddingX: "20px",
+                            paddingY: "5px",
+                            borderRadius: "20px",
+                            backgroundColor: "rgba(239, 68, 68, 0.12)",
+                            fontSize: "12px",
+                          }}
+                        >
+                          Not Verified
+                        </Typography>
+                      )}
+                    </TableCell>
                     {/*لو كانت true أو false أحيانًا تظهر كأنها فارغة في الجدول. */}
                     <TableCell
                       align="right"
                       sx={{ color: "#fff", textAlign: "left" }}
                     >
-                      {row.isBlocked ? 
-                       <TiDelete size={30} fill="#ef4444"/>
-                      :
-                      <FaCheckCircle style={{marginLeft:'5px'}} size={22} fill="#09ab44"/> 
-                    }
+                      {row.isBlocked ? (
+                        <TiDelete size={30} fill="#ef4444" />
+                      ) : (
+                        <FaCheckCircle
+                          style={{ marginLeft: "5px" }}
+                          size={22}
+                          fill="#09ab44"
+                        />
+                      )}
                     </TableCell>
-                       <TableCell
-                      sx={{ color: "#fff", textAlign: "left" }}
-                      
-                    >
-                      
-                      <Button  >{
-                        row.isBlocked?<TbLockFilled onClick={()=>handelUnBlock(row.id)}  fill="#ef4444"  size={25}/> : <FaUnlockAlt onClick={()=>handelBlock(row.id)}  fill="#09ab44" size={22} />
-                        }</Button>
-                      <Button><GrEdit style={{marginRight:'10px'}} color={'rgb(229, 255, 0)'} /> </Button>
-                    
+                    <TableCell sx={{ color: "#fff", textAlign: "left" }}>
+                      <Button>
+                        {row.isBlocked ? (
+                          <TbLockFilled
+                            onClick={() => handelUnBlock(row.id)}
+                            fill="#ef4444"
+                            size={25}
+                          />
+                        ) : (
+                          <FaUnlockAlt
+                            onClick={() => handelBlock(row.id)}
+                            fill="#09ab44"
+                            size={22}
+                          />
+                        )}
+                      </Button>
+                      <Button>
+                        <GrEdit
+                          style={{ marginRight: "10px" }}
+                          color={"rgb(229, 255, 0)"}
+                        />{" "}
+                      </Button>
                     </TableCell>
                   </TableRow>
                 );
@@ -491,7 +538,6 @@ const handelUnBlock = async (id) => {
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
-
             </TableBody>
           </Table>
         </TableContainer>
