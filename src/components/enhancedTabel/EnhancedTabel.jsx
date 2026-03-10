@@ -9,6 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
+ import { GrEdit } from "react-icons/gr";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -20,6 +21,11 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { FaCheckCircle } from "react-icons/fa";
 import { TiDelete } from "react-icons/ti";
 import { visuallyHidden } from "@mui/utils";
+import { TbLockFilled } from "react-icons/tb";
+import { FaUnlockAlt } from "react-icons/fa";
+import useBlockUser from "../../hooks/useBlockUser";
+import { Button } from "@mui/material";
+import useUnBlockUser from "../../hooks/useUnBlockUser";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -79,7 +85,13 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: "Status",
-  },
+  },{
+
+    id: "Blocke",
+    numeric: false,
+    disablePadding: false,
+    label: "Action",
+  }
 ];
 
 function EnhancedTableHead(props) {
@@ -223,6 +235,19 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable({ rows }) {
+const { usePatchMutation: blockMutation } = useBlockUser();  //عملنالها اعادة تسمية 
+const { usePatchMutation: unBlockMutation } = useUnBlockUser();
+
+const handelBlock = async (id) => {
+  await blockMutation.mutateAsync(id);
+  console.log(id);
+};
+
+const handelUnBlock = async (id) => {
+  await unBlockMutation.mutateAsync(id);
+  console.log(id);
+};
+
   const filteredRows = React.useMemo( // هون فلترت التيبل لتيبل تحوي فقط المستخدم الي بكون طالب او سوبر فايزر لعرضهم لداش بورد الادمن
   () => rows.filter(user => user.roleName !== "Admin" && user.roleName !== "SuperAdmin"),
   [rows]
@@ -438,10 +463,21 @@ export default function EnhancedTable({ rows }) {
                       sx={{ color: "#fff", textAlign: "left" }}
                     >
                       {row.isBlocked ? 
-                       <TiDelete size={20} fill="#ef4444"/>
+                       <TiDelete size={30} fill="#ef4444"/>
                       :
-                      <FaCheckCircle size={21} fill="#09ab44"/> 
+                      <FaCheckCircle style={{marginLeft:'5px'}} size={22} fill="#09ab44"/> 
                     }
+                    </TableCell>
+                       <TableCell
+                      sx={{ color: "#fff", textAlign: "left" }}
+                      
+                    >
+                      
+                      <Button  >{
+                        row.isBlocked?<TbLockFilled onClick={()=>handelUnBlock(row.id)}  fill="#ef4444"  size={25}/> : <FaUnlockAlt onClick={()=>handelBlock(row.id)}  fill="#09ab44" size={22} />
+                        }</Button>
+                      <Button><GrEdit style={{marginRight:'10px'}} color={'rgb(229, 255, 0)'} /> </Button>
+                    
                     </TableCell>
                   </TableRow>
                 );
@@ -455,6 +491,7 @@ export default function EnhancedTable({ rows }) {
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
+
             </TableBody>
           </Table>
         </TableContainer>
