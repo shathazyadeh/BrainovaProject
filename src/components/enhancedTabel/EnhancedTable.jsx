@@ -75,6 +75,12 @@ const headCells = [
     disablePadding: false,
     label: "Role Name",
   },
+  { 
+    id: "supervisorName",
+    numeric: true,
+    disablePadding: false,
+    label: "Supervisor Name"
+  },
   {
     id: "emailConfirmed",
     numeric: true,
@@ -85,10 +91,10 @@ const headCells = [
     id: "isBlocked",
     numeric: true,
     disablePadding: false,
-    label: "Status",
+    label: "Blocked Status",
   },
   {
-    id: "Blocke",
+    id: "Block",
     numeric: false,
     disablePadding: false,
     label: "Action",
@@ -237,7 +243,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function EnhancedTable({ rows }) {
+export default function EnhancedTable({ rows , handleOpen }) {
   const { usePatchMutation: blockMutation } = useBlockUser(); //عملنالها اعادة تسمية
   const { usePatchMutation: unBlockMutation } = useUnBlockUser();
 
@@ -458,6 +464,12 @@ export default function EnhancedTable({ rows }) {
                       align="right"
                       sx={{ color: "#fff", textAlign: "left" }}
                     >
+                      {row.supervisorName}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ color: "#fff", textAlign: "left" }}
+                    >
                       {row.emailConfirmed ? (
                         <Typography
                           sx={{
@@ -507,13 +519,13 @@ export default function EnhancedTable({ rows }) {
                       <Button>
                         {row.isBlocked ? (
                           <TbLockFilled
-                            onClick={() => handelUnBlock(row.id)}
+                            onClick={(e) => {handelUnBlock(row.id); e.stopPropagation();}} //الثانية عشان لما يضغط الايقونة ما يتحدد كل السطر
                             fill="#ef4444"
                             size={25}
                           />
                         ) : (
                           <FaUnlockAlt
-                            onClick={() => handelBlock(row.id)}
+                            onClick={(e) => {handelBlock(row.id); e.stopPropagation();}}
                             fill="#09ab44"
                             size={22}
                           />
@@ -521,9 +533,12 @@ export default function EnhancedTable({ rows }) {
                       </Button>
                       <Button>
                         <GrEdit
-                          style={{ marginRight: "10px" }}
                           color={"rgb(229, 255, 0)"}
-                        />{" "}
+                           onClick={(e) => {
+                             e.stopPropagation(); // يمنع الضغط على الصف
+                             handleOpen(row); // فتح المودال وارسال بيانات المستخدم
+                           }}
+                         />
                       </Button>
                     </TableCell>
                   </TableRow>

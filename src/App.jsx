@@ -12,7 +12,7 @@ function App() {
       {/*عملنا بروفايد للكلاينت في مشروعنا عشان اي كومبوننت تقدر تستعملها*/}
       <ToastContainer 
         position="top-center"
-        autoClose={true}
+        autoClose={5000}
         newestOnTop={false}
         closeOnClick={false}
         rtl={false}

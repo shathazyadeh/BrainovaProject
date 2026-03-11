@@ -6,8 +6,8 @@ import Typography from '@mui/material/Typography';
 
 export default function UsersPieChart({students,supervisors}) {
   const data = [
-    { id: 0, value: students, label: 'Students',color:'rgb(154, 102, 245)' },
-    { id: 1, value: supervisors, label: 'Supervisors',color:'#9166cc' },
+    { id: 0, value: students, label: 'Students',color:'rgb(110, 65, 116)' },
+    { id: 1, value: supervisors, label: 'Supervisors',color:'rgb(170, 116, 159)' },
   ];
   return (
     <Box className='flex_column' sx={{ width: '100%', textAlign: 'center',alignItems:'center'}}>
