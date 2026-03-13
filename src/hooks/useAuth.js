@@ -16,7 +16,9 @@ export default function useAuth(url,navigateUrl,onSuccessCallback){
             onSuccess:(response)=>{ // في حال نجحت العملية
                  // لو في callback خاص (زي login)
                  if (onSuccessCallback) onSuccessCallback(response);
-                 navigate(navigateUrl); //نقله للرابط المبعوث
+                 if (navigateUrl) {   // فقط لو موجود
+                    navigate(navigateUrl);
+                }
             },
             onError: (err)=>{ // في حال فشلت العملية
             console.log(err);

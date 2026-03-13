@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useGetUsers from "../../hooks/useGetUsers";
 import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 
@@ -10,6 +10,7 @@ import TitanicPie from "../../components/titanicPie/TitanicPie";
 import useFilteredArray from "../../hooks/useFilteredArray";
 import EnhancedTable from "../../components/enhancedTabel/EnhancedTable";
 import BasicModal from "../../components/basicModal/BasicModal";
+import NestedModal from "../../components/nestedModal/NestedModal";
 
 function AdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
@@ -28,6 +29,8 @@ function AdminDashboard() {
   const handleClose = () => {
     setOpen(false); // اغلاق المودال
   };
+
+
 
   if (isLoading) return <CircularProgress></CircularProgress>;
   if (isError) {
@@ -381,6 +384,14 @@ function AdminDashboard() {
         handleClose={handleClose} // فنكشن الاغلاق
         user={selectedUser} // بيانات المستخدم المختار
       />
+
+      <NestedModal
+      open={open} // حالة فتح المودال
+        handleClose={handleClose} // فنكشن الاغلاق
+      />
+
+
+        <Button className="logout upper_case" sx={{bgcolor:'var(--secondary-color)',color:'#fff'}}>Logout</Button>
     </Box>
   );
 }

@@ -8,7 +8,15 @@ export default function useDeleteUser(){
 
     const deleteUserMutation = useMutation({
         mutationFn: async(selectedUserIds)=>{
-            const response = await axiosInstance.delete(`/Identity/Users/bulk-delete`,selectedUserIds);
+            console.log(selectedUserIds);
+            const response = await axiosInstance.delete(
+    `/Identity/Users/bulk-delete`,
+    {
+      data: {
+        userIds: selectedUserIds
+      }
+    }
+  );
             console.log(response);
             return response.data;
         }, 
