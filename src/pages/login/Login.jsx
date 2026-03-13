@@ -3,6 +3,8 @@ import {
   Button,
   CircularProgress,
   Container,
+  IconButton,
+  InputAdornment,
   Link,
   TextField,
   Typography,
@@ -13,6 +15,9 @@ import useLogin from "../../hooks/useLogin";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LoginSchema } from "../../validations/LoginSchema";
 import GlowCard from "../../components/reactBitsComponents/glowCard/GlowCard"; //جلو كارد من مكتبة رياكت بتس
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useState } from "react";
 
 function Login() {
   const {
@@ -27,6 +32,13 @@ function Login() {
 
   const loginUser = async (values) => {
     await authMutation.mutateAsync(values);
+  };
+
+  
+        const [showPass, setShowPass] = useState(false);
+  
+  const handleClickShowPassword = () => {
+    setShowPass(!showPass);
   };
   return (
     <Box
@@ -151,6 +163,15 @@ function Login() {
                 fullWidth
                 error={errors.password}
                 helperText={errors.password?.message}
+                type={showPass ? "text" : "password"}
+                                InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleClickShowPassword} edge="end">
+                            {showPass ? <VisibilityOff sx={{ color: "var(--secondary-color)" }} /> : <Visibility sx={{ color: "var(--secondary-color)" }} />}
+                          </IconButton>
+                        </InputAdornment>),
+    }}
                 sx={{
                   "& .MuiOutlinedInput-root": {
                     backgroundColor: "rgb(8,13,22)",
