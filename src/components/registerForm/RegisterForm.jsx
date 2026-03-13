@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"; // @hookform/resolvers: بتربط yup مع react-hook-form عشان الفورم يستخدم قواعد الفاليديشين
 import useRegister from "../../hooks/useRegister";
 
-function RegisterComp({schema, useHook, showPassword=true}) {
+function RegisterForm({schema, useHook, showPassword=true , showSupervisors=true}) {
     const {
         register,
         handleSubmit,
@@ -21,6 +21,8 @@ function RegisterComp({schema, useHook, showPassword=true}) {
       });
       const { serverErrors, authMutation, supervisors, supervisorsLoading } =
         useHook();
+
+      
       const addUser = async (values) => {
         await authMutation.mutateAsync(values);
       };
@@ -206,7 +208,7 @@ function RegisterComp({schema, useHook, showPassword=true}) {
                 }}
               />}
               {/* Dropdown للدكاترة */}
-              <TextField
+              {showSupervisors && <TextField
                 {...register("supervisorUserId")}
                 defaultValue=""
                 label="Supervisor Name"
@@ -268,7 +270,7 @@ function RegisterComp({schema, useHook, showPassword=true}) {
                     </MenuItem>
                   ),
                 )}
-              </TextField>
+              </TextField>}
               <Button
                 type="submit"
                 className="auth_btn"
@@ -293,4 +295,4 @@ function RegisterComp({schema, useHook, showPassword=true}) {
   )
 }
 
-export default RegisterComp
+export default RegisterForm

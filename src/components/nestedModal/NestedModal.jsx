@@ -6,10 +6,12 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import RegisterComp from '../registerComp/RegisterComp';
+import RegisterForm from '../registerForm/RegisterForm';
 import { IoClose } from "react-icons/io5";
 import { CreateStudentSchema } from '../../validations/CreateStudentSchema';
 import useCreateStudent from '../../hooks/useCreateStudent';
+import useCreateSupervisor from '../../hooks/useCreateSupervisor';
+import { CreateSupervisorSchema } from '../../validations/CreateSupervisorSchema';
 
 const style = {
   position: 'absolute',
@@ -58,13 +60,12 @@ function ChildModal( {role} ) { //  استقبلنا قيمة الاختيار �
 
           role==='student'?
           <>
-          <RegisterComp schema={CreateStudentSchema} useHook={useCreateStudent} showPassword={false}/>
+          <RegisterForm schema={CreateStudentSchema} useHook={useCreateStudent} showPassword={false}/>
           
           </>
-          :
+          : // else role is supervisor
           <>
-          <h2 id="child-modal-title">Text in a child modal</h2>
-          <p id="child-modal-description">supervisor</p> 
+          <RegisterForm schema={CreateSupervisorSchema} useHook={useCreateSupervisor} showPassword={false} showSupervisors={false}/> 
           </>
           }
         </Box>

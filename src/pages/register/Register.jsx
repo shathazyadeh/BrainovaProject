@@ -6,9 +6,10 @@ import {
 } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom"; //عشان نفرق بينه وبين اللينك من مكتبة mui
 import GlowCard from "../../components/reactBitsComponents/glowCard/GlowCard.jsx"; //جلو كارد من مكتبة رياكت بتس
-import RegisterComp from "../../components/registerComp/RegisterComp.jsx";
+
 import { RegisterSchema } from "../../validations/RegisterSchema.js";
 import useRegister from "../../hooks/useRegister.js";
+import RegisterForm from "../../components/registerForm/RegisterForm.jsx";
 
 function Register() {
  
@@ -81,7 +82,7 @@ function Register() {
             >
               Create your account to start your medical training
             </Typography>
-            <RegisterComp schema={RegisterSchema} useHook={useRegister}/>
+            <RegisterForm schema={RegisterSchema} useHook={useRegister}/>
             <Typography
                 sx={{ textAlign: "center", color: "var(--secondary-color)" ,marginTop:'25px'}}
               >
