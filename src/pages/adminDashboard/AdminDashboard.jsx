@@ -5,15 +5,24 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { FaUserDoctor } from "react-icons/fa6";
 import { TbUsers } from "react-icons/tb";
 import { PiStudentFill } from "react-icons/pi";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import TitanicPie from "../../components/titanicPie/TitanicPie";
 import useFilteredArray from "../../hooks/useFilteredArray";
 import EnhancedTable from "../../components/enhancedTabel/EnhancedTable";
 import BasicModal from "../../components/basicModal/BasicModal";
 import NestedModal from "../../components/nestedModal/NestedModal";
+import useAuthStore from '../../store/useAuthStore';
+
 
 function AdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
+  const logout = useAuthStore((state)=>state.logout);
+  const navigate = useNavigate();
+
+  const handleLogout = ()=>{
+    logout();
+    navigate('/auth/login');
+  }
 
   // state للتحكم بفتح واغلاق المودال
   const [open, setOpen] = useState(false);
@@ -391,7 +400,7 @@ function AdminDashboard() {
       />
 
 
-        <Button className="logout upper_case" sx={{bgcolor:'var(--secondary-color)',color:'#fff'}}>Logout</Button>
+        <Button className="logout upper_case" onClick={handleLogout} sx={{bgcolor:'var(--secondary-color)',color:'#fff'}}>Logout</Button>
     </Box>
   );
 }
