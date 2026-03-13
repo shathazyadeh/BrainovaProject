@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom'
 
 function DashboardLayout() {
   return (
-    <Box sx={{bgcolor:'var(--navy-color)',padding:'40px'}}>
+    <Box>
       <Outlet/>
     </Box>
   )
