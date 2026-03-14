@@ -16,7 +16,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@mui/icons-material": "^7.3.8",
     "@mui/material": "^7.3.8",
-    "@mui/x-charts": "^8.27.4",
+    "@mui/x-charts": "^8.27.5",
     "@tanstack/react-query": "^4.43.0",
     "axios": "^1.13.5",
     "gsap": "^3.14.2",

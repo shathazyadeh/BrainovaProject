@@ -37,7 +37,7 @@ export default function SecondNavbar() {
     return (
         <Box sx={{ flexGrow: 1 }}>
 
-            <AppBar elevation={0} position="relative" sx={{ bgcolor: 'rgb(36, 35, 35)', paddingY: '12px', boxShadow: ' 0 8px 20px rgba(0, 0, 0, 0.31)' }}>
+            <AppBar  position="relative" sx={{ bgcolor: 'rgb(36, 35, 35)', paddingY: '12px', boxShadow: ' 0 8px 20px rgba(0, 0, 0, 0.31)' }}>
                 <Toolbar>
                     {auth && (
                         <div style={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
@@ -115,6 +115,7 @@ export default function SecondNavbar() {
                             fontSize: 35,
                             letterSpacing: "5px",
                             marginLeft: "5px",
+                            display:{xs:'none',md:'block'}
                         }}
                     >
                         BRAINOVA

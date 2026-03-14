@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { GrEdit } from "react-icons/gr";
+import { FaRegEdit } from "react-icons/fa";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -18,8 +18,8 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import { FaCheckCircle } from "react-icons/fa";
-import { TiDelete } from "react-icons/ti";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import { RxCrossCircled } from "react-icons/rx";
 import { visuallyHidden } from "@mui/utils";
 import { TbLockFilled } from "react-icons/tb";
 import { FaUnlockAlt } from "react-icons/fa";
@@ -122,7 +122,7 @@ function EnhancedTableHead(props) {
             sx={{
               color: "#fff", // لون البوردر قبل التحديد
               "&.Mui-checked": {
-                color: "red", // لون المربع بعد التحديد
+                 color: "var(--primary-color)", // لون المربع بعد التحديد
               },
               "&.MuiCheckbox-indeterminate": {
                 color: "red", // لون المربع لما يكون نصف محدد (اللون الأزرق اللي تقصده)
@@ -193,17 +193,17 @@ function EnhancedTableToolbar(props) {
         {
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
-          bgcolor: "var(--navy-color)",
+          bgcolor: 'var(--table-color)',
           color: "#fff",
         },
         numSelected > 0 && {
-          bgcolor: "var(--navy-color)",
+          bgcolor: 'var(--table-color)',
         },
       ]}
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: "1 1 100%", bgcolor: "var(--navy-color)" }}
+          sx={{ flex: "1 1 100%",  bgcolor: 'rgba(50, 48, 48, 0)', }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -331,14 +331,15 @@ export default function EnhancedTable({ rows , handleOpen }) {
   );
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%"}}>
+      
       <Paper
         sx={{
           width: "100%",
           mb: 2,
           borderRadius: "25px",
           overflow: "hidden",
-          bgcolor: "var(--navy-color)",
+          bgcolor: 'rgba(2, 1, 1, 0.7)',
         }}
       >
         <EnhancedTableToolbar
@@ -353,7 +354,7 @@ export default function EnhancedTable({ rows , handleOpen }) {
               height: "10px",
             },
             "&::-webkit-scrollbar-track": {
-              background: "var(--navy-color)",
+              background: 'var(--table-color)',
             },
             "&::-webkit-scrollbar-thumb": {
               background: "#ffffff55",
@@ -367,7 +368,7 @@ export default function EnhancedTable({ rows , handleOpen }) {
           <Table
             sx={{
               minWidth: 750,
-              bgcolor: "var(--navy-color)",
+             bgcolor:'var(--table-color)',
               "& .MuiTableCell-root": {
                 borderBottom: "1px solid rgba(97, 89, 89, 0.6)",
               },
@@ -403,7 +404,7 @@ export default function EnhancedTable({ rows , handleOpen }) {
                         backgroundColor: "var(--dark-gray-color) !important",
                       },
                       "&.Mui-selected": {
-                        backgroundColor: "rgba(255,0,0,0.08)", // احمر شفاف جدا
+                        backgroundColor: "rgba(212, 11, 11, 0.04)", // احمر شفاف جدا
                       },
                       "&.Mui-selected:hover": {
                         backgroundColor: "var(--dark-gray-color) !important",
@@ -415,7 +416,7 @@ export default function EnhancedTable({ rows , handleOpen }) {
                         sx={{
                           color: "var(--secondary-color)", // لون البوردر قبل التحديد
                           "&.Mui-checked": {
-                            color: "red", // لون المربع بعد التحديد
+                            color: "var(--primary-color)", // لون المربع بعد التحديد
                           },
                         }}
                         checked={isItemSelected}
@@ -473,12 +474,12 @@ export default function EnhancedTable({ rows , handleOpen }) {
                       {row.emailConfirmed ? (
                         <Typography
                           sx={{
-                            border: "1px solid #22c55e",
+                            border: "1px solid #ef4444",
                             width: "fit-content",
                             paddingX: "20px",
                             paddingY: "5px",
                             borderRadius: "20px",
-                            backgroundColor: "rgba(34, 197, 94, 0.12)",
+                            backgroundColor:"rgba(246, 56, 56, 0.12)",
                             fontSize: "12px",
                           }}
                         >
@@ -492,7 +493,7 @@ export default function EnhancedTable({ rows , handleOpen }) {
                             paddingX: "20px",
                             paddingY: "5px",
                             borderRadius: "20px",
-                            backgroundColor: "rgba(239, 68, 68, 0.12)",
+                            backgroundColor: "rgba(239, 68, 68)",
                             fontSize: "12px",
                           }}
                         >
@@ -506,40 +507,45 @@ export default function EnhancedTable({ rows , handleOpen }) {
                       sx={{ color: "#fff", textAlign: "left" }}
                     >
                       {row.isBlocked ? (
-                        <TiDelete size={30} fill="#ef4444" />
+                        <RxCrossCircled size={24}
+                        style={{marginLeft: "5px",color:'#ef4444'}}/>
                       ) : (
-                        <FaCheckCircle
-                          style={{ marginLeft: "5px" }}
-                          size={22}
-                          fill="#09ab44"
+                        <IoCheckmarkCircleOutline
+                          style={{ marginLeft: "5px",color:'#898a89' }}
+                          size={25}
+                          
+                         
                         />
                       )}
                     </TableCell>
                     <TableCell sx={{ color: "#fff", textAlign: "left" }}>
-                      <Button>
+                       <IconButton size="small">
                         {row.isBlocked ? (
                           <TbLockFilled
                             onClick={(e) => {handelUnBlock(row.id); e.stopPropagation();}} //الثانية عشان لما يضغط الايقونة ما يتحدد كل السطر
-                            fill="#ef4444"
-                            size={25}
+                            fill="#ef2e2e"
+                            size={24}
                           />
                         ) : (
                           <FaUnlockAlt
                             onClick={(e) => {handelBlock(row.id); e.stopPropagation();}}
-                            fill="#09ab44"
-                            size={22}
+                            fill="#5d5f5e"
+                            size={19}
+                            style={{width:'25'}}
+                           
                           />
                         )}
-                      </Button>
-                      <Button>
-                        <GrEdit
-                          color={"rgb(229, 255, 0)"}
+                     </IconButton>
+                      <IconButton size="small">
+                        <FaRegEdit 
+                        size={20}
+                          color={"#5d5f5e"}
                            onClick={(e) => {
                              e.stopPropagation(); // يمنع الضغط على الصف
                              handleOpen(row); // فتح المودال وارسال بيانات المستخدم
                            }}
                          />
-                      </Button>
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 );
@@ -557,7 +563,7 @@ export default function EnhancedTable({ rows , handleOpen }) {
           </Table>
         </TableContainer>
         <TablePagination
-          sx={{ bgcolor: "var(--navy-color)", color: "#fff" }}
+          sx={{ bgcolor: 'var(--table-color)', color: "#fff" }}
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={filteredRows.length}
@@ -569,7 +575,7 @@ export default function EnhancedTable({ rows , handleOpen }) {
             MenuProps: {
               PaperProps: {
                 sx: {
-                  bgcolor: "var(--navy-color)",
+                  bgcolor: 'var(--table-color)',
                   color: "#fff",
 
                   // hover على العناصر
@@ -584,9 +590,12 @@ export default function EnhancedTable({ rows , handleOpen }) {
                     color: "#fff",
                   },
                 },
+              
               },
             },
           }}
+
+          
         />
       </Paper>
     </Box>

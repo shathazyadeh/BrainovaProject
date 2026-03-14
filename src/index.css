@@ -6,6 +6,7 @@
   --mid-gray-color: rgb(98, 102, 109);
   --dark-gray-color:rgb(26,26,26);
   --navy-color: rgb(1,2,5);
+  --table-color: rgba(34, 32, 32, 0.4);
 }
 body{
   overflow-x: hidden;

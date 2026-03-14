@@ -116,6 +116,9 @@ function AdminDashboard() {
 
   const { filteredArr, studentsNo, supervisorsNo } = useFilteredArray(data); //هاي عشان فلترة المستخدمين بعد الحصول عالداتا
 
+
+
+  /////////////////////
   return (
     <>
      <SecondNavbar />
@@ -124,7 +127,8 @@ function AdminDashboard() {
       className="admin_dashboard"
       sx={{
            bgcolor:'rgb(36, 35, 35)',
-             padding: "30px",
+             paddingX: "30px",
+             paddingTop:"50px",
       }}
     >
      
@@ -132,22 +136,24 @@ function AdminDashboard() {
         className="system_roles"
         sx={{ color: "#fff", marginBottom: "25px" }}
       >
-        <Grid container sx={{ gap: "20px" }}>
-          <Grid
-            item
+        <Grid container spacing={3}>
+          <Grid 
+           item
+           size={{ xs:12 , md:6,lg:4.5}}          
             className="supervisor"
             sx={{
-              bgcolor: "var(--navy-color)",
+              bgcolor: "rgba(0, 0, 0, 0.46)",
               padding: "30px",
+              
               borderRadius: "25px",
             }}
           >
-            <Box className="header" sx={{ display: "flex", gap: "12px" }}>
+            <Box className="header" sx={{ display: "flex",alignItems:'center', gap: "12px" }}>
               <Typography
                 component={"span"}
                 className="icon"
                 sx={{
-                  bgcolor: "rgb(17, 104, 181)",
+                  bgcolor: "rgb(129, 15, 15)",
                   padding: "13px",
                   borderRadius: "14px",
                 }}
@@ -168,7 +174,7 @@ function AdminDashboard() {
             </Box>
             <Box className="users_number" sx={{ marginY: "20px" }}>
               <TbUsers size={17} style={{ marginRight: "5px" }} />
-              <Typography component={"span"}>{supervisorsNo}</Typography>
+              <Typography component={"span"} >{supervisorsNo}</Typography>
             </Box>
             <Box className="permissions">
               <Typography
@@ -178,86 +184,84 @@ function AdminDashboard() {
                 Permissions:
               </Typography>
               <Box
-                className="permissions_details flex_column"
-                sx={{ gap: "9px" }}
+                className="permissions_details "
+                sx={{ display:'flex',gap: "9px",flexWrap: 'wrap',  }}
               >
-                <Box
-                  className="permissions_details_upper"
-                  sx={{ display: "flex", gap: "9px" }}
-                >
+                
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                      bgcolor:" rgba(246, 56, 56, 0.12)",
+                  border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
+                       whiteSpace: "nowrap",
                     }}
                   >
                     Student Management
                   </Typography>
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                      bgcolor:" rgba(246, 56, 56, 0.12)",
+                  border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     Review Analysis Results
                   </Typography>
-                </Box>
-                <Box
-                  className="permissions_details_lower"
-                  sx={{ display: "flex", gap: "9px" }}
-                >
+               
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                       bgcolor:" rgba(246, 56, 56, 0.12)",
+                  border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     Monitor Reports
                   </Typography>
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                      bgcolor:" rgba(246, 56, 56, 0.12)",
+                  border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
-                      width: "fit-content",
+                      whiteSpace: {xs:'wrap',sm:'nowrap'}
                     }}
                   >
-                    manage feedback
+                    Review and Manage Student Feedback
                   </Typography>
-                </Box>
+               
               </Box>
             </Box>
           </Grid>
-          <Grid
+          <Grid 
+           size={{ xs:12 , md:6,lg:4.5}}
             item
             className="student"
             sx={{
-              bgcolor: "var(--navy-color)",
+             bgcolor: "rgba(0, 0, 0, 0.46)",
               padding: "30px",
+              
               borderRadius: "25px",
             }}
           >
-            <Box className="header" sx={{ display: "flex", gap: "12px" }}>
+            <Box className="header" sx={{ display: "flex",alignItems:'center', gap: "12px" }}>
               <Typography
                 component={"span"}
                 className="icon"
                 sx={{
-                  bgcolor: "#d7a00a",
+                  bgcolor: "#524e4e",
                   padding: "13px",
                   borderRadius: "14px",
                 }}
@@ -288,76 +292,75 @@ function AdminDashboard() {
                 Permissions:
               </Typography>
               <Box
-                className="permissions_details flex_column"
-                sx={{ gap: "9px" }}
+                className="permissions_details "
+                sx={{ gap: "9px", display:'flex',flexWrap: 'wrap' }}
               >
-                <Box
-                  className="permissions_details_upper"
-                  sx={{ display: "flex", gap: "9px" }}
-                >
+               
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                      bgcolor:" rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
+                      whiteSpace: "nowrap",
+                      
                     }}
                   >
                     Upload Medical Images
                   </Typography>
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                      bgcolor:" rgba(246, 56, 56, 0.12)",
+                     border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    View AI Analysis Results
+                    View AI Results
                   </Typography>
-                </Box>
-                <Box
-                  className="permissions_details_lower"
-                  sx={{ display: "flex", gap: "9px" }}
-                >
+                
+               
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                     bgcolor:" rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    View Analysis History
+                    View History
                   </Typography>
                   <Typography
                     sx={{
-                      bgcolor: "rgba(61, 59, 59, 0.9)",
-                      border: "1px solid rgba(115, 114, 114, 0.9)",
+                       bgcolor:" rgba(246, 56, 56, 0.12)",
+                     border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    Upload Medical Reports
+                    Upload Reports
                   </Typography>
-                </Box>
+               
                 <Typography
                   sx={{
-                    bgcolor: "rgba(61, 59, 59, 0.9)",
-                    border: "1px solid rgba(115, 114, 114, 0.9)",
+                    bgcolor:" rgba(246, 56, 56, 0.12)",
+                  border: "1px solid #ef4444",
                     borderRadius: "20px",
                     paddingX: "10px",
                     paddingY: "4px",
                     fontSize: "15px",
-                    width: "fit-content",
+                     whiteSpace: {xs:'wrap',sm:'nowrap'}
                   }}
                 >
                   Explore 3D Brain Models for Learning
@@ -367,11 +370,13 @@ function AdminDashboard() {
           </Grid>
           <Grid
             item
+            size={{ xs:12 , lg:3}}
             className="pie_chart"
             sx={{
-              bgcolor: "var(--navy-color)",
-              padding: "",
+              
+              bgcolor: "rgba(0, 0, 0, 0.46)",
               borderRadius: "25px",
+              
             }}
           >
             <TitanicPie students={studentsNo} supervisors={supervisorsNo} />
@@ -394,7 +399,16 @@ function AdminDashboard() {
       open={open} // حالة فتح المودال
         handleClose={handleClose} // فنكشن الاغلاق
       />
-
+      
+      <Box className="lower_footer" sx={{borderTop: "1px solid rgba(53, 53, 53, 0.93)",width:'fit-content',margin:'auto',paddingX:{xs:'0px' , md:'200px'},textAlign:'center'}}>
+        <Typography
+          component={"p"}
+          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+        >
+          © 2026 <Typography component={'span'} sx={{color:'var(--dark-red-color)'}}>Brainova</Typography>. All rights reserved. | Built for medical education
+          and research purposes.
+        </Typography>
+      </Box>
 
     </Box>
     </>

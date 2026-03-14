@@ -2,32 +2,60 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-
-export default function UsersPieChart({students,supervisors}) {
+export default function UsersPieChart({ students, supervisors }) {
   const data = [
-    { id: 0, value: students, label: 'Students',color:'rgb(110, 65, 116)' },
-    { id: 1, value: supervisors, label: 'Supervisors',color:'rgb(170, 116, 159)' },
+    { id: 0, value: students, label: 'Students', color: "#524e4e",},
+    { id: 1, value: supervisors, label: 'Supervisors', color: "rgb(129, 15, 15)", },
   ];
+
   return (
-    <Box className='flex_column' sx={{ width: '100%', textAlign: 'center',alignItems:'center'}}>
-      <Typography variant="h5" sx={{color:'#fff',paddingTop:'20px'}} gutterBottom>
+    <Box
+      className="flex_column"
+      sx={{ width: '100%', textAlign: 'center', alignItems: 'center' ,paddingBottom:'10px'}}
+    >
+      <Typography variant="h6" sx={{ color: '#fff', pt: 2 }} gutterBottom>
         Users Distribution
       </Typography>
 
       <PieChart
         series={[
-          {
-            data,
-            arcLabel: (item) => `${item.label} (${item.value})`,
-            highlightScope: { fade: 'global', highlight: 'item' },
-            cornerRadius: 4,
-          },
-        ]}
-        width={300}
-        height={200}
-          hideLegend
-
+    {
+      data,
+      arcLabel: (item) => `${item.label} (${item.value})`,
+      arcLabelMinAngle: 15,
+      highlightScope: { fade: 'global', highlight: 'item' },
+      cornerRadius: 4,
+    },
+  ]}
+  width={300}
+    height={200}
+  hideLegend
+  sx={{
+    
+    "& .MuiPieArcLabel-root": {
+      fontSize: 13,
+      fill: "#fff",
+      
+    },
+  }}
       />
+
+      {/* Legend */}
+      <Box sx={{ display: 'flex', gap: 2, paddingBottom:'10px',paddingTop:'12px', justifyContent: 'center' }}>
+        {data.map((item) => (
+          <Box key={item.id} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Box
+              sx={{
+                width: 14,
+                height: 14,
+                bgcolor: item.color,
+                borderRadius: '50%',
+              }}
+            />
+            <Typography sx={{ color: '#fff', fontSize: 14 }}>{item.label}</Typography>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 }

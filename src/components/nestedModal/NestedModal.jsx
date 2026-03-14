@@ -8,6 +8,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import RegisterForm from '../registerForm/RegisterForm';
 import { IoClose } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
 import { CreateStudentSchema } from '../../validations/CreateStudentSchema';
 import useCreateStudent from '../../hooks/useCreateStudent';
 import useCreateSupervisor from '../../hooks/useCreateSupervisor';
@@ -90,8 +91,8 @@ export default function NestedModal() {
   };
 
   return (
-    <div>
-      <Button onClick={handleOpen} className="create_user_btn upper_case" sx={{bgcolor:'var(--dark-red-color)',color:'#fff'}}>Create new User</Button>
+    <div> 
+      <Button onClick={handleOpen} className="create_user_btn upper_case" sx={{bgcolor:'var(--dark-red-color)',color:'#fff',marginLeft:'20px',borderRadius:'5px',marginBottom:'30px' }}>Create new User<FaPlus  style={{paddingLeft:'5PX'}} /></Button>
       <Modal
         open={open}
         onClose={handleClose}
