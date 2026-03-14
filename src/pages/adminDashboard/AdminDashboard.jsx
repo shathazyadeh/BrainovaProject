@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useGetUsers from "../../hooks/useGetUsers";
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, Toolbar, Typography } from "@mui/material";
 import { FaUserDoctor } from "react-icons/fa6";
 import { TbUsers } from "react-icons/tb";
 import { PiStudentFill } from "react-icons/pi";
@@ -32,8 +32,8 @@ function AdminDashboard() {
   };
 
 
-
-  if (isLoading) return <CircularProgress></CircularProgress>;
+ //اخذ بوزيشين عشان يكون فوق كلشي حتى الدروار
+  if (isLoading) return <Box sx={{position: "fixed",inset: 0,zIndex: 9999,bgcolor:'var(--navy-color)',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress sx={{color:'#fff'}}></CircularProgress></Box>
   if (isError) {
     if (error?.status === 401) {
       //unotherized error
@@ -43,7 +43,7 @@ function AdminDashboard() {
           className="server_error_section flex_column"
           sx={{
             bgcolor:"var(--navy-color)",
-            height: "100vh",
+            position: "fixed",inset: 0,zIndex: 9999,
             justifyContent: "center",
             alignItems: "center",
             gap: "20px",
@@ -81,7 +81,7 @@ function AdminDashboard() {
           className="server_error_section flex_column"
           sx={{
             bgcolor:"var(--navy-color)",
-            height: "100vh",
+            position: "fixed",inset: 0,zIndex: 9999,
             justifyContent: "center",
             alignItems: "center",
             gap: "20px",
@@ -122,6 +122,8 @@ function AdminDashboard() {
   return (
     <>
      <SecondNavbar />
+       <Toolbar /> {/* يعطي نفس ارتفاع النافبار بالضبط، لذلك يدفع المحتوى للأسفل بدون مشاكل. */}
+
     <Box
       component={"section"}
       className="admin_dashboard"

@@ -1,13 +1,24 @@
-import { Box } from '@mui/material'
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import TemporaryDrawer from "../components/temporaryDrawer/TemporaryDrawer";
 
 function DashboardLayout() {
   return (
-    <Box>
-      <Outlet/>
+    <Box sx={{ display: "flex" }}>
+      
+      <TemporaryDrawer />
+
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+        }}
+      >
+        <Outlet />
+      </Box>
+
     </Box>
-  )
+  );
 }
 
-export default DashboardLayout
+export default DashboardLayout;

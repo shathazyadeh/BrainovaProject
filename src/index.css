@@ -90,3 +90,102 @@ a {
 .gray_boxShadow_onHover:hover {
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.37);
 }
+
+
+
+/*اعدادات خاصة بالتيكست فيلد الدارك*/
+/* ستايل عام للـ TextField */
+.textfield_dark .MuiOutlinedInput-root {
+  background-color: rgb(8, 13, 22); /* خلفية الانبوت */
+}
+
+/* لون النص الذي يكتبه المستخدم */
+.textfield_dark .MuiInputBase-input {
+  color: rgb(220, 225, 230); /* أفتح سكني واضح للمكتوب */
+}
+
+/* لون اللابل */
+.textfield_dark .MuiInputLabel-root {
+  color: rgb(142, 149, 162); /* سكني غامق للـ label */
+}
+
+/* لون اللابل عند الفوكس */
+.textfield_dark .MuiInputLabel-root.Mui-focused {
+  color: rgb(142, 149, 162);
+}
+
+/* لون البوردر العادي */
+.textfield_dark .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+
+/* لون البوردر عند الهوفر */
+.textfield_dark .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+
+/* لون البوردر عند الفوكس */
+.textfield_dark
+  .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+
+/* منع تغيير لون النص والخلفية عند autofill */
+.textfield_dark input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px rgb(8, 13, 22) inset;
+  -webkit-text-fill-color: rgb(220, 225, 230); /* نفس لون النص المكتوب */
+}
+
+.textfield_dark input:-webkit-autofill:hover {
+  -webkit-box-shadow: 0 0 0 100px rgb(8, 13, 22) inset;
+  -webkit-text-fill-color: rgb(220, 225, 230);
+}
+
+.textfield_dark input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 100px rgb(8, 13, 22) inset;
+  -webkit-text-fill-color: rgb(220, 225, 230);
+}
+.textfield_dark .MuiInputBase-input , .textfield_light .MuiInputBase-input {
+  caret-color: var(--secondary-color); /* يحدد لون مؤشر الكتابة */
+}
+/*انتهت الاعدادات الخاصة بالتكست فيلد الدارك*/
+
+/*اعدادات خاصة بالتيكست فيلد اللايت*/
+.textfield_light .MuiInputBase-input {
+  color: black;
+}
+
+.textfield_light .MuiInputLabel-root {
+  color: var(--secondary-color);
+}
+
+.textfield_light .MuiInputLabel-root.Mui-focused {
+  color: rgb(142, 149, 162);
+}
+
+.textfield_light .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+
+.textfield_light:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+.textfield_light .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+.textfield_light input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px #fff inset;
+  -webkit-text-fill-color: #000;
+}
+
+.textfield_light input:-webkit-autofill:hover {
+  -webkit-box-shadow: 0 0 0 100px #fff inset;
+  -webkit-text-fill-color: #000;
+}
+
+.textfield_light input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 100px #fff inset;
+  -webkit-text-fill-color: #000;
+}
+/*انتهت الاعدادات الخاصة بالتكست فيلد اللايت*/

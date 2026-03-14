@@ -34,9 +34,8 @@ function Login() {
     await authMutation.mutateAsync(values);
   };
 
-  
-        const [showPass, setShowPass] = useState(false);
-  
+  const [showPass, setShowPass] = useState(false);
+
   const handleClickShowPassword = () => {
     setShowPass(!showPass);
   };
@@ -47,7 +46,8 @@ function Login() {
       sx={{ bgcolor: "var(--navy-color)", padding: "1px" }}
     >
       <Container maxWidth="sm">
-        <Box className="flex_column"
+        <Box
+          className="flex_column"
           sx={{
             justifyContent: "center",
             height: "100vh",
@@ -131,30 +131,8 @@ function Login() {
                 fullWidth
                 error={errors.emailOrUserName}
                 helperText={errors.emailOrUserName?.message}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: "rgb(8,13,22)",
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "var(--secondary-color)",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "var(--secondary-color)",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "rgb(142, 149, 162)",
-                  },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "var(--secondary-color)",
-                  },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "var(--secondary-color)",
-                  },
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "var(--secondary-color)",
-                    },
-                }}
+                className="textfield_dark"
+                spellCheck={false}
               />
               <TextField
                 {...register("password")}
@@ -164,38 +142,25 @@ function Login() {
                 error={errors.password}
                 helperText={errors.password?.message}
                 type={showPass ? "text" : "password"}
-                                InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={handleClickShowPassword} edge="end">
-                            {showPass ? <VisibilityOff sx={{ color: "var(--secondary-color)" }} /> : <Visibility sx={{ color: "var(--secondary-color)" }} />}
-                          </IconButton>
-                        </InputAdornment>),
-    }}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    backgroundColor: "rgb(8,13,22)",
-                  },
-                  "& .MuiInputBase-input": {
-                    color: "var(--secondary-color)",
-                  },
-                  "& .MuiInputLabel-root": {
-                    color: "var(--secondary-color)",
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "rgb(142, 149, 162)",
-                  },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "var(--secondary-color)",
-                  },
-                  "&:hover .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "var(--secondary-color)",
-                  },
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      borderColor: "var(--secondary-color)",
-                    },
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={handleClickShowPassword} edge="end">
+                        {showPass ? (
+                          <VisibilityOff
+                            sx={{ color: "var(--secondary-color)" }}
+                          />
+                        ) : (
+                          <Visibility
+                            sx={{ color: "var(--secondary-color)" }}
+                          />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
+                className="textfield_dark"
+                spellCheck={false}
               />
               <Link
                 component={RouterLink}

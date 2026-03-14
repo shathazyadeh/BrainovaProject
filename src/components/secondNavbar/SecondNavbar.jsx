@@ -35,9 +35,9 @@ export default function SecondNavbar() {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1}} >
 
-            <AppBar  position="relative" sx={{ bgcolor: 'rgb(36, 35, 35)', paddingY: '12px', boxShadow: ' 0 8px 20px rgba(0, 0, 0, 0.31)' }}>
+            <AppBar  position="fixed" sx={{bgcolor: "rgb(36, 35, 35)",paddingY: "12px",boxShadow: "none",zIndex: (theme) => theme.zIndex.drawer + 1}}> {/*عشان يطلع فوق الدروار */}
                 <Toolbar>
                     {auth && (
                         <div style={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>

@@ -65,30 +65,8 @@ function RegisterForm({
             fullWidth
             error={errors.fullName}
             helperText={errors.fullName?.message}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                backgroundColor: "rgb(8,13,22)",
-              },
-              "& .MuiInputBase-input": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "rgb(142, 149, 162)",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "var(--secondary-color)",
-                },
-            }}
+            className="textfield_dark"
+            spellCheck={false}
           />
           <TextField
             {...register("userName")}
@@ -97,30 +75,8 @@ function RegisterForm({
             fullWidth
             error={errors.userName}
             helperText={errors.userName?.message}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                backgroundColor: "rgb(8,13,22)",
-              },
-              "& .MuiInputBase-input": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "rgb(142, 149, 162)",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "var(--secondary-color)",
-                },
-            }}
+            className="textfield_dark"
+            spellCheck={false}
           />
         </Box>
         <Box sx={{ display: "flex", gap: "10px" }}>
@@ -131,30 +87,8 @@ function RegisterForm({
             fullWidth
             error={errors.email}
             helperText={errors.email?.message}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                backgroundColor: "rgb(8,13,22)",
-              },
-              "& .MuiInputBase-input": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "rgb(142, 149, 162)",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "var(--secondary-color)",
-                },
-            }}
+            className="textfield_dark"
+            spellCheck={false}
           />
           <TextField
             {...register("phoneNumber")}
@@ -163,30 +97,8 @@ function RegisterForm({
             fullWidth
             error={errors.phoneNumber}
             helperText={errors.phoneNumber?.message}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                backgroundColor: "rgb(8,13,22)",
-              },
-              "& .MuiInputBase-input": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "rgb(142, 149, 162)",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "var(--secondary-color)",
-                },
-            }}
+            className="textfield_dark"
+            spellCheck={false}
           />
         </Box>
         {showPassword && (
@@ -211,30 +123,8 @@ function RegisterForm({
                 </InputAdornment>
               ),
             }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                backgroundColor: "rgb(8,13,22)",
-              },
-              "& .MuiInputBase-input": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "rgb(142, 149, 162)",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "var(--secondary-color)",
-                },
-            }}
+            className="textfield_dark"
+            spellCheck={false}
           />
         )}
         {/* Dropdown للدكاترة */}
@@ -257,30 +147,7 @@ function RegisterForm({
                 },
               },
             }}
-            sx={{
-              "& .MuiOutlinedInput-root": {
-                backgroundColor: "rgb(8,13,22)",
-              },
-              "& .MuiInputBase-input": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root": {
-                color: "var(--secondary-color)",
-              },
-              "& .MuiInputLabel-root.Mui-focused": {
-                color: "rgb(142, 149, 162)",
-              },
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--secondary-color)",
-              },
-              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                {
-                  borderColor: "var(--secondary-color)",
-                },
-            }}
+            className="textfield_dark"
           >
             {/* نحوله لدروب داون*/}
             {supervisors.map(

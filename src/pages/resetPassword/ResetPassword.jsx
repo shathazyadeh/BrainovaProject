@@ -143,27 +143,7 @@ function ResetPassword() {
               fullWidth
               error={errors.newPassword}
               helperText={errors.newPassword?.message}
-              sx={{
-                "& .MuiInputBase-input": {
-                  color: "black",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "var(--secondary-color)",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "rgb(142, 149, 162)",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "var(--secondary-color)",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "var(--secondary-color)",
-                },
-                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                  {
-                    borderColor: "var(--secondary-color)",
-                  },
-              }}
+              className="textfield_light"
             />
             <TextField
               {...register("email")}
@@ -174,27 +154,7 @@ function ResetPassword() {
               fullWidth
               error={errors.email}
               helperText={errors.email?.message}
-              sx={{
-                "& .MuiInputBase-input": {
-                  color: "black",
-                },
-                "& .MuiInputLabel-root": {
-                  color: "var(--secondary-color)",
-                },
-                "& .MuiInputLabel-root.Mui-focused": {
-                  color: "rgb(142, 149, 162)",
-                },
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "var(--secondary-color)",
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "var(--secondary-color)",
-                },
-                "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                  {
-                    borderColor: "var(--secondary-color)",
-                  },
-              }}
+              className="textfield_light"
             />
             <Button
               className="fx_fill"

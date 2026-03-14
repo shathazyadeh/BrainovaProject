@@ -84,30 +84,8 @@ export default function BasicModal({ open, handleClose, user }) {
                           fullWidth
                           error={errors.fullName}
                           helperText={errors.fullName?.message}
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              backgroundColor: "rgb(8,13,22)",
-                            },
-                            "& .MuiInputBase-input": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                              color: "rgb(142, 149, 162)",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                              {
-                                borderColor: "var(--secondary-color)",
-                              },
-                          }}
+                          className="textfield_dark"
+                          spellCheck={false}
                         />
                         <TextField
                           {...register("userName")}
@@ -116,30 +94,8 @@ export default function BasicModal({ open, handleClose, user }) {
                           fullWidth
                           error={errors.userName}
                           helperText={errors.userName?.message}
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              backgroundColor: "rgb(8,13,22)",
-                            },
-                            "& .MuiInputBase-input": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                              color: "rgb(142, 149, 162)",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                              {
-                                borderColor: "var(--secondary-color)",
-                              },
-                          }}
+                          className="textfield_dark"
+                          spellCheck={false}
                         />
                       </Box>
                       <Box sx={{ display: "flex", gap: "10px" }}>
@@ -150,30 +106,8 @@ export default function BasicModal({ open, handleClose, user }) {
                           fullWidth
                           error={errors.email}
                           helperText={errors.email?.message}
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              backgroundColor: "rgb(8,13,22)",
-                            },
-                            "& .MuiInputBase-input": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                              color: "rgb(142, 149, 162)",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                              {
-                                borderColor: "var(--secondary-color)",
-                              },
-                          }}
+                          className="textfield_dark"
+                          spellCheck={false}
                         />
                         <TextField
                           {...register("phoneNumber")}
@@ -182,30 +116,8 @@ export default function BasicModal({ open, handleClose, user }) {
                           fullWidth
                           error={errors.phoneNumber}
                           helperText={errors.phoneNumber?.message}
-                          sx={{
-                            "& .MuiOutlinedInput-root": {
-                              backgroundColor: "rgb(8,13,22)",
-                            },
-                            "& .MuiInputBase-input": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "var(--secondary-color)",
-                            },
-                            "& .MuiInputLabel-root.Mui-focused": {
-                              color: "rgb(142, 149, 162)",
-                            },
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "&:hover .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "var(--secondary-color)",
-                            },
-                            "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                              {
-                                borderColor: "var(--secondary-color)",
-                              },
-                          }}
+                          className="textfield_dark"
+                          spellCheck={false}
                         />
                       </Box>
                       <TextField
@@ -215,30 +127,8 @@ export default function BasicModal({ open, handleClose, user }) {
                         fullWidth
                         error={errors.password}
                         helperText={errors.password?.message}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            backgroundColor: "rgb(8,13,22)",
-                          },
-                          "& .MuiInputBase-input": {
-                            color: "var(--secondary-color)",
-                          },
-                          "& .MuiInputLabel-root": {
-                            color: "var(--secondary-color)",
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "rgb(142, 149, 162)",
-                          },
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--secondary-color)",
-                          },
-                          "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--secondary-color)",
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor: "var(--secondary-color)",
-                            },
-                        }}
+                        className="textfield_dark"
+                        spellCheck={false}
                       />
                       {/* Dropdown للدكاترة */}
                       <TextField
@@ -259,30 +149,8 @@ export default function BasicModal({ open, handleClose, user }) {
                             },
                           },
                         }}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            backgroundColor: "rgb(8,13,22)",
-                          },
-                          "& .MuiInputBase-input": {
-                            color: "var(--secondary-color)",
-                          },
-                          "& .MuiInputLabel-root": {
-                            color: "var(--secondary-color)",
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "rgb(142, 149, 162)",
-                          },
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--secondary-color)",
-                          },
-                          "&:hover .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "var(--secondary-color)",
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                            {
-                              borderColor: "var(--secondary-color)",
-                            },
-                        }}
+                        className="textfield_dark"
+                        spellCheck={false}
                       >
                         {/* نحوله لدروب داون*/}
                         {supervisors.map(
