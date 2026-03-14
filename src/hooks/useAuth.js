@@ -8,8 +8,9 @@ export default function useAuth(url,navigateUrl,onSuccessCallback){
     const navigate = useNavigate(); // hook من react-router للتنقل بين الصفحات
 
     const authMutation = useMutation({ // إنشاء mutation مسؤولة عن عملية التسجيل
-            mutationFn:async(values)=>{ // الدالة اللي رح تنفذ عملية التسجيل (API Call)
-                const response = await axiosInstance.post(url,values)
+            mutationFn:async({userInfo})=>{ // الدالة اللي رح تنفذ عملية التسجيل (API Call)
+                console.log('values',userInfo);
+                const response = await axiosInstance.post(url,userInfo)
                 console.log(response);
                 return response; // إرسال POST request للرابط مع البيانات المدخلة من الفورم
             },

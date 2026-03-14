@@ -8,31 +8,44 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup"; // @hookform/resolvers: بتربط yup مع react-hook-form عشان الفورم يستخدم قواعد الفاليديشين
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 function RegisterForm({
   schema,
   useHook,
+  mutationName='authMutation',
+  userId,
   showPassword = true,
   showSupervisors = true,
+  formMethods,
+  btnLabel = "Create Account",
 }) {
+
+  const form = formMethods || useForm({ resolver: yupResolver(schema), mode: "onBlur" });
   const {
     register,
     handleSubmit,
+    watch, // نستخدم watch لمراقبة قيمة الحقول داخل الفورم
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(schema),
-    mode: "onBlur",
-  });
-  const { serverErrors, authMutation, supervisors, supervisorsLoading } =
-    useHook();
+  } = form;
 
-  const addUser = async (values) => {
-    await authMutation.mutateAsync(values);
+const hookData = useHook();
+const { serverErrors, supervisors, supervisorsLoading } = hookData;
+const mutation = hookData[mutationName];
+
+// نراقب قيمة supervisorUserId الموجودة داخل الفورم
+const supervisorValue = watch("supervisorUserId");
+
+  const handleUser = async (values) => {
+    console.log('values:',values);
+   await mutation.mutateAsync({
+  userId: userId,
+  userInfo: values
+});
   };
 
   const [showPass, setShowPass] = useState(false);
@@ -54,7 +67,7 @@ function RegisterForm({
       <Box
         className="register_form flex_column"
         component={"form"}
-        onSubmit={handleSubmit(addUser)}
+        onSubmit={handleSubmit(handleUser)}
         sx={{ gap: "23px" }}
       >
         <Box sx={{ display: "flex", gap: "10px" }}>
@@ -131,7 +144,7 @@ function RegisterForm({
         {showSupervisors && (
           <TextField
             {...register("supervisorUserId")}
-            defaultValue=""
+            value={supervisorValue || ""} // نجعل القيمة تأتي دائماً من الفورم (حتى تظهر بعد reset)
             label="Supervisor Name"
             fullWidth
             select
@@ -174,7 +187,7 @@ function RegisterForm({
           type="submit"
           className="auth_btn"
           variant="contained"
-          disabled={isSubmitting || supervisorsLoading} // نعطل الزر لو لسا البيانات بتيجي
+          disabled={isSubmitting || (showSupervisors && supervisorsLoading)} // نعطل الزر لو لسا البيانات بتيجي
           sx={{ bgcolor: "var(--primary-color)", fontWeight: "600" }}
         >
           {isSubmitting ? (
@@ -186,7 +199,7 @@ function RegisterForm({
               }}
             />
           ) : (
-            "Create Account"
+            btnLabel
           )}
         </Button>
       </Box>

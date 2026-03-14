@@ -31,7 +31,7 @@ function PredictTumor() {
   return (
     <Box
       className="predict_tumor_section"
-      sx={{ bgcolor: "var(--navy-color)", height: "100vh", padding: "1px" }}
+      sx={{ bgcolor: "var(--navy-color)", padding: "1px" }}
     >
       <Container maxWidth="md">
         <ElectricBorder

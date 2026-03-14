@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 const drawerWidth = 240;
 
 export default function TemporaryDrawer() {
-  const navigate = new useNavigate();
+  const navigate =  useNavigate();
   const DrawerList = (
     <Box className="flex_column" sx={{ width: drawerWidth ,height:'100%', paddingX:'0px'}} role="presentation">
       <List sx={{flexGrow:'1'}}>
@@ -29,6 +29,8 @@ export default function TemporaryDrawer() {
   onClick={() => {
     if (text === "Dashboard") {
       navigate("/dashboard/admin");
+    }else if(text === "Profile"){
+      navigate("/dashboard/admin/profile")
     }
   }}
 >

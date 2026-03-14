@@ -18,8 +18,10 @@ export default function useLogin(){
     console.log(decoded);
     const user = {
       name: decoded.Name,
+      fullName:decoded.FullName,
       role: decoded.Role,
       email: decoded.Email,
+      phoneNumber:decoded.PhoneNumber,
       id: decoded.Id
     };
     setUser(user);

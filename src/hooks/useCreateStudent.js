@@ -6,19 +6,12 @@ export default function useCreateStudent(){ // تعريف custom hook اسمه u
 
   const {serverErrors,authMutation} = useAuth('/Identity/Users/create-student',null);
 
-    //  useQuery لجلب الدكاترة
-  const supervisorsQuery = useQuery({ //useQuery بترجع اوبجيكت كبير فيه معلومات عن الطلب
-    queryKey: ["supervisors"], // مفتاح فريد للكاش
-    queryFn: async () => { // الدالة اللي بتجيب البيانات
-      const response = await axiosInstance.get("/Identity/Users/supervisors"); // طلب GET للدكاترة
-      return response.data; // نرجع البيانات فقط
-    }
-  });
-   console.log(supervisorsQuery);
+      //  useQuery لجلب الدكاترة
+   const{supervisors,supervisorsLoading}=useGetSupervisors();
 
   return { serverErrors,
            authMutation,
-           supervisors: supervisorsQuery.data || [], // نرجع الدكاترة (لو لسا ما وصلوا نرجع array فاضي)
-           supervisorsLoading: supervisorsQuery.isLoading // حالة اللودينج
+           supervisors, // نرجع الدكاترة (لو لسا ما وصلوا نرجع array فاضي)
+           supervisorsLoading // حالة اللودينج
     }; // نرجع القيم اللي بدنا نستخدمها بالكومبوننت
 }

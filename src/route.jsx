@@ -8,10 +8,11 @@ import ForgetPassword from "./pages/forgetPassword/ForgetPassword.jsx";
 import ResetPassword from "./pages/resetPassword/ResetPassword.jsx";
 import SetPasswordAdminOrSup from "./pages/setPasswordAdminOrSup/SetPasswordAdminOrSup.jsx";
 import ConfirmEmail from "./pages/confirmEmail/ConfirmEmail.jsx";
-import PredictTumor from "./pages/predictTumor/predictTumor.jsx";
+import PredictTumor from "./pages/predictTumor/PredictTumor.jsx";
 import DashboardLayout from "./layout/DashboardLayout.jsx";
 import SupervisorDashboard from "./pages/supervisorDashboard/SupervisorDashboard.jsx";
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
+import Profile from "./pages/profile/Profile.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -63,6 +64,9 @@ const router = createBrowserRouter([
        },{
         path:"admin",
         element:<AdminDashboard/>
+       },{
+        path:"admin/profile",
+        element:<Profile/>
        }
     ]
    }

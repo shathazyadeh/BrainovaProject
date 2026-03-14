@@ -29,7 +29,7 @@ function ResetPassword() {
   /*ميتويشين للريسيت باس */
   const { serverErrors, authMutation } = useResetPassword();
   const resetPassword = async (values) => {
-    await authMutation.mutateAsync(values);
+    await authMutation.mutateAsync({userInfo: values});
   };
   /*ميوتيشين لاعادة ارسال الكود*/
   const { authMutation: resendMutation } = useForgetPassword(); //عملنا rename للميوتيتشين

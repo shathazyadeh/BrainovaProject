@@ -59,4 +59,5 @@ export const UpdateUserInfoSchema = yup.object({
 
     supervisorUserId: yup
     .string()
+    .nullable()      // ← أضف هذا ليسمح بقيمة null
 });

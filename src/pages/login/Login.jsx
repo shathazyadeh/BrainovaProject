@@ -31,7 +31,7 @@ function Login() {
   const { serverErrors, authMutation } = useLogin();
 
   const loginUser = async (values) => {
-    await authMutation.mutateAsync(values);
+    await authMutation.mutateAsync({userInfo: values});
   };
 
   const [showPass, setShowPass] = useState(false);

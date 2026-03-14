@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../Api/axiosInstance";
 import { Bounce, toast } from "react-toastify";
-
+import useGetSupervisors from "./useGetSupervisors";
 export default function useUpdateUserInfo(){
         const queryClient = useQueryClient();
         
@@ -15,6 +15,7 @@ export default function useUpdateUserInfo(){
                 return response;
             },
             onSuccess:()=>{
+                queryClient.invalidateQueries(["users"]); //update users table
                 toast.success('User information updated successfully', {
                                 position: "top-center",
                                 autoClose: 5000,
@@ -27,8 +28,8 @@ export default function useUpdateUserInfo(){
                                 transition: Bounce,
                             })
             },
-            onError: ()=>{
-                toast.error('Operation failed. Please try again.', {
+            onError: (error)=>{
+                toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`, {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -42,10 +43,11 @@ export default function useUpdateUserInfo(){
             } 
         });
 
-        queryClient.invalidateQueries(["users"]); //update users table
 
+            //  useQuery لجلب الدكاترة
+         const{supervisors,supervisorsLoading}=useGetSupervisors();
         
 
-        return {updateUserInfoMutation}
+        return {updateUserInfoMutation,supervisors,supervisorsLoading}
     
 }

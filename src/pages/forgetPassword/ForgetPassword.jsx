@@ -28,7 +28,7 @@ function ForgetPassword() {
   const { serverErrors, authMutation } = useForgetPassword();
 
   const forgetPassword = async (value) => {
-    await authMutation.mutateAsync(value);
+    await authMutation.mutateAsync({userInfo: value});
   };
 
   return (

@@ -1,24 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "../Api/axiosInstance"; // استيراد axiosInstance (اللي فيه baseURL و interceptors جاهزين)
 import useAuth from "./useAuth";
+import useGetSupervisors from "./useGetSupervisors";
 
 export default function useRegister(){ // تعريف custom hook اسمه useRegister
 
   const {serverErrors,authMutation} = useAuth('/Identity/Auths/register-student','/auth/login');
 
     //  useQuery لجلب الدكاترة
-  const supervisorsQuery = useQuery({ //useQuery بترجع اوبجيكت كبير فيه معلومات عن الطلب
-    queryKey: ["supervisors"], // مفتاح فريد للكاش
-    queryFn: async () => { // الدالة اللي بتجيب البيانات
-      const response = await axiosInstance.get("/Identity/Users/supervisors"); // طلب GET للدكاترة
-      return response.data; // نرجع البيانات فقط
-    }
-  });
-   console.log(supervisorsQuery);
-
+ const{supervisors,supervisorsLoading}=useGetSupervisors();
   return { serverErrors,
            authMutation,
-           supervisors: supervisorsQuery.data || [], // نرجع الدكاترة (لو لسا ما وصلوا نرجع array فاضي)
-           supervisorsLoading: supervisorsQuery.isLoading // حالة اللودينج
+           supervisors, // نرجع الدكاترة (لو لسا ما وصلوا نرجع array فاضي)
+           supervisorsLoading // حالة اللودينج
     }; // نرجع القيم اللي بدنا نستخدمها بالكومبوننت
 }
