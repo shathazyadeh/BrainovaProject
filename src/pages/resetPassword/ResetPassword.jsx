@@ -24,7 +24,7 @@ function ResetPassword() {
     formState: { errors, isSubmitting }, // معلومات عن الأخطاء وحالة الإرسال
   } = useForm({
     resolver: yupResolver(ResetPasswordSchema), // للتحقق من صحة القيم باستخدام yup
-    mode: "onBlur", // تحقق من الحقول عند الخروج منها
+    mode: "onChange", // تحقق من الحقول عند الخروج منها
   });
   /*ميتويشين للريسيت باس */
   const { serverErrors, authMutation } = useResetPassword();

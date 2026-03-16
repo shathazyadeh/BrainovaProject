@@ -17,15 +17,17 @@ import { useForm } from "react-hook-form";
 function RegisterForm({
   schema,
   useHook,
-  mutationName='authMutation',
+  mutationName = "authMutation",
   userId,
   showPassword = true,
   showSupervisors = true,
   formMethods,
   btnLabel = "Create Account",
+  fullWidthInput = "false",
+  defaultValues={}
 }) {
-
-  const form = formMethods || useForm({ resolver: yupResolver(schema), mode: "onBlur" });
+  const form =
+    formMethods || useForm({ resolver: yupResolver(schema), mode: "onChange" ,defaultValues}); //def values من رياكت هوك فورم بتعبي الفورم بالفيم التلقائية الي استقبلتها فوق
   const {
     register,
     handleSubmit,
@@ -33,19 +35,19 @@ function RegisterForm({
     formState: { errors, isSubmitting },
   } = form;
 
-const hookData = useHook();
-const { serverErrors, supervisors, supervisorsLoading } = hookData;
-const mutation = hookData[mutationName];
+  const hookData = useHook();
+  const { serverErrors, supervisors, supervisorsLoading } = hookData;
+  const mutation = hookData[mutationName];
 
-// نراقب قيمة supervisorUserId الموجودة داخل الفورم
-const supervisorValue = watch("supervisorUserId");
+  // نراقب قيمة supervisorUserId الموجودة داخل الفورم
+  const supervisorValue = watch("supervisorUserId");
 
   const handleUser = async (values) => {
-    console.log('values:',values);
-   await mutation.mutateAsync({
-  userId: userId,
-  userInfo: values
-});
+    console.log("values:", values);
+    await mutation.mutateAsync({
+      userId: userId,
+      userInfo: values,
+    });
   };
 
   const [showPass, setShowPass] = useState(false);
@@ -70,50 +72,102 @@ const supervisorValue = watch("supervisorUserId");
         onSubmit={handleSubmit(handleUser)}
         sx={{ gap: "23px" }}
       >
-        <Box sx={{ display: "flex", gap: "10px" }}>
-          <TextField
-            {...register("fullName")}
-            label="Full Name"
-            variant="outlined"
-            fullWidth
-            error={errors.fullName}
-            helperText={errors.fullName?.message}
-            className="textfield_dark"
-            spellCheck={false}
-          />
-          <TextField
-            {...register("userName")}
-            label="Username"
-            variant="outlined"
-            fullWidth
-            error={errors.userName}
-            helperText={errors.userName?.message}
-            className="textfield_dark"
-            spellCheck={false}
-          />
-        </Box>
-        <Box sx={{ display: "flex", gap: "10px" }}>
-          <TextField
-            {...register("email")}
-            label="Email"
-            variant="outlined"
-            fullWidth
-            error={errors.email}
-            helperText={errors.email?.message}
-            className="textfield_dark"
-            spellCheck={false}
-          />
-          <TextField
-            {...register("phoneNumber")}
-            label="Phone Number"
-            variant="outlined"
-            fullWidth
-            error={errors.phoneNumber}
-            helperText={errors.phoneNumber?.message}
-            className="textfield_dark"
-            spellCheck={false}
-          />
-        </Box>
+        {fullWidthInput === "false" ? (
+          <Box sx={{ display: "flex", gap: "10px" }}>
+            <TextField
+              {...register("fullName")}
+              label="Full Name"
+              variant="outlined"
+              fullWidth
+              error={errors.fullName}
+              helperText={errors.fullName?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+            <TextField
+              {...register("userName")}
+              label="Username"
+              variant="outlined"
+              fullWidth
+              error={errors.userName}
+              helperText={errors.userName?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+          </Box>
+        ) : (
+          <>
+            <TextField
+              {...register("fullName")}
+              label="Full Name"
+              variant="outlined"
+              fullWidth
+              error={errors.fullName}
+              helperText={errors.fullName?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+            <TextField
+              {...register("userName")}
+              label="Username"
+              variant="outlined"
+              fullWidth
+              error={errors.userName}
+              helperText={errors.userName?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+          </>
+        )}
+
+        {fullWidthInput === "false" ? (
+          <Box sx={{ display: "flex", gap: "10px" }}>
+            <TextField
+              {...register("email")}
+              label="Email"
+              variant="outlined"
+              fullWidth
+              error={errors.email}
+              helperText={errors.email?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+            <TextField
+              {...register("phoneNumber")}
+              label="Phone Number"
+              variant="outlined"
+              fullWidth
+              error={errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+          </Box>
+        ) : (
+          <>
+            <TextField
+              {...register("email")}
+              label="Email"
+              variant="outlined"
+              fullWidth
+              error={errors.email}
+              helperText={errors.email?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+            <TextField
+              {...register("phoneNumber")}
+              label="Phone Number"
+              variant="outlined"
+              fullWidth
+              error={errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              className="textfield_dark"
+              spellCheck={false}
+            />
+          </>
+        )}
+
         {showPassword && (
           <TextField
             {...register("password")}

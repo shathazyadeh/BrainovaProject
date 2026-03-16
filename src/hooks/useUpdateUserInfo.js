@@ -2,8 +2,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosInstance from "../Api/axiosInstance";
 import { Bounce, toast } from "react-toastify";
 import useGetSupervisors from "./useGetSupervisors";
+import useAuthStore from "../store/useAuthStore";
+
 export default function useUpdateUserInfo(){
         const queryClient = useQueryClient();
+        const updateUser = useAuthStore((state) => state.updateUser);
         
 
         const updateUserInfoMutation = useMutation({
@@ -14,7 +17,9 @@ export default function useUpdateUserInfo(){
                 console.log(response);
                 return response;
             },
-            onSuccess:()=>{
+            onSuccess:(data, variables)=>{ //رياكت كويري بترجعلي المتغيرات الي استخدمتها في الميوتيشين فوق تحت اسم فاريابلز
+                updateUser(variables.userInfo);   // يحدث Zustand + localStorage
+                console.log('update :' , variables.userInfo);
                 queryClient.invalidateQueries(["users"]); //update users table
                 toast.success('User information updated successfully', {
                                 position: "top-center",

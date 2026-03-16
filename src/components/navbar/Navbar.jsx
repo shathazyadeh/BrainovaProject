@@ -203,7 +203,7 @@ function Navbar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
-                <Avatar sx={{ bgcolor: 'var(--secondary-color)' }}>{user.name.charAt(0).toUpperCase()}</Avatar>
+                <Avatar sx={{ bgcolor: 'var(--secondary-color)' }}>{user?.userName?.charAt(0).toUpperCase()}</Avatar>
               </IconButton>
             </Tooltip>
 

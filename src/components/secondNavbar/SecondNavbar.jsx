@@ -37,7 +37,7 @@ export default function SecondNavbar() {
     return (
         <Box sx={{ flexGrow: 1}} >
 
-            <AppBar  position="fixed" sx={{bgcolor: "rgb(36, 35, 35)",paddingY: "12px",boxShadow: "none",zIndex: (theme) => theme.zIndex.drawer + 1}}> {/*عشان يطلع فوق الدروار */}
+            <AppBar position="relative" sx={{bgcolor: "transparent",paddingY: "12px",boxShadow: "none"}}> {/*عشان يطلع فوق الدروار */}
                 <Toolbar>
                     {auth && (
                         <div style={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
@@ -48,10 +48,11 @@ export default function SecondNavbar() {
                                 aria-haspopup="true"
                                 onClick={handleMenu}
                                 color="inherit"
+                                sx={{display:{md:'none'}}}
                             >
-                                <Avatar sx={{ bgcolor: 'var(--secondary-color)', fontSize: '30px', width: 50, height: 50 }}>{user.name.charAt(0).toUpperCase()}</Avatar>
+                                <Avatar sx={{ bgcolor: 'var(--secondary-color)', fontSize: '30px', width: 50, height: 50 }}>{user?.userName?.charAt(0).toUpperCase()}</Avatar>
                             </IconButton>
-                            <Typography component={'span'} sx={{ fontSize: '18px', fontWeight: '300', paddingLeft: '5px', letterSpacing: '2px' }}>Welcome<br />back,<Typography component={'span'} sx={{ color: 'var( --primary-color)', fontSize: '18px', fontWeight: '300', letterSpacing: '2px' }}>{user.name}</Typography></Typography>
+                            <Typography component={'span'} sx={{ fontSize: '18px', fontWeight: '300', paddingLeft: '5px', letterSpacing: '2px', display:{md:'none'}}}>Welcome<br />back,<Typography component={'span'} sx={{ color: 'var( --primary-color)', fontSize: '18px', fontWeight: '300', letterSpacing: '2px' }}>{user?.userName}</Typography></Typography>
                             <Menu
                                 PaperProps={{
                                     sx: {
@@ -63,7 +64,7 @@ export default function SecondNavbar() {
                                         backdropFilter: "blur(20px)",        // بلور أقوى
                                         border: "1px solid rgba(255,255,255,0.15)",
                                         boxShadow: "0 10px 40px rgba(0,0,0,0.25)",
-
+                                        display: { md: "none" }
                                     }
                                 }}
                                 id="menu-appbar"

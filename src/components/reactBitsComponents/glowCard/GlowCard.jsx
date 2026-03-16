@@ -10,13 +10,15 @@ const createParticle = (x, y, color) => {
   el.className = "glow-particle";
   el.style.left = `${x}px`;
   el.style.top = `${y}px`;
-el.style.background = `rgba(${color},0.28)`;
 
-el.style.boxShadow = `
-  0 0 8px rgba(${color},0.25),
-  0 0 25px rgba(${color},0.15),
-  0 0 50px rgba(${color},0.08)
-`;
+  el.style.background = `rgba(${color},0.28)`;
+
+  el.style.boxShadow = `
+    0 0 8px rgba(${color},0.25),
+    0 0 25px rgba(${color},0.15),
+    0 0 50px rgba(${color},0.08)
+  `;
+
   return el;
 };
 
@@ -25,9 +27,23 @@ function GlowCard({
   particleCount = DEFAULT_PARTICLE_COUNT,
   glowColor = DEFAULT_GLOW_COLOR,
   enableTilt = true,
-  enableParticles = true
+  enableParticles = true,
+  glowIntensity = "strong" // strong | soft | none
 }) {
   const cardRef = useRef(null);
+
+  const glowStyles = {
+    strong: `
+      0 4px 25px rgba(120, 0, 0, 0.4),
+      0 0 40px rgba(255, 0, 0, 0.35),
+      0 0 80px rgba(255, 0, 0, 0.15)
+    `,
+    soft: `
+      0 2px 10px rgba(120, 0, 0, 0.2),
+      0 0 15px rgba(255, 0, 0, 0.12)
+    `,
+    none: "none"
+  };
 
   useEffect(() => {
     const card = cardRef.current;
@@ -68,7 +84,7 @@ function GlowCard({
     };
 
     const handleMouseLeave = () => {
-      particles.forEach(p => {
+      particles.forEach((p) => {
         gsap.to(p, {
           opacity: 0,
           scale: 0,
@@ -76,6 +92,7 @@ function GlowCard({
           onComplete: () => p.remove()
         });
       });
+
       particles = [];
 
       gsap.to(card, {
@@ -85,7 +102,7 @@ function GlowCard({
       });
     };
 
-    const handleMouseMove = e => {
+    const handleMouseMove = (e) => {
       if (!enableTilt) return;
 
       const rect = card.getBoundingClientRect();
@@ -118,7 +135,11 @@ function GlowCard({
   }, [particleCount, glowColor, enableTilt, enableParticles]);
 
   return (
-    <div ref={cardRef} className="glow-card">
+    <div
+      ref={cardRef}
+      className="glow-card"
+      style={{ "--glow-shadow": glowStyles[glowIntensity] }}
+    >
       {children}
     </div>
   );

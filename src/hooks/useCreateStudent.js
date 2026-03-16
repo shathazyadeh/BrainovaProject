@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../Api/axiosInstance"; // استيراد axiosInstance (اللي فيه baseURL و interceptors جاهزين)
 import useAuth from "./useAuth";
+import useGetSupervisors from "./useGetSupervisors";
 
 export default function useCreateStudent(){ // تعريف custom hook اسمه useRegister
 

@@ -122,15 +122,12 @@ function AdminDashboard() {
   return (
     <>
      <SecondNavbar />
-       <Toolbar /> {/* يعطي نفس ارتفاع النافبار بالضبط، لذلك يدفع المحتوى للأسفل بدون مشاكل. */}
-
     <Box
       component={"section"}
       className="admin_dashboard"
       sx={{
-           bgcolor:'rgb(36, 35, 35)',
              paddingX: "30px",
-             paddingTop:"50px",
+             paddingTop:"10px",
       }}
     >
      

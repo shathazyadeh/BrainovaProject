@@ -9,7 +9,8 @@ export const CreateStudentSchema = yup.object({
   userName: yup
     .string()
     .required("User Name is required")
-    .min(3, "User Name must be at least 3 characters"),
+    .min(3, "User Name must be at least 3 characters")
+    .matches(/^\S+$/, "User Name must not contain spaces"),
 
   email: yup
     .string()

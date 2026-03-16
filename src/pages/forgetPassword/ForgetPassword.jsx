@@ -23,7 +23,7 @@ function ForgetPassword() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(ForgetPasswordSchema),
-    mode: "onBlur",
+    mode: "onChange",
   });
   const { serverErrors, authMutation } = useForgetPassword();
 
@@ -50,7 +50,7 @@ function ForgetPassword() {
             variant="h5"
             sx={{ fontWeight: "700", textAlign: "center" }}
           >
-            Forget Password
+            Security Verification
           </Typography>
           <Typography
             component={"p"}

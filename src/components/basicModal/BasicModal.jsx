@@ -1,20 +1,20 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, Button, CircularProgress, MenuItem, TextField, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Modal from "@mui/material/Modal";
-import useRegister from "../../hooks/useRegister";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import useUpdateUserInfo from "../../hooks/useUpdateUserInfo";
 import { UpdateUserInfoSchema } from "../../validations/UpdateUserInfoSchema";
 import RegisterForm from "../registerForm/RegisterForm";
+import StarsBackground from "../reactBitsComponents/starsBackground/StarsBackground";
 
 
 export default function BasicModal({ open, handleClose, user }) {
-  console.log('userr:',user);
+  console.log('user to update:',user);
     //من رياكت هوك فورم بتعمل ريسيت لقيم الفورم 
 const formMethods = useForm({
     resolver: yupResolver(UpdateUserInfoSchema),
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const { reset } = formMethods;
@@ -39,27 +39,33 @@ const formMethods = useForm({
       slotProps={{
     backdrop: {
       sx: {
-        backdropFilter: "blur(8px)", // درجة التغبيش
-        backgroundColor: "rgba(0,0,0,0.4)", // تعتيم الخلفية
+        backdropFilter: "blur(10px)", // درجة التغبيش
+        backgroundColor: "rgba(17, 17, 17, 0.4)", // تعتيم الخلفية
       },
     },
   }}
     >
-      <Box
+      <Box 
+      className="flex_column"
         sx={{
           position: "absolute", // لجعل المودال فوق الصفحة
           top: "50%", // منتصف الشاشة عمودياً
           left: "50%", // منتصف الشاشة أفقياً
           transform: "translate(-50%, -50%)", // توسيط العنصر تماماً
-          width: 400, // عرض المودال
-          bgcolor: "background.paper", // لون الخلفية
-          border: "2px solid #000", // حدود
-          boxShadow: 24, // ظل
-          p: 4, // padding
-          borderRadius: "10px", // حواف دائرية
+          width: 800, // عرض المودال
+          bgcolor: "#040404", // لون الخلفية
+          border: "1px solid #131212",
+          boxShadow: "0 0 80px rgba(76, 77, 91, 0.7)",
+          px:4,
+          py:7,
+          borderRadius: "20px", // حواف دائرية
+          alignItems: 'stretch',   // ← وهذا
+          justifyContent: 'center',
         }}
       >
-        <RegisterForm useHook={useUpdateUserInfo} userId={user?.id} formMethods={formMethods} mutationName="updateUserInfoMutation" schema={UpdateUserInfoSchema} showSupervisors={user?.roleName==="Supervisor"?false:true} showPassword={false} btnLabel="Update Profile"/>
+        <RegisterForm
+         useHook={useUpdateUserInfo} userId={user?.id} formMethods={formMethods} mutationName="updateUserInfoMutation" schema={UpdateUserInfoSchema} showSupervisors={user?.roleName==="Supervisor"?false:true} showPassword={false} btnLabel="Update Profile"
+         />
       </Box>
     </Modal>
   );

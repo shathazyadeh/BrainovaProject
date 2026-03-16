@@ -15,10 +15,7 @@
 }
 
 .glow-card:hover {
-  box-shadow:
-    0 4px 25px rgba(120, 0, 0, 0.4),
-    0 0 40px rgba(255, 0, 0, 0.35),
-    0 0 80px rgba(255, 0, 0, 0.15);
+  box-shadow: var(--glow-shadow);
 }
 
 .glow-particle {

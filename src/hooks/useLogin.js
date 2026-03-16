@@ -17,7 +17,7 @@ export default function useLogin(){
     const decoded = jwtDecode(accessToken);
     console.log(decoded);
     const user = {
-      name: decoded.Name,
+      userName: decoded.Name,
       fullName:decoded.FullName,
       role: decoded.Role,
       email: decoded.Email,

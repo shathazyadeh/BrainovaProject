@@ -26,7 +26,7 @@ function Login() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(LoginSchema),
-    mode: "onBlur",
+    mode: "onChange",
   });
   const { serverErrors, authMutation } = useLogin();
 
@@ -164,7 +164,7 @@ function Login() {
               />
               <Link
                 component={RouterLink}
-                to={"/auth/forget-password"}
+                to={"/auth/security-verification"}
                 sx={{
                   color: "var(--primary-color)",
                   fontFamily: "sans-serif",
