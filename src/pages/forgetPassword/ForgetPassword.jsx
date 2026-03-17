@@ -23,12 +23,12 @@ function ForgetPassword() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(ForgetPasswordSchema),
-    mode: "onChange",
+    mode: "onBlur",
   });
   const { serverErrors, authMutation } = useForgetPassword();
 
   const forgetPassword = async (value) => {
-    await authMutation.mutateAsync({userInfo: value});
+    await authMutation.mutateAsync({ userInfo: value });
   };
 
   return (
@@ -40,7 +40,7 @@ function ForgetPassword() {
       <Container maxWidth="sm">
         <Box
           className="Parent gray_boxShadow_onHover flex_column"
-          sx={{ paddingBottom: "60px",paddingTop:'30px' }}
+          sx={{ paddingBottom: "60px", paddingTop: "30px" }}
         >
           <Box className="img" sx={{ textAlign: "center" }}>
             <img src={forgetPasswordPic} width="150px" alt="" />
@@ -73,7 +73,8 @@ function ForgetPassword() {
           ) : (
             ""
           )}
-          <Box className="flex_column"
+          <Box
+            className="flex_column"
             component={"form"}
             onSubmit={handleSubmit(forgetPassword)}
             sx={{ gap: "23px" }}

@@ -24,12 +24,12 @@ function ResetPassword() {
     formState: { errors, isSubmitting }, // معلومات عن الأخطاء وحالة الإرسال
   } = useForm({
     resolver: yupResolver(ResetPasswordSchema), // للتحقق من صحة القيم باستخدام yup
-    mode: "onChange", // تحقق من الحقول عند الخروج منها
+    mode: "onBlur", // تحقق من الحقول عند الخروج منها
   });
   /*ميتويشين للريسيت باس */
   const { serverErrors, authMutation } = useResetPassword();
   const resetPassword = async (values) => {
-    await authMutation.mutateAsync({userInfo: values});
+    await authMutation.mutateAsync({ userInfo: values });
   };
   /*ميوتيشين لاعادة ارسال الكود*/
   const { authMutation: resendMutation } = useForgetPassword(); //عملنا rename للميوتيتشين
@@ -96,7 +96,8 @@ function ResetPassword() {
           >
             Code Recieved :{" "}
           </Typography>
-          <Box className="flex_column"
+          <Box
+            className="flex_column"
             component={"form"}
             onSubmit={handleSubmit(resetPassword)}
             sx={{ gap: "23px" }}

@@ -13,6 +13,7 @@ import DashboardLayout from "./layout/DashboardLayout.jsx";
 import SupervisorDashboard from "./pages/supervisorDashboard/SupervisorDashboard.jsx";
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
 import Profile from "./pages/profile/Profile.jsx";
+import UserManagement from "./pages/userManagement/UserManagement.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -67,6 +68,9 @@ const router = createBrowserRouter([
        },{
         path:"admin/profile",
         element:<Profile/>
+       },{
+        path:"admin/user-management",
+        element:<UserManagement/>
        }
     ]
    }

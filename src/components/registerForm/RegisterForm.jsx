@@ -24,10 +24,12 @@ function RegisterForm({
   formMethods,
   btnLabel = "Create Account",
   fullWidthInput = "false",
-  defaultValues={}
+  defaultValues = {},
+  textfieldColor = "textfield_dark",
 }) {
   const form =
-    formMethods || useForm({ resolver: yupResolver(schema), mode: "onChange" ,defaultValues}); //def values من رياكت هوك فورم بتعبي الفورم بالفيم التلقائية الي استقبلتها فوق
+    formMethods ||
+    useForm({ resolver: yupResolver(schema), mode: "onBlur", defaultValues }); //def values من رياكت هوك فورم بتعبي الفورم بالفيم التلقائية الي استقبلتها فوق
   const {
     register,
     handleSubmit,
@@ -81,7 +83,7 @@ function RegisterForm({
               fullWidth
               error={errors.fullName}
               helperText={errors.fullName?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
             <TextField
@@ -91,7 +93,7 @@ function RegisterForm({
               fullWidth
               error={errors.userName}
               helperText={errors.userName?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
           </Box>
@@ -104,7 +106,7 @@ function RegisterForm({
               fullWidth
               error={errors.fullName}
               helperText={errors.fullName?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
             <TextField
@@ -114,7 +116,7 @@ function RegisterForm({
               fullWidth
               error={errors.userName}
               helperText={errors.userName?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
           </>
@@ -129,7 +131,7 @@ function RegisterForm({
               fullWidth
               error={errors.email}
               helperText={errors.email?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
             <TextField
@@ -139,7 +141,7 @@ function RegisterForm({
               fullWidth
               error={errors.phoneNumber}
               helperText={errors.phoneNumber?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
           </Box>
@@ -152,7 +154,7 @@ function RegisterForm({
               fullWidth
               error={errors.email}
               helperText={errors.email?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
             <TextField
@@ -162,7 +164,7 @@ function RegisterForm({
               fullWidth
               error={errors.phoneNumber}
               helperText={errors.phoneNumber?.message}
-              className="textfield_dark"
+              className={textfieldColor}
               spellCheck={false}
             />
           </>
@@ -190,7 +192,7 @@ function RegisterForm({
                 </InputAdornment>
               ),
             }}
-            className="textfield_dark"
+            className={textfieldColor}
             spellCheck={false}
           />
         )}
@@ -214,7 +216,7 @@ function RegisterForm({
                 },
               },
             }}
-            className="textfield_dark"
+            className={textfieldColor}
           >
             {/* نحوله لدروب داون*/}
             {supervisors.map(

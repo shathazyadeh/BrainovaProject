@@ -26,5 +26,5 @@ export default function useAuth(url,navigateUrl,onSuccessCallback){
                 setServerErrors(err.response.data.message)} // نخزن أخطاء السيرفر داخل ال state عشان نعرضهم بالفورم
         });
 
-        return {serverErrors,authMutation};
+        return {serverErrors,authMutation,setServerErrors};
 }

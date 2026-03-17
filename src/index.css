@@ -189,3 +189,50 @@ a {
   -webkit-text-fill-color: #000;
 }
 /*انتهت الاعدادات الخاصة بالتكست فيلد اللايت*/
+
+
+/*اعدادات خاصة بالتيكست فيلد الاسود*/
+.textfield_black .MuiInputBase-input {
+  color: #fff;
+  background-color: #000000;
+}
+
+.textfield_black .MuiInputLabel-root {
+  color: var(--secondary-color);
+}
+
+.textfield_black .MuiInputLabel-root.Mui-focused {
+  color: rgb(142, 149, 162);
+}
+
+.textfield_black .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+
+.textfield_black:hover .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+.textfield_black .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: #8e959a;
+}
+.textfield_black .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--secondary-color);
+}
+.textfield_black input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 100px #000 inset;
+  -webkit-text-fill-color: #fff;
+}
+
+.textfield_black input:-webkit-autofill:hover {
+  -webkit-box-shadow: 0 0 0 100px #000 inset;
+  -webkit-text-fill-color: #fff;
+}
+
+.textfield_black input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 100px #000 inset;
+  -webkit-text-fill-color: #fff;
+}
+.textfield_black .MuiInputBase-input , .textfield_light .MuiInputBase-input {
+  caret-color: var(--secondary-color);
+}
+/*انتهت الاعدادات الخاصة بالتكست فيلد الاسود*/

@@ -26,12 +26,12 @@ function Login() {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(LoginSchema),
-    mode: "onChange",
+    mode: "onBlur",
   });
   const { serverErrors, authMutation } = useLogin();
 
   const loginUser = async (values) => {
-    await authMutation.mutateAsync({userInfo: values});
+    await authMutation.mutateAsync({ userInfo: values });
   };
 
   const [showPass, setShowPass] = useState(false);

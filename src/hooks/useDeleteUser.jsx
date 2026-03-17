@@ -35,6 +35,7 @@ export default function useDeleteUser(){
                 progress: undefined,
                 theme: "dark",
                 transition: Bounce,
+                autoClose: 2500,
             });}
             else if(deletedCount && failedCount){ //some of them deleted
                  toast.warning(

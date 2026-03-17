@@ -1,14 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "../Api/axiosInstance"; // استيراد axiosInstance (اللي فيه baseURL و interceptors جاهزين)
+import { toast } from "react-toastify";
 import useAuth from "./useAuth";
 import useGetSupervisors from "./useGetSupervisors";
+import { useEffect } from "react";
 
 export default function useCreateStudent(){ // تعريف custom hook اسمه useRegister
 
-  const {serverErrors,authMutation} = useAuth('/Identity/Users/create-student',null);
+  const {serverErrors,setServerErrors,authMutation} = useAuth('/Identity/Users/create-student',null);
 
       //  useQuery لجلب الدكاترة
    const{supervisors,supervisorsLoading}=useGetSupervisors();
+
+   useEffect(() => {
+    if (authMutation.isSuccess) {
+      //  امسح الأخطاء
+      setServerErrors(''); 
+      toast.success("Student created successfully");
+    }
+  }, [authMutation.isSuccess]);
 
   return { serverErrors,
            authMutation,

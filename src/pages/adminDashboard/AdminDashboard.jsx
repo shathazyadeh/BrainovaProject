@@ -1,6 +1,13 @@
 import { useState } from "react";
 import useGetUsers from "../../hooks/useGetUsers";
-import { Box, Button, CircularProgress, Grid, Toolbar, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grid,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { FaUserDoctor } from "react-icons/fa6";
 import { TbUsers } from "react-icons/tb";
 import { PiStudentFill } from "react-icons/pi";
@@ -11,7 +18,6 @@ import EnhancedTable from "../../components/enhancedTabel/EnhancedTable";
 import BasicModal from "../../components/basicModal/BasicModal";
 import NestedModal from "../../components/nestedModal/NestedModal";
 import SecondNavbar from "../../components/secondNavbar/SecondNavbar";
-
 
 function AdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
@@ -31,179 +37,153 @@ function AdminDashboard() {
     setOpen(false); // اغلاق المودال
   };
 
-
- //اخذ بوزيشين عشان يكون فوق كلشي حتى الدروار
-  if (isLoading) return <Box sx={{position: "fixed",inset: 0,zIndex: 9999,bgcolor:'var(--navy-color)',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress sx={{color:'#fff'}}></CircularProgress></Box>
+  //اخذ بوزيشين عشان يكون فوق كلشي حتى الدروار
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          bgcolor: "var(--navy-color)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress sx={{ color: "#fff" }}></CircularProgress>
+      </Box>
+    );
   if (isError) {
-    if (error?.status === 401) {
-      //unotherized error
-      return (
-        <Box
-          component={"section"}
-          className="server_error_section flex_column"
+    //server errors
+    return (
+      <Box
+        component={"section"}
+        className="server_error_section flex_column"
+        sx={{
+          bgcolor: "var(--navy-color)",
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Typography
+          component={"h1"}
+          variant="h5"
+          sx={{ color: "white", fontWeight: "700", textAlign: "center" }}
+        >
+          {error?.message}
+        </Typography>
+        <Button
+          className="auth_btn"
+          component={RouterLink}
+          to="/auth/login"
           sx={{
-            bgcolor:"var(--navy-color)",
-            position: "fixed",inset: 0,zIndex: 9999,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "20px",
+            bgcolor: "var(--primary-color)",
+            color: "white",
+            borderRadius: "6px",
+            fontWeight: "600",
+            paddingX: "25px",
+            paddingY: "10px",
           }}
         >
-          <Typography
-            component={"h1"}
-            variant="h5"
-            sx={{ color: "white", fontWeight: "700", textAlign: "center" }}
-          >
-            Your session has expired due to inactivity.
-          </Typography>
-          <Button
-            className="auth_btn"
-            component={RouterLink}
-            to="/auth/login"
-            sx={{
-              bgcolor: "var(--primary-color)",
-              color: "white",
-              borderRadius: "6px",
-              fontWeight: "600",
-              paddingX: "25px",
-              paddingY: "10px",
-            }}
-          >
-            Back to Login
-          </Button>
-        </Box>
-      );
-    } else {
-      //aother errors
-      return (
-        <Box
-          component={"section"}
-          className="server_error_section flex_column"
-          sx={{
-            bgcolor:"var(--navy-color)",
-            position: "fixed",inset: 0,zIndex: 9999,
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "20px",
-          }}
-        >
-          <Typography
-            component={"h1"}
-            variant="h5"
-            sx={{ color: "white", fontWeight: "700", textAlign: "center" }}
-          >
-            {error?.message}
-          </Typography>
-          <Button
-            className="auth_btn"
-            component={RouterLink}
-            to="/auth/login"
-            sx={{
-              bgcolor: "var(--primary-color)",
-              color: "white",
-              borderRadius: "6px",
-              fontWeight: "600",
-              paddingX: "25px",
-              paddingY: "10px",
-            }}
-          >
-            Back to Login
-          </Button>
-        </Box>
-      );
-    }
+          Back to Login
+        </Button>
+      </Box>
+    );
   }
 
   const { filteredArr, studentsNo, supervisorsNo } = useFilteredArray(data); //هاي عشان فلترة المستخدمين بعد الحصول عالداتا
 
-
-
-  /////////////////////
   return (
     <>
-     <SecondNavbar />
-    <Box
-      component={"section"}
-      className="admin_dashboard"
-      sx={{
-             paddingX: "30px",
-             paddingTop:"10px",
-      }}
-    >
-     
+      <SecondNavbar />
       <Box
-        className="system_roles"
-        sx={{ color: "#fff", marginBottom: "25px" }}
+        component={"section"}
+        className="admin_dashboard"
+        sx={{
+          paddingX: "30px",
+          paddingTop: "10px",
+        }}
       >
-        <Grid container spacing={3}>
-          <Grid 
-           item
-           size={{ xs:12 , md:6,lg:4.5}}          
-            className="supervisor"
-            sx={{
-              bgcolor: "rgba(0, 0, 0, 0.46)",
-              padding: "30px",
-              
-              borderRadius: "25px",
-            }}
-          >
-            <Box className="header" sx={{ display: "flex",alignItems:'center', gap: "12px" }}>
-              <Typography
-                component={"span"}
-                className="icon"
-                sx={{
-                  bgcolor: "rgb(129, 15, 15)",
-                  padding: "13px",
-                  borderRadius: "14px",
-                }}
-              >
-                <FaUserDoctor size={35} />
-              </Typography>
-              <Box className="description">
-                <Typography component={"h3"} variant="h6">
-                  Supervisor
-                </Typography>
-                <Typography
-                  component={"p"}
-                  sx={{ color: "var(--secondary-color)", lineHeight: "16px" }}
-                >
-                  Oversee students and review their AI analysis results.
-                </Typography>
-              </Box>
-            </Box>
-            <Box className="users_number" sx={{ marginY: "20px" }}>
-              <TbUsers size={17} style={{ marginRight: "5px" }} />
-              <Typography component={"span"} >{supervisorsNo}</Typography>
-            </Box>
-            <Box className="permissions">
-              <Typography
-                component={"h4"}
-                sx={{ color: "var(--secondary-color)", marginBottom: "6px" }}
-              >
-                Permissions:
-              </Typography>
+        <Box
+          className="system_roles"
+          sx={{ color: "#fff", marginBottom: "25px" }}
+        >
+          <Grid container spacing={3}>
+            <Grid
+              item
+              size={{ xs: 12, md: 6, lg: 4.5 }}
+              className="supervisor"
+              sx={{
+                bgcolor: "rgba(0, 0, 0, 0.46)",
+                padding: "30px",
+
+                borderRadius: "25px",
+              }}
+            >
               <Box
-                className="permissions_details "
-                sx={{ display:'flex',gap: "9px",flexWrap: 'wrap',  }}
+                className="header"
+                sx={{ display: "flex", alignItems: "center", gap: "12px" }}
               >
-                
+                <Typography
+                  component={"span"}
+                  className="icon"
+                  sx={{
+                    bgcolor: "rgb(129, 15, 15)",
+                    padding: "13px",
+                    borderRadius: "14px",
+                  }}
+                >
+                  <FaUserDoctor size={35} />
+                </Typography>
+                <Box className="description">
+                  <Typography component={"h3"} variant="h6">
+                    Supervisor
+                  </Typography>
+                  <Typography
+                    component={"p"}
+                    sx={{ color: "var(--secondary-color)", lineHeight: "16px" }}
+                  >
+                    Oversee students and review their AI analysis results.
+                  </Typography>
+                </Box>
+              </Box>
+              <Box className="users_number" sx={{ marginY: "20px" }}>
+                <TbUsers size={17} style={{ marginRight: "5px" }} />
+                <Typography component={"span"}>{supervisorsNo}</Typography>
+              </Box>
+              <Box className="permissions">
+                <Typography
+                  component={"h4"}
+                  sx={{ color: "var(--secondary-color)", marginBottom: "6px" }}
+                >
+                  Permissions:
+                </Typography>
+                <Box
+                  className="permissions_details "
+                  sx={{ display: "flex", gap: "9px", flexWrap: "wrap" }}
+                >
                   <Typography
                     sx={{
-                      bgcolor:" rgba(246, 56, 56, 0.12)",
-                  border: "1px solid #ef4444",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
-                       whiteSpace: "nowrap",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     Student Management
                   </Typography>
                   <Typography
                     sx={{
-                      bgcolor:" rgba(246, 56, 56, 0.12)",
-                  border: "1px solid #ef4444",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
@@ -213,11 +193,11 @@ function AdminDashboard() {
                   >
                     Review Analysis Results
                   </Typography>
-               
+
                   <Typography
                     sx={{
-                       bgcolor:" rgba(246, 56, 56, 0.12)",
-                  border: "1px solid #ef4444",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
@@ -229,90 +209,90 @@ function AdminDashboard() {
                   </Typography>
                   <Typography
                     sx={{
-                      bgcolor:" rgba(246, 56, 56, 0.12)",
-                  border: "1px solid #ef4444",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
-                      whiteSpace: {xs:'wrap',sm:'nowrap'}
+                      whiteSpace: { xs: "wrap", sm: "nowrap" },
                     }}
                   >
                     Review and Manage Student Feedback
                   </Typography>
-               
+                </Box>
               </Box>
-            </Box>
-          </Grid>
-          <Grid 
-           size={{ xs:12 , md:6,lg:4.5}}
-            item
-            className="student"
-            sx={{
-             bgcolor: "rgba(0, 0, 0, 0.46)",
-              padding: "30px",
-              
-              borderRadius: "25px",
-            }}
-          >
-            <Box className="header" sx={{ display: "flex",alignItems:'center', gap: "12px" }}>
-              <Typography
-                component={"span"}
-                className="icon"
-                sx={{
-                  bgcolor: "#524e4e",
-                  padding: "13px",
-                  borderRadius: "14px",
-                }}
-              >
-                <PiStudentFill size={35} />
-              </Typography>
-              <Box className="description">
-                <Typography component={"h3"} variant="h6">
-                  Student
-                </Typography>
-                <Typography
-                  component={"p"}
-                  sx={{ color: "var(--secondary-color)", lineHeight: "16px" }}
-                >
-                  Upload medical images and view AI analysis results.
-                </Typography>
-              </Box>
-            </Box>
-            <Box className="users_number" sx={{ marginY: "20px" }}>
-              <TbUsers size={17} style={{ marginRight: "5px" }} />
-              <Typography component={"span"}>{studentsNo}</Typography>
-            </Box>
-            <Box className="permissions">
-              <Typography
-                component={"h4"}
-                sx={{ color: "var(--secondary-color)", marginBottom: "6px" }}
-              >
-                Permissions:
-              </Typography>
+            </Grid>
+            <Grid
+              size={{ xs: 12, md: 6, lg: 4.5 }}
+              item
+              className="student"
+              sx={{
+                bgcolor: "rgba(0, 0, 0, 0.46)",
+                padding: "30px",
+
+                borderRadius: "25px",
+              }}
+            >
               <Box
-                className="permissions_details "
-                sx={{ gap: "9px", display:'flex',flexWrap: 'wrap' }}
+                className="header"
+                sx={{ display: "flex", alignItems: "center", gap: "12px" }}
               >
-               
+                <Typography
+                  component={"span"}
+                  className="icon"
+                  sx={{
+                    bgcolor: "#524e4e",
+                    padding: "13px",
+                    borderRadius: "14px",
+                  }}
+                >
+                  <PiStudentFill size={35} />
+                </Typography>
+                <Box className="description">
+                  <Typography component={"h3"} variant="h6">
+                    Student
+                  </Typography>
+                  <Typography
+                    component={"p"}
+                    sx={{ color: "var(--secondary-color)", lineHeight: "16px" }}
+                  >
+                    Upload medical images and view AI analysis results.
+                  </Typography>
+                </Box>
+              </Box>
+              <Box className="users_number" sx={{ marginY: "20px" }}>
+                <TbUsers size={17} style={{ marginRight: "5px" }} />
+                <Typography component={"span"}>{studentsNo}</Typography>
+              </Box>
+              <Box className="permissions">
+                <Typography
+                  component={"h4"}
+                  sx={{ color: "var(--secondary-color)", marginBottom: "6px" }}
+                >
+                  Permissions:
+                </Typography>
+                <Box
+                  className="permissions_details "
+                  sx={{ gap: "9px", display: "flex", flexWrap: "wrap" }}
+                >
                   <Typography
                     sx={{
-                      bgcolor:" rgba(246, 56, 56, 0.12)",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
                       border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
                       whiteSpace: "nowrap",
-                      
                     }}
                   >
                     Upload Medical Images
                   </Typography>
                   <Typography
                     sx={{
-                      bgcolor:" rgba(246, 56, 56, 0.12)",
-                     border: "1px solid #ef4444",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
@@ -322,11 +302,10 @@ function AdminDashboard() {
                   >
                     View AI Results
                   </Typography>
-                
-               
+
                   <Typography
                     sx={{
-                     bgcolor:" rgba(246, 56, 56, 0.12)",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
                       border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
@@ -339,8 +318,8 @@ function AdminDashboard() {
                   </Typography>
                   <Typography
                     sx={{
-                       bgcolor:" rgba(246, 56, 56, 0.12)",
-                     border: "1px solid #ef4444",
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
                       borderRadius: "20px",
                       paddingX: "10px",
                       paddingY: "4px",
@@ -350,66 +329,75 @@ function AdminDashboard() {
                   >
                     Upload Reports
                   </Typography>
-               
-                <Typography
-                  sx={{
-                    bgcolor:" rgba(246, 56, 56, 0.12)",
-                  border: "1px solid #ef4444",
-                    borderRadius: "20px",
-                    paddingX: "10px",
-                    paddingY: "4px",
-                    fontSize: "15px",
-                     whiteSpace: {xs:'wrap',sm:'nowrap'}
-                  }}
-                >
-                  Explore 3D Brain Models for Learning
-                </Typography>
+
+                  <Typography
+                    sx={{
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
+                      borderRadius: "20px",
+                      paddingX: "10px",
+                      paddingY: "4px",
+                      fontSize: "15px",
+                      whiteSpace: { xs: "wrap", sm: "nowrap" },
+                    }}
+                  >
+                    Explore 3D Brain Models for Learning
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
+            </Grid>
+            <Grid
+              item
+              size={{ xs: 12, lg: 3 }}
+              className="pie_chart"
+              sx={{
+                bgcolor: "rgba(0, 0, 0, 0.46)",
+                borderRadius: "25px",
+              }}
+            >
+              <TitanicPie students={studentsNo} supervisors={supervisorsNo} />
+            </Grid>
           </Grid>
-          <Grid
-            item
-            size={{ xs:12 , lg:3}}
-            className="pie_chart"
-            sx={{
-              
-              bgcolor: "rgba(0, 0, 0, 0.46)",
-              borderRadius: "25px",
-              
-            }}
-          >
-            <TitanicPie students={studentsNo} supervisors={supervisorsNo} />
-          </Grid>
-        </Grid>
-      </Box>
+        </Box>
 
-      <EnhancedTable
-        rows={filteredArr}
-        handleOpen={handleOpen} // نرسل فنكشن فتح المودال للجدول
-      />
+        <EnhancedTable
+          rows={filteredArr}
+          handleOpen={handleOpen} // نرسل فنكشن فتح المودال للجدول
+        />
 
-      <BasicModal
-        open={open} // حالة فتح المودال
-        handleClose={handleClose} // فنكشن الاغلاق
-        user={selectedUser} // بيانات المستخدم المختار
-      />
+        <BasicModal
+          open={open} // حالة فتح المودال
+          handleClose={handleClose} // فنكشن الاغلاق
+          user={selectedUser} // بيانات المستخدم المختار
+        />
 
-      <NestedModal
-      open={open} // حالة فتح المودال
-        handleClose={handleClose} // فنكشن الاغلاق
-      />
-      
-      <Box className="lower_footer" sx={{borderTop: "1px solid rgba(53, 53, 53, 0.93)",width:'fit-content',margin:'auto',paddingX:{xs:'0px' , md:'200px'},textAlign:'center'}}>
-        <Typography
-          component={"p"}
-          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+        <Box
+          className="lower_footer"
+          sx={{
+            borderTop: "1px solid rgba(53, 53, 53, 0.93)",
+            width: "fit-content",
+            margin: "auto",
+            paddingX: { xs: "0px", md: "200px" },
+            textAlign: "center",
+            marginTop: "60px",
+          }}
         >
-          © 2026 <Typography component={'span'} sx={{color:'var(--dark-red-color)'}}>Brainova</Typography>. All rights reserved. | Built for medical education
-          and research purposes.
-        </Typography>
+          <Typography
+            component={"p"}
+            sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+          >
+            © 2026{" "}
+            <Typography
+              component={"span"}
+              sx={{ color: "var(--dark-red-color)" }}
+            >
+              Brainova
+            </Typography>
+            . All rights reserved. | Built for medical education and research
+            purposes.
+          </Typography>
+        </Box>
       </Box>
-
-    </Box>
     </>
   );
 }
