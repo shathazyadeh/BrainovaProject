@@ -15,7 +15,7 @@ export default function useLogin(){
     console.log(accessToken);
     setAccessToken(accessToken);
     const decoded = jwtDecode(accessToken);
-    console.log(decoded);
+    console.log('decoded', decoded);
     const user = {
       userName: decoded.Name,
       fullName:decoded.FullName,
@@ -27,7 +27,8 @@ export default function useLogin(){
     setUser(user);
     if (user.role === "Student") navigate('/home');
     else if(user.role === "Supervisor") navigate('/dashboard/supervisor');
-    else if(user.role === "Admin") navigate('/dashboard/admin')
+    else if(user.role === "Admin") navigate('/dashboard/admin');
+    else if(user.role === "SuperAdmin") navigate('/dashboard/superadmin');
   };
 
     const {serverErrors,authMutation} = useAuth('Identity/Auths/login',null // ما بدنا navigate من useAuth

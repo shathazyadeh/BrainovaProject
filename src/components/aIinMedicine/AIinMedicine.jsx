@@ -48,7 +48,6 @@ function AIinMedicine() {
             src={doctorsPic}
             width="100%"
             className={style.drop_shadow}
-            draggable={false}
           />
         </Grid>
       </Grid>

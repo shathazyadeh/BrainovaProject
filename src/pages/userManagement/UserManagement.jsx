@@ -33,6 +33,22 @@ function UserManagement() {
         const [roleFilter, setRoleFilter] = useState("all"); //فلترة حسب الرول 
         const [supervisorFilter, setSupervisorFilter] = useState(""); // فلترة حسب اسم الدكتور "" يعني الكل
 
+         const { filteredArr } = useFilteredArray(data); //هاي عشان فلترة المستخدمين بعد الحصول عالداتا
+
+         
+      let filteredByRole = filteredArr;
+      if (roleFilter !== "all") {
+        filteredByRole = filteredArr.filter(user => user.roleName === roleFilter);
+      } 
+
+      let finalFiltered = filteredByRole;
+      if (supervisorFilter) {
+        finalFiltered = filteredByRole.filter(
+          (user) => user.supervisorId === supervisorFilter
+        );
+        
+      }
+
 
       if (isLoading) return <Box sx={{position: "fixed",inset: 0,zIndex: 9999,bgcolor:'var(--navy-color)',display:'flex',justifyContent:'center',alignItems:'center'}}><CircularProgress sx={{color:'#fff'}}></CircularProgress></Box>
   if (isError) {
@@ -74,22 +90,6 @@ function UserManagement() {
         </Box>
       );
     }
-
-      const { filteredArr } = useFilteredArray(data); //هاي عشان فلترة المستخدمين بعد الحصول عالداتا
-
-      let filteredByRole = filteredArr;
-      if (roleFilter !== "all") {
-        filteredByRole = filteredArr.filter(user => user.roleName === roleFilter);
-      } 
-
-      let finalFiltered = filteredByRole;
-      if (supervisorFilter) {
-        finalFiltered = filteredByRole.filter(
-          (user) => user.supervisorId === supervisorFilter
-        );
-        
-      }
-
 
 
 

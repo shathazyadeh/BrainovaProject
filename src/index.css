@@ -20,11 +20,10 @@ a {
     text-decoration: none !important;
 }
 img {
-  -webkit-user-drag: none; /* Chrome و Safari */
-  -moz-user-drag: none;    /* Firefox */
-  -o-user-drag: none;      /* متصفحات قديمة */
-  user-drag: none;         /* المعيار الحديث */
-  user-select: none;       /* يمنع تحديد الصورة */
+  -webkit-user-drag: none; /* حتى ا يعمل دراج للصور*/
+  -moz-user-drag: none;    
+  -o-user-drag: none;      
+  user-select: none;       
 }
 .upper_case{
   text-transform: capitalize !important;

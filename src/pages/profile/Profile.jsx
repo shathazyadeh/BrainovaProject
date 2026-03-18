@@ -43,14 +43,33 @@ function Profile() {
                     }}
                   >
                     <Box className="image">
-                      <img src={boyImg} alt="" width={200} draggable={false} />
+                      <img src={boyImg} alt="" width={200} />
                     </Box>
-                    <Typography
-                      component={"h1"}
-                      sx={{ color: "#fff", fontSize: "38px" }}
-                    >
-                      Administrator
-                    </Typography>
+
+                    {user.role === "Admin" ? (
+                      <Typography
+                        component={"h1"}
+                        sx={{
+                          color: "#fff",
+                          fontSize: "38px",
+                          textAlign: "center",
+                        }}
+                      >
+                        Administrator
+                      </Typography>
+                    ) : (
+                      <Typography
+                        component={"h1"}
+                        sx={{
+                          color: "#fff",
+                          fontSize: "34px",
+                          textAlign: "center",
+                        }}
+                      >
+                        Super Administrator
+                      </Typography>
+                    )}
+
                     <Typography
                       component={"p"}
                       sx={{
@@ -91,6 +110,7 @@ function Profile() {
                       showSupervisors={false}
                       btnLabel="Update Profile"
                       fullWidthInput={true}
+                      textfieldColor={"textfield_black"}
                       defaultValues={{
                         fullName: user.fullName,
                         userName: user.userName,

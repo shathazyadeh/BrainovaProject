@@ -266,16 +266,11 @@ export default function EnhancedTable({
 
   const filteredRows = React.useMemo(
     () =>
-      rows
-        .filter(
-          // هون فلترت التيبل لتيبل تحوي فقط المستخدم الي بكون طالب او سوبر فايزر لعرضهم لداش بورد الادمن
-          (user) => user.roleName !== "Admin" && user.roleName !== "SuperAdmin",
-        )
-        .filter((user) =>
-          (user?.fullName + user?.userName + user?.phoneNumber)
-            ?.toLowerCase()
-            ?.includes(search?.toLowerCase()),
-        ),
+      rows.filter((user) =>
+        (user?.fullName + user?.userName + user?.phoneNumber)
+          ?.toLowerCase()
+          ?.includes(search?.toLowerCase()),
+      ),
     [rows, search],
   );
 

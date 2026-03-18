@@ -110,11 +110,18 @@ export default function TemporaryDrawer() {
               }}
               onClick={() => {
                 if (text === "Dashboard") {
-                  navigate("/dashboard/admin");
+                  if (user.role == "Admin")
+                    navigate("/dashboard/admin");
+                  else navigate("/dashboard/super-admin");
                 } else if (text === "Profile") {
-                  navigate("/dashboard/admin/profile");
+                  if (user.role == "Admin")
+                    navigate("/dashboard/admin/profile");
+                  else navigate("/dashboard/super-admin/profile");
+
                 } else if (text === "User Management") {
-                  navigate("/dashboard/admin/user-management");
+                  if (user.role == "Admin")
+                    navigate("/dashboard/admin/user-management");
+                  else navigate("/dashboard/super-admin/user-management");
                 }
               }}
             >

@@ -4,6 +4,7 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import { FaUserDoctor } from "react-icons/fa6";
 import { TbUsers } from "react-icons/tb";
 import { PiStudentFill } from "react-icons/pi";
+import { RiAdminFill } from "react-icons/ri";
 import { Link as RouterLink } from "react-router-dom";
 import TitanicPie from "../../components/titanicPie/TitanicPie";
 import useFilteredArray from "../../hooks/useFilteredArray";
@@ -11,7 +12,7 @@ import EnhancedTable from "../../components/enhancedTabel/EnhancedTable";
 import BasicModal from "../../components/basicModal/BasicModal";
 import SecondNavbar from "../../components/secondNavbar/SecondNavbar";
 
-function AdminDashboard() {
+function SuperAdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
 
   // state للتحكم بفتح واغلاق المودال
@@ -29,7 +30,8 @@ function AdminDashboard() {
     setOpen(false); // اغلاق المودال
   };
 
-  const { filteredArr, studentsNo, supervisorsNo } = useFilteredArray(data); //هاي عشان فلترة المستخدمين بعد الحصول عالداتا
+  const { filteredArr, studentsNo, supervisorsNo, adminNo } =
+    useFilteredArray(data); //هاي عشان فلترة المستخدمين بعد الحصول عالداتا
 
   //اخذ بوزيشين عشان يكون فوق كلشي حتى الدروار
   if (isLoading)
@@ -95,7 +97,7 @@ function AdminDashboard() {
       <SecondNavbar />
       <Box
         component={"section"}
-        className="admin_dashboard"
+        className="superadmin_dashboard"
         sx={{
           paddingX: "30px",
           paddingTop: "10px",
@@ -107,8 +109,134 @@ function AdminDashboard() {
         >
           <Grid container spacing={3}>
             <Grid
+              size={{ xs: 12, md: 6 }}
               item
-              size={{ xs: 12, md: 6, lg: 4.5 }}
+              className="admin"
+              sx={{
+                bgcolor: "rgba(0, 0, 0, 0.46)",
+                padding: "30px",
+                borderRadius: "25px",
+              }}
+            >
+              <Box
+                className="header"
+                sx={{ display: "flex", alignItems: "center", gap: "12px" }}
+              >
+                <Box
+                  component={"span"}
+                  className="icon"
+                  sx={{
+                    bgcolor: "#524e4e",
+                    padding: "13px",
+                    borderRadius: "14px",
+                  }}
+                >
+                  <RiAdminFill size={35} />
+                </Box>
+                <Box className="description">
+                  <Typography component={"h3"} variant="h6">
+                    Admin
+                  </Typography>
+                  <Typography
+                    component={"p"}
+                    sx={{ color: "var(--secondary-color)", lineHeight: "16px" }}
+                  >
+                    Responsible for managing supervisors and students within the
+                    system.
+                  </Typography>
+                </Box>
+              </Box>
+              <Box className="users_number" sx={{ marginY: "20px" }}>
+                <TbUsers size={17} style={{ marginRight: "5px" }} />
+                <Typography component={"span"}>{studentsNo}</Typography>
+              </Box>
+              <Box className="permissions">
+                <Typography
+                  component={"h4"}
+                  sx={{ color: "var(--secondary-color)", marginBottom: "6px" }}
+                >
+                  Permissions:
+                </Typography>
+                <Box
+                  className="permissions_details "
+                  sx={{ gap: "9px", display: "flex", flexWrap: "wrap" }}
+                >
+                  <Typography
+                    sx={{
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
+                      borderRadius: "20px",
+                      paddingX: "10px",
+                      paddingY: "4px",
+                      fontSize: "15px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    View Supervisors & Students
+                  </Typography>
+                  <Typography
+                    sx={{
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
+                      borderRadius: "20px",
+                      paddingX: "10px",
+                      paddingY: "4px",
+                      fontSize: "15px",
+                      whiteSpace: {
+                        xs: "wrap",
+                        sm: "nowrap",
+                        md: "wrap",
+                        lg: "nowrap",
+                      },
+                    }}
+                  >
+                    Create Users - Supervisors & Students
+                  </Typography>
+                  <Typography
+                    sx={{
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
+                      borderRadius: "20px",
+                      paddingX: "10px",
+                      paddingY: "4px",
+                      fontSize: "15px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Update User Information
+                  </Typography>
+                  <Typography
+                    sx={{
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
+                      borderRadius: "20px",
+                      paddingX: "10px",
+                      paddingY: "4px",
+                      fontSize: "15px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Block / Unblock Users
+                  </Typography>
+                  <Typography
+                    sx={{
+                      bgcolor: " rgba(246, 56, 56, 0.12)",
+                      border: "1px solid #ef4444",
+                      borderRadius: "20px",
+                      paddingX: "10px",
+                      paddingY: "4px",
+                      fontSize: "15px",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Delete Users
+                  </Typography>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid
+              item
+              size={{ xs: 12, md: 6 }}
               className="supervisor"
               sx={{
                 bgcolor: "rgba(0, 0, 0, 0.46)",
@@ -207,7 +335,12 @@ function AdminDashboard() {
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
-                      whiteSpace: { xs: "wrap", sm: "nowrap" },
+                      whiteSpace: {
+                        xs: "wrap",
+                        sm: "nowrap",
+                        md: "wrap",
+                        lg: "nowrap",
+                      },
                     }}
                   >
                     Review and Manage Student Feedback
@@ -216,7 +349,7 @@ function AdminDashboard() {
               </Box>
             </Grid>
             <Grid
-              size={{ xs: 12, md: 6, lg: 4.5 }}
+              size={{ xs: 12, md: 6 }}
               item
               className="student"
               sx={{
@@ -330,7 +463,12 @@ function AdminDashboard() {
                       paddingX: "10px",
                       paddingY: "4px",
                       fontSize: "15px",
-                      whiteSpace: { xs: "wrap", sm: "nowrap" },
+                      whiteSpace: {
+                        xs: "wrap",
+                        sm: "nowrap",
+                        md: "wrap",
+                        lg: "nowrap",
+                      },
                     }}
                   >
                     Explore 3D Brain Models for Learning
@@ -340,14 +478,18 @@ function AdminDashboard() {
             </Grid>
             <Grid
               item
-              size={{ xs: 12, lg: 3 }}
+              size={{ xs: 12, md: 6 }}
               className="pie_chart"
               sx={{
                 bgcolor: "rgba(0, 0, 0, 0.46)",
                 borderRadius: "25px",
               }}
             >
-              <TitanicPie students={studentsNo} supervisors={supervisorsNo} />
+              <TitanicPie
+                students={studentsNo}
+                supervisors={supervisorsNo}
+                admins={adminNo}
+              />
             </Grid>
           </Grid>
         </Box>
@@ -394,4 +536,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default SuperAdminDashboard;

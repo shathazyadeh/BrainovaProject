@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import UserManagement from "./pages/userManagement/UserManagement.jsx";
 import SetPassword from "./pages/setPassword/SetPassword.jsx";
+import SuperAdminDashboard from "./pages/superAdminDashboard/SuperAdminDashboard.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -71,8 +72,18 @@ const router = createBrowserRouter([
        },{
         path:"admin/user-management",
         element:<UserManagement/>
+       },{
+        path:"super-admin",
+        element:<SuperAdminDashboard/>
+       },
+       {path:"super-admin/profile",
+        element:<Profile/>
+       },{
+        path:"super-admin/user-management",
+        element:<UserManagement/>
        }
     ]
+
    }
 ]);
 export default router;
