@@ -4,6 +4,8 @@ import {
   Button,
   CircularProgress,
   Container,
+  IconButton,
+  InputAdornment,
   Link,
   TextField,
   Typography,
@@ -12,9 +14,11 @@ import { useForm } from "react-hook-form";
 import { ResetPasswordSchema } from "../../validations/ResetPasswordSchema";
 import useResetPassword from "../../hooks/useResetPassword";
 import resetPasswordPic from "./../../assets/images/resetPassword/forgetPasswordImg.webp";
+import useForgetPassword from "../../hooks/useForgetPassword";
 import { useState } from "react";
 import OtpInput from "react-otp-input"; //مربعات ادخال كود تغيير كلمة السر من مكتبة react-otp-input
-import useForgetPassword from "../../hooks/useForgetPassword";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function ResetPassword() {
   const {
@@ -39,6 +43,12 @@ function ResetPassword() {
   };
 
   const [otp, setOtp] = useState(""); // من مكتبة مربعات ادخال الكود
+
+  const [showPass, setShowPass] = useState(false);
+
+  const handleClickShowPassword = () => {
+    setShowPass(!showPass);
+  };
 
   return (
     <Box
@@ -144,6 +154,20 @@ function ResetPassword() {
               fullWidth
               error={errors.newPassword}
               helperText={errors.newPassword?.message}
+              type={showPass ? "text" : "password"}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton onClick={handleClickShowPassword} edge="end">
+                                    {showPass ? (
+                                      <VisibilityOff sx={{ color: "var(--secondary-color)" }} />
+                                    ) : (
+                                      <Visibility sx={{ color: "var(--secondary-color)" }} />
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
               className="textfield_light"
             />
             <TextField

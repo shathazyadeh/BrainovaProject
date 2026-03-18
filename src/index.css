@@ -12,8 +12,19 @@ body{
   overflow-x: hidden;
   user-select: none;
 }
+input::-ms-reveal, /* يخفي أيقونة إظهار الباسورد (العين) في Edge */
+input::-ms-clear { /* يخفي زر المسح (X) داخل الانبوت في Edge */
+  display: none;
+}
 a {
     text-decoration: none !important;
+}
+img {
+  -webkit-user-drag: none; /* Chrome و Safari */
+  -moz-user-drag: none;    /* Firefox */
+  -o-user-drag: none;      /* متصفحات قديمة */
+  user-drag: none;         /* المعيار الحديث */
+  user-select: none;       /* يمنع تحديد الصورة */
 }
 .upper_case{
   text-transform: capitalize !important;

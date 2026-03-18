@@ -83,11 +83,9 @@ const useAuthStore = create((set,get) => ({
       clearTimeout(get().logoutTimer);
     }
     localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
 
     set({
       accessToken:null,
-      user:null,
       logoutTimer: null
     });
         window.location.href = "/auth/login";

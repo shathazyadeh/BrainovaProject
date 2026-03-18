@@ -133,7 +133,6 @@ function Hero() {
             src={heroPic}
             className={`${style.animatedImage} ${style.drop_shadow}`}
             style={{ maxWidth: "800px" }}
-            draggable={false}
           ></img>
         </Grid>
       </Grid>

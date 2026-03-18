@@ -6,7 +6,6 @@ import Register from "./pages/register/Register.jsx"
 import Home from "./pages/home/Home.jsx";
 import ForgetPassword from "./pages/forgetPassword/ForgetPassword.jsx";
 import ResetPassword from "./pages/resetPassword/ResetPassword.jsx";
-import SetPasswordAdminOrSup from "./pages/setPasswordAdminOrSup/SetPasswordAdminOrSup.jsx";
 import ConfirmEmail from "./pages/confirmEmail/ConfirmEmail.jsx";
 import PredictTumor from "./pages/predictTumor/PredictTumor.jsx";
 import DashboardLayout from "./layout/DashboardLayout.jsx";
@@ -14,6 +13,7 @@ import SupervisorDashboard from "./pages/supervisorDashboard/SupervisorDashboard
 import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
 import Profile from "./pages/profile/Profile.jsx";
 import UserManagement from "./pages/userManagement/UserManagement.jsx";
+import SetPassword from "./pages/setPassword/SetPassword.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -49,7 +49,7 @@ const router = createBrowserRouter([
         },
         {
             path:"set-password",
-            element:<SetPasswordAdminOrSup/>
+            element:<SetPassword/>
         },{
             path:"confirm-email",
             element:<ConfirmEmail/>
