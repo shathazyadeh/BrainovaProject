@@ -215,6 +215,7 @@ function ResetPassword() {
                 border: "none",
                 color: "#000",
                 textDecorationColor: "#000",
+                cursor:"pointer",
               }}
             >
               Resend Code

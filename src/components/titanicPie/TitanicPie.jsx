@@ -11,7 +11,7 @@ export default function UsersPieChart({ students, supervisors, admins }) {
       label: "Supervisors",
       color: "rgb(129, 15, 15)",
     },
-    { id: 3, value: admins, label: "Admins", color: "rgb(233, 52, 52)" },
+    { id: 3, value: admins, label: "Admins", color: "rgb(65, 29, 29)" },
   ];
 
   return (

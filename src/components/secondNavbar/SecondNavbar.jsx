@@ -20,17 +20,23 @@ export default function SecondNavbar() {
     navigate("/auth/login");
   };
   const handleDashboard = () => {
+    if(user.role === "Admin")
     navigate("/dashboard/admin");
+    else navigate("/dashboard/super-admin");
     handleClose();
   };
 
   const handleUserManagement = () => {
+    if(user.role === "Admin")
     navigate("/dashboard/admin/user-management");
+    else navigate("/dashboard/super-admin/user-management");
     handleClose();
   };
 
   const handleProfile = () => {
+    if(user.role === "Admin")
     navigate("/dashboard/admin/profile");
+    else  navigate("/dashboard/super-admin/profile");
     handleClose();
   };
   const [auth, setAuth] = React.useState(true);

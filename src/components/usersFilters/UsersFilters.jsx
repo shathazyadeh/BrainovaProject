@@ -1,4 +1,5 @@
 import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import useAuthStore from "../../store/useAuthStore.js";
 
 export default function UsersFilters({
   roleFilter,
@@ -7,6 +8,8 @@ export default function UsersFilters({
   setSupervisorFilter,
   supervisorsList,
 }) {
+  const currentUser = useAuthStore((state) => state.user);
+
   return (
     <Box sx={{ display: { xs: "block", md: "flex" }, gap: 2, mb: 2 }}>
       <FormControl
@@ -31,6 +34,20 @@ export default function UsersFilters({
           value={roleFilter}
           onChange={(e) => setRoleFilter(e.target.value)}
           label="Role"
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                bgcolor: "#373535",
+                color: "#fff",
+                borderRadius: "10px",
+                "& .MuiMenuItem-root": {
+                  "&:hover": {
+                    bgcolor: "red",
+                  },
+                },
+              },
+            },
+          }}
           sx={{
             color: "#fff",
             bgcolor: "#141414",
@@ -52,6 +69,11 @@ export default function UsersFilters({
           <MenuItem value="all">All</MenuItem>
           <MenuItem value="Student">Student</MenuItem>
           <MenuItem value="Supervisor">Supervisor</MenuItem>
+          {currentUser.role === "SuperAdmin" ? (
+            <MenuItem value="Admin">Admin</MenuItem>
+          ) : (
+            ""
+          )}
         </Select>
       </FormControl>
 
@@ -75,21 +97,53 @@ export default function UsersFilters({
           value={supervisorFilter}
           onChange={(e) => setSupervisorFilter(e.target.value)}
           label="Filter by Supervisor"
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                maxHeight: 48 * 3 + 8,
+                bgcolor: "#373535",
+                color: "#fff",
+                borderRadius: "10px",
+
+                "& .MuiMenuItem-root": {
+                  "&:hover": {
+                    bgcolor: "red",
+                  },
+                },
+
+                "&::-webkit-scrollbar": {
+                  width: "8px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  background: "#2a2a2a",
+                  borderRadius: "10px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "red",
+                  borderRadius: "10px",
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  background: "#ff4d4d",
+                },
+
+                scrollbarWidth: "thin",
+                scrollbarColor: "var(--secondary-color) #2a2a2a",
+              },
+            },
+          }}
           sx={{
             color: "#fff",
             bgcolor: "#141414",
             height: "55px",
             borderRadius: "15px",
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "red", // عند hover
+              borderColor: "red",
             },
-
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "red", // عند focus
+              borderColor: "red",
             },
-
             "& .MuiSelect-icon": {
-              color: "#fff", // لون السهم
+              color: "#fff",
             },
           }}
         >

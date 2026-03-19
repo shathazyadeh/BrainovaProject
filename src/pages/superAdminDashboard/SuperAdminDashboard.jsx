@@ -126,7 +126,7 @@ function SuperAdminDashboard() {
                   component={"span"}
                   className="icon"
                   sx={{
-                    bgcolor: "rgb(233, 52, 52)",
+                    bgcolor: "rgb(65, 29, 29)",
                     padding: "13px",
                     borderRadius: "14px",
                   }}
