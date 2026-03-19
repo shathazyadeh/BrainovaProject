@@ -13,19 +13,21 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import useAuthStore from "../../store/useAuthStore";
 
 function RegisterForm({
   schema,
   useHook,
-  mutationName = "authMutation",
   userId,
   showPassword = true,
   showSupervisors = true,
+  showRoleSelect = false,
   formMethods,
   btnLabel = "Create Account",
   fullWidthInput = "false",
   defaultValues = {},
   textfieldColor = "textfield_dark",
+  rowUser,
 }) {
   const form =
     formMethods ||
@@ -39,17 +41,84 @@ function RegisterForm({
 
   const hookData = useHook();
   const { serverErrors, supervisors, supervisorsLoading } = hookData;
-  const mutation = hookData[mutationName];
 
   // نراقب قيمة supervisorUserId الموجودة داخل الفورم
   const supervisorValue = watch("supervisorUserId");
 
+  let displaySupervisorField;
+  let watchedRole;
+
+  if (showRoleSelect === true) {
+    // نراقب قيمة الـ role داخل الفورم
+    watchedRole = watch("roleName");
+
+    // نحدد الرول الحالي: إما من الفورم (إذا تم تغييره) أو من البيانات الأصلية (في وضع التعديل)
+    // نستخدم rowUser?.roleName فقط إذا كان موجود (في وضع التعديل) ولم يتم تغييره بعد
+    const currentRole = watchedRole || rowUser?.roleName || "";
+
+    // نقرر هل نظهر حقل supervisor:
+    // 1. showSupervisors يجب أن يكون true
+    // 2. currentRole يجب أن يكون "Student"
+    displaySupervisorField = showSupervisors && currentRole === "Student";
+  } else {
+    //يعني اذا ما في حقل رول اصلا خلص بنغلف حقل السوبرفايزرس نيم بالبروب الي وصلني وهو شو سوبرفايزرز
+    displaySupervisorField = showSupervisors;
+  }
+
+  const currentUser = useAuthStore((state) => state.user); //المستخدم الحالي عشان نفحص هل الميوتيشين هيكون لرجستر اي يوز اوث ولا ابديت ... حسب الرول
+
   const handleUser = async (values) => {
-    console.log("values:", values);
-    await mutation.mutateAsync({
-      userId: userId,
-      userInfo: values,
-    });
+    if (!rowUser) {
+      // 🔵 REGISTER
+      await hookData.authMutation.mutateAsync({
+        userId: userId,
+        userInfo: values,
+      });
+    } else {
+      // مصفوفة رح نحط فيها كل الطلبات (API calls)
+      const promises = [];
+      const { password, roleName, ...userInfo } = values; //الفاليوز تحوي كل قيم الفورم ففصلنا عنهن الباس والرول وخزنا الباقي في اليوزر انفو
+
+      // -------- تحديث البيانات العادية فقط إذا تغيّرت عن بيانات الرو يوزر --------
+      const hasUserInfoChanged =
+        userInfo.fullName !== rowUser.fullName ||
+        userInfo.email !== rowUser.email ||
+        userInfo.phoneNumber !== rowUser.phoneNumber ||
+        userInfo.userName !== rowUser.userName ||
+        userInfo.supervisorUserId !== rowUser.supervisorId;
+
+      if (hasUserInfoChanged) {
+        promises.push(
+          hookData.updateUserInfoMutation.mutateAsync({
+            userId,
+            userInfo,
+          }),
+        );
+      }
+
+      // -------- اذا السوبر ادمن كتب قيمة داخل الباس معناها عدل فبنبعث طلب على api change pass--------
+      if (password) {
+        promises.push(
+          hookData.changePasswordMutation.mutateAsync({
+            userId,
+            newPassword: password,
+          }),
+        );
+      }
+
+      // -------- تغيير الرول إذا تغيّر --------
+      if (roleName && roleName !== rowUser.roleName) {
+        promises.push(
+          hookData.changeRoleMutation.mutateAsync({
+            userId,
+            roleName,
+          }),
+        );
+      }
+
+      // -------- تنفيذ كل العمليات مع بعض --------
+      await Promise.all(promises);
+    }
   };
 
   const [showPass, setShowPass] = useState(false);
@@ -197,7 +266,7 @@ function RegisterForm({
           />
         )}
         {/* Dropdown للدكاترة */}
-        {showSupervisors && (
+        {displaySupervisorField && (
           <TextField
             {...register("supervisorUserId")}
             value={supervisorValue || ""} // نجعل القيمة تأتي دائماً من الفورم (حتى تظهر بعد reset)
@@ -206,6 +275,9 @@ function RegisterForm({
             select
             error={errors.supervisorUserId}
             helperText={errors.supervisorUserId?.message}
+            sx={{
+              "& .MuiSelect-icon": { color: "var(--secondary-color)" },
+            }}
             SelectProps={{
               MenuProps: {
                 PaperProps: {
@@ -239,6 +311,39 @@ function RegisterForm({
             )}
           </TextField>
         )}
+
+        {showRoleSelect && (
+          <TextField
+            {...register("roleName")}
+            value={watchedRole || rowUser?.roleName || ""}
+            label="Role"
+            fullWidth
+            select
+            error={!!errors.roleName}
+            helperText={errors.roleName?.message}
+            className={textfieldColor}
+            sx={{
+              "& .MuiSelect-icon": {
+                color: "var(--secondary-color)", // 👈 لون السهم
+              },
+            }}
+            SelectProps={{
+              MenuProps: {
+                PaperProps: {
+                  sx: {
+                    backgroundColor: "rgb(8,13,22)",
+                    color: "var(--secondary-color)",
+                  },
+                },
+              },
+            }}
+          >
+            <MenuItem value="Student">Student</MenuItem>
+            <MenuItem value="Supervisor">Supervisor</MenuItem>
+            <MenuItem value="Admin">Admin</MenuItem>
+          </TextField>
+        )}
+
         <Button
           type="submit"
           className="auth_btn"

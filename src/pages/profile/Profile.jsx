@@ -104,7 +104,6 @@ function Profile() {
                     <RegisterForm
                       useHook={useUpdateUserInfo}
                       userId={userId}
-                      mutationName="updateUserInfoMutation"
                       schema={UpdateUserInfoSchema}
                       showPassword={false}
                       showSupervisors={false}

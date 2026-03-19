@@ -7,7 +7,7 @@ import useUpdateUserInfo from "../../hooks/useUpdateUserInfo";
 import { UpdateUserInfoSchema } from "../../validations/UpdateUserInfoSchema";
 import RegisterForm from "../registerForm/RegisterForm";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { RxCrossCircled } from "react-icons/rx";
+import useAuthStore from "../../store/useAuthStore";
 
 export default function BasicModal({ open, handleClose, user }) {
   //من رياكت هوك فورم بتعمل ريسيت لقيم الفورم
@@ -17,11 +17,14 @@ export default function BasicModal({ open, handleClose, user }) {
   });
 
   const { reset } = formMethods;
+  const currentUser = useAuthStore((state)=>state.user); // المستخدم الحالي ادمن او سوبر ادمن 
+  console.log('current user', currentUser);
 
   // نعمل reset لقيم الفورم عند فتح المودال حتى ترجع القيم الأصلية للمستخدم
   // لأن react-hook-form يحتفظ بالقيم التي كتبها المستخدم حتى لو أغلق المودال بدون حفظ
   useEffect(() => {
     if (user && open) {
+      console.log('userrrrrrrrrrrr : ',user);
       reset({
         fullName: user?.fullName,
         userName: user?.userName,
@@ -29,6 +32,7 @@ export default function BasicModal({ open, handleClose, user }) {
         phoneNumber: user?.phoneNumber,
         supervisorUserId: user?.supervisorId,
         password: "",
+        roleName: user?.roleName
       });
     }
   }, [user, open, reset]);
@@ -76,12 +80,11 @@ export default function BasicModal({ open, handleClose, user }) {
           useHook={useUpdateUserInfo}
           userId={user?.id}
           formMethods={formMethods}
-          mutationName="updateUserInfoMutation"
           schema={UpdateUserInfoSchema}
-          showSupervisors={user?.roleName === "Supervisor" ? false : true}
-          showPassword={false}
+          showRoleSelect={currentUser?.role === "SuperAdmin" ? true : false}
           btnLabel="Update Profile"
           textfieldColor={"textfield_black"}
+          rowUser={user} // الي هو الrow
         />
       </Box>
     </Modal>

@@ -21,6 +21,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function ResetPassword() {
+  const resetEmail = localStorage.getItem("resetEmail");
+
   const {
     register, // لتسجيل الحقول العادية في الفورم
     handleSubmit, // لمعالجة الفورم عند الضغط على زر الإرسال
@@ -37,9 +39,8 @@ function ResetPassword() {
   };
   /*ميوتيشين لاعادة ارسال الكود*/
   const { authMutation: resendMutation } = useForgetPassword(); //عملنا rename للميوتيتشين
-  const handleResendCode = async () => {
-    const email = JSON.parse(localStorage.getItem("user")).email;
-    await resendMutation.mutateAsync({ email });
+  const handleResendCode = async () => { 
+    await resendMutation.mutateAsync({userInfo: { email: resetEmail }}); // عشان اليوس اوث بستنى اوبجيكت اسمه يوزر انفو
   };
 
   const [otp, setOtp] = useState(""); // من مكتبة مربعات ادخال الكود
@@ -172,7 +173,7 @@ function ResetPassword() {
             />
             <TextField
               {...register("email")}
-              value={JSON.parse(localStorage.getItem("user")).email}
+              defaultValue={resetEmail}
               InputProps={{ readOnly: true }}
               label="user email"
               variant="outlined"

@@ -28,6 +28,8 @@ function ForgetPassword() {
   const { serverErrors, authMutation } = useForgetPassword();
 
   const forgetPassword = async (value) => {
+    //قبل ما يبعث الطلب  خزن الايميل
+    localStorage.setItem("resetEmail", value.email);
     await authMutation.mutateAsync({ userInfo: value });
   };
 

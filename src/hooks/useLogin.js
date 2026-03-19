@@ -10,7 +10,7 @@ export default function useLogin(){
   const setUser = useAuthStore((state)=>state.setUser); // دالة لتخزين بيانات المستخدم
 
   const handleLoginSuccess = (response) => {
-
+console.log('response ::: ', response);
     const accessToken = response.data.token;
     console.log(accessToken);
     setAccessToken(accessToken);
@@ -24,11 +24,12 @@ export default function useLogin(){
       phoneNumber:decoded.PhoneNumber,
       id: decoded.Id
     };
+    console.log("user " ,user);
     setUser(user);
     if (user.role === "Student") navigate('/home');
     else if(user.role === "Supervisor") navigate('/dashboard/supervisor');
     else if(user.role === "Admin") navigate('/dashboard/admin');
-    else if(user.role === "SuperAdmin") navigate('/dashboard/superadmin');
+    else if(user.role === "SuperAdmin") navigate('/dashboard/super-admin');
   };
 
     const {serverErrors,authMutation} = useAuth('Identity/Auths/login',null // ما بدنا navigate من useAuth
