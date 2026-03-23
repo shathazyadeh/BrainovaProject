@@ -13,6 +13,9 @@ import useCreateStudent from "../../hooks/useCreateStudent";
 import useCreateSupervisor from "../../hooks/useCreateSupervisor";
 import { CreateSupervisorSchema } from "../../validations/CreateSupervisorSchema";
 import { AiFillCloseCircle } from "react-icons/ai";
+import useAuthStore from "../../store/useAuthStore";
+import useCreateAdmin from "../../hooks/useCreateAdmin";
+import { CreateAdminSchema } from "../../validations/CreateAdminSchema";
 
 const style = {
   position: "absolute",
@@ -96,7 +99,7 @@ function ChildModal({ role }) {
                 textfieldColor={"textfield_black"}
               />
             </>
-          ) : (
+          ) : role === "supervisor" ?(
             // else role is supervisor
             <>
               <RegisterForm
@@ -107,7 +110,19 @@ function ChildModal({ role }) {
                 textfieldColor={"textfield_black"}
               />
             </>
-          )}
+             // else role is admin
+          ): role === "admin" ? (
+          <> 
+          <RegisterForm
+               schema={CreateAdminSchema}
+                useHook={useCreateAdmin}
+                showPassword={false}
+                showSupervisors={false}
+                textfieldColor={"textfield_black"}
+
+          />
+          </> 
+          ): ""}
         </Box>
       </Modal>
     </React.Fragment>
@@ -115,6 +130,7 @@ function ChildModal({ role }) {
 }
 
 export default function NestedModal() {
+  const currentUser = useAuthStore((state) => state.user);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -214,6 +230,26 @@ export default function NestedModal() {
                 }
                 label="Supervisor"
               />
+              { currentUser.role==="SuperAdmin" ? 
+              
+                <FormControlLabel
+                value="admin"
+                sx={{ width: "fit-content" }}
+                control={
+                  <Radio
+                    sx={{
+                      color: "#b71c1c",
+                      "&.Mui-checked": {
+                        color: "#d32f2f",
+                      },
+                    }}
+                  />
+                }
+                label="Admin"
+              />
+              : ""
+              } 
+              
             </RadioGroup>
           </FormControl>
           <ChildModal role={value} />{" "}
