@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query"; // استيراد useMutati
 import { useState } from "react";// استيراد useState لتخزين أخطاء السيرفر
 import { useNavigate } from "react-router-dom"; // استيراد useNavigate عشان نعمل redirect بعد التسجيل
 import axiosInstance from "../Api/axiosInstance";
+import { toast } from "react-toastify";
 
 export default function useAuth(url,navigateUrl,onSuccessCallback){
     const [serverErrors, setServerErrors] = useState(''); //useState لتخزين أخطاء السيرفر لو الرجستر فشل
@@ -21,9 +22,16 @@ export default function useAuth(url,navigateUrl,onSuccessCallback){
                     navigate(navigateUrl);
                 }
             },
-            onError: (err)=>{ // في حال فشلت العملية
-            console.log(err);
-                setServerErrors(err.response.data.message)} // نخزن أخطاء السيرفر داخل ال state عشان نعرضهم بالفورم
+            onError: (err)=>{// في حال فشلت العملية
+              const message =
+                err.response?.data?.message || "Something went wrong";
+
+              if (err.response?.data?.errors) {
+                setServerErrors(message);
+              } else {
+                toast.error(message);
+              }
+            }
         });
 
         return {serverErrors,authMutation,setServerErrors};
