@@ -19,7 +19,10 @@ export const UpdateUserInfoSchema = yup.object({
 
   phoneNumber: yup
     .string()
-    .required("Phone Number is required"),
+     .trim()
+    .required("Phone Number is required")
+     .matches(/^(059|056)\d{7}$/, "The PhoneNumber field is not a valid Palestinian phone number"),
+
 
 
   password: yup

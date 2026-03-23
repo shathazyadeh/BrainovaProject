@@ -20,6 +20,8 @@ export const CreateAdminSchema = yup.object({
 
   phoneNumber: yup
     .string()
-    .required("Phone number is required"),
+     .trim()
+    .required("Phone number is required")
+    .matches(/^(059|056)\d{7}$/, "The PhoneNumber field is not a valid Palestinian phone number"),
 
 });

@@ -112,6 +112,7 @@ function RegisterForm({
           hookData.changeRoleMutation.mutateAsync({
             userId,
             roleName,
+            supervisorUserId,
           }),
         );
       }

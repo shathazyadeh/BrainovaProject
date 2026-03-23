@@ -19,10 +19,12 @@ export const RegisterSchema = yup.object({
 
   phoneNumber: yup
     .string()
-    .required("Phone number is required"),
+    .required("Phone number is required")
+    .matches(/^(059|056)\d{7}$/, "The PhoneNumber field is not a valid Palestinian phone number"),
 
   password: yup
     .string()
+    .trim()
     .required("Password is required")
     .min(8, "Password must be at least 8 characters")
     .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
