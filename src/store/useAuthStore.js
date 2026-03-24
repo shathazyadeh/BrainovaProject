@@ -66,14 +66,10 @@ const useAuthStore = create((set,get) => ({
   },
   updateUser: (updatedData) => //دالة داخل الستيت بتستقبل البيانات الجديدة للمستخدم لما احدث معلوماته بنادي عليها وببعتلها المعلومات الجديدة
   set((state) => {
-    console.log('updateUser called with:', updatedData); // هل تظهر هذه؟
-  console.log('Current user in state:', state.user); // ما هي القيمة الحالية؟
   
   const newUser = { ...state.user, ...updatedData };
-  console.log('New user object:', newUser); // هل الكود الجديد صحيح؟
   
   localStorage.setItem("user", JSON.stringify(newUser));
-  console.log('localStorage after set:', localStorage.getItem('user')); // ماذا كتب في localStorage؟
   return { user: newUser };
   }),
   logout: ()=>{ 

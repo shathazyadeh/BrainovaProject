@@ -18,7 +18,6 @@ export default function useConfirmEmail(){
               params: { token, userId },
             }
           );
-          console.log(response);
           return response.data;
         },
     

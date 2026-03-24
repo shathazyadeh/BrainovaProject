@@ -10,7 +10,6 @@ export default function useGetSupervisors(){
       return response.data; // نرجع البيانات فقط
     }
   });
-   console.log(supervisorsQuery);
 
   return {
            supervisors: supervisorsQuery.data || [], // نرجع الدكاترة (لو لسا ما وصلوا نرجع array فاضي)

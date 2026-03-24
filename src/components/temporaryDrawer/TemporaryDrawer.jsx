@@ -58,7 +58,7 @@ export default function TemporaryDrawer() {
         >
           Welcome
           <br />
-          back,
+          back,{" "}
           <Typography
             component={"span"}
             sx={{
@@ -87,21 +87,21 @@ export default function TemporaryDrawer() {
                   boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
                 },
 
-                ...(location.pathname === "/dashboard/admin" &&
+                ...( (location.pathname === "/dashboard/admin" || location.pathname === "/dashboard/super-admin") &&
                   text === "Dashboard" && {
                     bgcolor: "var(--primary-color)",
                     marginX: "10px",
                     boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
                   }),
 
-                ...(location.pathname === "/dashboard/admin/profile" &&
+                ...((location.pathname === "/dashboard/admin/profile" || location.pathname === "/dashboard/super-admin/profile") &&
                   text === "Profile" && {
                     bgcolor: "var(--primary-color)",
                     marginX: "10px",
                     boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
                   }),
 
-                ...(location.pathname === "/dashboard/admin/user-management" &&
+                ...((location.pathname === "/dashboard/admin/user-management" || location.pathname === "/dashboard/super-admin/user-management")&&
                   text === "User Management" && {
                     bgcolor: "var(--primary-color)",
                     marginX: "9px",

@@ -3,8 +3,13 @@ import * as yup from "yup"; //yup library: بنكتب من خلالها قواع
 export const CreateSupervisorSchema = yup.object({
   fullName: yup
     .string()
+    .trim()
     .required("Full Name is required")
-    .min(3, "Full Name must be at least 3 characters"),
+    .min(3, "Full Name must be at least 3 characters")
+    .matches(
+      /^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/,
+      "Start each word with a capital letter and use letters only",
+    ),
 
   userName: yup
       .string()
@@ -19,8 +24,7 @@ export const CreateSupervisorSchema = yup.object({
 
   phoneNumber: yup
     .string()
-     .trim()
+    .trim()
     .required("Phone number is required")
     .matches(/^(059|056)\d{7}$/, "The PhoneNumber field is not a valid Palestinian phone number"),
-
 });

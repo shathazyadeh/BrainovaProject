@@ -14,8 +14,8 @@ export const ResetPasswordSchema = yup.object({
         .matches(/[a-z]/, "Password must contain at least one lowercase letter")
         .matches(/[0-9]/, "Password must contain at least one number"),
 
-        email: yup
+    email: yup
         .string()
         .required("Email is required")
         .email("Please enter a valid email")
-}); 
+});

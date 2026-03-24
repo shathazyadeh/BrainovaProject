@@ -12,7 +12,6 @@ import { Link as RouterLink } from "react-router-dom";
 function Profile() {
   const user = useAuthStore((state) => state.user);
   const userId = user.id;
-  console.log("userId", userId);
   return (
     <>
       <SecondNavbar />

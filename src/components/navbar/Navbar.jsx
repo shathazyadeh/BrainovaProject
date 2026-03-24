@@ -50,7 +50,6 @@ function Navbar() {
   };
 
   const handleLogout = ()=>{
-    console.log('hi');
     logout();
     navigate('/auth/login');
   }

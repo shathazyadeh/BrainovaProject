@@ -18,13 +18,11 @@ export default function BasicModal({ open, handleClose, user }) {
 
   const { reset } = formMethods;
   const currentUser = useAuthStore((state)=>state.user); // المستخدم الحالي ادمن او سوبر ادمن 
-  console.log('current user', currentUser);
 
   // نعمل reset لقيم الفورم عند فتح المودال حتى ترجع القيم الأصلية للمستخدم
   // لأن react-hook-form يحتفظ بالقيم التي كتبها المستخدم حتى لو أغلق المودال بدون حفظ
   useEffect(() => {
     if (user && open) {
-      console.log('userrrrrrrrrrrr : ',user);
       reset({
         fullName: user?.fullName,
         userName: user?.userName,
@@ -85,6 +83,7 @@ export default function BasicModal({ open, handleClose, user }) {
           btnLabel="Update Profile"
           textfieldColor={"textfield_black"}
           rowUser={user} // الي هو الrow
+          onSuccess={handleClose} // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
         />
       </Box>
     </Modal>

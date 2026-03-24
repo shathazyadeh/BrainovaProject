@@ -3,7 +3,6 @@ import useAuthStore from "../store/useAuthStore";
 export default function useFilteredArray(data = []){
 
     const currentUser = useAuthStore((state)=>state.user);
-    console.log('currentUser ',currentUser);
     let filteredArr = data;
     let studentsNo=0;
     let supervisorsNo=0;

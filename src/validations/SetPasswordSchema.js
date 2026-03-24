@@ -1,7 +1,6 @@
 import * as yup from "yup"; 
 
 export const SetPasswordSchema = yup.object({
-
   newPassword: yup
      .string()
      .required("Password is required")
@@ -10,7 +9,7 @@ export const SetPasswordSchema = yup.object({
      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
      .matches(/[0-9]/, "Password must contain at least one number"),
 
-      confirmPassword: yup
+  confirmPassword: yup
     .string()
     .oneOf([yup.ref("newPassword"), null], "Passwords must match")
     .required("Confirm password is required"),   

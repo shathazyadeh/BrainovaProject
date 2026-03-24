@@ -148,7 +148,7 @@ function SuperAdminDashboard() {
               </Box>
               <Box className="users_number" sx={{ marginY: "20px" }}>
                 <TbUsers size={17} style={{ marginRight: "5px" }} />
-                <Typography component={"span"}>{studentsNo}</Typography>
+                <Typography component={"span"}>{adminNo}</Typography>
               </Box>
               <Box className="permissions">
                 <Typography

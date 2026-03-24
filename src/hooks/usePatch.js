@@ -8,7 +8,6 @@ export default function usePatch(url) {
     const usePatchMutation = useMutation({
         mutationFn: async (userId) => {
             const response = await axiosInstance.patch(`${url}/${userId}`);
-            console.log(response);
             return response;
         }
         , onSuccess: () => {
@@ -18,6 +17,7 @@ export default function usePatch(url) {
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: true,
+                draggable: true,
                 progress: undefined,
                 theme: "dark",
                 transition: Bounce,
@@ -33,6 +33,7 @@ export default function usePatch(url) {
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: true,
+                draggable: true,
                 progress: undefined,
                 theme: "dark",
                 transition: Bounce,
@@ -41,4 +42,3 @@ export default function usePatch(url) {
     })
     return { usePatchMutation };
 }
-

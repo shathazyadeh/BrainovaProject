@@ -119,7 +119,6 @@ function ChildModal({ role }) {
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
-
           />
           </> 
           ): ""}
@@ -139,7 +138,7 @@ export default function NestedModal() {
     setOpen(false);
   };
 
-  const [value, setValue] = React.useState("female"); //للاختيار من متعدد
+  const [value, setValue] = React.useState("student"); //للاختيار من متعدد
 
   const handleChange = (event) => {
     //للاختيار من متعدد
@@ -231,7 +230,6 @@ export default function NestedModal() {
                 label="Supervisor"
               />
               { currentUser.role==="SuperAdmin" ? 
-              
                 <FormControlLabel
                 value="admin"
                 sx={{ width: "fit-content" }}
@@ -249,7 +247,6 @@ export default function NestedModal() {
               />
               : ""
               } 
-              
             </RadioGroup>
           </FormControl>
           <ChildModal role={value} />{" "}

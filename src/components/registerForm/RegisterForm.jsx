@@ -14,6 +14,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuthStore from "../../store/useAuthStore";
+import { toast } from "react-toastify";
 
 function RegisterForm({
   schema,
@@ -28,6 +29,7 @@ function RegisterForm({
   defaultValues = {},
   textfieldColor = "textfield_dark",
   rowUser,
+  onSuccess, // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
 }) {
   const form =
     formMethods ||
@@ -68,57 +70,76 @@ function RegisterForm({
   const currentUser = useAuthStore((state) => state.user); //المستخدم الحالي عشان نفحص هل الميوتيشين هيكون لرجستر اي يوز اوث ولا ابديت ... حسب الرول
 
   const handleUser = async (values) => {
-    if (!rowUser) {
-      // 🔵 REGISTER
+    if (hookData.authMutation) {
+      //register
       await hookData.authMutation.mutateAsync({
         userId: userId,
         userInfo: values,
       });
+    } else if (!rowUser && hookData.updateUserInfoMutation) {
+      //user update his profile
+      await hookData.updateUserInfoMutation.mutateAsync({
+        userId,
+        userInfo: values,
+      });
     } else {
-      // مصفوفة رح نحط فيها كل الطلبات (API calls)
-      const promises = [];
-      const { password, roleName, ...userInfo } = values; //الفاليوز تحوي كل قيم الفورم ففصلنا عنهن الباس والرول وخزنا الباقي في اليوزر انفو
+      const { password, roleName, supervisorUserId, ...rest } = values;
 
-      // -------- تحديث البيانات العادية فقط إذا تغيّرت عن بيانات الرو يوزر --------
-      const hasUserInfoChanged =
+      const finalRole = roleName || rowUser?.roleName;
+
+      let userInfo = { ...rest };
+
+      // إذا كان المستخدم Student نضيف له supervisorUserId داخل البيانات المرسلة
+      if (finalRole === "Student") {
+        userInfo.supervisorUserId = supervisorUserId;
+      }
+
+      // نتحقق هل البيانات الأساسية للمستخدم تغيرت (بدون supervisor)
+      let hasUserInfoChanged =
         userInfo.fullName !== rowUser.fullName ||
         userInfo.email !== rowUser.email ||
         userInfo.phoneNumber !== rowUser.phoneNumber ||
-        userInfo.userName !== rowUser.userName ||
-        userInfo.supervisorUserId !== rowUser.supervisorId;
+        userInfo.userName !== rowUser.userName;
+
+      // إذا كان الدور Student نضيف مقارنة supervisor
+      if (finalRole === "Student") {
+        hasUserInfoChanged =
+          hasUserInfoChanged ||
+          userInfo.supervisorUserId !== rowUser.supervisorId; // مقارنة المشرف فقط للطالب
+      }
+
+      const hasRoleChanged = roleName && roleName !== rowUser.roleName;
+
+      if (!hasUserInfoChanged && !password && !hasRoleChanged) {
+        toast.warning("No changes detected");
+        return;
+      }
+
+      if (hasRoleChanged) {
+        await hookData.changeRoleMutation.mutateAsync({
+          userId,
+          roleName,
+        });
+      }
 
       if (hasUserInfoChanged) {
-        promises.push(
-          hookData.updateUserInfoMutation.mutateAsync({
-            userId,
-            userInfo,
-          }),
-        );
+        await hookData.updateUserInfoMutation.mutateAsync({
+          userId,
+          userInfo,
+        });
       }
 
-      // -------- اذا السوبر ادمن كتب قيمة داخل الباس معناها عدل فبنبعث طلب على api change pass--------
       if (password) {
-        promises.push(
-          hookData.changePasswordMutation.mutateAsync({
-            userId,
-            newPassword: password,
-          }),
-        );
+        await hookData.changePasswordMutation.mutateAsync({
+          userId,
+          newPassword: password,
+        });
       }
 
-      // -------- تغيير الرول إذا تغيّر --------
-      if (roleName && roleName !== rowUser.roleName) {
-        promises.push(
-          hookData.changeRoleMutation.mutateAsync({
-            userId,
-            roleName,
-            supervisorUserId,
-          }),
-        );
-      }
+      // إذا وصلنا لهون = كل العمليات نجحت
+      toast.success("User updated successfully");
 
-      // -------- تنفيذ كل العمليات مع بعض --------
-      await Promise.all(promises);
+      onSuccess?.();
     }
   };
 
@@ -285,6 +306,15 @@ function RegisterForm({
                   sx: {
                     backgroundColor: "rgb(8,13,22)", // لون خلفية القائمة
                     color: "var(--secondary-color)", // لون النص
+                    maxHeight: 48 * 3 + 8,
+                    borderRadius: "10px",
+                    "&::-webkit-scrollbar": { width: "8px" },
+                    "&::-webkit-scrollbar-track": {
+                      background: "#2a2a2a",
+                      borderRadius: "10px",
+                    },
+                    scrollbarWidth: "thin",
+                    scrollbarColor: "var(--secondary-color) #2a2a2a",
                   },
                 },
               },
@@ -292,24 +322,26 @@ function RegisterForm({
             className={textfieldColor}
           >
             {/* نحوله لدروب داون*/}
-            {supervisors.map(
-              (
-                sup, // نلف على الدكاترة
-              ) => (
-                <MenuItem
-                  key={sup.id}
-                  value={sup.id}
-                  sx={{
-                    "&:hover": {
-                      backgroundColor: "#3a3f47", // لون سكني عند الهوفر
-                      color: "#ffffff",
-                    },
-                  }}
-                >
-                  {sup.fullName} {/* الاسم اللي يظهر */}
-                </MenuItem>
-              ),
-            )}
+            {supervisors
+              .filter((sup) => sup.id !== rowUser?.id) // استبعد المستخدم نفسه
+              .map(
+                (
+                  sup, // نلف على الدكاترة
+                ) => (
+                  <MenuItem
+                    key={sup.id}
+                    value={sup.id}
+                    sx={{
+                      "&:hover": {
+                        backgroundColor: "#3a3f47", // لون سكني عند الهوفر
+                        color: "#ffffff",
+                      },
+                    }}
+                  >
+                    {sup.fullName} {/* الاسم اللي يظهر */}
+                  </MenuItem>
+                ),
+              )}
           </TextField>
         )}
 
@@ -339,9 +371,15 @@ function RegisterForm({
               },
             }}
           >
-            <MenuItem value="Student">Student</MenuItem>
-            <MenuItem value="Supervisor">Supervisor</MenuItem>
-            <MenuItem value="Admin">Admin</MenuItem>
+            <MenuItem value="Student" sx={{"&:hover": {backgroundColor: "#3a3f47",color: "#ffffff",}, }}>
+              Student
+            </MenuItem>
+            <MenuItem value="Supervisor" sx={{"&:hover": {backgroundColor: "#3a3f47",color: "#ffffff",}, }}>
+              Supervisor
+            </MenuItem>
+            <MenuItem value="Admin" sx={{"&:hover": {backgroundColor: "#3a3f47",color: "#ffffff",}, }}>
+              Admin
+            </MenuItem>
           </TextField>
         )}
 

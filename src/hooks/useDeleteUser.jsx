@@ -8,7 +8,6 @@ export default function useDeleteUser(){
 
     const deleteUserMutation = useMutation({
         mutationFn: async(selectedUserIds)=>{
-            console.log(selectedUserIds);
             const response = await axiosInstance.delete(
     `/Identity/Users/bulk-delete`,
     {
@@ -17,7 +16,6 @@ export default function useDeleteUser(){
       }
     }
   );
-            console.log(response);
             return response.data;
         }, 
         onSuccess: (data) => {
@@ -31,6 +29,7 @@ export default function useDeleteUser(){
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: true,
+                draggable: true,
                 progress: undefined,
                 theme: "dark",
                 transition: Bounce,
@@ -84,6 +83,7 @@ export default function useDeleteUser(){
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: true,
+                draggable: true,
                 progress: undefined,
                 theme: "dark",
                 transition: Bounce,

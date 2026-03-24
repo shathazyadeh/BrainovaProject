@@ -10,9 +10,7 @@ export default function useAuth(url,navigateUrl,onSuccessCallback){
 
     const authMutation = useMutation({ // إنشاء mutation مسؤولة عن عملية التسجيل
             mutationFn:async({userInfo})=>{ // الدالة اللي رح تنفذ عملية التسجيل (API Call)
-                console.log('values',userInfo);
                 const response = await axiosInstance.post(url,userInfo)
-                console.log(response);
                 return response; // إرسال POST request للرابط مع البيانات المدخلة من الفورم
             },
             onSuccess:(response)=>{ // في حال نجحت العملية
@@ -23,14 +21,8 @@ export default function useAuth(url,navigateUrl,onSuccessCallback){
                 }
             },
             onError: (err)=>{// في حال فشلت العملية
-              const message =
-                err.response?.data?.message || "Something went wrong";
 
-              if (err.response?.data?.errors) {
-                setServerErrors(message);
-              } else {
-                toast.error(message);
-              }
+                setServerErrors(  err.response?.data?.message);     
             }
         });
 

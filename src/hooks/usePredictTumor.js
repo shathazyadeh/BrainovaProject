@@ -6,13 +6,11 @@ export default function usePredictTumor(){
     const [preview,setPreview] = useState(null);
 
     const handelImagePreview = (e)=>{
-        console.log(e.target.files[0]);
         setPreview(URL.createObjectURL(e.target.files[0]));
     }
 
     const predictTumorMutation = useMutation({
         mutationFn: async(value)=>{
-            console.log(value);
             const formData = new FormData();
             formData.append("file",value.file[0]);
 
@@ -21,7 +19,6 @@ export default function usePredictTumor(){
             const tumorResult = response.data.label; // نتيجة المودل
             const tumorProbabilitiesArray = response.data.probabilities; //جبنا المصفوفة
             const tumorProbability = Math.max(...tumorProbabilitiesArray); //بدون ثلاث نقاط برجع nan فلأنها مصفوفة بحط ثلاث نقاط بفككها هو
-            console.log(response);
             return {gradCamUrl,tumorResult,tumorProbability};
         }
         });

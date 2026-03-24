@@ -10,12 +10,9 @@ export default function useLogin(){
   const setUser = useAuthStore((state)=>state.setUser); // دالة لتخزين بيانات المستخدم
 
   const handleLoginSuccess = (response) => {
-console.log('response ::: ', response);
     const accessToken = response.data.token;
-    console.log(accessToken);
     setAccessToken(accessToken);
     const decoded = jwtDecode(accessToken);
-    console.log('decoded', decoded);
     const user = {
       userName: decoded.Name,
       fullName:decoded.FullName,
@@ -24,7 +21,6 @@ console.log('response ::: ', response);
       phoneNumber:decoded.PhoneNumber,
       id: decoded.Id
     };
-    console.log("user " ,user);
     setUser(user);
     if (user.role === "Student") navigate('/home');
     else if(user.role === "Supervisor") navigate('/dashboard/supervisor');
