@@ -4,6 +4,24 @@
 .change_btn{
     background-color: rgb(179,0,0) !important;
 }
-.position_abs{
-    position: absolute;
+.dashed_form_hover{
+    transition: all 0.2s;
+}
+.dashed_form_hover:hover{
+   transform: translateY(-5px); 
+   box-shadow: 0 10px 20px rgba(79, 71, 71, 0.1); 
+   border-color: var(--dark-red-color);
+}
+.color_to_gray_hover {
+   transition: all 0.5s ease !important;
+}
+.color_to_gray_hover:hover{
+    color: #fff;
+    background-color: transparent;
+}
+.toggle_btn:hover{
+    transform: translateY(-5px); 
+}
+.toggle_btn{
+    transition: all 0.5s ease !important;
 }
