@@ -16,6 +16,8 @@ function PredictTumor() {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const fileRegister = register("file"); // ربط input تبع الملف مع react-hook-form عشان يخزن قيمة الفايل (FileList) ويتحكم فيه
+
   const [previewGradCam, setPreviewGradCam] = useState(null);
 
   const { predictMRIMutation } = usePredictMRI();
@@ -30,6 +32,8 @@ function PredictTumor() {
   };
 
   const uploadMRI = async (value) => {
+    console.log("value ",value);
+    console.log("value.file " ,value.file);
     // 1. upload
     const uploadResponse = await uploadMRIMutation.mutateAsync(value);
     console.log("uploadResponse : ", uploadResponse);
@@ -80,7 +84,7 @@ function PredictTumor() {
             <Box
               className="flex_column"
               component={"form"}
-              onSubmit={handleSubmit(uploadMRI)}
+              //onSubmit={handleSubmit(uploadMRI)}
               sx={{
                 minHeight: "450px",
               }}
@@ -105,7 +109,11 @@ function PredictTumor() {
                   className={style.opacity_0}
                   {...register("file")}
                   type="file"
-                  onChange={handelImagePreview}
+                  onChange={(e) => {
+                  fileRegister.onChange(e); // خبرنا الفورم انه صار تغيير
+                  handelImagePreview(e);
+                  handleSubmit(uploadMRI)();
+                  }}
                 />
                 <FaCloudUploadAlt
                   color="var(--primary-color)"
@@ -175,13 +183,13 @@ function PredictTumor() {
                   >
                     <img
                       src={preview}
-                      style={{ height: "100%", width: "100%" }}
+                      style={{ height: "100%", width: "100%"}}
                     />
                     <Box
                       className="gradcam_container"
-                      sx={{ top: "1.5px", position: "absolute" }}
+                      sx={{position: "absolute" ,left:"60px",right:"60px",top:"10px",bottom:"10px"}}
                     >
-                      <img src={predictMRIMutation.data?.gradCamUrl} alt="" />
+                      <img src={predictMRIMutation.data?.gradCamUrl} style={{ height: "100%", width: "100%"}} alt="" />
                     </Box>
                   </Box>
                 </Grid>
@@ -245,6 +253,7 @@ function PredictTumor() {
                         gap: "20px",
                         borderRadius: "20px",
                         boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
+                        cursor:'not-allowed'
                       }}
                       onClick={viewGradCam}
                     >
