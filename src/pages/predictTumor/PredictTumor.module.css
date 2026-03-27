@@ -1,3 +1,4 @@
+
 .opacity_0{
     opacity: 0 !important;
 }
@@ -24,4 +25,95 @@
 }
 .toggle_btn{
     transition: all 0.5s ease !important;
+}
+
+
+
+
+
+
+
+
+/*كود النقطة المضيئة*/
+.pulse_wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.pulse_wrapper::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--light-red-color);
+    animation: pulse 1.5s infinite;
+    opacity: 0.6;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    70% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+.opacity_0{
+    opacity: 0 !important;
+}
+.change_btn{
+    background-color: rgb(179,0,0) !important;
+}
+.dashed_form_hover{
+    transition: all 0.2s;
+}
+.dashed_form_hover:hover{
+   transform: translateY(-5px); 
+   box-shadow: 0 10px 20px rgba(79, 71, 71, 0.1); 
+   border-color: var(--dark-red-color);
+}
+.color_to_gray_hover {
+   transition: all 0.5s ease !important;
+}
+.color_to_gray_hover:hover{
+    color: #fff;
+    background-color: transparent;
+}
+.toggle_btn:hover{
+    transform: translateY(-5px); 
+}
+.toggle_btn{
+    transition: all 0.5s ease !important;
+}
+/* تعريف حركة باسم float */
+@keyframes float {
+  0% { 
+    transform: translateY(0); /* بداية الحركة: الصورة بمكانها الطبيعي */
+  }
+
+  50% { 
+    transform: translateY(-11px); /* في منتصف الحركة: تطلع لفوق 11px */
+  }
+
+  100% { 
+    transform: translateY(0); /* نهاية الحركة: ترجع لمكانها */
+  }
+}
+
+/* تطبيق الحركة على الصورة */
+.animatedIcon {
+  animation: float 2.5s ease-in-out infinite;
+  /* float → اسم الحركة
+     3s → مدة الحركة 3 ثواني
+     ease-in-out → حركة ناعمة (بداية ونهاية بطيئة)
+     infinite → تتكرر للأبد */
 }

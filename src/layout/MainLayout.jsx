@@ -10,7 +10,7 @@ function MainLayout() {
     <Box sx={{bgcolor:'var(--navy-color)',paddingTop:'20px'}}>
       <Navbar/>
       <Outlet/>
-      <Footer/>
+      
     </Box>
   )
 }
