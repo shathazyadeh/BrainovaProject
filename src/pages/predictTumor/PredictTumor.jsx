@@ -1,4 +1,17 @@
-import { Box, Button, Container, FormControl, FormControlLabel, FormHelperText, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import usePredictMRI from "../../hooks/usePredictMRI";
 import { FaCloudUploadAlt } from "react-icons/fa"; //ايقونة الابلود من مكتبة رياكت ايكونز
@@ -11,9 +24,10 @@ import { useState } from "react";
 import style from "./PredictTumor.module.css";
 import useUploadMRI from "../../hooks/useUploadMRI";
 import useMRIPreview from "../../hooks/useMRIPreview";
-import TooltipButton from "../../components/tooltipButton/TooltipButton";
-import SendButton from "../../components/sendButton/SendButton";
-
+import useGetQuestions from "../../hooks/report/studentReport/useGetQuestions";
+import TooltipButton from "../../components/uiVerseComponents/tooltipButton/TooltipButton";
+import SendButton from "../../components/uiVerseComponents/sendButton/SendButton";
+import Loader from "../../components/uiVerseComponents/loader/Loader";
 
 function PredictTumor() {
   const {
@@ -29,6 +43,9 @@ function PredictTumor() {
   const { predictMRIMutation } = usePredictMRI();
   const { uploadMRIMutation } = useUploadMRI();
   const { preview, handelImagePreview } = useMRIPreview();
+
+  const { isError, error, isLoading, data } = useGetQuestions();
+  console.log("data ",data);
 
   const viewGradCam = (e) => {
     e.target.classList.add(style.change_btn);
@@ -50,13 +67,20 @@ function PredictTumor() {
     console.log("predictResponse : ", predictResponse);
   };
 
+
   return (
-    <Box
-      className="predict_tumor_section"
-      sx={{ padding: "1px" }}
-    >
+    <Box className="predict_tumor_section" sx={{ padding: "1px" }}>
       <Container maxWidth="lg">
-        <Box className="flex_column" component={"section"} sx={{ alignItems: 'center', paddingTop: '80px', gap: '20px', bgcolor: "var(--navy-color)" }}>
+        <Box
+          className="header_section flex_column"
+          component={"section"}
+          sx={{
+            alignItems: "center",
+            paddingTop: "80px",
+            gap: "20px",
+            bgcolor: "var(--navy-color)",
+          }}
+        >
           <Typography
             component={"p"}
             sx={{
@@ -73,28 +97,36 @@ function PredictTumor() {
               gap: "8px",
             }}
           >
-            <Typography
-              component={"span"}
-              className={style.pulse_wrapper}
-            >
+            <Typography component={"span"} className={style.pulse_wrapper}>
               <LuBrain size={18} color="var(--light-red-color)" />
             </Typography>
             AI-Powered Medical Platform
           </Typography>
-          <Typography component={'h1'} variant="h1" sx={{
-            fontFamily: "Fredoka, sans-serif",
-            fontWeight: '800', color: "var(--primary-color)",
-            background:
-              "linear-gradient(90deg, #ec827c, #e80d0d, #ff0000)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent"
-          }}>
-            Predict Tumor</Typography>
-          <Typography sx={{ color: 'var(--secondary-color)', fontFamily: "Fredoka, sans-serif", fontSize: '24px' }}>
-            Upload an MRI scan, analuze it with AI, and Submit your diagnosis for review.
+          <Typography
+            component={"h1"}
+            variant="h1"
+            sx={{
+              fontFamily: "Fredoka, sans-serif",
+              fontWeight: "800",
+              color: "var(--primary-color)",
+              background: "linear-gradient(90deg, #ec827c, #e80d0d, #ff0000)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
+            Predict Tumor
+          </Typography>
+          <Typography
+            sx={{
+              color: "var(--secondary-color)",
+              fontFamily: "Fredoka, sans-serif",
+              fontSize: "24px",
+            }}
+          >
+            Upload an MRI scan, analuze it with AI, and Submit your diagnosis
+            for review.
           </Typography>
         </Box>
-
         <Box
           component={"section"}
           className="upload_mri_form"
@@ -110,7 +142,7 @@ function PredictTumor() {
             borderRadius: "29px",
             minHeight: "540px",
             marginTop: "60px",
-            marginBottom: "100px"
+            marginBottom: "100px",
           }}
         >
           <Typography
@@ -161,7 +193,8 @@ function PredictTumor() {
                     handleSubmit(uploadMRI)();
                   }}
                 />
-                <FaCloudUploadAlt className={style.animatedIcon}
+                <FaCloudUploadAlt
+                  className={style.animatedIcon}
                   color="var(--primary-color)"
                   size={100}
                   style={{
@@ -171,7 +204,11 @@ function PredictTumor() {
                 <Typography
                   component={"p"}
                   variant="h5"
-                  sx={{ color: "#fff", letterSpacing: "1px", fontFamily: "Fredoka, sans-serif", }}
+                  sx={{
+                    color: "#fff",
+                    letterSpacing: "1px",
+                    fontFamily: "Fredoka, sans-serif",
+                  }}
                 >
                   Upload MRI Image
                 </Typography>
@@ -292,8 +329,9 @@ function PredictTumor() {
                         marginBottom: "20px",
                       }}
                     >
-                      Click the button  below to
-                      <br />upload a different X-ray
+                      Click the button below to
+                      <br />
+                      upload a different X-ray
                       <br />
                       image.
                     </Typography>
@@ -365,7 +403,7 @@ function PredictTumor() {
             paddingBottom: "30px",
             minHeight: "540px",
             position: "relative",
-            paddingRight: "580px"
+            paddingRight: "580px",
           }}
         >
           <Typography
@@ -384,380 +422,177 @@ function PredictTumor() {
             className="flex_column"
             component={"form"}
             sx={{
-              minHeight: "450px",
+              minHeight: isLoading ? "880px" : "auto",
+              position: "relative",
             }}
           >
-            <FormControl error={!!errors.tumorType} fullWidth>
-              <FormLabel
+            {/* Loader فوق الفورم */}
+            {isLoading && (
+              <Box
                 sx={{
-                  color: "#fff",
-                  "&.Mui-focused": { color: "#fff" },
-                  mb: 2,
-                }}
-              >
-                <Typography className={style.pulse_wrapper}
-                  component="span"
-                  sx={{
-                    display: "inline-flex",   // أو inline-block
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#fff",
-                    backgroundColor: "var(--primary-color)",
-                    width: "22px",
-                    height: "22px",
-                    borderRadius: "50%",
-                    marginRight: "12px"
-                  }}
-                >
-                  1
-                </Typography>
-                (Preliminary Assessment) Based on your observation, what
-                type of tumor do you think is shown in the MRI image?
-              </FormLabel>
-
-              <RadioGroup {...register("tumorType")}>
-
-                <Grid container spacing={2}>
-                  {[
-                    { label: "Glioma", value: "glioma" },
-                    { label: "Meningioma", value: "meningioma" },
-                    { label: "Pituitary", value: "pituitary" },
-                    { label: "No Tumor", value: "noTumor" },
-                  ].map((item) => (
-                    <Grid item size={{ xs: 12, md: 6 }} key={item.value}>
-                      <FormControlLabel
-                        value={item.value}
-                        control={<Radio sx={{ display: "none" }} />}
-                        label={item.label}
-                        sx={{
-                          m: 0,
-                          width: "100%",
-                          borderRadius: "14px",
-                          border: "1px solid #333",
-                          backgroundColor: "#111",
-                          color: "#fff",
-                          py: 2.5,
-                          px: 2,
-                          display: "block",
-                          transition: "all 0.2s ease",
-
-                          "&:hover": {
-                            backgroundColor: "#1a1a1a",
-                            transform: "scale(1.02)",
-                          },
-
-                          "&:has(input:checked)": {
-                            backgroundColor: "#ff2d2d",
-                            borderColor: "#ff2d2d",
-                            transform: "scale(1)",
-                          },
-                        }}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </RadioGroup>
-
-              <FormHelperText>{errors.tumorType?.message}</FormHelperText>
-            </FormControl>
-
-            <FormControl error={!!errors.tumorSize} sx={{ marginY: "20px" }} fullWidth>
-              <FormLabel
-                sx={{
-                  color: "#fff",
-                  "&.Mui-focused": {
-                    color: "#fff",
-                  },
-                  mb: 2,
-                }}
-              >
-                <Typography className={style.pulse_wrapper}
-                  component="span"
-                  sx={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#fff",
-                    backgroundColor: "var(--primary-color)",
-                    width: "22px",
-                    height: "22px",
-                    borderRadius: "50%",
-                    marginRight: "12px"
-                  }}
-                >
-                  2
-                </Typography>
-                Tumor Size What is the approximate size of the tumor?
-              </FormLabel>
-
-              <RadioGroup {...register("tumorSize")}>
-                <Grid container spacing={2}>
-                  {[
-                    { label: "Small", value: "small" },
-                    { label: "Medium", value: "medium" },
-                    { label: "Large", value: "large" },
-                  ].map((item) => (
-                    <Grid item size={{ xs: 12, md: 6 }} key={item.value}>
-                      <FormControlLabel
-                        value={item.value}
-                        control={<Radio sx={{ display: "none" }} />}
-                        label={item.label}
-                        sx={{
-                          m: 0,
-                          width: "100%",
-                          borderRadius: "14px",
-                          border: "1px solid #333",
-                          backgroundColor: "#111",
-                          color: "#fff",
-                          py: 2.5,
-                          px: 2,
-                          display: "block",
-                          transition: "all 0.2s ease",
-
-                          "&:hover": {
-                            backgroundColor: "#1a1a1a",
-                            transform: "scale(1.02)",
-                          },
-
-                          "&:has(input:checked)": {
-                            backgroundColor: "#ff2d2d",
-                            borderColor: "#ff2d2d",
-                            transform: "scale(1)",
-                          },
-                        }}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </RadioGroup>
-
-              <FormHelperText>{errors.tumorSize?.message}</FormHelperText>
-            </FormControl>
-
-            <FormControl error={!!errors.tumorLocation} fullWidth>
-              <FormLabel
-                sx={{
-                  color: "#fff",
-                  "&.Mui-focused": {
-                    color: "#fff",
-                  },
-                  mb: 2,
-                }}
-              >
-                <Typography className={style.pulse_wrapper}
-                  component="span"
-                  sx={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    color: "#fff",
-                    backgroundColor: "var(--primary-color)",
-                    width: "22px",
-                    height: "22px",
-                    borderRadius: "50%",
-                    marginRight: "12px"
-                  }}
-                >
-                  3
-                </Typography>
-                Tumor Location In which area of the brain does the
-                abnormality most likely appear?
-              </FormLabel>
-
-              <RadioGroup {...register("tumorLocation")}>
-                <Grid container spacing={2}>
-                  {[
-                    { label: "Frontal region (front)", value: "front" },
-                    { label: "Posterior region (back)", value: "back" },
-                    { label: "Central region (middle)", value: "middle" },
-                    { label: "Not clear", value: "notClear" },
-                  ].map((item) => (
-                    <Grid item size={{ xs: 12, md: 6 }} key={item.value}>
-                      <FormControlLabel
-                        value={item.value}
-                        control={<Radio sx={{ display: "none" }} />}
-                        label={item.label}
-                        sx={{
-                          m: 0,
-                          width: "100%",
-                          borderRadius: "14px",
-                          border: "1px solid #333",
-                          backgroundColor: "#111",
-                          color: "#fff",
-                          py: 2.5,
-                          px: 2,
-                          display: "block",
-                          transition: "all 0.2s ease",
-
-                          "&:hover": {
-                            backgroundColor: "#1a1a1a",
-                            transform: "scale(1.02)",
-                          },
-
-                          "&:has(input:checked)": {
-                            backgroundColor: "#ff2d2d",
-                            borderColor: "#ff2d2d",
-                            transform: "scale(1)",
-                          },
-                        }}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </RadioGroup>
-
-              <FormHelperText>
-                {errors.tumorLocation?.message}
-              </FormHelperText>
-            </FormControl>
-
-            <label htmlFor="functionalImpact" style={{ color: '#fff', marginTop: '20px', marginBottom: '15px' }} >
-              <Typography className={style.pulse_wrapper}
-                component="span"
-                sx={{
-                  display: "inline-flex",
-                  alignItems: "center",
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
                   justifyContent: "center",
-                  color: "#fff",
-                  backgroundColor: "var(--primary-color)",
-                  width: "22px",
-                  height: "22px",
-                  borderRadius: "50%",
-                  marginRight: "12px"
-                }}
-              >
-                4
-              </Typography>
-              In which area of the brain does the abnormality most likely
-              appear?
-            </label>
-            <TextField
-              {...register("functionalImpact")}
-              id="functionalImpact"
-              label="Functional Impact"
-              variant="filled"
-              fullWidth
-              error={!!errors.functionalImpact}
-              helperText={errors.functionalImpact?.message}
-              InputProps={{
-                disableUnderline: true,
-                sx: {
-                  color: "#ccd6f6",
-                  paddingInline: "1em",
-                  borderRadius: "10px",
-                  boxShadow: "inset 2px 5px 10px rgb(5,5,5)",
-                  backgroundColor: "#171717",
-                },
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: "var(--mid-gray-color)",
-                  marginLeft: '10px',
-                  fontWeight: '500',
-                  "&.Mui-focused": {
-                    color: "var(--mid-gray-color)",
-                  },
-                },
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "transparent",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "transparent",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "transparent",
-                  },
-                },
-              }}
-            />
-            <label htmlFor="additionalExplanation" style={{ color: '#fff', marginTop: '30px', marginBottom: '15px' }}>
-              <Typography className={style.pulse_wrapper}
-                component="span"
-                sx={{
-                  display: "inline-flex",
                   alignItems: "center",
-                  justifyContent: "center",
-                  color: "#fff",
-                  backgroundColor: "var(--primary-color)",
-                  width: "22px",
-                  height: "22px",
-                  borderRadius: "50%",
-                  marginRight: "12px"
+                  zIndex: 10,
                 }}
               >
-                5
-              </Typography>
-              Would you like to further explain your reasoning?
-            </label>
-            <TextField
-              {...register("additionalExplanation")}
-              id="additionalExplanation"
-              label="Additional Explanation (Optional)"
-              multiline
-              rows={4}
-              fullWidth
-              variant="filled"
-              error={!!errors.additionalExplanation}
-              helperText={errors.additionalExplanation?.message}
-              InputProps={{
-                disableUnderline: true,
-                sx: {
-                  color: "#ccd6f6",
-                  paddingInline: "1em",
-                  borderRadius: "10px",
-                  boxShadow: "inset 2px 5px 10px rgb(5,5,5)",
-                  backgroundColor: "#171717",
-                },
-              }}
-              InputLabelProps={{
-                sx: {
-                  color: "var(--mid-gray-color)",
-                  marginLeft: '10px',
-                  fontWeight: '500',
-                  "&.Mui-focused": {
-                    color: "var(--mid-gray-color)",
-                  },
-                },
-              }}
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "transparent",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "transparent",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "transparent",
-                  },
-                },
-              }}
-            />
+                <Loader />
+              </Box>
+            )}
+
+            {/* الفورم */}
+            {!isLoading &&
+              data?.map((q, index) => (
+                <FormControl
+                  key={q.id}
+                  error={!!errors[q.id]}
+                  fullWidth
+                  sx={{ marginY: "20px" }}
+                >
+                  <FormLabel
+                    sx={{
+                      color: "#fff",
+                      "&.Mui-focused": { color: "#fff" },
+                      mb: 2,
+                    }}
+                  >
+                    <Typography
+                      className={style.pulse_wrapper}
+                      component="span"
+                      sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: "#fff",
+                        backgroundColor: "var(--primary-color)",
+                        width: "22px",
+                        height: "22px",
+                        borderRadius: "50%",
+                        marginRight: "12px",
+                      }}
+                    >
+                      {index + 1}
+                    </Typography>
+                    {q.text}
+                  </FormLabel>
+
+                  {q.type === 2 && (
+                    <RadioGroup {...register(q.id)}>
+                      <Grid container spacing={2}>
+                        {q.options.map((opt) => (
+                          <Grid item size={{ xs: 12, md: 6 }} key={opt}>
+                            <FormControlLabel
+                              value={opt}
+                              control={<Radio sx={{ display: "none" }} />}
+                              label={opt}
+                              sx={{
+                                m: 0,
+                                width: "100%",
+                                borderRadius: "14px",
+                                border: "1px solid #333",
+                                backgroundColor: "#111",
+                                color: "#fff",
+                                py: 2.5,
+                                px: 2,
+                                textTransform: "capitalize",
+                                "&:hover": {
+                                  backgroundColor: "#1a1a1a",
+                                  transform: "scale(1.02)",
+                                },
+
+                                "&:has(input:checked)": {
+                                  backgroundColor: "#ff2d2d",
+                                  borderColor: "#ff2d2d",
+                                },
+                              }}
+                            />
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </RadioGroup>
+                  )}
+
+                  {q.type === 1 && (
+                    <TextField
+                      {...register(q.id)}
+                      variant="filled"
+                      label={q.code}
+                      fullWidth
+                      multiline
+                      rows={4}
+                      error={!!errors[q.id]}
+                      helperText={errors[q.id]?.message}
+                      InputProps={{
+                        disableUnderline: true,
+                        sx: {
+                          color: "#ccd6f6",
+                          paddingInline: "1em",
+                          borderRadius: "10px",
+                          boxShadow: "inset 2px 5px 10px rgb(5,5,5)",
+                          backgroundColor: "#171717",
+                        },
+                      }}
+                      InputLabelProps={{
+                        sx: {
+                          color: "var(--mid-gray-color)",
+                          marginLeft: "10px",
+                          fontWeight: "500",
+                          "&.Mui-focused": {
+                            color: "var(--mid-gray-color)",
+                          },
+                        },
+                      }}
+                    />
+                  )}
+                </FormControl>
+              ))}
           </Box>
-          <Box className="flex_column" sx={{
-            bgcolor: '#fff', position: 'absolute', right: '0', top: '0', bottom: '0', borderBottomLeftRadius: '50%', borderTopLeftRadius: "50%",
-            alignItems: "center",
-            justifyContent: "center",
-            textAlign: "center",
-            paddingX: "20px"
-          }}>
-            <Typography component={'h2'} sx={{ fontFamily: "Fredoka, sans-serif", fontSize: "70px", fontWeight: "600" }}>
+          <Box
+            className="flex_column"
+            sx={{
+              bgcolor: "#fff",
+              position: "absolute",
+              right: "0",
+              top: "0",
+              bottom: "0",
+              borderBottomLeftRadius: "50%",
+              borderTopLeftRadius: "50%",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              paddingX: "20px",
+            }}
+          >
+            <Typography
+              component={"h2"}
+              sx={{
+                fontFamily: "Fredoka, sans-serif",
+                fontSize: "70px",
+                fontWeight: "600",
+              }}
+            >
               Case Evaluation
             </Typography>
-            <Typography sx={{ fontFamily: "Fredoka, sans-serif", fontSize: "17px", color: "var(--mid-gray-color)", marginBottom: "30px", marginTop: "10px" }}>
-              Carefully analyze the MRI image and answer the questions based <br /> on your observation.
-              This step helps you practice clinical thinking<br />before viewing the AI results.
+            <Typography
+              sx={{
+                fontFamily: "Fredoka, sans-serif",
+                fontSize: "17px",
+                color: "var(--mid-gray-color)",
+                marginBottom: "30px",
+                marginTop: "10px",
+              }}
+            >
+              Carefully analyze the MRI image and answer the questions based{" "}
+              <br /> on your observation. This step helps you practice clinical
+              thinking
+              <br />
+              before viewing the AI results.
             </Typography>
             <SendButton></SendButton>
           </Box>
-
         </Box>
-
-
-
       </Box>
     </Box>
   );

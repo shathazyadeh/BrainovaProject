@@ -313,7 +313,7 @@ function AnimatedLetters({
   );
 }
 
-export default function SendMessageButton({
+export default function SendButton({
   onClick,
   resetAfter = 2500,
   defaultText = "Send Message",
