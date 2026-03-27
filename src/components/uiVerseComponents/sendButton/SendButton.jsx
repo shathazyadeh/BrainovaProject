@@ -316,7 +316,7 @@ function AnimatedLetters({
 export default function SendButton({
   onClick,
   resetAfter = 2500,
-  defaultText = "Send Message",
+  defaultText = "Send Report",
   sentText = "Sent",
   disabled = false,
 }) {

@@ -12,13 +12,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import usePredictMRI from "../../hooks/usePredictMRI";
 import { FaCloudUploadAlt } from "react-icons/fa"; //ايقونة الابلود من مكتبة رياكت ايكونز
 import { FaFolderOpen } from "react-icons/fa6";
 import { FaExchangeAlt } from "react-icons/fa";
 import { GiCycle } from "react-icons/gi";
 import { IoInformationCircle } from "react-icons/io5";
+import { FaCircle } from "react-icons/fa";
 import { LuBrain } from "react-icons/lu";
 import { useState } from "react";
 import style from "./PredictTumor.module.css";
@@ -28,21 +29,29 @@ import useGetQuestions from "../../hooks/report/studentReport/useGetQuestions";
 import TooltipButton from "../../components/uiVerseComponents/tooltipButton/TooltipButton";
 import SendButton from "../../components/uiVerseComponents/sendButton/SendButton";
 import Loader from "../../components/uiVerseComponents/loader/Loader";
+import { yupResolver } from "@hookform/resolvers/yup";
+import useSubmitReport from "../../hooks/report/studentReport/useSubmitReport";
 
 function PredictTumor() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+
+  });
 
   const fileRegister = register("file"); // ربط input تبع الملف مع react-hook-form عشان يخزن قيمة الفايل (FileList) ويتحكم فيه
-
+  const [fileValue, setFileValue] = useState(null);
   const [previewGradCam, setPreviewGradCam] = useState(null);
+  const [caseId, setCaseId] = useState(null);
+  
 
   const { predictMRIMutation } = usePredictMRI();
   const { uploadMRIMutation } = useUploadMRI();
   const { preview, handelImagePreview } = useMRIPreview();
+  const {serverErrors,submitReportMutation} = useSubmitReport();
 
   const { isError, error, isLoading, data } = useGetQuestions();
   console.log("data ",data);
@@ -54,18 +63,44 @@ function PredictTumor() {
     console.log(previewGradCam);
   };
 
-  const uploadMRI = async (value) => {
-    console.log("value ", value);
-    console.log("value.file ", value.file);
-    // 1. upload
-    const uploadResponse = await uploadMRIMutation.mutateAsync(value);
-    console.log("uploadResponse : ", uploadResponse);
-    const caseId = uploadResponse.caseId;
+  const uploadMRI = async () => {
+  if (!fileValue) return;
 
-    // 2. predict
-    const predictResponse = await predictMRIMutation.mutateAsync(caseId);
-    console.log("predictResponse : ", predictResponse);
-  };
+  // 1. upload
+  const uploadResponse = await uploadMRIMutation.mutateAsync(fileValue);
+  const newCaseId = uploadResponse.caseId;
+  setCaseId(newCaseId);
+
+  return newCaseId;
+};
+
+const submitReport = async (formValues) => {
+  if (!fileValue) return;
+
+  // 1️ upload MRI
+  const newCaseId = await uploadMRI();
+
+  // 2️ prepare answers array
+  const answersArray = data.map(q => ({
+    questionId: q.id,
+    answerValue: formValues[q.id] || ""  // لو ما جاوب خليها ""
+  }));
+
+  // 3️ submit report
+  await submitReportMutation.mutateAsync({
+    caseId: newCaseId,
+    answers: answersArray,
+  });
+
+  // 4️ AI prediction
+  const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
+  console.log("model ", modelResponse);
+
+  // 5️ reset state
+  setCaseId(null);
+  setPreviewGradCam(null);
+  setFileValue(null);
+};
 
 
   return (
@@ -190,7 +225,7 @@ function PredictTumor() {
                   onChange={(e) => {
                     fileRegister.onChange(e); // خبرنا الفورم انه صار تغيير
                     handelImagePreview(e);
-                    handleSubmit(uploadMRI)();
+                    setFileValue(e.target.files[0]);
                   }}
                 />
                 <FaCloudUploadAlt
@@ -403,7 +438,7 @@ function PredictTumor() {
             paddingBottom: "30px",
             minHeight: "540px",
             position: "relative",
-            paddingRight: "580px",
+            paddingRight: "650px",
           }}
         >
           <Typography
@@ -419,8 +454,9 @@ function PredictTumor() {
             Student Diagnosis
           </Typography>
           <Box
-            className="flex_column"
+            className="student_form flex_column"
             component={"form"}
+            onSubmit={handleSubmit(submitReport)}
             sx={{
               minHeight: isLoading ? "880px" : "auto",
               position: "relative",
@@ -456,6 +492,7 @@ function PredictTumor() {
                       color: "#fff",
                       "&.Mui-focused": { color: "#fff" },
                       mb: 2,
+                      fontSize: "17px",
                     }}
                   >
                     <Typography
@@ -479,39 +516,55 @@ function PredictTumor() {
                   </FormLabel>
 
                   {q.type === 2 && (
-                    <RadioGroup {...register(q.id)}>
-                      <Grid container spacing={2}>
-                        {q.options.map((opt) => (
-                          <Grid item size={{ xs: 12, md: 6 }} key={opt}>
-                            <FormControlLabel
-                              value={opt}
-                              control={<Radio sx={{ display: "none" }} />}
-                              label={opt}
-                              sx={{
-                                m: 0,
-                                width: "100%",
-                                borderRadius: "14px",
-                                border: "1px solid #333",
-                                backgroundColor: "#111",
-                                color: "#fff",
-                                py: 2.5,
-                                px: 2,
-                                textTransform: "capitalize",
-                                "&:hover": {
-                                  backgroundColor: "#1a1a1a",
-                                  transform: "scale(1.02)",
-                                },
-
-                                "&:has(input:checked)": {
-                                  backgroundColor: "#ff2d2d",
-                                  borderColor: "#ff2d2d",
-                                },
-                              }}
-                            />
+                    <Controller
+                      name={q.id}
+                      control={control}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <RadioGroup
+                          {...field}
+                          onChange={(e) => field.onChange(e.target.value)}
+                        >
+                          <Grid container spacing={2}>
+                            {" "}
+                            {q.options.map((opt) => (
+                              <Grid item size={{ xs: 12, md: 6 }} key={opt}>
+                                {" "}
+                                <FormControlLabel
+                                  control={
+                                    <Radio
+                                      {...register(q.id)}
+                                      value={opt}
+                                      sx={{ display: "none" }}
+                                    />
+                                  }
+                                  label={opt}
+                                  sx={{
+                                    m: 0,
+                                    width: "100%",
+                                    borderRadius: "14px",
+                                    border: "1px solid #333",
+                                    backgroundColor: "#111",
+                                    color: "#fff",
+                                    py: 2,
+                                    px: 2,
+                                    textTransform: "capitalize",
+                                    "&:hover": {
+                                      backgroundColor: "#1a1a1a",
+                                      transform: "scale(1.02)",
+                                    },
+                                    "&:has(input:checked)": {
+                                      backgroundColor: "#ff2d2d",
+                                      borderColor: "#ff2d2d",
+                                    },
+                                  }}
+                                />{" "}
+                              </Grid>
+                            ))}{" "}
                           </Grid>
-                        ))}
-                      </Grid>
-                    </RadioGroup>
+                        </RadioGroup>
+                      )}
+                    />
                   )}
 
                   {q.type === 1 && (
@@ -521,7 +574,7 @@ function PredictTumor() {
                       label={q.code}
                       fullWidth
                       multiline
-                      rows={4}
+                      rows={2}
                       error={!!errors[q.id]}
                       helperText={errors[q.id]?.message}
                       InputProps={{
@@ -562,7 +615,7 @@ function PredictTumor() {
               alignItems: "center",
               justifyContent: "center",
               textAlign: "center",
-              paddingX: "20px",
+              paddingX: "45px",
             }}
           >
             <Typography
@@ -580,7 +633,7 @@ function PredictTumor() {
                 fontFamily: "Fredoka, sans-serif",
                 fontSize: "17px",
                 color: "var(--mid-gray-color)",
-                marginBottom: "30px",
+                marginBottom: "60px",
                 marginTop: "10px",
               }}
             >
@@ -590,7 +643,35 @@ function PredictTumor() {
               <br />
               before viewing the AI results.
             </Typography>
-            <SendButton></SendButton>
+            <SendButton onClick={handleSubmit(submitReport)}></SendButton>
+
+            {serverErrors?.length > 0 ? (
+              <Typography
+                component={"p"}
+                sx={{
+                  border: "1px solid var(--primary-color)",
+                  width: "fit-content",
+                  borderRadius: "60px",
+                  color: "#fff",
+                  px: "18px",
+                  py: "10px",
+                  bgcolor: "#171717",
+                  fontWeight: "500",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
+                  marginTop: "40px",
+                }}
+              >
+                <Typography component={"span"} className={style.pulse_wrapper}>
+                  <FaCircle size={18} color="ff2d2d" />
+                </Typography>
+                {serverErrors}
+              </Typography>
+            ) : (
+              ""
+            )}
           </Box>
         </Box>
       </Box>

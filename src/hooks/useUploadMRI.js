@@ -6,9 +6,7 @@ export default function useUploadMRI(){
     const uploadMRIMutation = useMutation({
         mutationFn: async(value)=>{
             const formData = new FormData();
-            formData.append("File",value.file[0]);
-            console.log("File : ", value.file[0]);
-            console.log('formData ',formData);
+            formData.append("File", value);
             const response = await axiosInstance.post('/Student/MriCases/upload',formData);
             return response.data;
         }
