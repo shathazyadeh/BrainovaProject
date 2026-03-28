@@ -29,7 +29,7 @@ import useGetQuestions from "../../hooks/report/studentReport/useGetQuestions";
 import TooltipButton from "../../components/uiVerseComponents/tooltipButton/TooltipButton";
 import SendButton from "../../components/uiVerseComponents/sendButton/SendButton";
 import Loader from "../../components/uiVerseComponents/loader/Loader";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 import useSubmitReport from "../../hooks/report/studentReport/useSubmitReport";
 
 function PredictTumor() {
@@ -37,24 +37,26 @@ function PredictTumor() {
     register,
     handleSubmit,
     control,
+    reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm({
-
+    
+    defaultValues: {}, // مهم
   });
 
   const fileRegister = register("file"); // ربط input تبع الملف مع react-hook-form عشان يخزن قيمة الفايل (FileList) ويتحكم فيه
   const [fileValue, setFileValue] = useState(null);
   const [previewGradCam, setPreviewGradCam] = useState(null);
   const [caseId, setCaseId] = useState(null);
-  
 
   const { predictMRIMutation } = usePredictMRI();
   const { uploadMRIMutation } = useUploadMRI();
-  const { preview, handelImagePreview } = useMRIPreview();
-  const {serverErrors,submitReportMutation} = useSubmitReport();
+  const { preview, setPreview, handelImagePreview } = useMRIPreview();
+  const { serverErrors, submitReportMutation } = useSubmitReport();
 
   const { isError, error, isLoading, data } = useGetQuestions();
-  console.log("data ",data);
+  console.log("data ", data);
 
   const viewGradCam = (e) => {
     e.target.classList.add(style.change_btn);
@@ -63,45 +65,59 @@ function PredictTumor() {
     console.log(previewGradCam);
   };
 
+  const resetImage = () => {
+    setPreview(null);
+    setPreviewGradCam(null);
+    setFileValue(null);
+    console.log("hi");
+
+    const emptyValues = data?.reduce((acc, q) => {
+      acc[q.id] = "";
+      return acc;
+    }, {});
+
+    reset(emptyValues);
+  };
+
   const uploadMRI = async () => {
-  if (!fileValue) return;
+    if (!fileValue) return;
 
-  // 1. upload
-  const uploadResponse = await uploadMRIMutation.mutateAsync(fileValue);
-  const newCaseId = uploadResponse.caseId;
-  setCaseId(newCaseId);
+    // 1. upload
+    const uploadResponse = await uploadMRIMutation.mutateAsync(fileValue);
+    const newCaseId = uploadResponse.caseId;
+    setCaseId(newCaseId);
 
-  return newCaseId;
-};
+    return newCaseId;
+  };
 
-const submitReport = async (formValues) => {
-  if (!fileValue) return;
+  const submitReport = async (formValues) => {
+    if (!fileValue) return;
 
-  // 1️ upload MRI
-  const newCaseId = await uploadMRI();
+    // 1 upload MRI
+    const newCaseId = await uploadMRI();
 
-  // 2️ prepare answers array
-  const answersArray = data.map(q => ({
-    questionId: q.id,
-    answerValue: formValues[q.id] || ""  // لو ما جاوب خليها ""
-  }));
+    // 2 prepare answers array
+    const answersArray = data.map((q) => ({
+      questionId: q.id,
+      answerValue: formValues[q.id] || "", // لو ما جاوب خليها ""
+    }));
+    console.log("case id ", newCaseId);
 
-  // 3️ submit report
-  await submitReportMutation.mutateAsync({
-    caseId: newCaseId,
-    answers: answersArray,
-  });
+    // 3 submit report
+    await submitReportMutation.mutateAsync({
+      caseId: newCaseId,
+      answers: answersArray,
+    });
 
-  // 4️ AI prediction
-  const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
-  console.log("model ", modelResponse);
+    // 4 AI prediction
+    const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
+    console.log("model ", modelResponse);
 
-  // 5️ reset state
-  setCaseId(null);
-  setPreviewGradCam(null);
-  setFileValue(null);
-};
-
+    // 5 reset state
+    setCaseId(null);
+    setPreviewGradCam(null);
+    setFileValue(null);
+  };
 
   return (
     <Box className="predict_tumor_section" sx={{ padding: "1px" }}>
@@ -414,7 +430,7 @@ const submitReport = async (formValues) => {
                       Change Image
                     </Button>
                     */}
-                    <TooltipButton></TooltipButton>
+                    <TooltipButton onClick={resetImage}></TooltipButton>
                   </Box>
                 </Grid>
               </Grid>
@@ -533,7 +549,6 @@ const submitReport = async (formValues) => {
                                 <FormControlLabel
                                   control={
                                     <Radio
-                                      {...register(q.id)}
                                       value={opt}
                                       sx={{ display: "none" }}
                                     />
@@ -588,6 +603,7 @@ const submitReport = async (formValues) => {
                         },
                       }}
                       InputLabelProps={{
+                        shrink: !!watch(q.id),
                         sx: {
                           color: "var(--mid-gray-color)",
                           marginLeft: "10px",

@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { FaExchangeAlt } from "react-icons/fa";
 import { useState } from "react";
 
-export default function TooltipButton() {
+export default function TooltipButton({ onClick }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ export default function TooltipButton() {
       onMouseLeave={() => setHovered(false)}
     >
       {/* الشريط */}
-      <Box
+      <Box onClick={onClick}
         sx={{
           display: "flex",
           alignItems: "center",

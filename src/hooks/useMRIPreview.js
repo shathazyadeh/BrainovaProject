@@ -7,5 +7,5 @@ export default function useMRIPreview(){
         setPreview(URL.createObjectURL(e.target.files[0]));
     }
 
-        return{preview,handelImagePreview};
+        return{preview,setPreview,handelImagePreview};
 }
