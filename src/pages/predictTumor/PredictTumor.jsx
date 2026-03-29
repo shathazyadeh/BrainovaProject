@@ -67,6 +67,8 @@ function PredictTumor() {
   const { serverErrors, submitReportMutation } = useSubmitReport();
   const [showGradCam, setShowGradCam] = useState(false);  //عشان اخفي او اظهر الجراد كام من خلال البوتون
   const [showResult, setShowResult] = useState(false);
+  const [analysisTime, setAnalysisTime] = useState(null);//لحساب وقت التحليل 
+
   console.log("data ", data);
 
   const viewGradCam = (e) => {
@@ -100,7 +102,6 @@ function PredictTumor() {
 
     return newCaseId;
   };
-  const [analysisTime, setAnalysisTime] = useState(null);//لحساب وقت التحليل 
 
   const submitReport = async (formValues) => {
     setIsSubmittedSuccessfully(false);
@@ -127,8 +128,8 @@ function PredictTumor() {
 
       setIsSubmittedSuccessfully(true);
       const startTime = Date.now();//عشان ابلش احسب الوقت 
-       const predictResponse = await predictMRIMutation.mutateAsync(newCaseId);
-         console.log("AI Prediction Result:", predictResponse); // هنا بتطبع النتيجة
+      const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
+      console.log("model res ", modelResponse);
       setShowResult(true);
 
       const endTime = Date.now();//نهاية الوقت 
@@ -208,7 +209,6 @@ function PredictTumor() {
           </Typography>
           <Typography
             component={"h1"}
-            variant="h1"
             sx={{
               fontFamily: "Fredoka, sans-serif",
               fontWeight: "800",
@@ -216,6 +216,9 @@ function PredictTumor() {
               background: "linear-gradient(90deg, #ec827c, #e80d0d, #ff0000)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
+              textAlign: "center",
+              fontSize: { xs: "80px", md: "96px" },
+              lineHeight: "70px",
             }}
           >
             Predict Tumor
@@ -225,6 +228,7 @@ function PredictTumor() {
               color: "var(--secondary-color)",
               fontFamily: "Fredoka, sans-serif",
               fontSize: "24px",
+              textAlign: "center",
             }}
           >
             Upload an MRI scan, analuze it with AI, and Submit your diagnosis
@@ -330,8 +334,6 @@ function PredictTumor() {
                   Browse File
                 </Button>
               </Box>
-
-
             </Box>
           ) : (
             <Box
@@ -346,13 +348,21 @@ function PredictTumor() {
               }}
             >
               <Grid container spacing={2} sx={{ height: "100%" }}>
-                <Grid item size={{ xs: 12, md: 6 }}>
+                <Grid
+                  item
+                  size={{ xs: 12, sm: 8, md: 6 }}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Box
                     className="image"
                     sx={{
                       position: "relative",
                       bgcolor: "#000",
-                      paddingX: "60px",
+                      paddingX: { xs: "10px", md: "60px" },
                       paddingY: "10px",
                       borderRadius: "20px",
                       textAlign: "center",
@@ -366,12 +376,11 @@ function PredictTumor() {
                       src={preview}
                       style={{ height: "100%", width: "100%" }}
                     />
-
                   </Box>
                 </Grid>
                 <Grid
                   item
-                  size={{ xs: 12, md: 6 }}
+                  size={{ xs: 12, sm: 4, md: 6 }}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -730,19 +739,36 @@ function PredictTumor() {
           </Box>
         </Box>
       </Box>
-
-
-      {showResult && preview ? (
-        <Box   component={"section"} sx={{ bgcolor: '#fff' }}>
-          <Box className="ai_result flex_column"  sx={{ bgcolor: "#171717", paddingTop: '25px', paddingBottom: '150px', paddingX: '30px', gap: '10px', justifyContent: 'center', marginBottom: '70px', borderTopRightRadius: "15%" }}>
-            <Grid container>
-
-              <Grid item size={{ xs: 12, md: 5 }}>
-                <Box className="lift_side" sx={{ marginBottom: '40px' }}>
-                  <Typography component={'h3'} sx={{ color: "#fff", fontWeight: "500", fontSize: '30px', paddingBottom: '25px', fontFamily: "Fredoka, sans-serif", }}>
+      {true ? (
+        <Box component={"section"} sx={{ bgcolor: "#fff" }}>
+          <Box
+            className="ai_result flex_column"
+            sx={{
+              bgcolor: "#171717",
+              paddingTop: "25px",
+              paddingBottom: "150px",
+              paddingX: "30px",
+              gap: "10px",
+              justifyContent: "center",
+              borderTopRightRadius: "15%",
+            }}
+          >
+            <Grid container spacing={7} sx={{display:"flex",justifyContent:"center"}}>
+              <Grid item size={{ xs: 10,sm:8, md: 5 }}>
+                <Box className="left_side" sx={{ marginBottom: "40px" }}>
+                  <Typography
+                    component={"h3"}
+                    sx={{
+                      color: "#fff",
+                      fontWeight: "500",
+                      fontSize: "30px",
+                      paddingBottom: "25px",
+                      fontFamily: "Fredoka, sans-serif",
+                    }}
+                  >
                     <SlEnergy size={"30"} color="red" />
-                    Grad-CAM Heatmap</Typography>
-
+                    Grad-CAM Heatmap
+                  </Typography>
                   <Box
                     className="image_preview_gradcam flex_column"
                     sx={{
@@ -751,10 +777,8 @@ function PredictTumor() {
                       boxShadow: "0 0 20px 0 rgba(213, 211, 211, 0.2)",
                       borderRadius: "20px",
                       padding: "15px",
-                      
                     }}
                   >
-
                     <Box
                       className="image"
                       sx={{
@@ -763,15 +787,18 @@ function PredictTumor() {
                         paddingY: "10px",
                         borderRadius: "20px",
                         textAlign: "center",
-                        height: "100%",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
+                        "@media (max-width:1200px)": {
+                          paddingLeft: 0,
+                          paddingRight: 0,
+                        },
                       }}
                     >
                       <img
                         src={preview}
-                        style={{ height: "100%", width: "100%" }}
+                        style={{ height: "auto", width: "100%" }}
                       />
                       <Box
                         className="gradcam_container"
@@ -792,17 +819,18 @@ function PredictTumor() {
                         )}
                       </Box>
                     </Box>
-
                   </Box>
 
-                  <Box className="viewing_buttons" sx={{ display: 'flex', justifyContent: 'center' }}>
-
+                  <Box
+                    className="viewing_buttons"
+                    sx={{ display: "flex", justifyContent: "center" }}
+                  >
                     <Button
                       className={style.toggle_btn}
                       type="button"
-                      onClick={() => setShowGradCam(prev => !prev)}
+                      onClick={() => setShowGradCam((prev) => !prev)}
                       sx={{
-                        backgroundColor: showGradCam ? "#d80101" : "#410f0fb3",
+                        backgroundColor: showGradCam ? "#410f0fb3" : "#d80101",
                         color: "#fff",
                         textTransform: "capitalize",
                         paddingY: "5px",
@@ -816,33 +844,98 @@ function PredictTumor() {
                     >
                       <GiCycle size={20} />
                       <Typography sx={{ fontSize: "17px", fontWeight: "500" }}>
-                        {showGradCam ? (<>  Viewing <br /> Heatmap</>) : (<>Toggle <br /> Heatmap </>)}
+                        {showGradCam ? (
+                          <>
+                            {" "}
+                            Preview <br /> MRI Scan
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            Preview <br /> Heatmap{" "}
+                          </>
+                        )}
                       </Typography>
                     </Button>
                   </Box>
                 </Box>
               </Grid>
-              <Grid item size={{ xs: 12, md: 7 }} >
-                <Box className="right_side" sx={{ marginLeft: '20px', paddingX: '60px', }}>
-                  <Box component={"span"} sx={{ color: '#fff', display: 'flex', gap: '10px', fontWeight: "500", fontSize: '30px', marginBottom: '40px', alignItems: 'center', fontFamily: "Fredoka, sans-serif", }} >
+              <Grid item size={{ xs: 12, md: 7 }}>
+                <Box className="right_side">
+                  <Box
+                    component={"span"}
+                    sx={{
+                      color: "#fff",
+                      display: "flex",
+                      gap: "10px",
+                      fontWeight: "500",
+                      fontSize: "30px",
+                      marginBottom: "40px",
+                      alignItems: "center",
+                      fontFamily: "Fredoka, sans-serif",
+                    }}
+                  >
                     <LuBrain size={30} color="red" />
                     AI Diagnosis Result
                   </Box>
-
-
-                  <Box className="ai_prediction" sx={{ width: '100%', marginTop: '55px', marginBottom: '55px' }}>
-                    <Typography component={'h3'} sx={{ color: 'var(--secondary-color)', paddingBottom: '10px', fontWeight: '600', }}>
+                  <Box
+                    className="ai_prediction"
+                    sx={{
+                      width: "100%",
+                      marginTop: { xs: "20px", md: "100px" },
+                      marginBottom: "55px",
+                    }}
+                  >
+                    <Typography
+                      component={"h3"}
+                      sx={{
+                        color: "var(--secondary-color)",
+                        paddingBottom: "10px",
+                        fontWeight: "600",
+                      }}
+                    >
                       Predicted Condition
                     </Typography>
-                    <Typography sx={{ color: '#fff', border: '2px solid #343434', borderRadius: '5px', padding: '10px', fontSize: '20px', fontWeight: '500', textTransform: "capitalize", paddingLeft: '20px' }}>{predictMRIMutation.data?.tumorResult}</Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        border: "2px solid #343434",
+                        borderRadius: "5px",
+                        padding: "10px",
+                        fontSize: "20px",
+                        fontWeight: "500",
+                        textTransform: "capitalize",
+                        paddingLeft: "20px",
+                      }}
+                    >
+                      {predictMRIMutation.data?.tumorResult}
+                    </Typography>
                   </Box>
-
-
-
-                  <Box className="confidence_level" sx={{ marginTop: '40px', width: "100%", mt: 2 }}>
-                    <Box className='percentage' sx={{ display: 'flex', marginBottom: '10px', }}>
-                      <Typography sx={{ color: 'var(--secondary-color)', fontWeight: '600', flexGrow: '1' }} >Confidence Level</Typography>
-                      <Typography sx={{ color: "rgb(249, 10, 10)", mb: 1, fontSize: '20px', fontWeight: '400' }}>
+                  <Box
+                    className="confidence_level"
+                    sx={{ marginTop: "40px", width: "100%", mt: 2 }}
+                  >
+                    <Box
+                      className="percentage"
+                      sx={{ display: "flex", marginBottom: "10px" }}
+                    >
+                      <Typography
+                        sx={{
+                          color: "var(--secondary-color)",
+                          fontWeight: "600",
+                          flexGrow: "1",
+                        }}
+                      >
+                        Confidence Level
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "rgb(249, 10, 10)",
+                          mb: 1,
+                          fontSize: "20px",
+                          fontWeight: "400",
+                        }}
+                      >
                         {predictMRIMutation.data?.percentage}%
                       </Typography>
                     </Box>
@@ -861,45 +954,129 @@ function PredictTumor() {
                       }}
                     />
                   </Box>
-
-
-                  <Box className="detection_status flex_column" sx={{ alignItems: 'flex-start' }} >
-                    <Typography sx={{ color: 'var(--secondary-color)', fontWeight: '600', marginTop: '22px', marginBottom: '10px' }}>Detection Status</Typography>
-                    <Box component={'span'} sx={{ display: "flex", gap: "5px", alignItems: 'center', border: '1px solid #ff0000', borderRadius: '5px', bgcolor: '#79030334', color: '#ff0000', paddingY: '5px', paddingX: '25px' }}>
+                  <Box
+                    className="detection_status flex_column"
+                    sx={{ alignItems: "flex-start" }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "var(--secondary-color)",
+                        fontWeight: "600",
+                        marginTop: "22px",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      Detection Status
+                    </Typography>
+                    <Box
+                      component={"span"}
+                      sx={{
+                        display: "flex",
+                        gap: "5px",
+                        alignItems: "center",
+                        border: "1px solid #ff0000",
+                        borderRadius: "5px",
+                        bgcolor: "#79030334",
+                        color: "#ff0000",
+                        paddingY: "5px",
+                        paddingX: "25px",
+                      }}
+                    >
                       <IoIosCheckmarkCircleOutline size={18} color="#ff0000" />
                       Detected
                     </Box>
                   </Box>
-                  <Box className={'analysis_time'} sx={{ borderTop: '1px solid #343434', width: '100%', marginTop: '25px' }}>
-                    <Typography component={'h3'} sx={{ color: 'var(--secondary-color)', paddingTop: '30px', width: '100%', paddingBottom: '10px', fontWeight: '100', fontSize: '13px' }}>Analysis Time</Typography>
-                    <Typography sx={{ color: '#fff', fontSize: '12px', fontWeight: '100' }}>{analysisTime ? `${analysisTime} seconds` : "—"}</Typography>
+                  <Box
+                    className="analysis_time"
+                    sx={{
+                      borderTop: "1px solid #343434",
+                      width: "100%",
+                      marginTop: "25px",
+                    }}
+                  >
+                    <Typography
+                      component={"h3"}
+                      sx={{
+                        color: "var(--secondary-color)",
+                        paddingTop: "30px",
+                        width: "100%",
+                        paddingBottom: "10px",
+                        fontWeight: "100",
+                        fontSize: "13px",
+                      }}
+                    >
+                      Analysis Time
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        fontSize: "12px",
+                        fontWeight: "100",
+                      }}
+                    >
+                      {analysisTime ? `${analysisTime} seconds` : "—"}
+                    </Typography>
                   </Box>
-
                 </Box>
               </Grid>
             </Grid>
           </Box>
         </Box>
-
-      ) :
-        <Box   component={"section"} sx={{ bgcolor: '#fff' }}>
-          <Box className="hidden_ai_result flex_column" sx={{ bgcolor: "#171717", alignItems: 'center', padding: "80px", borderTopRightRadius: "15%" }}>
-            <Box component={"span"} sx={{ color: '#fff', display: 'flex', gap: '10px', fontWeight: "500", fontSize: '30px', marginBottom: '40px', alignItems: 'center' }} >
+      ) : (
+        <Box component={"section"} sx={{ bgcolor: "#fff" }}>
+          <Box
+            className="hidden_ai_result flex_column"
+            sx={{
+              bgcolor: "#171717",
+              alignItems: "center",
+              paddingX: { xs: "10px", md: "80px" },
+              paddingY: { xs: "30px", md: "80px" },
+              borderTopRightRadius: "15%",
+            }}
+          >
+            <Box
+              component={"span"}
+              sx={{
+                color: "#fff",
+                display: "flex",
+                gap: "10px",
+                fontWeight: "500",
+                fontSize: "30px",
+                marginBottom: "50px",
+                alignItems: "center",
+              }}
+            >
               <LuBrain size={30} color="red" />
-              AI Diagnosis Result
+              <Typography
+                sx={{
+                  fontFamily: "Fredoka, sans-serif",
+                  fontWeight: "500",
+                  fontSize: { xs: "25px", sm: "40px" },
+                  flex: "0 0 auto",
+                }}
+              >
+                AI Diagnosis Result
+              </Typography>
             </Box>
 
             <Box component={"span"} className={style.pulse_wrapper_lock}>
               <IoLockClosedOutline size={60} color="var(--light-red-color)" />
             </Box>
 
-            <Typography component={'p'} sx={{ color: 'var(--secondary-color)', marginY: '50px', letterSpacing: "2px", }}>AI result will appear after submitting the report</Typography>
-
+            <Typography
+              component={"p"}
+              sx={{
+                color: "var(--secondary-color)",
+                marginY: "50px",
+                letterSpacing: "2px",
+                textAlign: "center",
+              }}
+            >
+              AI result will appear after submitting the report
+            </Typography>
           </Box>
         </Box>
-
-      }
-
+      )}
     </Box>
   );
 }
