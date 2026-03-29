@@ -733,12 +733,12 @@ function PredictTumor() {
 
 
       {showResult && preview ? (
-        <Box sx={{ bgcolor: '#fff' }}>
-          <Box className="ai-result flex_column" component={'section'} sx={{ bgcolor: "#171717", paddingTop: '25px', paddingBottom: '150px', paddingX: '30px', gap: '10px', justifyContent: 'center', marginBottom: '70px', borderTopRightRadius: "15%" }}>
+        <Box   component={"section"} sx={{ bgcolor: '#fff' }}>
+          <Box className="ai_result flex_column"  sx={{ bgcolor: "#171717", paddingTop: '25px', paddingBottom: '150px', paddingX: '30px', gap: '10px', justifyContent: 'center', marginBottom: '70px', borderTopRightRadius: "15%" }}>
             <Grid container>
 
               <Grid item size={{ xs: 12, md: 5 }}>
-                <Box className="lift-side" sx={{ marginBottom: '40px' }}>
+                <Box className="lift_side" sx={{ marginBottom: '40px' }}>
                   <Typography component={'h3'} sx={{ color: "#fff", fontWeight: "500", fontSize: '30px', paddingBottom: '25px', fontFamily: "Fredoka, sans-serif", }}>
                     <SlEnergy size={"30"} color="red" />
                     Grad-CAM Heatmap</Typography>
@@ -795,7 +795,7 @@ function PredictTumor() {
 
                   </Box>
 
-                  <Box className="viewing-buttons" sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Box className="viewing_buttons" sx={{ display: 'flex', justifyContent: 'center' }}>
 
                     <Button
                       className={style.toggle_btn}
@@ -823,14 +823,14 @@ function PredictTumor() {
                 </Box>
               </Grid>
               <Grid item size={{ xs: 12, md: 7 }} >
-                <Box className="right-side" sx={{ marginLeft: '20px', paddingX: '60px', }}>
+                <Box className="right_side" sx={{ marginLeft: '20px', paddingX: '60px', }}>
                   <Box component={"span"} sx={{ color: '#fff', display: 'flex', gap: '10px', fontWeight: "500", fontSize: '30px', marginBottom: '40px', alignItems: 'center', fontFamily: "Fredoka, sans-serif", }} >
                     <LuBrain size={30} color="red" />
                     AI Diagnosis Result
                   </Box>
 
 
-                  <Box className="ai-prediction" sx={{ width: '100%', marginTop: '55px', marginBottom: '55px' }}>
+                  <Box className="ai_prediction" sx={{ width: '100%', marginTop: '55px', marginBottom: '55px' }}>
                     <Typography component={'h3'} sx={{ color: 'var(--secondary-color)', paddingBottom: '10px', fontWeight: '600', }}>
                       Predicted Condition
                     </Typography>
@@ -839,7 +839,7 @@ function PredictTumor() {
 
 
 
-                  <Box className="confidence-level" sx={{ marginTop: '40px', width: "100%", mt: 2 }}>
+                  <Box className="confidence_level" sx={{ marginTop: '40px', width: "100%", mt: 2 }}>
                     <Box className='percentage' sx={{ display: 'flex', marginBottom: '10px', }}>
                       <Typography sx={{ color: 'var(--secondary-color)', fontWeight: '600', flexGrow: '1' }} >Confidence Level</Typography>
                       <Typography sx={{ color: "rgb(249, 10, 10)", mb: 1, fontSize: '20px', fontWeight: '400' }}>
@@ -863,14 +863,14 @@ function PredictTumor() {
                   </Box>
 
 
-                  <Box className="detection-status flex_column" sx={{ alignItems: 'flex-start' }} >
+                  <Box className="detection_status flex_column" sx={{ alignItems: 'flex-start' }} >
                     <Typography sx={{ color: 'var(--secondary-color)', fontWeight: '600', marginTop: '22px', marginBottom: '10px' }}>Detection Status</Typography>
                     <Box component={'span'} sx={{ display: "flex", gap: "5px", alignItems: 'center', border: '1px solid #ff0000', borderRadius: '5px', bgcolor: '#79030334', color: '#ff0000', paddingY: '5px', paddingX: '25px' }}>
                       <IoIosCheckmarkCircleOutline size={18} color="#ff0000" />
                       Detected
                     </Box>
                   </Box>
-                  <Box className={'analysis-time'} sx={{ borderTop: '1px solid #343434', width: '100%', marginTop: '25px' }}>
+                  <Box className={'analysis_time'} sx={{ borderTop: '1px solid #343434', width: '100%', marginTop: '25px' }}>
                     <Typography component={'h3'} sx={{ color: 'var(--secondary-color)', paddingTop: '30px', width: '100%', paddingBottom: '10px', fontWeight: '100', fontSize: '13px' }}>Analysis Time</Typography>
                     <Typography sx={{ color: '#fff', fontSize: '12px', fontWeight: '100' }}>{analysisTime ? `${analysisTime} seconds` : "—"}</Typography>
                   </Box>
@@ -882,18 +882,20 @@ function PredictTumor() {
         </Box>
 
       ) :
-        <Box className="hidden-ai-result flex_column" sx={{ bgcolor: "#171717", alignItems: 'center', padding: "80px" }}>
-          <Box component={"span"} sx={{ color: '#fff', display: 'flex', gap: '10px', fontWeight: "500", fontSize: '30px', marginBottom: '40px', alignItems: 'center' }} >
-            <LuBrain size={30} color="red" />
-            AI Diagnosis Result
+        <Box   component={"section"} sx={{ bgcolor: '#fff' }}>
+          <Box className="hidden_ai_result flex_column" sx={{ bgcolor: "#171717", alignItems: 'center', padding: "80px", borderTopRightRadius: "15%" }}>
+            <Box component={"span"} sx={{ color: '#fff', display: 'flex', gap: '10px', fontWeight: "500", fontSize: '30px', marginBottom: '40px', alignItems: 'center' }} >
+              <LuBrain size={30} color="red" />
+              AI Diagnosis Result
+            </Box>
+
+            <Box component={"span"} className={style.pulse_wrapper_lock}>
+              <IoLockClosedOutline size={60} color="var(--light-red-color)" />
+            </Box>
+
+            <Typography component={'p'} sx={{ color: 'var(--secondary-color)', marginY: '50px', letterSpacing: "2px", }}>AI result will appear after submitting the report</Typography>
+
           </Box>
-
-          <Box component={"span"} className={style.pulse_wrapper_lock}>
-            <IoLockClosedOutline size={60} color="var(--light-red-color)" />
-          </Box>
-
-          <Typography component={'p'} sx={{ color: 'var(--secondary-color)', marginY: '50px', letterSpacing: "2px", }}>AI result will appear after submitting the report</Typography>
-
         </Box>
 
       }

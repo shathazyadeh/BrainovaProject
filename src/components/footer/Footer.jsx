@@ -15,14 +15,26 @@ function Footer() {
   return (
     <Box
       component={"section"}
-      sx={{ alignItems: "center" }}
-      className={`footer flex_column ${style.background_footer}`}
+      sx={{alignItems: "center",bgcolor:"#171717",paddingTop:"120px",position:"relative" }}
+      className="footer flex_column"
     >
+      <Typography
+              sx={{
+                padding: "10px",
+                borderRadius: "15px",
+                display: "inline-flex",
+                justifyContent: "center",
+                alignItems: "center",
+                position:"absolute",
+                top:"-80px"
+              }}
+            >
+              <LuBrain size={"130"} color="#f50b0b" />
+            </Typography>
       <Grid
         container
         sx={{
-          paddingTop: "570px",
-          borderBottom: "1px solid var(--secondary-color)",
+          borderBottom: "1px solid #313131",
           paddingBottom: "30px",
         }}
       >
@@ -58,6 +70,7 @@ function Footer() {
                 fontSize: 40,
                 letterSpacing: "5px",
                 marginLeft: "5px",
+                color:"#fff"
               }}
             >
               BRAINOVA
@@ -84,6 +97,7 @@ function Footer() {
               fontWeight: "800",
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
+              color:"#fff"
             }}
           >
             Platform
@@ -144,57 +158,7 @@ function Footer() {
               fontWeight: "800",
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
-            }}
-          >
-            Resources
-          </Typography>
-          <List dense>
-            <ListItem sx={{ paddingX: "0" }}>
-              <ListItemText sx={{ textAlign: { xs: "center", lg: "start" } }}>
-                <Link
-                  className={style.footer_link}
-                  component={RouterLink}
-                  to="./home"
-                  sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
-                >
-                  Documentation
-                </Link>
-              </ListItemText>
-            </ListItem>
-            <ListItem sx={{ paddingX: "0" }}>
-              <ListItemText sx={{ textAlign: { xs: "center", lg: "start" } }}>
-                <Link
-                  className={style.footer_link}
-                  component={RouterLink}
-                  to="./home"
-                  sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
-                >
-                  Privacy Policy
-                </Link>
-              </ListItemText>
-            </ListItem>
-            <ListItem sx={{ paddingX: "0" }}>
-              <ListItemText sx={{ textAlign: { xs: "center", lg: "start" } }}>
-                <Link
-                  className={style.footer_link}
-                  component={RouterLink}
-                  to="./home"
-                  sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
-                >
-                  Terms of Service
-                </Link>
-              </ListItemText>
-            </ListItem>
-          </List>
-        </Grid>
-        <Grid item className="flex_column" size={{ xs: 12, sm: 6, lg: 2 }}>
-          <Typography
-            component={"h3"}
-            variant="h6"
-            sx={{
-              fontWeight: "800",
-              fontSize: "22px",
-              textAlign: { xs: "center", lg: "start" },
+              color:"#fff"
             }}
           >
             About Us
@@ -238,13 +202,65 @@ function Footer() {
             </ListItem>
           </List>
         </Grid>
+        <Grid item className="flex_column" size={{ xs: 12, sm: 6, lg: 2 }}>
+          <Typography
+            component={"h3"}
+            variant="h6"
+            sx={{
+              fontWeight: "800",
+              fontSize: "22px",
+              textAlign: { xs: "center", lg: "start" },
+              color:"#fff"
+            }}
+          >
+            Resources
+          </Typography>
+          <List dense>
+            <ListItem sx={{ paddingX: "0" }}>
+              <ListItemText sx={{ textAlign: { xs: "center", lg: "start" } }}>
+                <Link
+                  className={style.footer_link}
+                  component={RouterLink}
+                  to="./home"
+                  sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
+                >
+                  Documentation
+                </Link>
+              </ListItemText>
+            </ListItem>
+            <ListItem sx={{ paddingX: "0" }}>
+              <ListItemText sx={{ textAlign: { xs: "center", lg: "start" } }}>
+                <Link
+                  className={style.footer_link}
+                  component={RouterLink}
+                  to="./home"
+                  sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
+                >
+                  Privacy Policy
+                </Link>
+              </ListItemText>
+            </ListItem>
+            <ListItem sx={{ paddingX: "0" }}>
+              <ListItemText sx={{ textAlign: { xs: "center", lg: "start" } }}>
+                <Link
+                  className={style.footer_link}
+                  component={RouterLink}
+                  to="./home"
+                  sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
+                >
+                  Terms of Service
+                </Link>
+              </ListItemText>
+            </ListItem>
+          </List>
+        </Grid>
       </Grid>
       <Box className="lower_footer">
         <Typography
           component={"p"}
           sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
         >
-          © 2026 <Typography component={'span'} sx={{ color: 'var(--dark-red-color)' }}>Brainova</Typography>. All rights reserved. | Built for medical education
+          © 2026 <Typography component={'span'} sx={{color:'var(--dark-red-color)'}}>Brainova</Typography>. All rights reserved. | Built for medical education
           and research purposes.
         </Typography>
       </Box>
