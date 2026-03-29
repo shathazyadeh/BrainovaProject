@@ -739,7 +739,7 @@ function PredictTumor() {
           </Box>
         </Box>
       </Box>
-      {true ? (
+      {showResult && preview  ? (
         <Box component={"section"} sx={{ bgcolor: "#fff" }}>
           <Box
             className="ai_result flex_column"
