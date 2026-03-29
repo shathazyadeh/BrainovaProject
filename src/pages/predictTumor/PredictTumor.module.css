@@ -2,9 +2,6 @@
 .opacity_0{
     opacity: 0 !important;
 }
-.change_btn{
-    background-color: rgb(179,0,0) !important;
-}
 .dashed_form_hover{
     transition: all 0.2s;
 }
@@ -18,7 +15,7 @@
 }
 .color_to_gray_hover:hover{
     color: #fff;
-    background-color: transparent;
+    background-color: #fb00ff;
 }
 .toggle_btn:hover{
     transform: translateY(-5px); 
@@ -27,8 +24,21 @@
     transition: all 0.5s ease !important;
 }
 
-
-
+/*كود القفل المضيء*/
+.pulse_wrapper_lock{
+    position: relative;
+    display: inline-flex; 
+}
+.pulse_wrapper_lock::after {
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--light-red-color);
+    animation: pulse 1.5s infinite;
+    opacity: 0.6;
+}
 
 
 

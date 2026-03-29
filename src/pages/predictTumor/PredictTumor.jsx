@@ -21,7 +21,7 @@ import { GiCycle } from "react-icons/gi";
 import { IoInformationCircle } from "react-icons/io5";
 import { FaCircle } from "react-icons/fa";
 import { LuBrain } from "react-icons/lu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import style from "./PredictTumor.module.css";
 import useUploadMRI from "../../hooks/useUploadMRI";
 import useMRIPreview from "../../hooks/useMRIPreview";
@@ -29,10 +29,18 @@ import useGetQuestions from "../../hooks/report/studentReport/useGetQuestions";
 import TooltipButton from "../../components/uiVerseComponents/tooltipButton/TooltipButton";
 import SendButton from "../../components/uiVerseComponents/sendButton/SendButton";
 import Loader from "../../components/uiVerseComponents/loader/Loader";
-
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SubmitReportSchema } from "../../validations/SubmitReportSchema";
 import useSubmitReport from "../../hooks/report/studentReport/useSubmitReport";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { LinearProgress } from "@mui/material";
+import { IoLockClosedOutline } from "react-icons/io5";
+import { SlEnergy } from "react-icons/sl";
 
 function PredictTumor() {
+
+  const { isError, error, isLoading, data } = useGetQuestions();
+
   const {
     register,
     handleSubmit,
@@ -41,35 +49,39 @@ function PredictTumor() {
     watch,
     formState: { errors, isSubmitting },
   } = useForm({
-    
-    defaultValues: {}, // مهم
+    resolver: data ? yupResolver(SubmitReportSchema(data)) : undefined,
+    mode: "onBlur",
+    defaultValues: {},
   });
 
   const fileRegister = register("file"); // ربط input تبع الملف مع react-hook-form عشان يخزن قيمة الفايل (FileList) ويتحكم فيه
   const [fileValue, setFileValue] = useState(null);
   const [previewGradCam, setPreviewGradCam] = useState(null);
   const [caseId, setCaseId] = useState(null);
+  const [fileError, setFileError] = useState("");
+  const [isSubmittedSuccessfully, setIsSubmittedSuccessfully] = useState(false);
 
   const { predictMRIMutation } = usePredictMRI();
   const { uploadMRIMutation } = useUploadMRI();
   const { preview, setPreview, handelImagePreview } = useMRIPreview();
   const { serverErrors, submitReportMutation } = useSubmitReport();
-
-  const { isError, error, isLoading, data } = useGetQuestions();
+  const [showGradCam, setShowGradCam] = useState(false);  //عشان اخفي او اظهر الجراد كام من خلال البوتون
+  const [showResult, setShowResult] = useState(false);
   console.log("data ", data);
 
   const viewGradCam = (e) => {
-    e.target.classList.add(style.change_btn);
-    e.target.textContent = "Viewing Heatmap";
+
     setPreviewGradCam(predictMRIMutation.data?.gradCamUrl);
     console.log(previewGradCam);
+    setShowGradCam(true); //اظهرها 
   };
 
   const resetImage = () => {
     setPreview(null);
     setPreviewGradCam(null);
     setFileValue(null);
-    console.log("hi");
+    setShowGradCam(null);
+    setShowResult(false);
 
     const emptyValues = data?.reduce((acc, q) => {
       acc[q.id] = "";
@@ -82,42 +94,84 @@ function PredictTumor() {
   const uploadMRI = async () => {
     if (!fileValue) return;
 
-    // 1. upload
     const uploadResponse = await uploadMRIMutation.mutateAsync(fileValue);
     const newCaseId = uploadResponse.caseId;
     setCaseId(newCaseId);
 
     return newCaseId;
   };
+  const [analysisTime, setAnalysisTime] = useState(null);//لحساب وقت التحليل 
 
   const submitReport = async (formValues) => {
-    if (!fileValue) return;
+    setIsSubmittedSuccessfully(false);
 
-    // 1 upload MRI
-    const newCaseId = await uploadMRI();
+    if (!fileValue) {
+      setFileError("Please upload an MRI file");
+      return;
+    }
 
-    // 2 prepare answers array
-    const answersArray = data.map((q) => ({
-      questionId: q.id,
-      answerValue: formValues[q.id] || "", // لو ما جاوب خليها ""
-    }));
-    console.log("case id ", newCaseId);
+    setFileError("");
 
-    // 3 submit report
-    await submitReportMutation.mutateAsync({
-      caseId: newCaseId,
-      answers: answersArray,
-    });
+    try {
+      const newCaseId = await uploadMRI();
 
-    // 4 AI prediction
-    const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
-    console.log("model ", modelResponse);
+      const answersArray = data.map((q) => ({
+        questionId: q.id,
+        answerValue: formValues[q.id] || "",
+      }));
 
-    // 5 reset state
-    setCaseId(null);
-    setPreviewGradCam(null);
-    setFileValue(null);
+      await submitReportMutation.mutateAsync({
+        caseId: newCaseId,
+        answers: answersArray,
+      });
+
+      setIsSubmittedSuccessfully(true);
+      const startTime = Date.now();//عشان ابلش احسب الوقت 
+       const predictResponse = await predictMRIMutation.mutateAsync(newCaseId);
+         console.log("AI Prediction Result:", predictResponse); // هنا بتطبع النتيجة
+      setShowResult(true);
+
+      const endTime = Date.now();//نهاية الوقت 
+      const duration = ((endTime - startTime) / 1000).toFixed(2); //حولناها لثواني
+      setAnalysisTime(duration); //stateخزناها بال 
+      // reset
+      setCaseId(null);
+      setPreviewGradCam(null);
+      setFileValue(null);
+    } catch (err) {
+      setTimeout(() => {
+        setIsSubmittedSuccessfully(false);
+      }, 3000);
+    }
   };
+
+
+  //لتعطيل باقي الاسئلة اا جاوب نو تيومر
+  const preliminaryQuestion = data?.find(
+    (q) => q.code === "preliminary assesment",
+  );
+
+  const preliminaryAnswer = watch(preliminaryQuestion?.id);
+
+  const isNoTumor = preliminaryAnswer === "no tumor";
+
+  useEffect(() => {
+    if (isNoTumor) {
+      // فرغ كل الأسئلة اللي مش preliminary
+      const emptyValues = data?.reduce((acc, q) => {
+        acc[q.id] = q.code === "preliminary assesment" ? preliminaryAnswer : "";
+        return acc;
+      }, {});
+
+      reset(emptyValues);
+    }
+  }, [isNoTumor, data]);// رح يشتغل بس لما isNoTumor يتغير
+
+  const isDisabled = (q) => {
+    if (q.code === "preliminary assesment") return false;
+    return isNoTumor;
+  };
+  //////////////////////////////////////
 
   return (
     <Box className="predict_tumor_section" sx={{ padding: "1px" }}>
@@ -129,7 +183,6 @@ function PredictTumor() {
             alignItems: "center",
             paddingTop: "80px",
             gap: "20px",
-            bgcolor: "var(--navy-color)",
           }}
         >
           <Typography
@@ -184,8 +237,7 @@ function PredictTumor() {
           sx={{
             position: "relative",
             zIndex: 20,
-            background:
-              "linear-gradient(90deg, #2a2a2a 0%, #181818 50%, #2a2a2a 100%)",
+            background: "#171717",
             boxShadow: "0 0 10px 0 rgb(249, 10, 10)",
             paddingX: "26px",
             paddingTop: "30px",
@@ -213,7 +265,6 @@ function PredictTumor() {
             <Box
               className="flex_column"
               component={"form"}
-              //onSubmit={handleSubmit(uploadMRI)}
               sx={{
                 minHeight: "450px",
               }}
@@ -280,17 +331,13 @@ function PredictTumor() {
                 </Button>
               </Box>
 
-              {/* <Button type="submit" sx={{
-    mt: 2,
-    flexShrink: 0,
-  }}>Send to AI Model</Button> */}
+
             </Box>
           ) : (
             <Box
               className="image_preview_gradcam flex_column"
               sx={{
-                background:
-                  "linear-gradient(90deg, #767575 0%, #494848 50%, #3c3a3a 100%)",
+                bgcolor: "#3b3a3a42",
                 border: "1px solid #4b4848",
                 boxShadow: "0 0 20px 0 rgba(213, 211, 211, 0.2)",
                 borderRadius: "20px",
@@ -319,22 +366,7 @@ function PredictTumor() {
                       src={preview}
                       style={{ height: "100%", width: "100%" }}
                     />
-                    <Box
-                      className="gradcam_container"
-                      sx={{
-                        position: "absolute",
-                        left: "60px",
-                        right: "60px",
-                        top: "10px",
-                        bottom: "10px",
-                      }}
-                    >
-                      <img
-                        src={predictMRIMutation.data?.gradCamUrl}
-                        style={{ height: "100%", width: "100%" }}
-                        alt=""
-                      />
-                    </Box>
+
                   </Box>
                 </Grid>
                 <Grid
@@ -386,50 +418,7 @@ function PredictTumor() {
                       <br />
                       image.
                     </Typography>
-                    {/* 
-                    <Button
-                      className={`${style.toggle_btn}`}
-                      type="button"
-                      sx={{
-                        bgcolor: "var(--primary-color)",
-                        color: "#fff",
-                        textTransform: "capitalize",
-                        paddingY: "5px",
-                        paddingX: "15px",
-                        marginTop: "30px",
-                        display: "flex",
-                        gap: "20px",
-                        borderRadius: "20px",
-                        boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
-                        cursor: "not-allowed",
-                      }}
-                      onClick={viewGradCam}
-                    >
-                      <GiCycle size={20} />
-                      <Typography sx={{ fontSize: "17px", fontWeight: "500" }}>
-                        Toggle
-                        <br />
-                        Heatmap
-                      </Typography>
-                    </Button>
-                    <Button
-                      className={style.color_to_gray_hover}
-                      type="button"
-                      sx={{
-                        color: "var(--primary-color)",
-                        textTransform: "capitalize",
-                        marginTop: "10px",
-                      }}
-                    >
-                      <Box
-                        className="icon"
-                        sx={{ marginRight: "5px", paddingTop: "6px" }}
-                      >
-                        <FaExchangeAlt size={16} />
-                      </Box>
-                      Change Image
-                    </Button>
-                    */}
+
                     <TooltipButton onClick={resetImage}></TooltipButton>
                   </Box>
                 </Grid>
@@ -444,14 +433,13 @@ function PredictTumor() {
         className="predict_tumor_form"
         sx={{ bgcolor: "#fff" }}
       >
-        {/*<ScrollAnimatedHorizontalLine /> */}
         <Box
           className="student_diagnosis_form"
           sx={{
             backgroundColor: "#171717",
             paddingX: "26px",
             paddingTop: "30px",
-            paddingBottom: "30px",
+            paddingBottom: "90px",
             minHeight: "540px",
             position: "relative",
             paddingRight: "650px",
@@ -537,47 +525,59 @@ function PredictTumor() {
                       control={control}
                       defaultValue=""
                       render={({ field }) => (
-                        <RadioGroup
-                          {...field}
-                          onChange={(e) => field.onChange(e.target.value)}
-                        >
-                          <Grid container spacing={2}>
-                            {" "}
-                            {q.options.map((opt) => (
-                              <Grid item size={{ xs: 12, md: 6 }} key={opt}>
-                                {" "}
-                                <FormControlLabel
-                                  control={
-                                    <Radio
-                                      value={opt}
-                                      sx={{ display: "none" }}
-                                    />
-                                  }
-                                  label={opt}
-                                  sx={{
-                                    m: 0,
-                                    width: "100%",
-                                    borderRadius: "14px",
-                                    border: "1px solid #333",
-                                    backgroundColor: "#111",
-                                    color: "#fff",
-                                    py: 2,
-                                    px: 2,
-                                    textTransform: "capitalize",
-                                    "&:hover": {
-                                      backgroundColor: "#1a1a1a",
-                                      transform: "scale(1.02)",
-                                    },
-                                    "&:has(input:checked)": {
-                                      backgroundColor: "#ff2d2d",
-                                      borderColor: "#ff2d2d",
-                                    },
-                                  }}
-                                />{" "}
-                              </Grid>
-                            ))}{" "}
-                          </Grid>
-                        </RadioGroup>
+                        <>
+                          <RadioGroup
+                            {...field}
+                            onChange={(e) => field.onChange(e.target.value)}
+                          >
+                            <Grid container spacing={2}>
+                              {" "}
+                              {q.options.map((opt) => (
+                                <Grid item size={{ xs: 12, md: 6 }} key={opt}>
+                                  {" "}
+                                  <FormControlLabel
+                                    disabled={isDisabled(q)}
+                                    control={
+                                      <Radio
+                                        value={opt}
+                                        sx={{ display: "none" }}
+                                      />
+                                    }
+                                    label={opt}
+                                    sx={{
+                                      m: 0,
+                                      width: "100%",
+                                      borderRadius: "14px",
+                                      border: "1px solid #333",
+                                      backgroundColor: "#111",
+                                      color: "#fff",
+                                      py: 2,
+                                      px: 2,
+                                      textTransform: "capitalize",
+                                      "&.Mui-disabled": {
+                                        cursor: "not-allowed !important",
+                                      },
+                                      "&:hover": {
+                                        backgroundColor: "#1a1a1a",
+                                        transform: "scale(1.02)",
+                                      },
+                                      "&.Mui-disabled .MuiTypography-root": {
+                                        color: "#9c9898",
+                                      },
+                                      "&:has(input:checked)": {
+                                        backgroundColor: "#ff2d2d",
+                                        borderColor: "#ff2d2d",
+                                      },
+                                    }}
+                                  />{" "}
+                                </Grid>
+                              ))}{" "}
+                            </Grid>
+                          </RadioGroup>
+                          <FormHelperText sx={{ color: "red" }}>
+                            {errors[q.id]?.message}
+                          </FormHelperText>
+                        </>
                       )}
                     />
                   )}
@@ -585,6 +585,7 @@ function PredictTumor() {
                   {q.type === 1 && (
                     <TextField
                       {...register(q.id)}
+                      disabled={isDisabled(q)}
                       variant="filled"
                       label={q.code}
                       fullWidth
@@ -592,6 +593,14 @@ function PredictTumor() {
                       rows={2}
                       error={!!errors[q.id]}
                       helperText={errors[q.id]?.message}
+                      sx={{
+                        "& .MuiInputBase-root.Mui-disabled": {
+                          cursor: "not-allowed !important",
+                        },
+                        "& .MuiInputBase-root.Mui-disabled textarea": {
+                          cursor: "not-allowed !important",
+                        },
+                      }}
                       InputProps={{
                         disableUnderline: true,
                         sx: {
@@ -609,6 +618,9 @@ function PredictTumor() {
                           marginLeft: "10px",
                           fontWeight: "500",
                           "&.Mui-focused": {
+                            color: "var(--mid-gray-color)",
+                          },
+                          "&.Mui-disabled": {
                             color: "var(--mid-gray-color)",
                           },
                         },
@@ -659,8 +671,10 @@ function PredictTumor() {
               <br />
               before viewing the AI results.
             </Typography>
-            <SendButton onClick={handleSubmit(submitReport)}></SendButton>
-
+            <SendButton
+              onClick={handleSubmit(submitReport)}
+              isSuccess={isSubmittedSuccessfully}
+            />
             {serverErrors?.length > 0 ? (
               <Typography
                 component={"p"}
@@ -688,9 +702,202 @@ function PredictTumor() {
             ) : (
               ""
             )}
+            {fileError && (
+              <Typography
+                component={"p"}
+                sx={{
+                  border: "1px solid var(--primary-color)",
+                  width: "fit-content",
+                  borderRadius: "60px",
+                  color: "#fff",
+                  px: "18px",
+                  py: "10px",
+                  bgcolor: "#171717",
+                  fontWeight: "500",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
+                  marginTop: "40px",
+                }}
+              >
+                <Typography component={"span"} className={style.pulse_wrapper}>
+                  <FaCircle size={18} color="ff2d2d" />
+                </Typography>
+                {fileError}
+              </Typography>
+            )}
           </Box>
         </Box>
       </Box>
+
+
+      {showResult && preview ? (
+        <Box sx={{ bgcolor: '#fff' }}>
+          <Box className="ai-result flex_column" component={'section'} sx={{ bgcolor: "#171717", paddingTop: '25px', paddingBottom: '150px', paddingX: '30px', gap: '10px', justifyContent: 'center', marginBottom: '70px', borderTopRightRadius: "15%" }}>
+            <Grid container>
+
+              <Grid item size={{ xs: 12, md: 5 }}>
+                <Box className="lift-side" sx={{ marginBottom: '40px' }}>
+                  <Typography component={'h3'} sx={{ color: "#fff", fontWeight: "500", fontSize: '30px', paddingBottom: '25px', fontFamily: "Fredoka, sans-serif", }}>
+                    <SlEnergy size={"30"} color="red" />
+                    Grad-CAM Heatmap</Typography>
+
+                  <Box
+                    className="image_preview_gradcam flex_column"
+                    sx={{
+                      bgcolor: "#171717",
+                      border: "1px solid #4b4848",
+                      boxShadow: "0 0 20px 0 rgba(213, 211, 211, 0.2)",
+                      borderRadius: "20px",
+                      padding: "15px",
+                      
+                    }}
+                  >
+
+                    <Box
+                      className="image"
+                      sx={{
+                        position: "relative",
+                        paddingX: "60px",
+                        paddingY: "10px",
+                        borderRadius: "20px",
+                        textAlign: "center",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={preview}
+                        style={{ height: "100%", width: "100%" }}
+                      />
+                      <Box
+                        className="gradcam_container"
+                        sx={{
+                          position: "absolute",
+                          left: "60px",
+                          right: "60px",
+                          top: "10px",
+                          bottom: "10px",
+                        }}
+                      >
+                        {showGradCam && (
+                          <img
+                            src={predictMRIMutation.data?.gradCamUrl}
+                            style={{ height: "100%", width: "100%" }}
+                            alt=""
+                          />
+                        )}
+                      </Box>
+                    </Box>
+
+                  </Box>
+
+                  <Box className="viewing-buttons" sx={{ display: 'flex', justifyContent: 'center' }}>
+
+                    <Button
+                      className={style.toggle_btn}
+                      type="button"
+                      onClick={() => setShowGradCam(prev => !prev)}
+                      sx={{
+                        backgroundColor: showGradCam ? "#d80101" : "#410f0fb3",
+                        color: "#fff",
+                        textTransform: "capitalize",
+                        paddingY: "5px",
+                        paddingX: "20px",
+                        marginTop: "30px",
+                        display: "flex",
+                        gap: "20px",
+                        borderRadius: "20px",
+                        boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
+                      }}
+                    >
+                      <GiCycle size={20} />
+                      <Typography sx={{ fontSize: "17px", fontWeight: "500" }}>
+                        {showGradCam ? (<>  Viewing <br /> Heatmap</>) : (<>Toggle <br /> Heatmap </>)}
+                      </Typography>
+                    </Button>
+                  </Box>
+                </Box>
+              </Grid>
+              <Grid item size={{ xs: 12, md: 7 }} >
+                <Box className="right-side" sx={{ marginLeft: '20px', paddingX: '60px', }}>
+                  <Box component={"span"} sx={{ color: '#fff', display: 'flex', gap: '10px', fontWeight: "500", fontSize: '30px', marginBottom: '40px', alignItems: 'center', fontFamily: "Fredoka, sans-serif", }} >
+                    <LuBrain size={30} color="red" />
+                    AI Diagnosis Result
+                  </Box>
+
+
+                  <Box className="ai-prediction" sx={{ width: '100%', marginTop: '55px', marginBottom: '55px' }}>
+                    <Typography component={'h3'} sx={{ color: 'var(--secondary-color)', paddingBottom: '10px', fontWeight: '600', }}>
+                      Predicted Condition
+                    </Typography>
+                    <Typography sx={{ color: '#fff', border: '2px solid #343434', borderRadius: '5px', padding: '10px', fontSize: '20px', fontWeight: '500', textTransform: "capitalize", paddingLeft: '20px' }}>{predictMRIMutation.data?.tumorResult}</Typography>
+                  </Box>
+
+
+
+                  <Box className="confidence-level" sx={{ marginTop: '40px', width: "100%", mt: 2 }}>
+                    <Box className='percentage' sx={{ display: 'flex', marginBottom: '10px', }}>
+                      <Typography sx={{ color: 'var(--secondary-color)', fontWeight: '600', flexGrow: '1' }} >Confidence Level</Typography>
+                      <Typography sx={{ color: "rgb(249, 10, 10)", mb: 1, fontSize: '20px', fontWeight: '400' }}>
+                        {predictMRIMutation.data?.percentage}%
+                      </Typography>
+                    </Box>
+
+                    <LinearProgress
+                      variant="determinate"
+                      value={predictMRIMutation.data?.percentage || 0}
+                      sx={{
+                        boxShadow: "0 0 10px 0 rgb(249, 10, 10)",
+                        height: 10,
+                        borderRadius: 5,
+                        backgroundColor: "#020202",
+                        "& .MuiLinearProgress-bar": {
+                          backgroundColor: "red",
+                        },
+                      }}
+                    />
+                  </Box>
+
+
+                  <Box className="detection-status flex_column" sx={{ alignItems: 'flex-start' }} >
+                    <Typography sx={{ color: 'var(--secondary-color)', fontWeight: '600', marginTop: '22px', marginBottom: '10px' }}>Detection Status</Typography>
+                    <Box component={'span'} sx={{ display: "flex", gap: "5px", alignItems: 'center', border: '1px solid #ff0000', borderRadius: '5px', bgcolor: '#79030334', color: '#ff0000', paddingY: '5px', paddingX: '25px' }}>
+                      <IoIosCheckmarkCircleOutline size={18} color="#ff0000" />
+                      Detected
+                    </Box>
+                  </Box>
+                  <Box className={'analysis-time'} sx={{ borderTop: '1px solid #343434', width: '100%', marginTop: '25px' }}>
+                    <Typography component={'h3'} sx={{ color: 'var(--secondary-color)', paddingTop: '30px', width: '100%', paddingBottom: '10px', fontWeight: '100', fontSize: '13px' }}>Analysis Time</Typography>
+                    <Typography sx={{ color: '#fff', fontSize: '12px', fontWeight: '100' }}>{analysisTime ? `${analysisTime} seconds` : "—"}</Typography>
+                  </Box>
+
+                </Box>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+
+      ) :
+        <Box className="hidden-ai-result flex_column" sx={{ bgcolor: "#171717", alignItems: 'center', padding: "80px" }}>
+          <Box component={"span"} sx={{ color: '#fff', display: 'flex', gap: '10px', fontWeight: "500", fontSize: '30px', marginBottom: '40px', alignItems: 'center' }} >
+            <LuBrain size={30} color="red" />
+            AI Diagnosis Result
+          </Box>
+
+          <Box component={"span"} className={style.pulse_wrapper_lock}>
+            <IoLockClosedOutline size={60} color="var(--light-red-color)" />
+          </Box>
+
+          <Typography component={'p'} sx={{ color: 'var(--secondary-color)', marginY: '50px', letterSpacing: "2px", }}>AI result will appear after submitting the report</Typography>
+
+        </Box>
+
+      }
+
     </Box>
   );
 }

@@ -16,8 +16,8 @@ export default function usePredictMRI(){
             const tumorResult = response.data.prediction; // نتيجة المودل
             const tumorProbabilitiesArray = response.data.probabilities; //جبنا المصفوفة
             const tumorProbability = Math.max(...tumorProbabilitiesArray); //بدون ثلاث نقاط برجع nan فلأنها مصفوفة بحط ثلاث نقاط بفككها هو
-            
-            return { gradCamUrl, tumorResult, tumorProbability };
+            const percentage = parseFloat((tumorProbability * 100).toFixed(2)); 
+            return { gradCamUrl, tumorResult, tumorProbability,percentage };
         }
         });
 

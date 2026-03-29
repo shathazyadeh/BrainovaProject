@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ButtonBase, Box, Typography } from "@mui/material";
 import { keyframes, styled } from "@mui/material/styles";
 
@@ -315,37 +315,39 @@ function AnimatedLetters({
 
 export default function SendButton({
   onClick,
+  isSuccess,
   resetAfter = 2500,
   defaultText = "Send Report",
   sentText = "Sent",
   disabled = false,
 }) {
-  const [phase, setPhase] = useState("idle"); // idle | sending | sent
+    const [phase, setPhase] = useState("idle");
 
-  const sent = phase === "sent";
-  const sending = phase === "sending";
-
-  const handleClick = async (e) => {
-    if (disabled || sending || sent) return;
-
+  useEffect(() => {
+  if (isSuccess) {
     setPhase("sending");
-
-    try {
-      await onClick?.(e);
-    } catch (error) {
-      setPhase("idle");
-      throw error;
-    }
 
     setTimeout(() => {
       setPhase("sent");
-      if (resetAfter > 0) {
-        setTimeout(() => {
-          setPhase("idle");
-        }, resetAfter);
-      }
-    }, 820);
-  };
+    }, 800);
+
+    if (resetAfter > 0) {
+      setTimeout(() => {
+        setPhase("idle");
+      }, resetAfter + 800);
+    }
+  }
+}, [isSuccess]);
+
+  const sent = phase === "sent";
+const sending = phase === "sending";
+
+  const handleClick = async (e) => {
+  if (disabled || phase === "sending") return;
+
+  await onClick?.(e);
+
+};
 
   const defaultLetters = useMemo(
     () => <AnimatedLetters text={defaultText} variant="default" />,
