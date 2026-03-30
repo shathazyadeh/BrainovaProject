@@ -5,10 +5,12 @@ import { Box } from "@mui/material";
 
 function MainLayout() {
   return (
-    <Box sx={{ bgcolor: "var(--navy-color)", paddingTop: "20px" }}>
+    <Box sx={{ bgcolor: "#171717", paddingTop: "20px" }}>
       <Navbar />
       <Outlet />
-      <Footer />
+      <Box sx={{bgcolor:"#171717"}}>
+        <Footer />
+      </Box>
     </Box>
   );
 }

@@ -15,22 +15,15 @@ function Footer() {
   return (
     <Box
       component={"section"}
-      sx={{alignItems: "center",bgcolor:"#171717",paddingTop:"120px",position:"relative" }}
+      sx={{
+        alignItems: "center",
+        bgcolor: "#000000",
+        paddingTop: "70px",
+        borderTopLeftRadius: "90px",
+        borderTopRightRadius: "90px",
+      }}
       className="footer flex_column"
     >
-      <Typography
-              sx={{
-                padding: "10px",
-                borderRadius: "15px",
-                display: "inline-flex",
-                justifyContent: "center",
-                alignItems: "center",
-                position:"absolute",
-                top:"-80px"
-              }}
-            >
-              <LuBrain size={"130"} color="#f50b0b" />
-            </Typography>
       <Grid
         container
         sx={{
@@ -70,7 +63,7 @@ function Footer() {
                 fontSize: 40,
                 letterSpacing: "5px",
                 marginLeft: "5px",
-                color:"#fff"
+                color: "#fff",
               }}
             >
               BRAINOVA
@@ -97,7 +90,7 @@ function Footer() {
               fontWeight: "800",
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
-              color:"#fff"
+              color: "#fff",
             }}
           >
             Platform
@@ -158,7 +151,7 @@ function Footer() {
               fontWeight: "800",
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
-              color:"#fff"
+              color: "#fff",
             }}
           >
             About Us
@@ -210,7 +203,7 @@ function Footer() {
               fontWeight: "800",
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
-              color:"#fff"
+              color: "#fff",
             }}
           >
             Resources
@@ -260,8 +253,15 @@ function Footer() {
           component={"p"}
           sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
         >
-          © 2026 <Typography component={'span'} sx={{color:'var(--dark-red-color)'}}>Brainova</Typography>. All rights reserved. | Built for medical education
-          and research purposes.
+          © 2026{" "}
+          <Typography
+            component={"span"}
+            sx={{ color: "var(--dark-red-color)" }}
+          >
+            Brainova
+          </Typography>
+          . All rights reserved. | Built for medical education and research
+          purposes.
         </Typography>
       </Box>
     </Box>

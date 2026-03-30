@@ -16,9 +16,7 @@ import { Controller, useForm } from "react-hook-form";
 import usePredictMRI from "../../hooks/usePredictMRI";
 import { FaCloudUploadAlt } from "react-icons/fa"; //ايقونة الابلود من مكتبة رياكت ايكونز
 import { FaFolderOpen } from "react-icons/fa6";
-import { FaExchangeAlt } from "react-icons/fa";
 import { GiCycle } from "react-icons/gi";
-import { IoInformationCircle } from "react-icons/io5";
 import { FaCircle } from "react-icons/fa";
 import { LuBrain } from "react-icons/lu";
 import { useEffect, useState } from "react";
@@ -47,7 +45,7 @@ function PredictTumor() {
     control,
     reset,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: data ? yupResolver(SubmitReportSchema(data)) : undefined,
     mode: "onBlur",
@@ -68,6 +66,7 @@ function PredictTumor() {
   const [showGradCam, setShowGradCam] = useState(false);  //عشان اخفي او اظهر الجراد كام من خلال البوتون
   const [showResult, setShowResult] = useState(false);
   const [analysisTime, setAnalysisTime] = useState(null);//لحساب وقت التحليل 
+  
 
   console.log("data ", data);
 
@@ -218,7 +217,7 @@ function PredictTumor() {
               WebkitTextFillColor: "transparent",
               textAlign: "center",
               fontSize: { xs: "80px", md: "96px" },
-              lineHeight: {xs:"70px",sm:"100px"},
+              lineHeight: { xs: "70px", sm: "100px" },
             }}
           >
             Predict Tumor
@@ -241,7 +240,7 @@ function PredictTumor() {
           sx={{
             position: "relative",
             zIndex: 20,
-            background: "#171717",
+            background: "#25252578",
             boxShadow: "0 0 10px 0 rgb(249, 10, 10)",
             paddingX: "26px",
             paddingTop: "30px",
@@ -279,8 +278,8 @@ function PredictTumor() {
                 sx={{
                   flex: 1,
                   justifyContent: "center",
+                  boxShadow: "0 0 10px 0 rgb(59, 58, 58)",
                   alignItems: "center",
-                  border: "2px dashed var(--mid-gray-color)",
                   bgcolor: "#0e0d0d3a",
                   gap: "20px",
                   cursor: "pointer",
@@ -319,6 +318,7 @@ function PredictTumor() {
                   Upload MRI Image
                 </Typography>
                 <Button
+                  component={"span"}
                   startIcon={<FaFolderOpen size={18} />}
                   sx={{
                     bgcolor: "var(--primary-color)",
@@ -453,12 +453,12 @@ function PredictTumor() {
             position: "relative",
             paddingRight: "650px",
             "@media (max-width:1400px)": {
-                paddingRight: "560px",
-              },
+              paddingRight: "560px",
+            },
             "@media (max-width:1080px)": {
-                paddingX:"20px",
-                paddingBottom: "0px",
-              }
+              paddingX: "20px",
+              paddingBottom: "0px",
+            },
           }}
         >
           <Typography
@@ -482,7 +482,35 @@ function PredictTumor() {
               position: "relative",
             }}
           >
-            {/* Loader فوق الفورم */}
+            {isError && (
+              <Box
+                component={"section"}
+                className="server_error_section"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "200px",
+                }}
+              >
+                <Typography
+                  component={"h1"}
+                  variant="h5"
+                  sx={{
+                    boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
+                    border: "1px solid var(--primary-color)",
+                    width: "fit-content",
+                    borderRadius: "60px",
+                    color: "#fff",
+                    px: "18px",
+                    py: "10px",
+                    bgcolor: "#171717",
+                  }}
+                >
+                  {error?.message}
+                </Typography>
+              </Box>
+            )}
+             {/* Loader فوق الفورم */}
             {isLoading && (
               <Box
                 sx={{
@@ -644,21 +672,22 @@ function PredictTumor() {
                     />
                   )}
                 </FormControl>
-                
               ))}
           </Box>
-          <Box className="send_btn_and_errors flex_column" 
-           sx={{"@media (min-width:1080px)": {
-                display:"none"
+          <Box
+            className="send_btn_and_errors flex_column"
+            sx={{
+              "@media (min-width:1080px)": {
+                display: "none",
               },
-             alignItems:"center",
+              alignItems: "center",
             }}
           >
-            <Box className="send_btn" sx={{marginTop:"30px"}}>
+            <Box className="send_btn" sx={{ marginTop: "30px" }}>
               <SendButton
-              onClick={handleSubmit(submitReport)}
-              isSuccess={isSubmittedSuccessfully}
-            />
+                onClick={handleSubmit(submitReport)}
+                isSuccess={isSubmittedSuccessfully}
+              />
             </Box>
             {serverErrors?.length > 0 ? (
               <Typography
@@ -731,8 +760,8 @@ function PredictTumor() {
                 paddingX: "10px",
               },
               "@media (max-width:1080px)": {
-                display:"none"
-              }
+                display: "none",
+              },
             }}
           >
             <Typography
@@ -836,8 +865,12 @@ function PredictTumor() {
               },
             }}
           >
-            <Grid container spacing={7} sx={{display:"flex",justifyContent:"center"}}>
-              <Grid item size={{ xs: 10,sm:8, md: 5 }}>
+            <Grid
+              container
+              spacing={7}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              <Grid item size={{ xs: 10, sm: 8, md: 5 }}>
                 <Box className="left_side" sx={{ marginBottom: "40px" }}>
                   <Typography
                     component={"h3"}

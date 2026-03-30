@@ -14,12 +14,12 @@ export default function AnimatedLine() {
     });
     gsap.to(path, {
       strokeDashoffset: 0,
-      ease: "none",
+      ease: "bounce",
      scrollTrigger: {
   trigger: document.body, // أو pathRef.current إذا تريد ربطه بالمسار
   start: "top top",       // هنا تصحيح كتابة start
-end: "+=1000",
-  scrub: 6,              // أو قيمة أصغر للتجاوب أسرع
+  end: "bottom bottom",
+  scrub: -90,              // أو قيمة أصغر للتجاوب أسرع
 },
     });
   }, []);
@@ -27,12 +27,13 @@ end: "+=1000",
     <svg
       width="100%"
       height="2000px"
-      viewBox="0 0 1200 2000"
+      viewBox="0 0 1200 800"
       style={{
-        position: "absolute", top: "0px",
-        left: -300,
+        position: "absolute", top: "-400px",//ببلش من الصفحة فووق من الراس
+        right: 200,
         zIndex: 20,
         pointerEvents: "none",
+         overflow: "visible" 
       }} >
       <defs>
         <linearGradient
@@ -46,17 +47,13 @@ end: "+=1000",
       </defs>
       <path
         ref={pathRef}
-        d=" M 150 0 
-                           C 400 150, 700 50, 950 250 
-                           C 1200 450, 1100 750, 850 900 
-                           C 600 1050, 350 1150, 650 1350
-                            C 950 1550, 1000 1750, 600 2000 "
+        d="M -99 -171 C 500 100 483 104 500 200 C 500 420 285 394 253 280 C 220 115 350 120 505 203 C 620 260 756 266 791 411 C 817 540 937 345 844 588 C 1098 586 893 511 894 591 C 830 944 1380 620 1406 973"
         fill="none"
         stroke="url(#blueGradient)"
-        strokeWidth="40"
+        strokeWidth="30"
 
         strokeLinecap="round"
-        style={{ filter: "drop-shadow(0px 0px 10px rgba(59,130,246,0.6))", }} />
+        style={{ filter: "drop-shadow(0px 0px 10px rgba(246, 81, 59, 0.6))", }} />
     </svg>
   );
 }
