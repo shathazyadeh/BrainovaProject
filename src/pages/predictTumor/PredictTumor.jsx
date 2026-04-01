@@ -209,7 +209,7 @@ function PredictTumor() {
           <Typography
             component={"h1"}
             sx={{
-              fontFamily: "Fredoka, sans-serif",
+              fontFamily: "var(--secondary-font)",
               fontWeight: "800",
               color: "var(--primary-color)",
               background: "linear-gradient(90deg, #ec827c, #e80d0d, #ff0000)",
@@ -225,7 +225,7 @@ function PredictTumor() {
           <Typography
             sx={{
               color: "var(--secondary-color)",
-              fontFamily: "Fredoka, sans-serif",
+              fontFamily: "var(--secondary-font)",
               fontSize: "24px",
               textAlign: "center",
             }}
@@ -258,7 +258,7 @@ function PredictTumor() {
               fontWeight: "500",
               paddingBottom: "20px",
               fontSize: "30px",
-              fontFamily: "Fredoka, sans-serif",
+              fontFamily: "var(--secondary-font)",
             }}
           >
             MRI Upload
@@ -312,7 +312,7 @@ function PredictTumor() {
                   sx={{
                     color: "#fff",
                     letterSpacing: "1px",
-                    fontFamily: "Fredoka, sans-serif",
+                    fontFamily: "var(--secondary-font)",
                   }}
                 >
                   Upload MRI Image
@@ -468,7 +468,7 @@ function PredictTumor() {
               fontWeight: "500",
               paddingBottom: "20px",
               fontSize: "30px",
-              fontFamily: "Fredoka, sans-serif",
+              fontFamily: "var(--secondary-font)",
             }}
           >
             Student Diagnosis
@@ -767,7 +767,7 @@ function PredictTumor() {
             <Typography
               component={"h2"}
               sx={{
-                fontFamily: "Fredoka, sans-serif",
+                fontFamily: "var(--secondary-font)",
                 fontSize: "70px",
                 fontWeight: "600",
               }}
@@ -776,7 +776,7 @@ function PredictTumor() {
             </Typography>
             <Typography
               sx={{
-                fontFamily: "Fredoka, sans-serif",
+                fontFamily: "var(--secondary-font)",
                 fontSize: "17px",
                 color: "var(--mid-gray-color)",
                 marginBottom: "60px",
@@ -879,7 +879,7 @@ function PredictTumor() {
                       fontWeight: "500",
                       fontSize: "30px",
                       paddingBottom: "25px",
-                      fontFamily: "Fredoka, sans-serif",
+                      fontFamily: "var(--secondary-font)",
                     }}
                   >
                     <SlEnergy size={"30"} color="red" />
@@ -988,7 +988,7 @@ function PredictTumor() {
                       fontSize: "30px",
                       marginBottom: "40px",
                       alignItems: "center",
-                      fontFamily: "Fredoka, sans-serif",
+                      fontFamily: "var(--secondary-font)",
                     }}
                   >
                     <LuBrain size={30} color="red" />
@@ -1168,7 +1168,7 @@ function PredictTumor() {
               <LuBrain size={30} color="red" />
               <Typography
                 sx={{
-                  fontFamily: "Fredoka, sans-serif",
+                  fontFamily: "var(--secondary-font)",
                   fontWeight: "500",
                   fontSize: { xs: "30px", sm: "40px" },
                   flex: "0 0 auto",

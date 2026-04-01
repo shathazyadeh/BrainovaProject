@@ -18,6 +18,7 @@ export default function useUpdateUserInfo(){
             onSuccess:(data, variables)=>{ //رياكت كويري بترجعلي المتغيرات الي استخدمتها في الميوتيشين فوق تحت اسم فاريابلز
                 if(currentUser?.id === data?.data?.userId)
                 updateUser(variables.userInfo);   // يحدث Zustand + localStorage
+              console.log('hii');
             },
             onError: (error)=>{
                 toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`, {

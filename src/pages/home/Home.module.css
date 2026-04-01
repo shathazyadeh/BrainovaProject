@@ -1,0 +1,14 @@
+.rotate_red_layer {
+  bottom: -130px;
+  right: -100px;
+  width: 120%;
+  height: 50px;
+  transform: rotate(-5deg);
+}
+.rotate_gray_layer{
+  bottom: -130px;
+  right: -100px;
+  width: 120%;
+  height: 50px;
+  transform: rotate(5deg);
+}

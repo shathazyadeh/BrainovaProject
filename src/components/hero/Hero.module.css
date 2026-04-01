@@ -72,9 +72,33 @@
 
 /* تطبيق الحركة على الصورة */
 .animatedImage {
-  animation: float 3s ease-in-out infinite;
+  animation: float 2s ease-in-out infinite;
   /* float → اسم الحركة
      3s → مدة الحركة 3 ثواني
      ease-in-out → حركة ناعمة (بداية ونهاية بطيئة)
      infinite → تتكرر للأبد */
+}
+
+.hero_img{
+    animation: heroImg 1s;
+}
+@keyframes heroImg{  
+    from{
+  transform: translateX(100%)
+    }
+    to{
+        transform: translateX(0%);
+    }
+}
+.hero_info{
+
+    animation: herocontent 1s;
+}
+@keyframes herocontent{  /*/..................*/
+    from{
+  transform: translate(-100%)
+    }
+    to{
+        transform: translate(0%);
+    }
 }

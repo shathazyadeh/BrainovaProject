@@ -54,6 +54,10 @@ function Navbar() {
     navigate('/auth/login');
   }
 
+  const handleProfile= ()=>{
+    navigate('/profile');
+  }
+
   return (
     <AppBar position="static" sx={{
       marginRight: '7px',
@@ -73,6 +77,7 @@ function Navbar() {
 
           <Typography
             variant="h6"
+            className='logo'
             noWrap
             component="a"
             href="#app-bar-with-responsive-menu"
@@ -241,7 +246,7 @@ function Navbar() {
                   }
                 }} onClick={handleCloseUserMenu}>
                   <Typography sx={{ color: 'white', textAlign: 'center' }}
-                  onClick={()=> {if (setting==='Logout') handleLogout()}}
+                  onClick={()=> {(setting==='Logout')? handleLogout(): handleProfile()}}
                    >{setting}
                    </Typography>
                 </MenuItem>

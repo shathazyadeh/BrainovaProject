@@ -11,12 +11,12 @@ function CoreFeature() {
     <Box
       component={"section"}
       className="Core_Features"
-      sx={{ paddingY: "110px" }}
+      sx={{ paddingY: "150px" }}
     >
       <Typography
         component={"h2"}
         variant="h3"
-        sx={{ color: "white", fontWeight: "500", textAlign: "center" }}
+        sx={{ color: "white", fontWeight: "500",fontWeight: "800",fontFamily: "var(--primary-font)", textAlign: "center" }}
       >
         Clinical-Grade AI Technology
       </Typography>
@@ -36,14 +36,11 @@ function CoreFeature() {
       <Grid spacing={5} container sx={{justifyContent: "center"}}>
         <Grid
           item
-          size={{sm:12 , md : 6 , lg : 3}}
-          className={style.featuers}
+          size={{sm:12 , md : 6 , lg : 6}}
+         className={`${style.featuers} ${style.card}`}
           sx={{
             minWidth: "250px",
-            background:
-              " linear-gradient(160deg, rgba(255, 100, 70, 0.06), rgba(255, 60, 40, 0.02) ), rgba(10, 10, 15, 0.85) ",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(255, 160, 140, 0.12)",
+            boxShadow: "0 0 15px rgba(130, 0, 0, 0.71)",
             borderRadius: "15px",
             paddingX: "30px",
             paddingY:'40px',
@@ -53,45 +50,45 @@ function CoreFeature() {
             gap: "10px",
           }}
         >
-          <Typography
+              <Box className='card_header' sx={{display:'flex',gap:'10px'}}>
+           <Typography
             component={"span"}
             sx={{
-              bgcolor: "rgba(43, 25, 25)",
+              bgcolor: " #ff0000 ",
               padding: "10px",
               borderRadius: "15px",
               display: "inline-flex",
               justifyContent: "center",
               alignItems: "center",
+              color:"#fff",
+              boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
             }}
           >
-            <LuBrain size={"30"} color="var(--light-red-color)" />
+            <LuBrain size={"35"}  />
           </Typography>
 
           <Typography
             component={"h3"}
-            sx={{ color: "white", fontWeight: "500" , marginTop:'20px'}}
+            sx={{ color: "#fff", fontWeight: "800" , marginTop:'20px',fontSize:'20px'}}
           >
             AI-Powered Analysis
           </Typography>
+         </Box>
           <Typography
             component={"p"}
-            sx={{ color: "var( --secondary-color)", fontSize: "12px" }}
-          >
-            Advanced deep learning models for
-            <br /> accurate tumor detection
+            sx={{ color: "#757575", fontSize: "16px", fontWeight: "800"  }}
+          >Advanced deep learning models designed to deliver highly accurate and reliable brain tumor detection, 
+          enabling faster diagnosis and supporting medical professionals with intelligent analysis and visual insights.
           </Typography>
         </Grid>
 
         <Grid
           item
-          size={{sm:12 , md : 6 , lg : 3}}
-          className={style.featuers}
+          size={{sm:12 , md : 6 , lg : 6}}
+          className={`${style.featuers} ${style.card}`}
           sx={{
             minWidth: "250px",
-            background:
-              " linear-gradient(160deg, rgba(255, 100, 70, 0.06), rgba(255, 60, 40, 0.02) ), rgba(10, 10, 15, 0.85) ",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(255, 160, 140, 0.12)",
+            boxShadow: "0 0 15px rgba(130, 0, 0, 0.71)",
             borderRadius: "15px",
             paddingX: "30px",
             paddingY:'40px',
@@ -101,94 +98,96 @@ function CoreFeature() {
             gap: "10px",
           }}
         >
+          <Box className='card_header' sx={{display:'flex',gap:'10px'}}>
           <Typography
             component={"span"}
             sx={{
-              bgcolor: "rgba(43, 25, 25)",
+              bgcolor: " #ff0000 ",
               padding: "10px",
               borderRadius: "15px",
               display: "inline-flex",
               justifyContent: "center",
+              color:"#fff",
               alignItems: "center",
+             boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
             }}
           >
-            <PiPulseBold size={"30"} color="var(--light-red-color)" />
+            <PiPulseBold size={"35"} />
           </Typography>
 
           <Typography
             component={"h3"}
-            sx={{ color: "white", fontWeight: "500" , marginTop:'20px' }}
+            sx={{ color: "white", fontWeight: "800" , marginTop:'20px',fontSize:'20px' }}
           >
             Real-time Processing
           </Typography>
+          </Box>
           <Typography
             component={"p"}
-            sx={{ color: "var( --secondary-color)", fontSize: "12px" }}
+            sx={{ color: "var( --secondary-color)", fontSize: "16px" }}
           >
-            Get diagnostic results in seconds with <br />
-            instant visualization
+           Get accurate diagnostic results in seconds with instant visualization, enabling quick analysis and clear insights 
+           to support faster and more informed medical decisions.
           </Typography>
         </Grid>
 
         <Grid
           item
-          size={{sm:12 , md : 6 , lg : 3}}
-          className={style.featuers}
+          size={{sm:12 , md : 6 , lg : 6}}
+          className={`${style.featuers} ${style.card}`}
           sx={{
             minWidth: "250px",
-            background:
-              " linear-gradient(160deg, rgba(255, 100, 70, 0.06), rgba(255, 60, 40, 0.02) ), rgba(10, 10, 15, 0.85) ",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(255, 160, 140, 0.12)",
+            boxShadow: "0 0 15px rgba(130, 0, 0, 0.71)",
             borderRadius: "15px",
             paddingX: "30px",
-            paddingY:'40px',
+            paddingTop:'40px',
+            paddingBottom:'50px',
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
             gap: "10px",
           }}
         >
+           <Box className='card_header' sx={{display:'flex',gap:'10px'}}>
           <Typography
             component={"span"}
             sx={{
-              bgcolor: "rgba(43, 25, 25)",
+                            bgcolor: " #ff0000 ",
               padding: "10px",
               borderRadius: "15px",
               display: "inline-flex",
               justifyContent: "center",
               alignItems: "center",
+              color:"#fff",
+              boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
             }}
           >
-            <SlEnergy size={"30"} color="var(--light-red-color)" />
+            <SlEnergy size={"35"}  />
           </Typography>
 
           <Typography
             component={"h3"}
-            sx={{ color: "white", fontWeight: "500" , marginTop:'20px' }}
+            sx={{ color: "white", fontWeight: "800" , marginTop:'20px' ,fontSize:'20px'}}
           >
             Grad-CAM Heatmaps
           </Typography>
+          </Box>
           <Typography
             component={"p"}
-            sx={{ color: "var( --secondary-color)", fontSize: "12px" }}
+            sx={{ color: "var( --secondary-color)", fontSize: "16px" }}
           >
-            Visual explanations explaining AI
-            <br />
-            decisions in MRI analysis
+           Clear visual explanations that illustrate how AI models interpret MRI scans, providing transparency into decision-making processes and 
+           helping users better understand diagnostic results.
           </Typography>
         </Grid>
 
         <Grid
           item
-          size={{sm:12 , md : 6 , lg : 3}}
-          className={style.featuers}
+          size={{sm:12 , md : 6 , lg : 6}}
+          className={`${style.featuers} ${style.card}`}
           sx={{
             minWidth: "250px",
-            background:
-              " linear-gradient(160deg, rgba(255, 100, 70, 0.06), rgba(255, 60, 40, 0.02) ), rgba(10, 10, 15, 0.85) ",
-            backdropFilter: "blur(14px)",
-            border: "1px solid rgba(255, 160, 140, 0.12)",
+            boxShadow: "0 0 15px rgba(130, 0, 0, 0.71)",
             borderRadius: "15px",
             paddingX: "30px",
             paddingY:'40px',
@@ -198,32 +197,38 @@ function CoreFeature() {
             gap: "10px",
           }}
         >
+           <Box className='card_header' sx={{display:'flex',gap:'10px'}}>
           <Typography
             component={"span"}
             sx={{
-              bgcolor: "rgba(43, 25, 25)",
+              bgcolor: " #ff0000 ",
               padding: "10px",
               borderRadius: "15px",
               display: "inline-flex",
               justifyContent: "center",
               alignItems: "center",
+              color:"#fff",
+              boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
             }}
           >
-            <LuBrainCircuit size={"30"} color="var(--light-red-color)" />
+            <LuBrainCircuit size={"35"}  />
           </Typography>
+ 
+
 
           <Typography
             component={"h3"}
-            sx={{ color: "white", fontWeight: "500" , marginTop:'20px' }}
+            sx={{ color: "white", fontWeight: "800" , marginTop:'20px',fontSize:'20px' }}
           >
             Interactive 3D Brain
           </Typography>
+          </Box>
           <Typography
             component={"p"}
-            sx={{ color: "var( --secondary-color)", fontSize: "12px" }}
+            sx={{ color: "#fffdfd", fontSize: "16px" }}
           >
-            Interactive 3D model to explore brain
-            <br /> anatomy and tumor locations.
+           An interactive 3D model that allows users to explore brain anatomy in detail and accurately visualize tumor locations, enhancing understanding and
+            supporting more effective analysis.
           </Typography>
         </Grid>
       </Grid>

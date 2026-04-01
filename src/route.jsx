@@ -15,6 +15,7 @@ import Profile from "./pages/profile/Profile.jsx";
 import UserManagement from "./pages/userManagement/UserManagement.jsx";
 import SetPassword from "./pages/setPassword/SetPassword.jsx";
 import SuperAdminDashboard from "./pages/superAdminDashboard/SuperAdminDashboard.jsx";
+import StudentProfile from "./pages/studentProfile/StudentProfile.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -26,6 +27,9 @@ const router = createBrowserRouter([
         },{
             path:'predict-tumor',
             element:<PredictTumor/>
+        },{
+            path:'profile',
+            element:<StudentProfile/>
         }
     ]
    },

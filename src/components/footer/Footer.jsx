@@ -7,17 +7,21 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { LuBrain } from "react-icons/lu";
 import style from "./Footer.module.css";
 
 function Footer() {
+    const location = useLocation();
+    let footerBodyColor = "#000";
+    if (location.pathname === "/home") footerBodyColor = "#171717";
+
   return (
     <Box
       component={"section"}
       sx={{
         alignItems: "center",
-        bgcolor: "#000000",
+        bgcolor: footerBodyColor,
         paddingTop: "70px",
         borderTopLeftRadius: "90px",
         borderTopRightRadius: "90px",

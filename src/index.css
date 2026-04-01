@@ -7,23 +7,26 @@
   --dark-gray-color:rgb(26,26,26);
   --navy-color: rgb(1,2,5);
   --table-color: rgba(34, 32, 32, 0.4);
+
+  --primary-font: "Poppins";
+  --secondary-font: "Fredoka", sans-serif;
 }
 body{
   overflow-x: hidden;
   user-select: none;
 }
-input::-ms-reveal, /* يخفي أيقونة إظهار الباسورد (العين) في Edge */
-input::-ms-clear { /* يخفي زر المسح (X) داخل الانبوت في Edge */
-  display: none;
-}
 a {
     text-decoration: none !important;
 }
 img {
-  -webkit-user-drag: none; /* حتى ا يعمل دراج للصور*/
-  -moz-user-drag: none;    
-  -o-user-drag: none;      
-  user-select: none;       
+  -webkit-user-drag: none; /* Chrome و Safari */
+  -moz-user-drag: none;    /* Firefox */
+  -o-user-drag: none;      /* متصفحات قديمة */
+  user-select: none;       /* يمنع تحديد الصورة */
+}
+input::-ms-reveal, /* يخفي أيقونة إظهار الباسورد (العين) في Edge */
+input::-ms-clear { /* يخفي زر المسح (X) داخل الانبوت في Edge */
+  display: none;
 }
 .upper_case{
   text-transform: capitalize !important;

@@ -1,21 +1,50 @@
-import { Container } from "@mui/material"
+import { Box, Container } from "@mui/material"
 import Hero from "../../components/hero/Hero"
 import CoreFeature from "../../components/coreFeatures/CoreFeatures"
 import AIinMedicine from "../../components/aIinMedicine/aIinMedicine"
+import style from "./Home.module.css";
+import ChromaGrid from "../../components/reactBitsComponents/chromaGrid/ChromaGrid";
 
 function Home() {
   return (
     <>
-      <Hero />
+      <Box
+        sx={{
+          width: "100%",
+          bgcolor: "#0a0a0a",
+          backgroundImage: `
+    linear-gradient(rgba(255, 0, 0, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.08) 1px, transparent 1px)`,
+          backgroundSize: "40px 40px",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Hero />
+        </Container>
+      </Box>
 
-      <Container maxWidth='lg'>
-        <CoreFeature />
-        <AIinMedicine />
+      <Box sx={{ bgcolor: "var(--navy-color)" }}>
+        <Box
+          className={style.rotate_gray_layer}
+          sx={{ position: "absolute", bgcolor: "#2a2a2a" }}
+        ></Box>
+        <Box
+          className={style.rotate_red_layer}
+          sx={{ position: "absolute", bgcolor: "var(--primary-color)" }}
+        ></Box>
 
-      </Container>
+        <Container maxWidth="lg">
+          <CoreFeature />
+        </Container>
+
+        <ChromaGrid />
+
+        <Container maxWidth="lg">
+          <AIinMedicine />
+        </Container>
+      </Box>
     </>
-  )
+  );
 }
 
 export default Home
-
