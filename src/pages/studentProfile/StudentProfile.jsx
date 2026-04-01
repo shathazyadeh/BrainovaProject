@@ -1,22 +1,22 @@
-import RegisterForm from '../../components/registerForm/RegisterForm'
-import { Box, Grid, Container, Link, Typography } from '@mui/material'
+import { Box, Container, Grid, Typography, Link } from '@mui/material'
+import useAuthStore from '../../store/useAuthStore'
+import FlipClock from '../../components/flipClock/FlipClock';
+import useGetUserById from '../../hooks/useGetUserById';
 import { Link as RouterLink } from "react-router-dom";
+import RegisterForm from '../../components/registerForm/RegisterForm'
 import useUpdateUserInfo from '../../hooks/useUpdateUserInfo';
 import { UpdateUserInfoSchema } from '../../validations/UpdateUserInfoSchema';
-import useAuthStore from '../../store/useAuthStore';
-import FlipClock from '../../components/flipClock/FlipClock';
 import studentImg from './../../assets/images/profile/studentImg.webp'
-import useGetUserById from '../../hooks/useGetUserById';
-
-
 
 
 function StudentProfile() {
   const user = useAuthStore(state => state.user);
-  const { data } = useGetUserById();
   const userId = user?.id;
+  const { data } = useGetUserById();
+  console.log(data);
+
   return (
-    <Box component={'section'} className="profile" sx={{ height: "100vh", paddingTop: "50px" }}>
+    <Box component={'section'} className="profile" sx={{ paddingTop: "50px" }}>
       <Container maxWidth="lg">
         <Box className="user_info" sx={{ color: "#fff", bgcolor: "#000", borderRadius: "20px", paddingY: "30px", paddingX: "10px", boxShadow: "0 0 10px 0 rgb(249, 10, 10)" }}>
           <Grid container spacing={5} sx={{ flexGrow: 1 }}>
@@ -88,11 +88,7 @@ function StudentProfile() {
 
           </Grid>
         </Box>
-      </Container>
-
-
-      
-        <Box className='student_info_form' sx={{ padding: '80px' }}>
+        <Box className='student_info_form' sx={{ paddingY: '40px' }}>
           <Grid container spacing={3} >
             <Grid item size={{ md: 8 }}>
               <Box
@@ -100,12 +96,12 @@ function StudentProfile() {
                 sx={{
                   borderTopRightRadius: "40px",
                   borderBottomRightRadius: "40px",
-                  paddingBottom: "0px",
                   gap: "40px",
                   padding: '60px',
                   bgcolor: '#000'
                 }}
               >
+                {console.log("sup id :" ,data?.supervisorId)}
                 <RegisterForm
                   useHook={useUpdateUserInfo}
                   userId={userId}
@@ -120,6 +116,7 @@ function StudentProfile() {
                     userName: user.userName,
                     email: user.email,
                     phoneNumber: user.phoneNumber,
+                    supervisorUserId : data?.supervisorId
                   }}
                 />
                 <Link
@@ -148,13 +145,9 @@ function StudentProfile() {
             </Grid>
           </Grid>
         </Box>
+      </Container>
     </Box>
   )
 }
 
 export default StudentProfile
-
-
-
-  
-   

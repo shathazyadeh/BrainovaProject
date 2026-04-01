@@ -11,7 +11,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup"; // @hookform/resolvers: بتربط yup مع react-hook-form عشان الفورم يستخدم قواعد الفاليديشين
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuthStore from "../../store/useAuthStore";
 import { toast } from "react-toastify";
@@ -38,8 +38,15 @@ function RegisterForm({
     register,
     handleSubmit,
     watch, // نستخدم watch لمراقبة قيمة الحقول داخل الفورم
+    reset,
     formState: { errors, isSubmitting },
   } = form;
+  
+  useEffect(() => { //عشان ابديت معلومات الستيودنت لنفسه اول مرة يتم استدعاء الفورم ما بكون السوبر اي دي واصل 
+  if (defaultValues) {
+    reset(defaultValues);
+  }
+}, [defaultValues]);
 
   const hookData = useHook();
   const { serverErrors, supervisors, supervisorsLoading } = hookData;
@@ -70,6 +77,7 @@ function RegisterForm({
   const currentUser = useAuthStore((state) => state.user); //المستخدم الحالي عشان نفحص هل الميوتيشين هيكون لرجستر اي يوز اوث ولا ابديت ... حسب الرول
 
   const handleUser = async (values) => {
+      console.log("FORM VALUES ", values);
     if (hookData.authMutation) {
       //register
       await hookData.authMutation.mutateAsync({
@@ -137,7 +145,8 @@ function RegisterForm({
       }
 
       // إذا وصلنا لهون = كل العمليات نجحت
-      toast.success("User updated successfully");
+      console.log("وصلنا قبل التوست");
+toast.success("User updated successfully");
 
       onSuccess?.();
     }
