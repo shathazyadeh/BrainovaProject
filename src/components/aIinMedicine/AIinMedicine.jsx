@@ -19,13 +19,23 @@ function AIinMedicine() {
           <Typography
             component={"h2"}
             variant="h2"
-            sx={{ color: "white", fontWeight: "800",fontFamily: "var(--primary-font)", }}
+            sx={{ color: "white", fontWeight: "800",fontFamily: "var(--primary-font)",
+              "@media (max-width:470px)": {
+              fontSize: "50px",
+            },"@media (max-width:426px)": {
+              fontSize: "40px",
+            }}}
           >
             AI in Modern
             <Typography
               component={"p"}
               variant="h2"
-              sx={{ color: "var( --primary-color)", fontWeight: "800",fontFamily: "var(--primary-font)", }}
+              sx={{ color: "var( --primary-color)", fontWeight: "800",fontFamily: "var(--primary-font)",
+                "@media (max-width:470px)": {
+              fontSize: "50px",
+            },"@media (max-width:426px)": {
+              fontSize: "40px",
+            }}}
             >
               {" "}
               Healthcare{" "}

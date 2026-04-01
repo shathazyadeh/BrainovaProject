@@ -98,7 +98,8 @@ function Hero() {
               color: "var( --secondary-color)",
               fontSize: "16px",
               lineHeight: "25px",
-              paddingRight: "100px",
+              maxWidth: "468px",
+              width:"fit-content"
             }}
           >
             Leverage cutting-edge artificial intelligence for rapid and accurate
@@ -131,12 +132,12 @@ function Hero() {
                 bgcolor: "rgba(61, 59, 59, 0.9)",
                 border: "1px solid rgba(115, 114, 114, 0.9)",
                 paddingX: "15px",
-                paddingY: "8px",
+                paddingY: "10px",
                 borderRadius: "15px",
                 boxShadow: "0 0 15px rgba(82, 81, 81, 0.6)",
               }}
             >
-              <Typography component={"span"}>
+              <Typography component={"span"} sx={{ marginRight: "5px" }}>
                 <LuBrain size={"15px"} />
               </Typography>
               Learn More

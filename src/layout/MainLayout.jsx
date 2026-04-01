@@ -8,11 +8,14 @@ function MainLayout() {
 
   // تحديد لون الفوتر حسب الصفحة
   let footerBg = "#171717";
-  if (location.pathname === "/home") footerBg = "#000";
+  let navbarBg = "#171717"
+  if (location.pathname === "/home") {footerBg = "#000"; navbarBg="var(--navy-color)"}
 
   return (
-    <Box sx={{ bgcolor: "#171717", paddingTop: "20px" }}>
-      <Navbar />
+    <Box sx={{ bgcolor: "#171717" }}>
+      <Box sx={{bgcolor: navbarBg, paddingTop:"20px"}}>
+        <Navbar />
+      </Box>
       <Outlet />
       <Box sx={{ bgcolor: footerBg }}>
         <Footer />

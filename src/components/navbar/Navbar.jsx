@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import StarsBackground from '../reactBitsComponents/starsBackground/StarsBackground';
 import { LuBrain } from "react-icons/lu";
 import { IoBookOutline } from "react-icons/io5";
@@ -86,14 +86,15 @@ function Navbar() {
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 800,
-              fontSize: 25,
+              fontSize: 28,
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
               display: 'flex',
               gap: '10px',
-
-            }}
+              "@media (max-width:356px)": {
+              fontSize: "20px"
+            }}}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +168,7 @@ function Navbar() {
                     backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
                   }
                 }} onClick={handleCloseNavMenu}>
-                  <Typography component={RouterLink}
+                  <Typography component={NavLink}
                     to={
                       page.name == 'Home' ? '/home' :
                         page.name == 'Analysis' ? '/predict-tumor' :
@@ -187,18 +188,30 @@ function Navbar() {
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'center', gap: '12px' }}>
             {pages.map((page) => (
               <Button
-                component={RouterLink}
-                key={page.name}
-                onClick={handleCloseNavMenu}
-                className={`upper_case ${style.navbar_btn}`}
+  component={NavLink}
+  key={page.name}
+  to={
+    page.name == 'Home' ? '/home' :
+    page.name == 'Analysis' ? '/predict-tumor' :
+    '/'
+  }
+  className={`upper_case ${style.navbar_btn}`}
+  sx={{
+    my: 2,
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '6px',
+    fontFamily: 'revert',
+    fontSize: '18px',
+    fontWeight: '600',
 
-                sx={{ my: 2, color: 'white', display: 'flex', alignItems:'center' , gap:'6px', fontFamily: 'revert', fontSize: '18px', fontWeight: '600' }}
-                to={
-                      page.name == 'Home' ? '/home' :
-                        page.name == 'Analysis' ? '/predict-tumor' :
-                          '/'
-                    }
-              >
+    "&.active": {
+      color: "var(--primary-color)",
+      borderBottom: "2px solid var(--primary-color)",
+    }
+  }}
+>
                 {page.icon}
                 {page.name}
               </Button>

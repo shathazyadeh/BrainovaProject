@@ -252,7 +252,7 @@ function Footer() {
           </List>
         </Grid>
       </Grid>
-      <Box className="lower_footer">
+      <Box className="lower_footer" sx={{textAlign:"center"}}>
         <Typography
           component={"p"}
           sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}

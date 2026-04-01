@@ -16,7 +16,12 @@ function CoreFeature() {
       <Typography
         component={"h2"}
         variant="h3"
-        sx={{ color: "white", fontWeight: "500",fontWeight: "800",fontFamily: "var(--primary-font)", textAlign: "center" }}
+        sx={{ color: "white", fontWeight: "500",fontWeight: "800",fontFamily: "var(--primary-font)", textAlign: "center",
+          "@media (max-width:470px)": {
+              fontSize: "50px",
+            },"@media (max-width:426px)": {
+              fontSize: "40px",
+            }}}
       >
         Clinical-Grade AI Technology
       </Typography>

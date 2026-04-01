@@ -66,16 +66,10 @@ function PredictTumor() {
   const [showGradCam, setShowGradCam] = useState(false);  //عشان اخفي او اظهر الجراد كام من خلال البوتون
   const [showResult, setShowResult] = useState(false);
   const [analysisTime, setAnalysisTime] = useState(null);//لحساب وقت التحليل 
+  const isLocked = showResult;//عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
   
 
   console.log("data ", data);
-
-  const viewGradCam = (e) => {
-
-    setPreviewGradCam(predictMRIMutation.data?.gradCamUrl);
-    console.log(previewGradCam);
-    setShowGradCam(true); //اظهرها 
-  };
 
   const resetImage = () => {
     setPreview(null);
@@ -106,9 +100,13 @@ function PredictTumor() {
     setIsSubmittedSuccessfully(false);
 
     if (!fileValue) {
-      setFileError("Please upload an MRI file");
-      return;
-    }
+  if (isLocked) {
+    setFileError("Please upload a new MRI image to submit again");
+  } else {
+    setFileError("Please upload an MRI file");
+  }
+  return;
+}
 
     setFileError("");
 
@@ -168,9 +166,10 @@ function PredictTumor() {
   }, [isNoTumor, data]);// رح يشتغل بس لما isNoTumor يتغير
 
   const isDisabled = (q) => {
-    if (q.code === "preliminary assesment") return false;
-    return isNoTumor;
-  };
+  if (isLocked) return true; //لقفل الفورم بعد النتيجة
+  if (q.code === "preliminary assesment") return false;
+  return isNoTumor;
+};
   //////////////////////////////////////
 
   return (
@@ -209,14 +208,14 @@ function PredictTumor() {
           <Typography
             component={"h1"}
             sx={{
-              fontFamily: "var(--secondary-font)",
+              fontFamily: "var(--primary-font)",
               fontWeight: "800",
               color: "var(--primary-color)",
               background: "linear-gradient(90deg, #ec827c, #e80d0d, #ff0000)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               textAlign: "center",
-              fontSize: { xs: "80px", md: "96px" },
+              fontSize: { xs: "68px", md: "96px" },
               lineHeight: { xs: "70px", sm: "100px" },
             }}
           >
@@ -427,7 +426,6 @@ function PredictTumor() {
                       <br />
                       image.
                     </Typography>
-
                     <TooltipButton onClick={resetImage}></TooltipButton>
                   </Box>
                 </Grid>
@@ -687,6 +685,7 @@ function PredictTumor() {
               <SendButton
                 onClick={handleSubmit(submitReport)}
                 isSuccess={isSubmittedSuccessfully}
+                disabled={isLocked}
               />
             </Box>
             {serverErrors?.length > 0 ? (
