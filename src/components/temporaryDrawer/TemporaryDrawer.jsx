@@ -26,6 +26,15 @@ export default function TemporaryDrawer() {
 
   const location = useLocation();
 
+  const routes = {
+    Dashboard: ["/dashboard/admin", "/dashboard/super-admin"],
+    Profile: ["/dashboard/admin/profile", "/dashboard/super-admin/profile"],
+    "User Management": [
+      "/dashboard/admin/user-management",
+      "/dashboard/super-admin/user-management",
+    ],
+  };
+
   const DrawerList = (
     <Box
       className="flex_column"
@@ -73,72 +82,115 @@ export default function TemporaryDrawer() {
           </Typography>
         </Typography>
       </Box>
-      <List sx={{ flexGrow: "1" }}>
-        {["Dashboard", "User Management", "Profile"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              sx={{
-                borderRadius: "20px",
-                transition: "all 0.3s ease",
-                marginY: "4px",
+      {user?.role === "Supervisor" ? (
+       <List sx={{ flexGrow: "1" }}>
+          {[
+            "Dashboard",
+            "Reports",
+            "New Reports",
+            "Students",
+            "Feedback",
+            "Profile",
+          ].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton
+                sx={{
+                  borderRadius: "20px",
+                  transition: "all 0.3s ease",
+                  marginY: "4px",
 
-                "&:hover": {
-                  bgcolor: "var(--dark-gray-color)",
-                  boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
-                },
+                  "&:hover": {
+                    bgcolor: "var(--dark-gray-color)",
+                    boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
+                  },
 
-                ...( (location.pathname === "/dashboard/admin" || location.pathname === "/dashboard/super-admin") &&
-                  text === "Dashboard" && {
+                  ...(routes[text]?.includes(location.pathname) && {
                     bgcolor: "var(--primary-color)",
-                    marginX: "10px",
+                    marginX: text === "User Management" ? "9px" : "10px",
                     boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
                   }),
+                }}
+                onClick={() => {
+                  if (text === "Dashboard") {
+                    navigate("/dashboard/supervisor");
+                  } else if (text === "Reports") {
+                    navigate("/dashboard/supervisor/reports");
+                  } else if (text === "New Reports") {
+                    navigate("/dashboard/supervisor/new-reports");
+                  } else if (text === "Students") {
+                    navigate("/dashboard/supervisor/students");
+                  } else if (text === "Feedback") {
+                    navigate("/dashboard/supervisor/feedback");
+                  } else if (text === "Profile") {
+                    navigate("/dashboard/supervisor/profile");
+                  }
+                }}
+              >
+                <ListItemIcon>
+                  {text === "Dashboard" ? (
+                    <RiDashboard3Fill fill="#fff" size={22} />
+                  ) : text === "User Management" ? (
+                    <FaUsers fill="#fff" size={22} />
+                  ) : (
+                    <CgProfile color="#fff" size={22} />
+                  )}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <List sx={{ flexGrow: "1" }}>
+          {["Dashboard", "User Management", "Profile"].map((text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton
+                sx={{
+                  borderRadius: "20px",
+                  transition: "all 0.3s ease",
+                  marginY: "4px",
 
-                ...((location.pathname === "/dashboard/admin/profile" || location.pathname === "/dashboard/super-admin/profile") &&
-                  text === "Profile" && {
+                  "&:hover": {
+                    bgcolor: "var(--dark-gray-color)",
+                    boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
+                  },
+
+                  ...(routes[text]?.includes(location.pathname) && {
                     bgcolor: "var(--primary-color)",
-                    marginX: "10px",
+                    marginX: text === "User Management" ? "9px" : "10px",
                     boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
                   }),
-
-                ...((location.pathname === "/dashboard/admin/user-management" || location.pathname === "/dashboard/super-admin/user-management")&&
-                  text === "User Management" && {
-                    bgcolor: "var(--primary-color)",
-                    marginX: "9px",
-                    boxShadow: "5px 0 15px -3px rgba(0,0,0,0.3)",
-                  }),
-              }}
-              onClick={() => {
-                if (text === "Dashboard") {
-                  if (user.role == "Admin")
-                    navigate("/dashboard/admin");
-                  else navigate("/dashboard/super-admin");
-                } else if (text === "Profile") {
-                  if (user.role == "Admin")
-                    navigate("/dashboard/admin/profile");
-                  else navigate("/dashboard/super-admin/profile");
-
-                } else if (text === "User Management") {
-                  if (user.role == "Admin")
-                    navigate("/dashboard/admin/user-management");
-                  else navigate("/dashboard/super-admin/user-management");
-                }
-              }}
-            >
-              <ListItemIcon>
-                {text === "Dashboard" ? (
-                  <RiDashboard3Fill fill="#fff" size={22} />
-                ) : text === "User Management" ? (
-                  <FaUsers fill="#fff" size={22} />
-                ) : (
-                  <CgProfile color="#fff" size={22} />
-                )}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+                }}
+                onClick={() => {
+                  if (text === "Dashboard") {
+                    if (user.role == "Admin") navigate("/dashboard/admin");
+                    else navigate("/dashboard/super-admin");
+                  } else if (text === "Profile") {
+                    if (user.role == "Admin")
+                      navigate("/dashboard/admin/profile");
+                    else navigate("/dashboard/super-admin/profile");
+                  } else if (text === "User Management") {
+                    if (user.role == "Admin")
+                      navigate("/dashboard/admin/user-management");
+                    else navigate("/dashboard/super-admin/user-management");
+                  }
+                }}
+              >
+                <ListItemIcon>
+                  {text === "Dashboard" ? (
+                    <RiDashboard3Fill fill="#fff" size={22} />
+                  ) : text === "User Management" ? (
+                    <FaUsers fill="#fff" size={22} />
+                  ) : (
+                    <CgProfile color="#fff" size={22} />
+                  )}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      )}
       <Divider /> {/*هو الي بعمل الخط الخفيف فوق اللوج اوت */}
       <Box className="logout_btn" sx={{ paddingX: "20px", paddingY: "30px" }}>
         <Button
@@ -158,7 +210,6 @@ export default function TemporaryDrawer() {
       </Box>
     </Box>
   );
-
   return (
     <Drawer
       variant="permanent"

@@ -11,7 +11,7 @@ function CoreFeature() {
     <Box
       component={"section"}
       className="Core_Features"
-      sx={{ paddingY: "150px" }}
+      sx={{ paddingBottom: "150px",paddingTop:"190px" }}
     >
       <Typography
         component={"h2"}

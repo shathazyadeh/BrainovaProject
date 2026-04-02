@@ -68,6 +68,10 @@ const router = createBrowserRouter([
         path:"supervisor",
         element:<SupervisorDashboard/>
        },{
+        path:"supervisor/students",
+        element:<SupervisorStudents/>
+       }
+       ,{
         path:"admin",
         element:<AdminDashboard/>
        },{
