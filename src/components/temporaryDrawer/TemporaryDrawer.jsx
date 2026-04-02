@@ -11,6 +11,9 @@ import { FaUsers } from "react-icons/fa6";
 import { CgProfile } from "react-icons/cg";
 import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { VscNewFile } from "react-icons/vsc";
+import { FaRegFile } from "react-icons/fa";
+import { MdOutlineFeedback } from "react-icons/md";
 import useAuthStore from "../../store/useAuthStore";
 
 const drawerWidth = 240;
@@ -27,12 +30,16 @@ export default function TemporaryDrawer() {
   const location = useLocation();
 
   const routes = {
-    Dashboard: ["/dashboard/admin", "/dashboard/super-admin"],
-    Profile: ["/dashboard/admin/profile", "/dashboard/super-admin/profile"],
+    Dashboard: ["/dashboard/admin", "/dashboard/super-admin", "/dashboard/supervisor"],
+    Profile: ["/dashboard/admin/profile", "/dashboard/super-admin/profile", "/dashboard/supervisor/profile"],
     "User Management": [
       "/dashboard/admin/user-management",
       "/dashboard/super-admin/user-management",
     ],
+    Reports: ["/dashboard/supervisor/reports"],
+    "New Reports": ["/dashboard/supervisor/new-reports"],
+    Students: ["/dashboard/supervisor/students"],
+    Feedback: ["/dashboard/supervisor/feedback"],
   };
 
   const DrawerList = (
@@ -83,7 +90,7 @@ export default function TemporaryDrawer() {
         </Typography>
       </Box>
       {user?.role === "Supervisor" ? (
-       <List sx={{ flexGrow: "1" }}>
+        <List sx={{ flexGrow: "1" }}>
           {[
             "Dashboard",
             "Reports",
@@ -129,9 +136,15 @@ export default function TemporaryDrawer() {
                 <ListItemIcon>
                   {text === "Dashboard" ? (
                     <RiDashboard3Fill fill="#fff" size={22} />
-                  ) : text === "User Management" ? (
+                  ) : text === "Reports" ? (
+                    <FaRegFile fill="#fff" size={22} />
+                  ) : text === "New Reports" ? (
+                    <VscNewFile fill="#fff" size={25} />
+                  ): text === "Students" ? (
                     <FaUsers fill="#fff" size={22} />
-                  ) : (
+                  ): text === "Feedback" ? (
+                    <MdOutlineFeedback fill="#fff" size={22} />
+                  ): (
                     <CgProfile color="#fff" size={22} />
                   )}
                 </ListItemIcon>

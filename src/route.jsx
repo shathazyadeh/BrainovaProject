@@ -16,6 +16,7 @@ import UserManagement from "./pages/userManagement/UserManagement.jsx";
 import SetPassword from "./pages/setPassword/SetPassword.jsx";
 import SuperAdminDashboard from "./pages/superAdminDashboard/SuperAdminDashboard.jsx";
 import StudentProfile from "./pages/studentProfile/StudentProfile.jsx";
+import SupervisorProfile from "./pages/supervisorProfile/SupervisorProfile.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -68,10 +69,6 @@ const router = createBrowserRouter([
         path:"supervisor",
         element:<SupervisorDashboard/>
        },{
-        path:"supervisor/students",
-        element:<SupervisorStudents/>
-       }
-       ,{
         path:"admin",
         element:<AdminDashboard/>
        },{
@@ -89,6 +86,9 @@ const router = createBrowserRouter([
        },{
         path:"super-admin/user-management",
         element:<UserManagement/>
+       },{
+        path:"supervisor/profile",
+        element:<SupervisorProfile/>
        }
     ]
 

@@ -25,7 +25,8 @@ function RegisterForm({
   showRoleSelect = false,
   formMethods,
   btnLabel = "Create Account",
-  fullWidthInput = "false",
+  fullWidthInput = false,
+  fullWidthButton = true,
   defaultValues = {},
   textfieldColor = "textfield_dark",
   rowUser,
@@ -41,12 +42,13 @@ function RegisterForm({
     reset,
     formState: { errors, isSubmitting },
   } = form;
-  
-  useEffect(() => { //عشان ابديت معلومات الستيودنت لنفسه اول مرة يتم استدعاء الفورم ما بكون السوبر اي دي واصل 
-  if (defaultValues) {
-    reset(defaultValues);
-  }
-}, [defaultValues]);
+
+  useEffect(() => {
+    //عشان ابديت معلومات الستيودنت لنفسه اول مرة يتم استدعاء الفورم ما بكون السوبر اي دي واصل
+    if (defaultValues && Object.keys(defaultValues).length > 0) {
+      reset(defaultValues);
+    }
+  }, [JSON.stringify(defaultValues)]);
 
   const hookData = useHook();
   const { serverErrors, supervisors, supervisorsLoading } = hookData;
@@ -77,7 +79,7 @@ function RegisterForm({
   const currentUser = useAuthStore((state) => state.user); //المستخدم الحالي عشان نفحص هل الميوتيشين هيكون لرجستر اي يوز اوث ولا ابديت ... حسب الرول
 
   const handleUser = async (values) => {
-      console.log("FORM VALUES ", values);
+    console.log("FORM VALUES ", values);
     if (hookData.authMutation) {
       //register
       await hookData.authMutation.mutateAsync({
@@ -90,6 +92,7 @@ function RegisterForm({
         userId,
         userInfo: values,
       });
+      toast.success("Profile updated successfully");
     } else {
       const { password, roleName, supervisorUserId, ...rest } = values;
 
@@ -145,8 +148,7 @@ function RegisterForm({
       }
 
       // إذا وصلنا لهون = كل العمليات نجحت
-      console.log("وصلنا قبل التوست");
-toast.success("User updated successfully");
+      toast.success("User updated successfully");
 
       onSuccess?.();
     }
@@ -174,30 +176,7 @@ toast.success("User updated successfully");
         onSubmit={handleSubmit(handleUser)}
         sx={{ gap: "23px" }}
       >
-        {fullWidthInput === "false" ? (
-          <Box sx={{ display: "flex", gap: "10px" }}>
-            <TextField
-              {...register("fullName")}
-              label="Full Name"
-              variant="outlined"
-              fullWidth
-              error={errors.fullName}
-              helperText={errors.fullName?.message}
-              className={textfieldColor}
-              spellCheck={false}
-            />
-            <TextField
-              {...register("userName")}
-              label="Username"
-              variant="outlined"
-              fullWidth
-              error={errors.userName}
-              helperText={errors.userName?.message}
-              className={textfieldColor}
-              spellCheck={false}
-            />
-          </Box>
-        ) : (
+        {fullWidthInput ? (
           <>
             <TextField
               {...register("fullName")}
@@ -220,32 +199,31 @@ toast.success("User updated successfully");
               spellCheck={false}
             />
           </>
+        ) : (
+          <Box sx={{ display: "flex", gap: "10px" }}>
+            <TextField
+              {...register("fullName")}
+              label="Full Name"
+              variant="outlined"
+              fullWidth
+              error={errors.fullName}
+              helperText={errors.fullName?.message}
+              className={textfieldColor}
+              spellCheck={false}
+            />
+            <TextField
+              {...register("userName")}
+              label="Username"
+              variant="outlined"
+              fullWidth
+              error={errors.userName}
+              helperText={errors.userName?.message}
+              className={textfieldColor}
+              spellCheck={false}
+            />
+          </Box>
         )}
-
-        {fullWidthInput === "false" ? (
-          <Box sx={{ display: "flex", gap: "10px" }}>
-            <TextField
-              {...register("email")}
-              label="Email"
-              variant="outlined"
-              fullWidth
-              error={errors.email}
-              helperText={errors.email?.message}
-              className={textfieldColor}
-              spellCheck={false}
-            />
-            <TextField
-              {...register("phoneNumber")}
-              label="Phone Number"
-              variant="outlined"
-              fullWidth
-              error={errors.phoneNumber}
-              helperText={errors.phoneNumber?.message}
-              className={textfieldColor}
-              spellCheck={false}
-            />
-          </Box>
-        ) : (
+        {fullWidthInput  ? (
           <>
             <TextField
               {...register("email")}
@@ -268,6 +246,29 @@ toast.success("User updated successfully");
               spellCheck={false}
             />
           </>
+        ) : (
+          <Box sx={{ display: "flex", gap: "10px" }}>
+            <TextField
+              {...register("email")}
+              label="Email"
+              variant="outlined"
+              fullWidth
+              error={errors.email}
+              helperText={errors.email?.message}
+              className={textfieldColor}
+              spellCheck={false}
+            />
+            <TextField
+              {...register("phoneNumber")}
+              label="Phone Number"
+              variant="outlined"
+              fullWidth
+              error={errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              className={textfieldColor}
+              spellCheck={false}
+            />
+          </Box>
         )}
 
         {showPassword && (
@@ -380,24 +381,40 @@ toast.success("User updated successfully");
               },
             }}
           >
-            <MenuItem value="Student" sx={{"&:hover": {backgroundColor: "#3a3f47",color: "#ffffff",}, }}>
+            <MenuItem
+              value="Student"
+              sx={{
+                "&:hover": { backgroundColor: "#3a3f47", color: "#ffffff" },
+              }}
+            >
               Student
             </MenuItem>
-            <MenuItem value="Supervisor" sx={{"&:hover": {backgroundColor: "#3a3f47",color: "#ffffff",}, }}>
+            <MenuItem
+              value="Supervisor"
+              sx={{
+                "&:hover": { backgroundColor: "#3a3f47", color: "#ffffff" },
+              }}
+            >
               Supervisor
             </MenuItem>
-            <MenuItem value="Admin" sx={{"&:hover": {backgroundColor: "#3a3f47",color: "#ffffff",}, }}>
+            <MenuItem
+              value="Admin"
+              sx={{
+                "&:hover": { backgroundColor: "#3a3f47", color: "#ffffff" },
+              }}
+            >
               Admin
             </MenuItem>
           </TextField>
         )}
-
         <Button
           type="submit"
           className="auth_btn"
           variant="contained"
           disabled={isSubmitting || (showSupervisors && supervisorsLoading)} // نعطل الزر لو لسا البيانات بتيجي
-          sx={{ bgcolor: "var(--primary-color)", fontWeight: "600" }}
+          sx={{ bgcolor: "var(--primary-color)", fontWeight: "600",
+                alignSelf: fullWidthButton ? "stretch" : "flex-end",
+           }}
         >
           {isSubmitting ? (
             <CircularProgress

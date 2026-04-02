@@ -1,14 +1,19 @@
 import { Box } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import TemporaryDrawer from "../components/temporaryDrawer/TemporaryDrawer";
 
 function DashboardLayout() {
+    const location = useLocation();
+
+  // تحديد لون الفوتر حسب الصفحة
+  let DashboardLayoutBg = "rgb(36, 35, 35)";
+  if (location.pathname.includes("supervisor")) {DashboardLayoutBg="var(--navy-color)"}
+
   return (
-    <Box sx={{bgcolor: "rgb(36, 35, 35)"}}>
+    <Box sx={{bgcolor: DashboardLayoutBg}}>
       <Box sx={{ display: { xs: "none", md: "block"  } }}> {/*لانه تيمب ما بتوخذ sx لفيناها ببوكس */}
         <TemporaryDrawer />
       </Box>
-
       <Box
         component="main"
         sx={{
