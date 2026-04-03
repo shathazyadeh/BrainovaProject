@@ -18,6 +18,7 @@ import SuperAdminDashboard from "./pages/superAdminPages/superAdminDashboard/Sup
 import StudentProfile from "./pages/studentPages/studentProfile/StudentProfile.jsx";
 import SupervisorProfile from "./pages/supervisorPages/supervisorProfile/SupervisorProfile.jsx";
 import SupervisorStudents from "./pages/supervisorPages/supervisorStudents/SupervisorStudents.jsx";
+import SupervisorReports from "./pages/supervisorPages/supervisorReports/SupervisorReports.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -93,6 +94,9 @@ const router = createBrowserRouter([
        },{
         path:"supervisor/students",
         element:<SupervisorStudents/>
+       },{
+        path:"supervisor/students-reports",
+        element:<SupervisorReports/>
        }
     ]
 

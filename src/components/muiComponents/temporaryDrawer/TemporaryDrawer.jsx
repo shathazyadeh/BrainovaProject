@@ -40,6 +40,7 @@ export default function TemporaryDrawer() {
     "New Reports": ["/dashboard/supervisor/new-reports"],
     Students: ["/dashboard/supervisor/students"],
     Feedback: ["/dashboard/supervisor/feedback"],
+    Reports: ["/dashboard/supervisor/students-reports"]
   };
 
   const DrawerList = (
@@ -121,7 +122,7 @@ export default function TemporaryDrawer() {
                   if (text === "Dashboard") {
                     navigate("/dashboard/supervisor");
                   } else if (text === "Reports") {
-                    navigate("/dashboard/supervisor/reports");
+                    navigate("/dashboard/supervisor/students-reports");
                   } else if (text === "New Reports") {
                     navigate("/dashboard/supervisor/new-reports");
                   } else if (text === "Students") {
