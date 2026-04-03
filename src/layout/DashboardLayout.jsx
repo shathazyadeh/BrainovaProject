@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { Outlet, useLocation } from "react-router-dom";
-import TemporaryDrawer from "../components/temporaryDrawer/TemporaryDrawer";
+import TemporaryDrawer from "../components/muiComponents/temporaryDrawer/TemporaryDrawer";
 
 function DashboardLayout() {
     const location = useLocation();

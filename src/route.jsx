@@ -1,22 +1,23 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layout/MainLayout.jsx";
 import AuthLayout from "./layout/AuthLayout.jsx";
-import Login from "./pages/login/Login.jsx"
-import Register from "./pages/register/Register.jsx"
-import Home from "./pages/home/Home.jsx";
-import ForgetPassword from "./pages/forgetPassword/ForgetPassword.jsx";
-import ResetPassword from "./pages/resetPassword/ResetPassword.jsx";
-import ConfirmEmail from "./pages/confirmEmail/ConfirmEmail.jsx";
-import PredictTumor from "./pages/predictTumor/PredictTumor.jsx";
+import Login from "./pages/authPages/login/Login.jsx"
+import Register from "./pages/authPages/register/Register.jsx"
+import Home from "./pages/studentPages/home/Home.jsx";
+import ForgetPassword from "./pages/authPages/forgetPassword/ForgetPassword.jsx";
+import ResetPassword from "./pages/authPages/resetPassword/ResetPassword.jsx";
+import ConfirmEmail from "./pages/authPages/confirmEmail/ConfirmEmail.jsx";
+import SetPassword from "./pages/authPages/setPassword/SetPassword.jsx";
+import PredictTumor from "./pages/studentPages/predictTumor/PredictTumor.jsx";
 import DashboardLayout from "./layout/DashboardLayout.jsx";
-import SupervisorDashboard from "./pages/supervisorDashboard/SupervisorDashboard.jsx";
-import AdminDashboard from "./pages/adminDashboard/AdminDashboard.jsx";
-import Profile from "./pages/profile/Profile.jsx";
+import SupervisorDashboard from "./pages/supervisorPages/supervisorDashboard/SupervisorDashboard.jsx";
+import AdminDashboard from "./pages/adminPages/adminDashboard/AdminDashboard.jsx";
+import AdminProfile from "./pages/adminPages/adminProfile/AdminProfile.jsx";
 import UserManagement from "./pages/userManagement/UserManagement.jsx";
-import SetPassword from "./pages/setPassword/SetPassword.jsx";
-import SuperAdminDashboard from "./pages/superAdminDashboard/SuperAdminDashboard.jsx";
-import StudentProfile from "./pages/studentProfile/StudentProfile.jsx";
-import SupervisorProfile from "./pages/supervisorProfile/SupervisorProfile.jsx";
+import SuperAdminDashboard from "./pages/superAdminPages/superAdminDashboard/SuperAdminDashboard.jsx";
+import StudentProfile from "./pages/studentPages/studentProfile/StudentProfile.jsx";
+import SupervisorProfile from "./pages/supervisorPages/supervisorProfile/SupervisorProfile.jsx";
+import SupervisorStudents from "./pages/supervisorPages/supervisorStudents/SupervisorStudents.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -73,7 +74,7 @@ const router = createBrowserRouter([
         element:<AdminDashboard/>
        },{
         path:"admin/profile",
-        element:<Profile/>
+        element:<AdminProfile/>
        },{
         path:"admin/user-management",
         element:<UserManagement/>
@@ -82,13 +83,16 @@ const router = createBrowserRouter([
         element:<SuperAdminDashboard/>
        },
        {path:"super-admin/profile",
-        element:<Profile/>
+        element:<AdminProfile/>
        },{
         path:"super-admin/user-management",
         element:<UserManagement/>
        },{
         path:"supervisor/profile",
         element:<SupervisorProfile/>
+       },{
+        path:"supervisor/students",
+        element:<SupervisorStudents/>
        }
     ]
 

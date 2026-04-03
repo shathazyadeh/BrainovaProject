@@ -1,5 +1,5 @@
 import { Box, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import useAuthStore from "../../store/useAuthStore.js";
+import useAuthStore from "../../store/useAuthStore";
 
 export default function UsersFilters({
   roleFilter,

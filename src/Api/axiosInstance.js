@@ -1,6 +1,7 @@
 import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
 import { jwtDecode } from "jwt-decode";
+
 const axiosInstance = axios.create({
   baseURL: 'http://brainova.runasp.net/api'
 });
@@ -20,6 +21,7 @@ axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   // جلب الـ token المخزن في localStorage
   // هذا الـ token عادة نحصل عليه بعد تسجيل الدخول
+  console.log(token);
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

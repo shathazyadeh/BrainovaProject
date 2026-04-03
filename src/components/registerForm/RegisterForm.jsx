@@ -13,8 +13,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import useAuthStore from "../../store/useAuthStore";
 import { toast } from "react-toastify";
+import useAuthStore from "../../store/useAuthStore";
 
 function RegisterForm({
   schema,

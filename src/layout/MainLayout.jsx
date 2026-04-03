@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
-import Navbar from "../components/navbar/Navbar.jsx";
 import Footer from "../components/footer/Footer.jsx";
 import { Box } from "@mui/material";
+import StarsNavbar from "../components/muiComponents/starsNavbar/StarsNavbar.jsx";
 
 function MainLayout() {
   const location = useLocation();
@@ -14,7 +14,7 @@ function MainLayout() {
   return (
     <Box sx={{ bgcolor: "#171717" }}>
       <Box sx={{bgcolor: navbarBg, paddingTop:"20px"}}>
-        <Navbar />
+        <StarsNavbar />
       </Box>
       <Outlet />
       <Box sx={{ bgcolor: footerBg }}>

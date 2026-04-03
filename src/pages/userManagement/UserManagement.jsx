@@ -1,14 +1,14 @@
-import SecondNavbar from '../../components/secondNavbar/SecondNavbar'
-import EnhancedTable from '../../components/enhancedTabel/EnhancedTable'
-import useFilteredArray from '../../hooks/useFilteredArray';
-import useGetUsers from '../../hooks/useGetUsers';
+import DashboardNavbar from '../../components/muiComponents/dashboardNavbar/DashboardNavbar'
+import EnhancedTable from '../../components/muiComponents/enhancedTabel/EnhancedTable'
+import useFilteredArray from '../../hooks/getUsersHooks/useFilteredArray';
+import useGetUsers from '../../hooks/getUsersHooks/useGetUsers';
 import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
-import NestedModal from '../../components/nestedModal/NestedModal';
+import NestedModal from '../../components/muiComponents/nestedModal/NestedModal';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom' 
 import UsersSearch from '../../components/usersSearch/UsersSearch';
 import UsersFilters from '../../components/usersFilters/UsersFilters';
-import BasicModal from '../../components/basicModal/BasicModal';
+import BasicModal from '../../components/muiComponents/basicModal/BasicModal';
 
 function UserManagement() {
       
@@ -96,7 +96,7 @@ function UserManagement() {
   return (
     <Box sx={{bgcolor: "rgb(36, 35, 35)" // تأكد أن الخلفية الداكنة تغطي كامل الشاشة
 }}>
-      <SecondNavbar/>
+      <DashboardNavbar/>
 
       <Box component={'section'} className='manage_user_table' sx={{padding:'40px',minHeight: '100vh'}}>
               <Grid container rowSpacing={0.1} columnSpacing={1}>
