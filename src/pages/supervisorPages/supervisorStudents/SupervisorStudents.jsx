@@ -149,7 +149,7 @@ function SupervisorStudents() {
                     .includes(search.toLowerCase()),
               )
               .map((student) => (
-                <Grid item size={{ xs: 12, sm: 6, md: 4 }}>
+                <Grid item size={{ xs: 12, sm: 6, md: 4 }} key={student.studentId}>
                   <Box
                     className="student_info"
                     sx={{

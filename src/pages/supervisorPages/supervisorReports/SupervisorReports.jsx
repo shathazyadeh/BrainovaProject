@@ -50,7 +50,7 @@ function SupervisorReports() {
     >
       <DashboardNavbar />
 
-      <Box sx={{ flex: 1 }}>
+      <Box sx={{ flex: 1 ,paddingBottom:"80px"}}>
         <Container maxWidth="lg">
           {/* server errors */}
           {isError && (

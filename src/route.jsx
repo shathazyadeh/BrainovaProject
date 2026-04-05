@@ -19,7 +19,7 @@ import StudentProfile from "./pages/studentPages/studentProfile/StudentProfile.j
 import SupervisorProfile from "./pages/supervisorPages/supervisorProfile/SupervisorProfile.jsx";
 import SupervisorStudents from "./pages/supervisorPages/supervisorStudents/SupervisorStudents.jsx";
 import SupervisorReports from "./pages/supervisorPages/supervisorReports/SupervisorReports.jsx";
-
+import SupervisorFeedback from "./pages/supervisorPages/supervisorFeedback/SupervisorFeedback.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -98,6 +98,9 @@ const router = createBrowserRouter([
        },{
         path:"supervisor/students-reports",
         element:<SupervisorReports/>
+       },{
+        path:"supervisor/feedback",
+        element:<SupervisorFeedback/>
        }
     ]
 
