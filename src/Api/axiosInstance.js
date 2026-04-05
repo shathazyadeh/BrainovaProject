@@ -21,7 +21,6 @@ axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   // جلب الـ token المخزن في localStorage
   // هذا الـ token عادة نحصل عليه بعد تسجيل الدخول
-  console.log(token);
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

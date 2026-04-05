@@ -20,6 +20,7 @@ import SupervisorProfile from "./pages/supervisorPages/supervisorProfile/Supervi
 import SupervisorStudents from "./pages/supervisorPages/supervisorStudents/SupervisorStudents.jsx";
 import SupervisorReports from "./pages/supervisorPages/supervisorReports/SupervisorReports.jsx";
 
+
 const router = createBrowserRouter([
   { path: "/",
     element:<MainLayout/>,

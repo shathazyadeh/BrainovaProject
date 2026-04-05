@@ -158,6 +158,9 @@ export default function NestedModal() {
           height: "55px",
           paddingX: "40px",
           fontSize: "18px",
+          "@media (max-width:540px)" :{
+              fontSize: "17px",
+          }
         }}
       >
         Create new User

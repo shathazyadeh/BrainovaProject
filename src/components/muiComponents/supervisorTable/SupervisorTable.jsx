@@ -1,78 +1,79 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import LastPageIcon from '@mui/icons-material/LastPage';
+import * as React from "react";
+import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TablePagination,
+  TableRow,
+  Paper,
+  IconButton,
+  TableHead,
+  Typography,
+  useMediaQuery,
+  Collapse,
+} from "@mui/material";
+
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { BsFileEarmarkArrowDown } from "react-icons/bs";
-import { FiMessageSquare } from "react-icons/fi";
-import { FiPlus } from "react-icons/fi";
-import { TableHead } from '@mui/material';
-
-
-
+import { FiMessageSquare, FiPlus } from "react-icons/fi";
+import { useMemo, useState } from "react";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
   const { count, page, rowsPerPage, onPageChange } = props;
 
-  const handleFirstPageButtonClick = (event) => {
-    onPageChange(event, 0);
-  };
-
-  const handleBackButtonClick = (event) => {
-    onPageChange(event, page - 1);
-  };
-
-  const handleNextButtonClick = (event) => {
-    onPageChange(event, page + 1);
-  };
-
-  const handleLastPageButtonClick = (event) => {
-    onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
-  };
+  const lastPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton onClick={(e) => onPageChange(e, 0)} disabled={page === 0}>
+        {theme.direction === "rtl" ? (
+          <LastPageIcon sx={{ color: "#fff" }} />
+        ) : (
+          <FirstPageIcon sx={{ color: "#fff" }} />
+        )}
+      </IconButton>
       <IconButton
-        onClick={handleFirstPageButtonClick}
+        onClick={(e) => onPageChange(e, page - 1)}
         disabled={page === 0}
-        aria-label="first page"
       >
-        {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight sx={{ color: "#fff" }} />
+        ) : (
+          <KeyboardArrowLeft sx={{ color: "#fff" }} />
+        )}
       </IconButton>
       <IconButton
-        onClick={handleBackButtonClick}
-        disabled={page === 0}
-        aria-label="previous page"
+        onClick={(e) => onPageChange(e, page + 1)}
+        disabled={page >= lastPage}
       >
-        {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft sx={{ color: "#fff" }} />
+        ) : (
+          <KeyboardArrowRight sx={{ color: "#fff" }} />
+        )}
       </IconButton>
       <IconButton
-        onClick={handleNextButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="next page"
+        onClick={(e) => onPageChange(e, lastPage)}
+        disabled={page >= lastPage}
       >
-        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-      </IconButton>
-      <IconButton
-        onClick={handleLastPageButtonClick}
-        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        aria-label="last page"
-      >
-        {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        {theme.direction === "rtl" ? (
+          <FirstPageIcon sx={{ color: "#fff" }} />
+        ) : (
+          <LastPageIcon sx={{ color: "#fff" }} />
+        )}
       </IconButton>
     </Box>
   );
@@ -85,114 +86,500 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, calories, fat) {
-  return { name, calories, fat };
+function PredictionBadge({ value }) {
+  if (value === "meningioma")
+    return (
+      <Typography
+        sx={{
+          width: "fit-content",
+          paddingY: "5px",
+          paddingX: "10px",
+          borderRadius: "20px",
+          bgcolor: "rgb(55, 44, 28)",
+          color: "rgb(218, 148, 14)",
+          fontSize: "13px",
+          display: "flex",
+          whiteSpace: "nowrap",
+          "@media (max-width:353px)": { fontSize: "10px" },
+        }}
+      >
+        ● {value}
+      </Typography>
+    );
+  if (value === "glioma")
+    return (
+      <Typography
+        sx={{
+          width: "fit-content",
+          paddingY: "5px",
+          paddingX: "10px",
+          borderRadius: "20px",
+          bgcolor: "rgb(51, 26, 32)",
+          color: "rgb(196, 36, 38)",
+          fontSize: "13px",
+          display: "flex",
+          whiteSpace: "nowrap",
+          "@media (max-width:353px)": { fontSize: "10px" },
+        }}
+      >
+        ● {value}
+      </Typography>
+    );
+  if (value === "notumor")
+    return (
+      <Typography
+        sx={{
+          width: "fit-content",
+          paddingY: "5px",
+          paddingX: "10px",
+          borderRadius: "20px",
+          bgcolor: "rgb(23, 49, 40)",
+          color: "rgb(30, 167, 69)",
+          fontSize: "13px",
+          display: "flex",
+          whiteSpace: "nowrap",
+          "@media (max-width:353px)": { fontSize: "10px" },
+        }}
+      >
+        ● {value}
+      </Typography>
+    );
+  if (value === "pituitary")
+    return (
+      <Typography
+        sx={{
+          width: "fit-content",
+          paddingY: "5px",
+          paddingX: "10px",
+          borderRadius: "20px",
+          backgroundColor: "#23272f",
+          color: "#718296",
+          fontSize: "13px",
+          display: "flex",
+          whiteSpace: "nowrap",
+          "@media (max-width:353px)": { fontSize: "10px" },
+        }}
+      >
+        ● {value}
+      </Typography>
+    );
+  return null;
 }
 
-const rows = [
-  createData('Cupcake', 305, 3.7),
-  createData('Donut', 452, 25.0),
-  createData('Eclair', 262, 16.0),
-  createData('Frozen yoghurt', 159, 6.0),
-  createData('Gingerbread', 356, 16.0),
-  createData('Honeycomb', 408, 3.2),
-  createData('Ice cream sandwich', 237, 9.0),
-  createData('Jelly Bean', 375, 0.0),
-  createData('KitKat', 518, 26.0),
-  createData('Lollipop', 392, 0.2),
-  createData('Marshmallow', 318, 0),
-  createData('Nougat', 360, 19.0),
-  createData('Oreo', 437, 18.0),
-].sort((a, b) => (a.calories < b.calories ? -1 : 1));
+function FeedbackBadge({ isReviewed }) {
+  if (isReviewed)
+    return (
+      <Typography
+        sx={{
+          width: "fit-content",
+          paddingX: "14px",
+          paddingY: "5px",
+          borderRadius: "20px",
+          backgroundColor: "#173128",
+          color: "#1FA143",
+          fontSize: "13px",
+          display: "flex",
+          whiteSpace: "nowrap",
+        }}
+      >
+        Submitted
+      </Typography>
+    );
+  return (
+    <Typography
+      sx={{
+        width: "fit-content",
+        paddingX: "10px",
+        paddingY: "5px",
+        borderRadius: "20px",
+        backgroundColor: "#23272f",
+        color: "#718296",
+        fontSize: "13px",
+        display: "flex",
+        whiteSpace: "nowrap",
+      }}
+    >
+      No Feedback
+    </Typography>
+  );
+}
 
-export default function CustomPaginationActionsTable({rows}) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+function MobileCard({ row, index }) {
+  const [open, setOpen] = useState(false);
 
   return (
-    <TableContainer component={Paper} sx={{ minwidth: "500px" }}>
-      <Table aria-label="custom pagination table">
-         <TableHead>
-    <TableRow>
-      <TableCell>#</TableCell>
-      <TableCell>STUDENT</TableCell>
-      <TableCell>DATE</TableCell>
-      <TableCell>PREDICTION</TableCell>
-      <TableCell>FEEDBACK</TableCell>
-      <TableCell>ACTIONS</TableCell>
-    </TableRow>
-  </TableHead>
-        <TableBody>
-          {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
-          ).map((row, index) => (
-            <TableRow key={row.caseId}>
-              <TableCell component="th" scope="row">
-                {page * rowsPerPage + index + 1}
-              </TableCell>
-              <TableCell >
-                {row.studentName}
-              </TableCell>
-              <TableCell >
-                  {new Date(row.reportSubmittedAt).toLocaleString()}
-              </TableCell>
-              <TableCell >
-                {row.predictionResult}
-              </TableCell>
-              <TableCell >
-                {row.isReviewed ? "Submitted" : "No Feedback"}
-              </TableCell>
-              <TableCell >
-                <MdOutlineRemoveRedEye/>
-                <BsFileEarmarkArrowDown/>
-                <FiMessageSquare/>
-                <FiPlus/>
-              </TableCell>
-            </TableRow>
-          ))}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
-            </TableRow>
+    <Box
+      sx={{
+        bgcolor: "#232121b8",
+        borderRadius: "12px",
+        mb: 1,
+        overflow: "hidden",
+        border: "1px solid #3b3a3a89",
+      }}
+    >
+      <Box
+        onClick={() => setOpen(!open)}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          px: 2,
+          py: 1.5,
+          cursor: "pointer",
+          bgcolor: "#484646b7",
+          gap: 1,
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          <Typography sx={{ color: "#718296", fontSize: "13px" }}>
+            #{index}
+          </Typography>
+          <Typography
+            sx={{
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: 500,
+              "@media (max-width:353px)": { fontSize: "12px" },
+            }}
+          >
+            {row.studentName}
+          </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <PredictionBadge value={row.predictionResult} />
+          {open ? (
+            <KeyboardArrowUpIcon sx={{ color: "#fff" }} />
+          ) : (
+            <KeyboardArrowDownIcon sx={{ color: "#fff" }} />
           )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              slotProps={{
-                select: {
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                },
+        </Box>
+      </Box>
+
+      <Collapse in={open}>
+        <Box
+          sx={{
+            px: 2,
+            py: 1.5,
+            display: "flex",
+            flexDirection: "column",
+            gap: 1.2,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ color: "#718296", fontSize: "12px" }}>
+              DATE
+            </Typography>
+            <Typography sx={{ color: "#718296", fontSize: "13px" }}>
+              {new Date(row.reportSubmittedAt).toLocaleString()}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ color: "#718296", fontSize: "12px" }}>
+              PREDICTION
+            </Typography>
+            <PredictionBadge value={row.predictionResult} />
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ color: "#718296", fontSize: "12px" }}>
+              FEEDBACK
+            </Typography>
+            <FeedbackBadge isReviewed={row.isReviewed} />
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ color: "#718296", fontSize: "12px" }}>
+              ACTIONS
+            </Typography>
+            <Box
+              className="actions_icons"
+              sx={{ display: "flex", gap: "5px", color: "#718296" }}
+            >
+              <MdOutlineRemoveRedEye size={18} />
+              <BsFileEarmarkArrowDown size={18} />
+              <FiPlus size={18} />
+            </Box>
+          </Box>
+        </Box>
+      </Collapse>
+    </Box>
+  );
+}
+
+export default function CustomPaginationActionsTable({ rows = [], count = 0 }) {
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("studentName");
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  const sortedRows = useMemo(() => {
+    if (!rows) return [];
+    return [...rows].sort((a, b) => {
+      if (a[orderBy] < b[orderBy]) return order === "asc" ? -1 : 1;
+      if (a[orderBy] > b[orderBy]) return order === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [rows, order, orderBy]);
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const displayedRows = sortedRows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage,
+  );
+
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{
+        minWidth: isMobile ? "unset" : "500px",
+        bgcolor: "var(--navy-color)",
+        borderRadius: "20px",
+      }}
+    >
+      {/* Mobile View */}
+      {isMobile ? (
+        <Box sx={{ p: 1.5 }}>
+          {displayedRows.length === 0 ? (
+            <Typography
+              sx={{
+                color: "var(--primary-color)",
+                fontSize: "16px",
+                textAlign: "center",
+                py: 3,
               }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
+            >
+              No Data
+            </Typography>
+          ) : (
+            displayedRows.map((row, index) => (
+              <MobileCard
+                key={row.caseId}
+                row={row}
+                index={page * rowsPerPage + index + 1}
+              />
+            ))
+          )}
+
+          <Table>
+            <TableFooter sx={{ bgcolor: "#232121b8" }}>
+              <TableRow>
+                <TablePagination
+                  sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+                  rowsPerPageOptions={[5, 10, 25]}
+                  count={count}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={(e, newPage) => setPage(newPage)}
+                  onRowsPerPageChange={(e) => {
+                    setRowsPerPage(parseInt(e.target.value, 10));
+                    setPage(0);
+                  }}
+                  ActionsComponent={TablePaginationActions}
+                  SelectProps={{
+                    sx: { "& .MuiSelect-icon": { color: "#fff" } },
+                  }}
+                />
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </Box>
+      ) : (
+        /* Desktop View */
+        <Table>
+          <TableHead sx={{ bgcolor: "#484646b7" }}>
+            <TableRow>
+              <TableCell
+                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+              >
+                #
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: "#fff",
+                  borderBottom: "1px solid #3b3a3a89",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setOrder(order === "asc" ? "desc" : "asc");
+                  setOrderBy("studentName");
+                }}
+              >
+                STUDENT{" "}
+                {orderBy === "studentName" ? (order === "asc" ? "↑" : "↓") : ""}
+              </TableCell>
+              <TableCell
+                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+              >
+                DATE
+              </TableCell>
+              <TableCell
+                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+              >
+                PREDICTION
+              </TableCell>
+              <TableCell
+                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+              >
+                FEEDBACK
+              </TableCell>
+              <TableCell
+                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+              >
+                ACTIONS
+              </TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody sx={{ bgcolor: "#232121b8" }}>
+            {displayedRows.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  align="center"
+                  sx={{ color: "var(--primary-color)", fontSize: "16px" }}
+                >
+                  No Data
+                </TableCell>
+              </TableRow>
+            ) : (
+              displayedRows.map((row, index) => (
+                <TableRow key={row.caseId}>
+                  <TableCell
+                    sx={{
+                      color: "#fff",
+                      borderTop: "1px solid #3b3a3a89",
+                      borderBottom: "1px solid #3b3a3a89",
+                    }}
+                  >
+                    {page * rowsPerPage + index + 1}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#fff",
+                      borderTop: "1px solid #3b3a3a89",
+                      borderBottom: "1px solid #3b3a3a89",
+                    }}
+                  >
+                    {row.studentName}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#718296",
+                      borderTop: "1px solid #3b3a3a89",
+                      borderBottom: "1px solid #3b3a3a89",
+                    }}
+                  >
+                    {new Date(row.reportSubmittedAt).toLocaleString()}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      borderTop: "1px solid #3b3a3a89",
+                      borderBottom: "1px solid #3b3a3a89",
+                    }}
+                  >
+                    <PredictionBadge value={row.predictionResult} />
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#fff",
+                      borderTop: "1px solid #3b3a3a89",
+                      borderBottom: "1px solid #3b3a3a89",
+                    }}
+                  >
+                    <FeedbackBadge isReviewed={row.isReviewed} />
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      color: "#718296",
+                      borderTop: "1px solid #3b3a3a89",
+                      borderBottom: "1px solid #3b3a3a89",
+                    }}
+                  >
+                    <Box
+                      className="actions_icons"
+                      sx={{ display: "flex", gap: "5px" }}
+                    >
+                      <MdOutlineRemoveRedEye size={18} />
+                      <BsFileEarmarkArrowDown size={18} />
+                      <FiPlus size={18} />
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+
+          <TableFooter sx={{ bgcolor: "#232121b8" }}>
+            <TableRow>
+              <TablePagination
+                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+                rowsPerPageOptions={[5, 10, 25]}
+                count={count}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(e, newPage) => setPage(newPage)}
+                onRowsPerPageChange={(e) => {
+                  setRowsPerPage(parseInt(e.target.value, 10));
+                  setPage(0);
+                }}
+                ActionsComponent={TablePaginationActions}
+                SelectProps={{
+                  sx: {
+                    color: "#fff",
+                    "& .MuiSelect-icon": {
+                      color: "#fff",
+                    },
+                  },
+                  MenuProps: {
+                    PaperProps: {
+                      sx: {
+                        bgcolor: "#3b3a3a",
+                        color: "#fff",
+
+                        "& .MuiMenuItem-root:hover": {
+                          bgcolor: "var(--dark-gray-color)",
+                          color: "#fff",
+                        },
+
+                        "& .Mui-selected": {
+                          bgcolor: "var(--dark-gray-color) !important",
+                          color: "#fff",
+                        },
+                      },
+                    },
+                  },
+                }}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      )}
     </TableContainer>
   );
 }
