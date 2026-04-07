@@ -1,13 +1,16 @@
 import { Box, Container, Grid, Typography } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import DashboardNavbar from '../../../components/muiComponents/dashboardNavbar/DashboardNavbar'
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import useGetMyallFeedbacks from '../../../hooks/supervisorHooks/useGetMyallFeedbacks';
+import UsersSearch from "../../../components/usersSearch/UsersSearch";
+
 
 
 function SupervisorFeedback() {
 
     const{isError, error, isLoading, data}=useGetMyallFeedbacks();
+     const [search, setSearch] = useState("");
 console.log('my feedbacks:', data);
 
   if (isError) {
@@ -39,9 +42,19 @@ console.log('my feedbacks:', data);
      
     
   return (
-   <Box  sx={{bgcolor: 'var(--navy-color)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+   <Box  sx={{bgcolor: 'var(--navy-color)', minHeight: '100vh', display: 'flex', flexDirection:"column" }}>
    
    <DashboardNavbar/>
+   <Box
+        component={"section"}
+        sx={{
+          paddingBottom: "50px",
+          flexGrow: 1,
+          alignItems: "flex-start",
+          display: "block",
+          minHeight: "100vh",
+        }}
+      >
   <Container maxWidth='lg'>
      {isError && (
             <Box
@@ -94,17 +107,24 @@ console.log('my feedbacks:', data);
 
   
   
-    <Grid container >
-
         <Box className='section_titel' sx={{marginBottom:'30px',}}>
           <Typography component={"h1"} variant="h4" sx={{color:"#fff",fontFamily:"var(--primary-font)",fontWeight:"600",display:"inline",marginRight:"10px" ,"@media (max-width:700px)" :{ fontSize:"22px"}}}>Feedback</Typography>
           <Typography component={'span'} sx={{color:"#fff",fontFamily:"var(--primary-font)",fontSize:"20px","@media (max-width:700px)" :{fontSize:"15px"}}}>
             <Typography component={'span'} sx={{color:"var(--primary-color)",fontFamily:"var(--primary-font)"}}>{data?.totalCount}</Typography> feedback entries</Typography>
-        </Box>
-
+           </Box>
+           <Box className="search" sx={{ paddingTop: "23px" }}>
+            <UsersSearch search={search} setSearch={setSearch} />
+          </Box>
         
-            {data?.items?.map((feedback)=>(
-                <Grid item size={{xs:12}} key={feedback.id}>
+             {data?.items.filter(
+                (
+                    feedbacks, //لفتلترة الداتا حسب السيرش
+                ) =>
+                    feedbacks.studentName
+                    ?.toLowerCase()
+                    .includes(search.toLowerCase()) 
+              ).map((feedback)=>(
+                <Box className="feedback_card" key={feedback.id}>
 
         <Box component={'section'} className='Supervisor_feedback' sx={{borderLeft:'5px solid red',borderRadius:'10px',bgcolor:'#3636365b',padding:'20px',marginBottom:'30px', transition: 'all 0.5s ease', '&:hover': { transform: 'scale(1.03)'},}} >
 
@@ -127,10 +147,10 @@ console.log('my feedbacks:', data);
 
         <Typography sx={{color:'#d3d9de',fontWeight:"300"}}>{feedback.comment} </Typography>
     </Box>
-    </Grid>
+    </Box>
     ))}
-    </Grid>
 </Container>
+</Box>
 {/*footer */}
      <Box
       sx={{
