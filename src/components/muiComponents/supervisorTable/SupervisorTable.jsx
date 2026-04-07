@@ -29,6 +29,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { BsFileEarmarkArrowDown } from "react-icons/bs";
 import { FiMessageSquare, FiPlus } from "react-icons/fi";
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -363,7 +364,7 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 ,han
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("studentName");
   const isMobile = useMediaQuery("(max-width: 768px)");
-
+  const navigate=useNavigate();
   const sortedRows = useMemo(() => {
     if (!rows) return [];
     return [...rows].sort((a, b) => {
@@ -553,7 +554,7 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 ,han
                       className="actions_icons"
                       sx={{ display: "flex", gap: "5px" }}
                     >
-                      <MdOutlineRemoveRedEye size={18} style={{cursor:"pointer"}} />
+                      <MdOutlineRemoveRedEye size={18} style={{ cursor: "pointer" }}  onClick={() => navigate(`/dashboard/supervisor/addFeedback/${row.reportId}`)}/>
                       <BsFileEarmarkArrowDown size={18} style={{cursor:"pointer"}}/>
                       <FiPlus size={18} style={{cursor:"pointer"}} onClick={() => handleOpenModal(row)}/>
                     </Box>

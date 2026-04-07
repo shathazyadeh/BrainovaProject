@@ -20,6 +20,7 @@ import SupervisorProfile from "./pages/supervisorPages/supervisorProfile/Supervi
 import SupervisorStudents from "./pages/supervisorPages/supervisorStudents/SupervisorStudents.jsx";
 import SupervisorReports from "./pages/supervisorPages/supervisorReports/SupervisorReports.jsx";
 import SupervisorFeedback from "./pages/supervisorPages/supervisorFeedback/SupervisorFeedback.jsx";
+import AddFeedback from "./pages/supervisorPages/addFeedback/AddFeedback.jsx";
 
 const router = createBrowserRouter([
   { path: "/",
@@ -101,6 +102,9 @@ const router = createBrowserRouter([
        },{
         path:"supervisor/feedback",
         element:<SupervisorFeedback/>
+       },{
+        path:"supervisor/addFeedback/:id",
+        element:<AddFeedback/>
        }
     ]
 
