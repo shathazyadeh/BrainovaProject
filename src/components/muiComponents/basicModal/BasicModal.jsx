@@ -15,7 +15,7 @@ export default function BasicModal({
   open,
   handleClose,
   user,
-  reportData,
+  reportId,
   type,
 }) {
   //من رياكت هوك فورم بتعمل ريسيت لقيم الفورم
@@ -43,9 +43,6 @@ export default function BasicModal({
     }
   }, [user, open, reset]);
 
-
- 
-
   return (
     <Modal
       open={open}
@@ -66,11 +63,12 @@ export default function BasicModal({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 800,
+          width: "90%",
+          maxWidth: "800px",
           bgcolor: "var(--navy-color)",
           border: "1px solid #131212",
           boxShadow: "0 0 80px rgba(76, 77, 91, 0.7)",
-          px: 4,
+          px: { xs: 2, md: 4 },
           paddingTop: "30px",
           paddingBottom: "50px",
           borderRadius: "20px",
@@ -78,36 +76,33 @@ export default function BasicModal({
           justifyContent: "center",
         }}
       >
-        
-        
         {type === "editUser" && (
           <>
-          <AiFillCloseCircle
-          size={30}
-          fill={"var(--primary-color)"}
-          style={{ cursor: "pointer", marginBottom: "40px" }}
-          onClick={handleClose}
-        />{" "}
-        {/*ايقونة الاكس لتسكير المودل الصغير */}
-          <RegisterForm
-            useHook={useUpdateUserInfo}
-            userId={user?.id}
-            formMethods={formMethods}
-            schema={UpdateUserInfoSchema}
-            showRoleSelect={currentUser?.role === "SuperAdmin"}
-            showPassword={currentUser?.role === "SuperAdmin"}
-            btnLabel="Update Profile"
-            textfieldColor={"textfield_black"}
-            rowUser={user}
-            onSuccess={handleClose} // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
-          />
+            <AiFillCloseCircle
+              size={30}
+              fill={"var(--primary-color)"}
+              style={{ cursor: "pointer", marginBottom: "40px" }}
+              onClick={handleClose}
+            />{" "}
+            {/*ايقونة الاكس لتسكير المودل الصغير */}
+            <RegisterForm
+              useHook={useUpdateUserInfo}
+              userId={user?.id}
+              formMethods={formMethods}
+              schema={UpdateUserInfoSchema}
+              showRoleSelect={currentUser?.role === "SuperAdmin"}
+              showPassword={currentUser?.role === "SuperAdmin"}
+              btnLabel="Update Profile"
+              textfieldColor={"textfield_black"}
+              rowUser={user}
+              onSuccess={handleClose} // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
+            />
           </>
         )}
 
-
-{type === "feedback" && reportData && (
-  <FeedbackForm reportData={reportData} handleClose={handleClose} />
-)}
+        {type === "feedback" && reportId && (
+          <FeedbackForm reportId={reportId} handleClose={handleClose} />
+        )}
       </Box>
     </Modal>
   );

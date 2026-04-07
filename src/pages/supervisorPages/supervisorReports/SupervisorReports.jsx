@@ -64,7 +64,7 @@ function SupervisorReports() {
     >
       <DashboardNavbar />
 
-      <Box sx={{ flex: 1, paddingBottom: "80px" }}>
+      <Box sx={{ flex: 1, paddingBottom: {xs:"10px", md:"80px" }}}>
         <Container maxWidth="lg">
           {/* server errors */}
           {isError && (
@@ -184,23 +184,36 @@ function SupervisorReports() {
           <BasicModal
             open={open}
             handleClose={handleClose}
-            reportData={selectedReport}
+            reportId={selectedReport?.reportId}
             type="feedback"
           />
         </Container>
       </Box>
 
       <Box
+        className="lower_footer"
         sx={{
           borderTop: "1px solid rgba(53, 53, 53, 0.93)",
+          width: "fit-content",
+          margin: "auto",
+          paddingX: { xs: "0px", md: "200px" },
           textAlign: "center",
-          py: 3,
+          marginTop: { xs: "60px", md: "0px" },
         }}
       >
-        <Typography sx={{ color: "var(--mid-gray-color)" }}>
+        <Typography
+          component={"p"}
+          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+        >
           © 2026{" "}
-          <span style={{ color: "var(--dark-red-color)" }}>Brainova</span>. All
-          rights reserved.
+          <Typography
+            component={"span"}
+            sx={{ color: "var(--dark-red-color)" }}
+          >
+            Brainova
+          </Typography>
+          . All rights reserved. | Built for medical education and research
+          purposes.
         </Typography>
       </Box>
     </Box>

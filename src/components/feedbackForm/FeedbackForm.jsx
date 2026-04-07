@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { SubmitFeedbackSchema } from "../../validations/SubmitFeedbackSchema";
 import useSubmitFeedback from "../../hooks/supervisorHooks/useSubmitFeedback";
 
-export default function FeedbackForm({ reportData, handleClose }) {
-  const reportId = reportData?.reportId;
+export default function FeedbackForm({ reportId, handleClose }) {
+const theme = useTheme();
+const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
 
   const { usePostMutation : submitFeedbackMutation, serverErrors, isLoading } = useSubmitFeedback(reportId, {
     onSuccess: () => handleClose(),
@@ -31,12 +33,16 @@ export default function FeedbackForm({ reportData, handleClose }) {
 
   return (
     <Box className="feedback_container" sx={{ color: "#fff" }}>
-      <Typography variant="h5" sx={{ fontFamily: "var(--primary-font)", fontWeight: "600" }}>
+      <Typography variant="h5" sx={{ fontFamily: "var(--primary-font)", fontWeight: "600","@media (max-width:600px)" :{
+                  fontSize:"20px"
+                  } }}>
         Submit Feedback
       </Typography>
 
-      <Typography sx={{ color: "#718296", marginBottom: "30px" }}>
-        Report:{` REP-${reportData?.reportId?.slice(0, 6)}`}
+      <Typography sx={{ color: "#718296", marginBottom: "30px","@media (max-width:600px)" :{
+                  fontSize:"13px"
+                  }}}>
+        Report:{` REP-${reportId?.slice(0, 6)}`}
       </Typography>
 
       {serverErrors && (
@@ -50,8 +56,12 @@ export default function FeedbackForm({ reportData, handleClose }) {
           fullWidth
           multiline
           rows={5}
-          placeholder="Write your feedback on this report. Include observations about the student's analysis, areas for improvement, and any corrections."
-          {...register("comment")}
+placeholder={
+    isMobile
+      ? "Write feedback..."
+      : "Write your feedback on this report. Include observations about the student's analysis, areas for improvement, and any corrections."
+  }
+            {...register("comment")}
           error={errors?.comment}
           helperText={errors.comment?.message}
           sx={{
@@ -71,7 +81,7 @@ export default function FeedbackForm({ reportData, handleClose }) {
             {commentValue.length} characters
           </Typography>
 
-          <Box sx={{ display: "flex", gap: 2 }}>
+          <Box sx={{ display: "flex", gap: 1 }}>
             <Typography
               sx={{
                 color: "#ccc",
@@ -82,6 +92,10 @@ export default function FeedbackForm({ reportData, handleClose }) {
                 cursor: "pointer",
                 transition: "all 0.3s ease",
                 "&:hover": { bgcolor: "#555", color: "#fff" },
+                "@media (max-width:400px)" :{
+                  paddingX: "6px",
+                  fontSize:"13px"
+                  }
               }}
               onClick={handleClose}
             >
@@ -102,6 +116,10 @@ export default function FeedbackForm({ reportData, handleClose }) {
                 color: "#fff",
                 transition: "all 0.3s ease",
                 "&:hover": { bgcolor: "#ff000077" },
+                "@media (max-width:400px)" :{
+                  paddingX: "6px",
+                  fontSize:"13px"
+                  }
               }}
             >
               {isLoading ? "Submitting..." : "Submit Feedback"}
