@@ -37,46 +37,74 @@ function TablePaginationActions(props) {
   const lastPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
 
   return (
-    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
-      <IconButton onClick={(e) => onPageChange(e, 0)} disabled={page === 0}>
-        {theme.direction === "rtl" ? (
-          <LastPageIcon sx={{ color: "#fff" }} />
-        ) : (
-          <FirstPageIcon sx={{ color: "#fff" }} />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={(e) => onPageChange(e, page - 1)}
-        disabled={page === 0}
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowRight sx={{ color: "#fff" }} />
-        ) : (
-          <KeyboardArrowLeft sx={{ color: "#fff" }} />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={(e) => onPageChange(e, page + 1)}
-        disabled={page >= lastPage}
-      >
-        {theme.direction === "rtl" ? (
-          <KeyboardArrowLeft sx={{ color: "#fff" }} />
-        ) : (
-          <KeyboardArrowRight sx={{ color: "#fff" }} />
-        )}
-      </IconButton>
-      <IconButton
-        onClick={(e) => onPageChange(e, lastPage)}
-        disabled={page >= lastPage}
-      >
-        {theme.direction === "rtl" ? (
-          <FirstPageIcon sx={{ color: "#fff" }} />
-        ) : (
-          <LastPageIcon sx={{ color: "#fff" }} />
-        )}
-      </IconButton>
-    </Box>
-  );
+  <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+
+    <IconButton
+      onClick={(e) => onPageChange(e, 0)}
+      disabled={page === 0}
+      sx={{
+        color: "#fff",
+        "&.Mui-disabled": {
+          color: "#555",
+          opacity: 0.5,
+        },
+      }}
+    >
+      {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+    </IconButton>
+
+    <IconButton
+      onClick={(e) => onPageChange(e, page - 1)}
+      disabled={page === 0}
+      sx={{
+        color: "#fff",
+        "&.Mui-disabled": {
+          color: "#555",
+          opacity: 0.5,
+        },
+      }}
+    >
+      {theme.direction === "rtl" ? (
+        <KeyboardArrowRight />
+      ) : (
+        <KeyboardArrowLeft />
+      )}
+    </IconButton>
+
+    <IconButton
+      onClick={(e) => onPageChange(e, page + 1)}
+      disabled={page >= lastPage}
+      sx={{
+        color: "#fff",
+        "&.Mui-disabled": {
+          color: "#555",
+          opacity: 0.5,
+        },
+      }}
+    >
+      {theme.direction === "rtl" ? (
+        <KeyboardArrowLeft />
+      ) : (
+        <KeyboardArrowRight />
+      )}
+    </IconButton>
+
+    <IconButton
+      onClick={(e) => onPageChange(e, lastPage)}
+      disabled={page >= lastPage}
+      sx={{
+        color: "#fff",
+        "&.Mui-disabled": {
+          color: "#555",
+          opacity: 0.5,
+        },
+      }}
+    >
+      {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+    </IconButton>
+
+  </Box>
+);
 }
 
 TablePaginationActions.propTypes = {
@@ -320,9 +348,9 @@ function MobileCard({ row, index }) {
               className="actions_icons"
               sx={{ display: "flex", gap: "5px", color: "#718296" }}
             >
-              <MdOutlineRemoveRedEye size={18} />
-              <BsFileEarmarkArrowDown size={18} />
-              <FiPlus size={18} />
+              <MdOutlineRemoveRedEye size={18} style={{cursor:"pointer"}} />
+              <BsFileEarmarkArrowDown size={18} style={{cursor:"pointer"}} />
+              <FiPlus size={18} style={{cursor:"pointer"}} onClick={() => handleOpenModal(row)}/>
             </Box>
           </Box>
         </Box>
@@ -331,7 +359,7 @@ function MobileCard({ row, index }) {
   );
 }
 
-export default function CustomPaginationActionsTable({ rows = [], count = 0 }) {
+export default function CustomPaginationActionsTable({ rows = [], count = 0 ,handleOpenModal}) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("studentName");
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -469,7 +497,7 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 }) {
               </TableRow>
             ) : (
               displayedRows.map((row, index) => (
-                <TableRow key={row.caseId}>
+                <TableRow key={row.caseId} sx={{transition: "background-color 0.3s","&:hover": {bgcolor: "#aeacac09"}}}>
                   <TableCell
                     sx={{
                       color: "#fff",
@@ -525,9 +553,9 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 }) {
                       className="actions_icons"
                       sx={{ display: "flex", gap: "5px" }}
                     >
-                      <MdOutlineRemoveRedEye size={18} />
-                      <BsFileEarmarkArrowDown size={18} />
-                      <FiPlus size={18} />
+                      <MdOutlineRemoveRedEye size={18} style={{cursor:"pointer"}} />
+                      <BsFileEarmarkArrowDown size={18} style={{cursor:"pointer"}}/>
+                      <FiPlus size={18} style={{cursor:"pointer"}} onClick={() => handleOpenModal(row)}/>
                     </Box>
                   </TableCell>
                 </TableRow>

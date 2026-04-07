@@ -1,10 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Bounce, toast } from "react-toastify";
 import { Box } from "@mui/material";
 import axiosInstance from "../../Api/axiosInstance";
 
 export default function useDeleteUser(){
-    const queryClient = useQueryClient();
 
     const deleteUserMutation = useMutation({
         mutationFn: async(selectedUserIds)=>{
@@ -73,7 +72,6 @@ export default function useDeleteUser(){
     );
 }
 
-            queryClient.invalidateQueries(["users"]); //update users table
         },
         onError: (error) => {
 

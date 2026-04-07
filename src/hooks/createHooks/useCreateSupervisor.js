@@ -1,10 +1,8 @@
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
 import useAuth from "../authHooks/useAuth";
 
 export default function useCreateSupervisor() {
-  const queryClient = useQueryClient();
 
   const { serverErrors, setServerErrors, authMutation } = useAuth(
     "/Identity/Users/create-supervisor",
@@ -19,7 +17,6 @@ export default function useCreateSupervisor() {
     }
   }, [authMutation.isSuccess]);
 
-  queryClient.invalidateQueries(["users"]);
 
   return { serverErrors, authMutation }; // نرجع القيم اللي بدنا نستخدمها بالكومبوننت
 }

@@ -6,11 +6,25 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 import UsersSearch from "../../../components/usersSearch/UsersSearch";
 import ReportsFilters from "../../../components/filterInputs/reportsFilters/ReportsFilters";
+import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
 function SupervisorReports() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
   const [search, setSearch] = useState("");
   const [feedbackFilter, setFeedbackFilter] = useState("all");
   const [predictionFilter, setPredictionFilter] = useState("all");
+  const [open, setOpen] = useState(false);
+  const [selectedReport, setSelectedReport] = useState(null);
+
+  //للمودال
+  const handleOpen = (row) => {
+    setSelectedReport(row);
+    setOpen(true);
+  };
+  console.log("selected Report : ", selectedReport);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const filteredRows = data?.items?.filter((row) => {
     //فلترة الدااتا حسب السيرتش قبل ما نبعتها للتيبل لتعرضهن
@@ -50,7 +64,7 @@ function SupervisorReports() {
     >
       <DashboardNavbar />
 
-      <Box sx={{ flex: 1 ,paddingBottom:"80px"}}>
+      <Box sx={{ flex: 1, paddingBottom: "80px" }}>
         <Container maxWidth="lg">
           {/* server errors */}
           {isError && (
@@ -162,7 +176,17 @@ function SupervisorReports() {
               </Grid>
             </Grid>
           </Box>
-          <SupervisorTable rows={finalFiltered} count={finalFiltered?.length} />
+          <SupervisorTable
+            rows={finalFiltered}
+            count={finalFiltered?.length}
+            handleOpenModal={handleOpen}
+          />
+          <BasicModal
+            open={open}
+            handleClose={handleClose}
+            reportData={selectedReport}
+            type="feedback"
+          />
         </Container>
       </Box>
 

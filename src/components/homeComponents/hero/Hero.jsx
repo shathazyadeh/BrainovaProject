@@ -30,7 +30,7 @@ function Hero() {
           <Typography
             component={"p"}
             sx={{
-              border: "1px solid var(  --primary-color)",
+              border: "1px solid var(--primary-color)",
               width: "fit-content",
               borderRadius: "60px",
               color: "var(--light-red-color)",
@@ -71,7 +71,8 @@ function Hero() {
           >
             Advanced Brain Tumor
             <Typography
-              variant="h2"
+               component="span"
+               variant="h2"
               sx={{
                 color: "var(--primary-color)",
                 fontWeight: "800",
@@ -89,7 +90,7 @@ function Hero() {
             }
               }}
             >
-              Detection System
+              {" "}Detection System
             </Typography>
           </Typography>
           <Typography
@@ -118,6 +119,8 @@ function Hero() {
                 paddingY: "8px",
                 borderRadius: "15px",
                 boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
+                display: "flex",
+                whiteSpace: "nowrap",
               }}
             >
               <Typography component={"span"} sx={{ marginRight: "5px" }}>
@@ -135,6 +138,8 @@ function Hero() {
                 paddingY: "10px",
                 borderRadius: "15px",
                 boxShadow: "0 0 15px rgba(82, 81, 81, 0.6)",
+                display: "flex",
+                whiteSpace: "nowrap",
               }}
             >
               <Typography component={"span"} sx={{ marginRight: "5px" }}>

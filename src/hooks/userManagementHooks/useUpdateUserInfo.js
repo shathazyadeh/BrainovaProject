@@ -1,11 +1,10 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { Bounce, toast } from "react-toastify";
 import useGetSupervisors from "../getUsersHooks/useGetSupervisors";
 import axiosInstance from "../../Api/axiosInstance";
 import useAuthStore from "../../store/useAuthStore";
 
 export default function useUpdateUserInfo(){
-        const queryClient = useQueryClient();
         const currentUser = useAuthStore((state) => state.user); //المستخدم الي فاتح وبعدل اي الي معلوماته في اللوكال ستوريج
         const updateUser = useAuthStore((state) => state.updateUser);
         
@@ -82,7 +81,6 @@ export default function useUpdateUserInfo(){
           },
         });
 
-        queryClient.invalidateQueries(["users"]);
 
             //  useQuery لجلب الدكاترة
          const{supervisors,supervisorsLoading}=useGetSupervisors();

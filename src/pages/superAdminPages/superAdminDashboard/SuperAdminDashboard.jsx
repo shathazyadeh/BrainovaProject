@@ -502,6 +502,7 @@ function SuperAdminDashboard() {
           open={open} // حالة فتح المودال
           handleClose={handleClose} // فنكشن الاغلاق
           user={selectedUser} // بيانات المستخدم المختار
+          type="editUser"
         />
 
         <Box

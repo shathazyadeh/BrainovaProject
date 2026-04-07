@@ -23,13 +23,13 @@ import { useEffect, useState } from "react";
 import style from "./PredictTumor.module.css";
 import useUploadMRI from "../../../hooks/mriHooks/useUploadMRI";
 import usePreviewMRI from "../../../hooks/mriHooks/usePreviewMRI";
-import useGetQuestions from "../../../hooks/reportHooks/studentReportHooks/useGetQuestions";
 import TooltipButton from "../../../components/uiVerseComponents/tooltipButton/TooltipButton";
 import SendButton from "../../../components/uiVerseComponents/sendButton/SendButton";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { yupResolver } from "@hookform/resolvers/yup";
+import useGetQuestions from "../../../hooks/studentHooks/useGetQuestions";
+import useSubmitReport from "../../../hooks/studentHooks/useSubmitReport";
 import { SubmitReportSchema } from "../../../validations/SubmitReportSchema";
-import useSubmitReport from "../../../hooks/reportHooks/studentReportHooks/useSubmitReport";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { LinearProgress } from "@mui/material";
 import { IoLockClosedOutline } from "react-icons/io5";
@@ -62,7 +62,7 @@ function PredictTumor() {
   const { predictMRIMutation } = usePredictMRI();
   const { uploadMRIMutation } = useUploadMRI();
   const { preview, setPreview, handelImagePreview } = usePreviewMRI();
-  const { serverErrors, submitReportMutation } = useSubmitReport();
+   const { usePostMutation : submitReportMutation, serverErrors, isLoading : isLoadingBtn } = useSubmitReport();
   const [showGradCam, setShowGradCam] = useState(false);  //عشان اخفي او اظهر الجراد كام من خلال البوتون
   const [showResult, setShowResult] = useState(false);
   const [analysisTime, setAnalysisTime] = useState(null);//لحساب وقت التحليل 
@@ -77,6 +77,7 @@ function PredictTumor() {
     setFileValue(null);
     setShowGradCam(null);
     setShowResult(false);
+    setFileError("");
 
     const emptyValues = data?.reduce((acc, q) => {
       acc[q.id] = "";
@@ -122,7 +123,6 @@ function PredictTumor() {
         caseId: newCaseId,
         answers: answersArray,
       });
-
       setIsSubmittedSuccessfully(true);
       const startTime = Date.now();//عشان ابلش احسب الوقت 
       const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
@@ -294,7 +294,10 @@ function PredictTumor() {
                   onChange={(e) => {
                     fileRegister.onChange(e); // خبرنا الفورم انه صار تغيير
                     handelImagePreview(e);
-                    setFileValue(e.target.files[0]);
+                    const file = e.target.files[0];
+                    setFileValue(file);
+
+                    if (file) setFileError("");
                   }}
                 />
                 <FaCloudUploadAlt
@@ -508,7 +511,7 @@ function PredictTumor() {
                 </Typography>
               </Box>
             )}
-             {/* Loader فوق الفورم */}
+            {/* Loader فوق الفورم */}
             {isLoading && (
               <Box
                 sx={{
@@ -685,7 +688,7 @@ function PredictTumor() {
               <SendButton
                 onClick={handleSubmit(submitReport)}
                 isSuccess={isSubmittedSuccessfully}
-                disabled={isLocked}
+                disabled={isLocked || isLoadingBtn}
               />
             </Box>
             {serverErrors?.length > 0 ? (

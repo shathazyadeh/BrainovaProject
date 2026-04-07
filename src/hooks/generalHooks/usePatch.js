@@ -21,7 +21,6 @@ export default function usePatch(url) {
                 progress: undefined,
                 theme: "dark",
                 transition: Bounce,
-                
             });
             queryClient.invalidateQueries(["users"]);
         },
