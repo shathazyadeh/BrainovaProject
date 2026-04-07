@@ -27,9 +27,10 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { BsFileEarmarkArrowDown } from "react-icons/bs";
-import { FiMessageSquare, FiPlus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useDownloadPDF from "../../../hooks/supervisorHooks/useDownloadPDF";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -38,74 +39,72 @@ function TablePaginationActions(props) {
   const lastPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
 
   return (
-  <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+    <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+      <IconButton
+        onClick={(e) => onPageChange(e, 0)}
+        disabled={page === 0}
+        sx={{
+          color: "#fff",
+          "&.Mui-disabled": {
+            color: "#555",
+            opacity: 0.5,
+          },
+        }}
+      >
+        {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
+      </IconButton>
 
-    <IconButton
-      onClick={(e) => onPageChange(e, 0)}
-      disabled={page === 0}
-      sx={{
-        color: "#fff",
-        "&.Mui-disabled": {
-          color: "#555",
-          opacity: 0.5,
-        },
-      }}
-    >
-      {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
-    </IconButton>
+      <IconButton
+        onClick={(e) => onPageChange(e, page - 1)}
+        disabled={page === 0}
+        sx={{
+          color: "#fff",
+          "&.Mui-disabled": {
+            color: "#555",
+            opacity: 0.5,
+          },
+        }}
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowRight />
+        ) : (
+          <KeyboardArrowLeft />
+        )}
+      </IconButton>
 
-    <IconButton
-      onClick={(e) => onPageChange(e, page - 1)}
-      disabled={page === 0}
-      sx={{
-        color: "#fff",
-        "&.Mui-disabled": {
-          color: "#555",
-          opacity: 0.5,
-        },
-      }}
-    >
-      {theme.direction === "rtl" ? (
-        <KeyboardArrowRight />
-      ) : (
-        <KeyboardArrowLeft />
-      )}
-    </IconButton>
+      <IconButton
+        onClick={(e) => onPageChange(e, page + 1)}
+        disabled={page >= lastPage}
+        sx={{
+          color: "#fff",
+          "&.Mui-disabled": {
+            color: "#555",
+            opacity: 0.5,
+          },
+        }}
+      >
+        {theme.direction === "rtl" ? (
+          <KeyboardArrowLeft />
+        ) : (
+          <KeyboardArrowRight />
+        )}
+      </IconButton>
 
-    <IconButton
-      onClick={(e) => onPageChange(e, page + 1)}
-      disabled={page >= lastPage}
-      sx={{
-        color: "#fff",
-        "&.Mui-disabled": {
-          color: "#555",
-          opacity: 0.5,
-        },
-      }}
-    >
-      {theme.direction === "rtl" ? (
-        <KeyboardArrowLeft />
-      ) : (
-        <KeyboardArrowRight />
-      )}
-    </IconButton>
-
-    <IconButton
-      onClick={(e) => onPageChange(e, lastPage)}
-      disabled={page >= lastPage}
-      sx={{
-        color: "#fff",
-        "&.Mui-disabled": {
-          color: "#555",
-          opacity: 0.5,
-        },
-      }}
-    >
-      {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
-    </IconButton>
-
-  </Box>
-);
+      <IconButton
+        onClick={(e) => onPageChange(e, lastPage)}
+        disabled={page >= lastPage}
+        sx={{
+          color: "#fff",
+          "&.Mui-disabled": {
+            color: "#555",
+            opacity: 0.5,
+          },
+        }}
+      >
+        {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
+      </IconButton>
+    </Box>
+  );
 }
 
 TablePaginationActions.propTypes = {
@@ -233,7 +232,13 @@ function FeedbackBadge({ isReviewed }) {
   );
 }
 
-function MobileCard({ row, index }) {
+function MobileCard({
+  row,
+  index,
+  handleOpenModal,
+  navigate,
+  downloadMutation,
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -349,9 +354,23 @@ function MobileCard({ row, index }) {
               className="actions_icons"
               sx={{ display: "flex", gap: "5px", color: "#718296" }}
             >
-              <MdOutlineRemoveRedEye size={18} style={{cursor:"pointer"}} />
-              <BsFileEarmarkArrowDown size={18} style={{cursor:"pointer"}} />
-              <FiPlus size={18} style={{cursor:"pointer"}} onClick={() => handleOpenModal(row)}/>
+              <MdOutlineRemoveRedEye
+                size={18}
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  navigate(`/dashboard/supervisor/addFeedback/${row.reportId}`)
+                }
+              />
+              <BsFileEarmarkArrowDown
+                size={18}
+                style={{ cursor: "pointer" }}
+                onClick={() => downloadMutation.mutate(row.reportId)}
+              />
+              <FiPlus
+                size={18}
+                style={{ cursor: "pointer" }}
+                onClick={() => handleOpenModal(row)}
+              />
             </Box>
           </Box>
         </Box>
@@ -360,11 +379,15 @@ function MobileCard({ row, index }) {
   );
 }
 
-export default function CustomPaginationActionsTable({ rows = [], count = 0 ,handleOpenModal}) {
+export default function CustomPaginationActionsTable({
+  rows = [],
+  count = 0,
+  handleOpenModal,
+}) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("studentName");
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const sortedRows = useMemo(() => {
     if (!rows) return [];
     return [...rows].sort((a, b) => {
@@ -381,6 +404,8 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 ,han
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage,
   );
+
+  const downloadMutation = useDownloadPDF();
 
   return (
     <TableContainer
@@ -411,6 +436,9 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 ,han
                 key={row.caseId}
                 row={row}
                 index={page * rowsPerPage + index + 1}
+                handleOpenModal={handleOpenModal}
+                navigate={navigate}
+                downloadMutation={downloadMutation}
               />
             ))
           )}
@@ -498,7 +526,13 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 ,han
               </TableRow>
             ) : (
               displayedRows.map((row, index) => (
-                <TableRow key={row.caseId} sx={{transition: "background-color 0.3s","&:hover": {bgcolor: "#aeacac09"}}}>
+                <TableRow
+                  key={row.caseId}
+                  sx={{
+                    transition: "background-color 0.3s",
+                    "&:hover": { bgcolor: "#aeacac09" },
+                  }}
+                >
                   <TableCell
                     sx={{
                       color: "#fff",
@@ -554,9 +588,25 @@ export default function CustomPaginationActionsTable({ rows = [], count = 0 ,han
                       className="actions_icons"
                       sx={{ display: "flex", gap: "5px" }}
                     >
-                      <MdOutlineRemoveRedEye size={18} style={{ cursor: "pointer" }}  onClick={() => navigate(`/dashboard/supervisor/addFeedback/${row.reportId}`)}/>
-                      <BsFileEarmarkArrowDown size={18} style={{cursor:"pointer"}}/>
-                      <FiPlus size={18} style={{cursor:"pointer"}} onClick={() => handleOpenModal(row)}/>
+                      <MdOutlineRemoveRedEye
+                        size={18}
+                        style={{ cursor: "pointer" }}
+                        onClick={() =>
+                          navigate(
+                            `/dashboard/supervisor/addFeedback/${row.reportId}`,
+                          )
+                        }
+                      />
+                      <BsFileEarmarkArrowDown
+                        size={18}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => downloadMutation.mutate(row.reportId)}
+                      />
+                      <FiPlus
+                        size={18}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleOpenModal(row)}
+                      />
                     </Box>
                   </TableCell>
                 </TableRow>

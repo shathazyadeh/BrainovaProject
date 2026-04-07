@@ -14,7 +14,7 @@ import { BiSolidCommentDetail } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-
+import useGetPDF from '../../../hooks/supervisorHooks/useGetPDF';
 
 function AddFeedback() {
     const { SubmitFeedbackMutation } = useSubmitFeedback();
@@ -23,6 +23,7 @@ function AddFeedback() {
     console.log('report details:', data);
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);// عشان اتحكم بالسهم اللي عبوكس الاسئلة 
+    const {isError:pdfIsError,isLoading:pdfLoading,error:pdfError,data:pdf}=useGetPDF(id);
 
 
 
@@ -107,7 +108,13 @@ function AddFeedback() {
                         <Box className='right_side'>
                             <Box className='actions flex_column' sx={{ gap: '10px', border: '1px solid #57565662', borderRadius: '15px', bgcolor: '#15181e', paddingX: '10px', paddingY: '25px', marginBottom: '10px' }}>
                                 <Typography sx={{ color: '#da2828', paddingBottom: '10px', fontWeight: '600', paddingLeft: '9px' }}>Quick Actions</Typography>
-                                <Button
+                                <Button onClick={() => { //حتى فتح ال pdf
+      if (pdf) {
+    const url = window.URL.createObjectURL(pdf);
+    window.open(url, "_blank");
+    setTimeout(() => window.URL.revokeObjectURL(url), 10000);
+   }}}
+
 
                                     sx={{ bgcolor: '#0e1115', color: '#f0f2f5', display: 'flex', gap: '5px', borderRadius: '15px', "&:hover": { backgroundColor: "#ff0000" }, }}><FaFileDownload />Open PDF Report</Button>
                                 <Button sx={{ bgcolor: '#0e1115', color: '#f0f2f5', display: 'flex', gap: '5px', borderRadius: '15px', "&:hover": { backgroundColor: "#ff0000" }, }}><BiSolidCommentDetail />View Feedback</Button>
