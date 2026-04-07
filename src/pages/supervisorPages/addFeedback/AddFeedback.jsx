@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
   Avatar,
@@ -42,6 +42,8 @@ function AddFeedback() {
   const tumorProbability = Math.max(...tumorProbabilitiesArray);
   const percentage = parseFloat((tumorProbability * 100).toFixed(2));
   const { refetch, isFetching } = useGetPDF(id);
+  const feedbackRef = useRef(null); // عشان لما نكبس على البوتون فيو فيدابك ينزلني للفيدباك تحت
+  const [highlight, setHighlight] = useState(false); // عشان الفيدباك يضوي لما ننزل عنده
 
   const handleOpen = () => {
     setOpenModal(true);
@@ -464,6 +466,17 @@ function AddFeedback() {
                   Open PDF Report
                 </Button>
                 <Button
+                  onClick={() => {
+                    feedbackRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                    });
+                    setHighlight(true);
+
+                    setTimeout(() => {
+                      setHighlight(false);
+                    }, 1000);
+                  }}
                   sx={{
                     bgcolor: "#0e1115",
                     color: "#f0f2f5",
@@ -581,6 +594,7 @@ function AddFeedback() {
               </Box>
               <Box
                 className="feedback_details"
+                ref={feedbackRef}
                 sx={{
                   border: "1px solid #57565662",
                   borderRadius: "15px",
@@ -588,6 +602,9 @@ function AddFeedback() {
                   paddingX: "10px",
                   paddingY: "25px",
                   marginTop: "10px",
+                  boxShadow: highlight
+                    ? "0 0 10px var(--primary-color)"
+                    : "none",
                 }}
               >
                 <Typography
@@ -612,7 +629,9 @@ function AddFeedback() {
                   >
                     Loading...
                   </Typography>
-                ) : isFeedbackError ? (
+                ) : isFeedbackError &&
+                  feedbackError?.message !==
+                    "Request failed with status code 404" ? (
                   <Typography
                     sx={{
                       color: "var(--primary-color)",
