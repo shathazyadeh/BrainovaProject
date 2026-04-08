@@ -113,12 +113,12 @@ function AddFeedback() {
     >
       <DashboardNavbar />
       <Container maxWidth="lg">
-        <Grid container spacing={3} alignItems="flex-start">
-          <Grid item size={{ md: 9 }}>
+        <Grid container spacing={1.5} alignItems="flex-start">
+          <Grid item size={{ xs: 12, md: 9 }}>
             {/*اول بوكسين */}
             <Box
               className="student-info_and_ai_prediction"
-              sx={{ display: "flex", gap: "10px", marginBottom: "15px" }}
+              sx={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", }}
             >
               <Box
                 className="student-info"
@@ -157,6 +157,7 @@ function AddFeedback() {
                         paddingLeft: "10px",
                         fontFamily: "var(--primary-font)",
                         fontWeight: "600",
+                        whiteSpace: { md: "nowrap" }
                       }}
                     >
                       {data?.studentName}
@@ -176,7 +177,7 @@ function AddFeedback() {
                   <Typography sx={{ color: "#7e8a9a", fontSize: "13px" }}>
                     Submitted at:
                   </Typography>
-                  <Typography sx={{ color: "#fff", fontSize: "14px" }}>
+                  <Typography sx={{ color: "#fff", fontSize: { xs: '12px', md: "14px" }, }}>
                     {data?.submittedAt.split("T")[0]}
                   </Typography>
                 </Box>
@@ -191,7 +192,7 @@ function AddFeedback() {
                   paddingX: "20px",
                   paddingTop: "20px",
                   paddingBottom: "24px",
-                  height: "160px",
+
                 }}
               >
                 <Box
@@ -248,6 +249,25 @@ function AddFeedback() {
                       border: "2px solid #ff000065",
                       borderRadius: "50%",
                       display: "inline-flex",
+                      "@media (max-width:979px)": {
+                        height: '60px',
+                        width: "60px",
+
+                      }, "@media (max-width:895px)": {
+                        height: '70px',
+                        width: "70px",
+
+                      }
+                      , "@media (max-width:529px)": {
+                        height: '60px',
+                        width: "60px",
+                      }
+                      , "@media (max-width:429px)": {
+                        height: '70px',
+                        width: "70px",
+
+                      },
+
                     }}
                   >
                     <Typography
@@ -255,6 +275,11 @@ function AddFeedback() {
                         textAlign: "center",
                         fontFamily: "var(--primary-font)",
                         fontWeight: "600",
+                        "@media (max-width:979px)": {
+                          fontSize: '14px'
+                        }, "@media (max-width:529px)": {
+                          fontSize: '14px'
+                        }
                       }}
                     >
                       {" "}
@@ -303,6 +328,12 @@ function AddFeedback() {
                   alignItems: "center",
                   justifyContent: "center",
                   display: "flex",
+                  "@media (max-width:4835px)": {
+                    height: '350px'
+                  }
+                  , "@media (max-width:405px)": {
+                    height: '260px'
+                  },
                 }}
               >
                 <img
@@ -323,7 +354,7 @@ function AddFeedback() {
                 mb: 2,
                 cursor: "pointer",
                 marginTop: "15px",
-                marginBottom: "50px",
+                marginBottom: { xs: '10px', md: '50px' },
               }}
               onClick={() => setOpen(!open)}
             >
@@ -405,193 +436,229 @@ function AddFeedback() {
           </Grid>
 
           {/*ببوكس اللي عاليمين  */}
-          <Grid item size={{ md: 3 }}>
+          <Grid item size={{ xs: 12, md: 3 }}>
             <Box className="right_side">
-              <Box
-                className="actions flex_column"
-                sx={{
-                  gap: "10px",
-                  border: "1px solid #57565662",
-                  borderRadius: "15px",
-                  bgcolor: "#15181e",
-                  paddingX: "10px",
-                  paddingY: "25px",
-                  marginBottom: "10px",
-                }}
-              >
-                <Typography
+              <Box sx={{ display: { xs: "flex", md: "block", }, gap: "10px", alignItems: { xs: "flex-start", md: "normal" }, flexDirection: { xs: "column", sm: "row" }, }}> {/*هاد البوكس عشان يخليهن حد بعض في صفحة الmd */}
+                <Box
+                  className="actions flex_column"
                   sx={{
-                    color: "#da2828",
-                    paddingBottom: "10px",
-                    fontWeight: "600",
-                    paddingLeft: "9px",
-                    fontFamily: "var(--primary-font)",
+                    gap: "10px",
+                    border: "1px solid #57565662",
+                    borderRadius: "15px",
+                    bgcolor: "#15181e",
+                    paddingX: "7px",
+                    paddingY: "25px",
+                    marginBottom: "10px",
+                    width: { xs: '100%', sm: '50%', md: '100%' },
                   }}
                 >
-                  Quick Actions
-                </Typography>
-                <Button
-                  disabled={isFetching}
-                  onClick={async () => {
-                    const result = await refetch();
+                  <Typography
+                    sx={{
+                      color: "#da2828",
+                      paddingBottom: "10px",
+                      fontWeight: "600",
+                      paddingLeft: "9px",
+                      fontFamily: "var(--primary-font)",
+                      fontSize: { xs: "20px", md: "13px", lg: "15px" },
+                    }}
+                  >
+                    Quick Actions
+                  </Typography>
+                  <Button
+                    disabled={isFetching}
+                    onClick={async () => {
+                      const result = await refetch();
 
-                    if (result.isError) {
-                      toast.error("Failed to load PDF");
-                      return;
+                      if (result.isError) {
+                        toast.error("Failed to load PDF");
+                        return;
+                      }
+
+                      if (result.data) {
+                        const url = window.URL.createObjectURL(result.data);
+                        window.open(url, "_blank");
+                      }
+                    }}
+                    sx={{
+
+                      bgcolor: "#0e1115",
+                      color: "#f0f2f5",
+                      display: "flex",
+                      gap: '10px',
+                      justifyContent: "center",
+                      textAlign: "center",
+                      borderRadius: "10px",
+                      border: "1px solid rgb(37, 41, 49)",
+                      whiteSpace: "nowrap",
+                      "&:hover": { backgroundColor: "#ff0000" },
+                      "&.Mui-disabled": {
+                        color: "#999",
+                        bgcolor: "#1a1d23",
+                      },
+                    }}
+                  > <Box sx={{ alignItems: 'center', display: 'flex' }}>
+                      <FaFileDownload size={15} style={{ flexShrink: 0 }} />
+                    </Box>
+                    <Typography sx={{ fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' }}> Open PDF Report</Typography>
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      feedbackRef.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                      setHighlight(true);
+
+                      setTimeout(() => {
+                        setHighlight(false);
+                      }, 1000);
+                    }}
+                    sx={{
+
+                      bgcolor: "#0e1115",
+                      color: "#f0f2f5",
+                      display: "flex",
+                      gap: '10px',
+                      justifyContent: "center",
+                      textAlign: "center",
+                      borderRadius: "10px",
+                      border: "1px solid rgb(37, 41, 49)",
+                      whiteSpace: "nowrap",
+                      "&:hover": { backgroundColor: "#ff0000" },
+                      "&.Mui-disabled": {
+                        color: "#999",
+                        bgcolor: "#1a1d23",
+                      },
+                    }}
+                  > <Box sx={{ alignItems: 'center', display: 'flex' }}>
+                      <BiSolidCommentDetail size={15} style={{ flexShrink: 0 }} />
+                    </Box>
+                    <Typography sx={{ minWidth: { xs: '120px', md: '96px', lg: "120px" }, fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' }}> View Feedback</Typography>
+
+                  </Button>
+                  <Button
+                    sx={{
+
+                      bgcolor: "#0e1115",
+                      color: "#f0f2f5",
+                      display: "flex",
+                      gap: '10px',
+                      justifyContent: "center",
+                      textAlign: "center",
+                      borderRadius: "10px",
+                      border: "1px solid rgb(37, 41, 49)",
+                      whiteSpace: "nowrap",
+                      "&:hover": { backgroundColor: "#ff0000" },
+                      "&.Mui-disabled": {
+                        color: "#999",
+                        bgcolor: "#1a1d23",
+                      },
+                    }}
+                    onClick={handleOpen} //للمودال
+                  > <Box sx={{ alignItems: 'center', display: 'flex' }}>
+                      <FaPlus size={15} style={{ flexShrink: 0 }} />
+                    </Box>
+                    <Typography sx={{ minWidth: { xs: '120px', md: '96px', lg: "120px" }, fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' }}> ADD Feedback</Typography>
+
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      navigate("/dashboard/supervisor/students-reports")
                     }
+                    sx={{
 
-                    if (result.data) {
-                      const url = window.URL.createObjectURL(result.data);
-                      window.open(url, "_blank");
-                    }
-                  }}
-                  sx={{
-                    bgcolor: "#0e1115",
-                    color: "#f0f2f5",
-                    display: "flex",
-                    gap: "10px",
-                    borderRadius: "10px",
-                    border: "1px solid rgb(37, 41, 49)",
-                    justifyContent: "flex-start",
-                    paddingX: "50px",
-                    whiteSpace: "nowrap",
-                    "&:hover": { backgroundColor: "#ff0000" },
-                    "&.Mui-disabled": {
-                      color: "#999",
-                      bgcolor: "#1a1d23",
-                    },
-                  }}
-                >
-                  <FaFileDownload />
-                  Open PDF Report
-                </Button>
-                <Button
-                  onClick={() => {
-                    feedbackRef.current?.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                    });
-                    setHighlight(true);
+                      bgcolor: "#0e1115",
+                      color: "#f0f2f5",
+                      display: "flex",
+                      gap: '10px',
+                      justifyContent: "center",
+                      textAlign: "center",
+                      borderRadius: "10px",
+                      border: "1px solid rgb(37, 41, 49)",
+                      whiteSpace: "nowrap",
+                      "&:hover": { backgroundColor: "#ff0000" },
+                      "&.Mui-disabled": {
+                        color: "#999",
+                        bgcolor: "#1a1d23",
+                      },
+                    }}
+                  >  <Box sx={{ alignItems: 'center', display: 'flex' }}>
+                      <FaArrowLeftLong size={15} style={{ flexShrink: 0 }} />
+                    </Box>
+                    <Typography sx={{ minWidth: { xs: '10px', md: '96px', lg: "10px" }, fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' }}> Back to Reports</Typography>
 
-                    setTimeout(() => {
-                      setHighlight(false);
-                    }, 1000);
-                  }}
+                  </Button>
+                </Box>
+
+
+                <Box
+                  className="flex_column"
                   sx={{
-                    bgcolor: "#0e1115",
-                    color: "#f0f2f5",
-                    display: "flex",
-                    gap: "10px",
-                    border: "1px solid rgb(37, 41, 49)",
-                    borderRadius: "10px",
-                    justifyContent: "flex-start",
-                    paddingX: "50px",
-                    whiteSpace: "nowrap",
-                    "&:hover": { backgroundColor: "#ff0000" },
+                    border: "1px solid #57565662",
+                    borderRadius: "15px",
+                    bgcolor: "#15181e",
+                    paddingX: "18px",
+                    paddingTop: "25px",
+                    paddingBottom: { xs: '30px', sm: '40px', md: '25px' },
+                    width: { xs: '100%', sm: '50%', md: '100%' },
+                    textAlign: { xs: 'center', md: 'left' },
+                    marginBottom: "10px",
+
                   }}
                 >
-                  <BiSolidCommentDetail />
-                  View Feedback
-                </Button>
-                <Button
-                  sx={{
-                    bgcolor: "#0e1115",
-                    color: "#f0f2f5",
-                    display: "flex",
-                    gap: "10px",
-                    borderRadius: "10px",
-                    border: "1px solid rgb(37, 41, 49)",
-                    justifyContent: "flex-start",
-                    paddingX: "50px",
-                    whiteSpace: "nowrap",
-                    "&:hover": { backgroundColor: "#ff0000" },
-                  }}
-                  onClick={handleOpen} //للمودال
-                >
-                  <FaPlus />
-                  Add Feedback
-                </Button>
-                <Button
-                  onClick={() =>
-                    navigate("/dashboard/supervisor/students-reports")
-                  }
-                  sx={{
-                    bgcolor: "#0e1115",
-                    color: "#f0f2f5",
-                    display: "flex",
-                    gap: "10px",
-                    borderRadius: "10px",
-                    border: "1px solid rgb(37, 41, 49)",
-                    justifyContent: "flex-start",
-                    paddingX: "50px",
-                    whiteSpace: "nowrap",
-                    "&:hover": { backgroundColor: "#ff0000" },
-                  }}
-                >
-                  <FaArrowLeftLong />
-                  Back to Reports
-                </Button>
+                  <Typography
+                    sx={{
+                      color: "#da2828",
+                      paddingBottom: "10px",
+                      fontWeight: "600",
+                      fontFamily: "var(--primary-font)",
+                      whiteSpace: { md: "nowrap" },
+                      fontSize: { xs: "20px", md: "13px", lg: "15px" },
+                      marginBottom: '19px'
+                    }}
+                  >
+                    Report Summary
+                  </Typography>
+                  <Typography sx={{ color: "#7e8a9a", fontSize: { xs: "15px", md: "13px" }, }}>
+                    Submitted
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#ffffff",
+                      fontSize: "11px",
+                      paddingBottom: "10px",
+                    }}
+                  >
+                    {data?.submittedAt.split("T")[0]}
+                  </Typography>
+                  <Typography sx={{ color: "#7e8a9a", fontSize: { xs: "15px", md: "13px" }, }}>
+                    Report ID
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#ffffff",
+                      fontSize: "11px",
+                      paddingBottom: "10px",
+                    }}
+                  >{`REP-${data?.reportId.slice(0, 6)}`}</Typography>
+                  <Typography sx={{ color: "#7e8a9a", fontSize: { xs: "15px", md: "13px" }, }}>
+                    Case ID
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "#ffffff",
+                      fontSize: "11px",
+                      paddingBottom: "10px",
+                    }}
+                  >{`CASE-${data?.caseId?.slice(0, 6)}`}</Typography>
+                </Box>
               </Box>
-
               <BasicModal
                 open={openModal}
                 handleClose={handleClose}
                 reportId={id}
                 type="feedback"
               />
-              <Box
-                className="flex_column"
-                sx={{
-                  border: "1px solid #57565662",
-                  borderRadius: "15px",
-                  bgcolor: "#15181e",
-                  paddingX: "20px",
-                  paddingY: "25px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "#da2828",
-                    paddingBottom: "10px",
-                    fontWeight: "600",
-                    fontFamily: "var(--primary-font)",
-                  }}
-                >
-                  Report Summary
-                </Typography>
-                <Typography sx={{ color: "#7e8a9a", fontSize: "13px" }}>
-                  Submitted
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#ffffff",
-                    fontSize: "11px",
-                    paddingBottom: "10px",
-                  }}
-                >
-                  {data?.submittedAt.split("T")[0]}
-                </Typography>
-                <Typography sx={{ color: "#7e8a9a", fontSize: "13px" }}>
-                  Report ID
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#ffffff",
-                    fontSize: "11px",
-                    paddingBottom: "10px",
-                  }}
-                >{`REP-${data?.reportId.slice(0, 6)}`}</Typography>
-                <Typography sx={{ color: "#7e8a9a", fontSize: "13px" }}>
-                  Case ID
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "#ffffff",
-                    fontSize: "11px",
-                    paddingBottom: "10px",
-                  }}
-                >{`CASE-${data?.caseId?.slice(0, 6)}`}</Typography>
-              </Box>
               <Box
                 className="feedback_details"
                 ref={feedbackRef}
@@ -602,6 +669,7 @@ function AddFeedback() {
                   paddingX: "10px",
                   paddingY: "25px",
                   marginTop: "10px",
+                  marginBottom: { xs: '50px', md: '0px' },
                   boxShadow: highlight
                     ? "0 0 10px var(--primary-color)"
                     : "none",
@@ -631,7 +699,7 @@ function AddFeedback() {
                   </Typography>
                 ) : isFeedbackError &&
                   feedbackError?.message !==
-                    "Request failed with status code 404" ? (
+                  "Request failed with status code 404" ? (
                   <Typography
                     sx={{
                       color: "var(--primary-color)",
@@ -642,7 +710,7 @@ function AddFeedback() {
                     {feedbackError?.message}
                   </Typography>
                 ) : feedbackData && feedbackData.comment ? (
-                  <Typography
+                  <Box
                     sx={{
                       color: "#fff",
                       fontSize: "13px",
@@ -655,11 +723,12 @@ function AddFeedback() {
                         overflowY: "auto",
                         paddingLeft: "9px",
                         paddingRight: "5px",
+                        wordBreak: "break-word",
                         "&::-webkit-scrollbar": {
                           width: "6px",
                         },
                         "&::-webkit-scrollbar-thumb": {
-                          bgcolor: "#ff0000",
+                          bgcolor: "var(--primary-color)",
                           borderRadius: "3px",
                         },
                         "&::-webkit-scrollbar-track": {
@@ -677,7 +746,7 @@ function AddFeedback() {
                         {feedbackData.comment}
                       </Typography>
                     </Box>
-                  </Typography>
+                  </Box>
                 ) : (
                   <Typography
                     sx={{
@@ -695,17 +764,31 @@ function AddFeedback() {
         </Grid>
 
         {/*footer */}
+
         <Box
+          className="lower_footer"
           sx={{
             borderTop: "1px solid rgba(53, 53, 53, 0.93)",
+            width: "fit-content",
+            margin: "auto",
+            paddingX: { xs: "0px", md: "200px" },
             textAlign: "center",
-            py: 3,
+            marginTop: { xs: "60px", md: "0px" },
           }}
         >
-          <Typography sx={{ color: "var(--mid-gray-color)" }}>
+          <Typography
+            component={"p"}
+            sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+          >
             © 2026{" "}
-            <span style={{ color: "var(--dark-red-color)" }}>Brainova</span>.
-            All rights reserved.
+            <Typography
+              component={"span"}
+              sx={{ color: "var(--dark-red-color)" }}
+            >
+              Brainova
+            </Typography>
+            . All rights reserved. | Built for medical education and research
+            purposes.
           </Typography>
         </Box>
       </Container>

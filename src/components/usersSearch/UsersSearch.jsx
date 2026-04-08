@@ -27,7 +27,6 @@ export default function UsersSearch({ search, setSearch }) {
             border: "1px red solid", // نشيل البوردر لما يكون فوكس
           },
         },
-        input: { color: "#fff" },
       }}
       InputProps={{
         startAdornment: (

@@ -12,9 +12,9 @@ function Hero() {
     <Box
       component={"section"}
       className="hero_section"
-      sx={{        
+      sx={{
         position: "relative",
-        paddingY:"80px"
+        paddingY: { xs: "47px", sm: "60px", md: "80px" },
       }}
     >
       <Grid
@@ -38,6 +38,12 @@ function Hero() {
               paddingY: "10px",
               bgcolor: "rgba(255, 0, 0, 0.1)",
               fontWeight: "500",
+              "@media (max-width:700px)": {
+                fontSize: "14px",
+              },
+              "@media (max-width:430px)": {
+                fontSize: "12px",
+              },
             }}
           >
             <Typography
@@ -59,38 +65,34 @@ function Hero() {
               marginY: "20px",
               wordBreak: "break-word",
               overflowWrap: "break-word",
-              "@media (max-width:470px)": {
-              fontSize: "50px",
-            },"@media (max-width:426px)": {
-              fontSize: "40px",
-            },
-            "@media (max-width:418px)": {
-              fontSize: "30px",
-            }
+              "@media (max-width:700px)": {
+                fontSize: "40px",
+              },
+              "@media (max-width:430px)": {
+                fontSize: "30px",
+              },
             }}
           >
             Advanced Brain Tumor
             <Typography
-               component="span"
-               variant="h2"
+              component="span"
+              variant="h2"
               sx={{
                 color: "var(--primary-color)",
                 fontWeight: "800",
                 fontFamily: "var(--primary-font)",
                 wordBreak: "break-word",
                 overflowWrap: "break-word",
-                "@media (max-width:470px)": {
-              fontSize: "50px",
-            },
-            "@media (max-width:426px)": {
-              fontSize: "40px",
-            },
-            "@media (max-width:418px)": {
-              fontSize: "30px",
-            }
+                "@media (max-width:700px)": {
+                  fontSize: "40px",
+                },
+                "@media (max-width:430px)": {
+                  fontSize: "30px",
+                },
               }}
             >
-              {" "}Detection System
+              {" "}
+              Detection System
             </Typography>
           </Typography>
           <Typography
@@ -100,14 +102,20 @@ function Hero() {
               fontSize: "16px",
               lineHeight: "25px",
               maxWidth: "468px",
-              width:"fit-content"
+              width: "fit-content",
+              "@media (max-width:430px)": {
+                fontSize: "13px",
+              },
             }}
           >
             Leverage cutting-edge artificial intelligence for rapid and accurate
             brain tumor diagnosis. Train, analyze, and visualize with
             state-of-the-art deep learning technology.
           </Typography>
-          <Box className="hero_btn" sx={{ marginTop: "30px", display:"flex",gap:"10px"}}>
+          <Box
+            className="hero_btn"
+            sx={{ marginTop: "30px", display: "flex", gap: "10px" }}
+          >
             <Button
               component={RouterLink}
               to="/predict-tumor"
@@ -121,6 +129,11 @@ function Hero() {
                 boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
                 display: "flex",
                 whiteSpace: "nowrap",
+                "@media (max-width:430px)": {
+                  fontSize: "13px",
+                  paddingX: "7px",
+                  paddingY: "6px",
+                },
               }}
             >
               <Typography component={"span"} sx={{ marginRight: "5px" }}>
@@ -140,6 +153,11 @@ function Hero() {
                 boxShadow: "0 0 15px rgba(82, 81, 81, 0.6)",
                 display: "flex",
                 whiteSpace: "nowrap",
+                "@media (max-width:430px)": {
+                  fontSize: "13px",
+                  paddingX: "7px",
+                  paddingY: "6px",
+                },
               }}
             >
               <Typography component={"span"} sx={{ marginRight: "5px" }}>
@@ -158,14 +176,20 @@ function Hero() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexGrow: { xs: "1", md: "0" },
           }}
         >
-          <img
+          <Box
+            component="img"
             src={heroPic}
-            className={`${style.animatedImage} ${style.drop_shadow}`}
-            style={{ width: "100%", maxWidth: "600px", height: "auto" }}
             alt="Hero Brain"
-          ></img>
+            className={`${style.animatedImage} ${style.drop_shadow}`}
+            sx={{
+              width: "100%",
+              maxWidth: { xs: "300px", sm: "400px", md: "600px" },
+              height: "auto",
+            }}
+          />
         </Grid>
       </Grid>
       <Typography sx={{ color: "white" }}></Typography>

@@ -90,7 +90,6 @@ function StarsNavbar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
-              display: 'flex',
               gap: '10px',
               "@media (max-width:356px)": {
               fontSize: "20px"

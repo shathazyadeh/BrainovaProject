@@ -36,11 +36,11 @@ export default function TemporaryDrawer() {
       "/dashboard/admin/user-management",
       "/dashboard/super-admin/user-management",
     ],
-    Reports: ["/dashboard/supervisor/reports"],
+    Reports: ["/dashboard/supervisor/students-reports"],
     "New Reports": ["/dashboard/supervisor/new-reports"],
     Students: ["/dashboard/supervisor/students"],
     Feedback: ["/dashboard/supervisor/feedback"],
-    Reports: ["/dashboard/supervisor/students-reports"]
+   
   };
 
   const DrawerList = (

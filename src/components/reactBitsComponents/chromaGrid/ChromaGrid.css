@@ -120,3 +120,17 @@
   opacity: 1;
   transition: opacity 0.25s ease;
 }
+
+@media (max-width: 768px) {
+  .chroma-card {
+    width: 220px;
+    min-width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chroma-card {
+    width: 160px;
+    min-width: 160px;
+  }
+}

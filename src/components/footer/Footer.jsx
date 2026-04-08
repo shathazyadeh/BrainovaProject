@@ -12,9 +12,9 @@ import { LuBrain } from "react-icons/lu";
 import style from "./Footer.module.css";
 
 function Footer() {
-    const location = useLocation();
-    let footerBodyColor = "#000";
-    if (location.pathname === "/home") footerBodyColor = "#171717";
+  const location = useLocation();
+  let footerBodyColor = "#000";
+  if (location.pathname === "/home") footerBodyColor = "#171717";
 
   return (
     <Box
@@ -68,6 +68,9 @@ function Footer() {
                 letterSpacing: "5px",
                 marginLeft: "5px",
                 color: "#fff",
+                "@media (max-width:430px)": {
+                  fontSize: "30px",
+                },
               }}
             >
               BRAINOVA
@@ -79,6 +82,8 @@ function Footer() {
               color: "var(--mid-gray-color)",
               fontWeight: "600",
               marginTop: "30px",
+              paddingX: "10px",
+              marginBottom: { xs: "10px", sm: "0px" },
               textAlign: { xs: "center", lg: "start" },
             }}
           >
@@ -95,6 +100,9 @@ function Footer() {
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
               color: "#fff",
+              "@media (max-width:430px)": {
+                fontSize: "18px",
+              },
             }}
           >
             Platform
@@ -156,6 +164,9 @@ function Footer() {
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
               color: "#fff",
+              "@media (max-width:430px)": {
+                fontSize: "18px",
+              },
             }}
           >
             About Us
@@ -208,6 +219,9 @@ function Footer() {
               fontSize: "22px",
               textAlign: { xs: "center", lg: "start" },
               color: "#fff",
+              "@media (max-width:430px)": {
+                fontSize: "18px",
+              },
             }}
           >
             Resources
@@ -252,15 +266,29 @@ function Footer() {
           </List>
         </Grid>
       </Grid>
-      <Box className="lower_footer" sx={{textAlign:"center"}}>
+      <Box
+        className="lower_footer"
+        sx={{ textAlign: "center", paddingX: "10px" }}
+      >
         <Typography
           component={"p"}
-          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+          sx={{
+            color: "var(--mid-gray-color)",
+            paddingY: "30px",
+            "@media (max-width:430px)": {
+              fontSize: "12px",
+            },
+          }}
         >
           © 2026{" "}
           <Typography
             component={"span"}
-            sx={{ color: "var(--dark-red-color)" }}
+            sx={{
+              color: "var(--dark-red-color)",
+              "@media (max-width:430px)": {
+                fontSize: "12px",
+              },
+            }}
           >
             Brainova
           </Typography>

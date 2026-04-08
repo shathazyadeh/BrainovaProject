@@ -1,14 +1,21 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import useGetMyallFeedbacks from "../../../hooks/supervisorHooks/useGetMyallFeedbacks";
 import UsersSearch from "../../../components/usersSearch/UsersSearch";
+import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
 
 function SupervisorFeedback() {
   const { isError, error, isLoading, data } = useGetMyallFeedbacks();
+  const { deleteFeedbackMutation } = useDeleteFeedback();
   const [search, setSearch] = useState("");
   console.log("my feedbacks:", data);
+
+  const handleDeleteFeedback = async (feedbackId) => {
+    await deleteFeedbackMutation.mutateAsync(feedbackId);
+  };
 
   if (isError) {
     //server errors
@@ -113,7 +120,7 @@ function SupervisorFeedback() {
             </Box>
           )}
 
-          <Box className="section_titel" >
+          <Box className="section_titel">
             <Typography
               component={"h1"}
               variant="h4"
@@ -243,9 +250,38 @@ function SupervisorFeedback() {
                     </Box>
                   </Box>
 
-                  <Typography sx={{ color: "#d3d9de", fontWeight: "300" }}>
+                  <Typography
+                    sx={{
+                      color: "#d3d9de",
+                      fontWeight: "300",
+                      wordBreak: "break-word",
+                      paddingRight:"10px",
+                      height: "38px",
+                      overflowY: "auto",
+
+                      "&::-webkit-scrollbar": {
+                        width: "6px",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: "var(--primary-color)",
+                        borderRadius: "3px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        backgroundColor: "#2a2a3d",
+                      },
+                    }}
+                  >
                     {feedback.comment}{" "}
                   </Typography>
+                  <Box
+                    className="action_icons"
+                    sx={{ display: "flex", justifyContent: "flex-end" ,marginTop:"10px" }}
+                  >
+                    <DeleteIcon
+                      sx={{ color: "var(--primary-color)", cursor: "pointer" }}
+                      onClick={() => handleDeleteFeedback(feedback.id)}
+                    />
+                  </Box>
                 </Box>
               </Box>
             ))}
@@ -253,31 +289,31 @@ function SupervisorFeedback() {
       </Box>
       {/*footer */}
       <Box
-              className="lower_footer"
-              sx={{
-                borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-                width: "fit-content",
-                margin: "auto",
-                paddingX: { xs: "0px", md: "200px" },
-                textAlign: "center",
-                marginTop: { xs: "60px", md: "0px" },
-              }}
-            >
-              <Typography
-                component={"p"}
-                sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
-              >
-                © 2026{" "}
-                <Typography
-                  component={"span"}
-                  sx={{ color: "var(--dark-red-color)" }}
-                >
-                  Brainova
-                </Typography>
-                . All rights reserved. | Built for medical education and research
-                purposes.
-              </Typography>
-            </Box>
+        className="lower_footer"
+        sx={{
+          borderTop: "1px solid rgba(53, 53, 53, 0.93)",
+          width: "fit-content",
+          margin: "auto",
+          paddingX: { xs: "0px", md: "200px" },
+          textAlign: "center",
+          marginTop: { xs: "60px", md: "0px" },
+        }}
+      >
+        <Typography
+          component={"p"}
+          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+        >
+          © 2026{" "}
+          <Typography
+            component={"span"}
+            sx={{ color: "var(--dark-red-color)" }}
+          >
+            Brainova
+          </Typography>
+          . All rights reserved. | Built for medical education and research
+          purposes.
+        </Typography>
+      </Box>
     </Box>
   );
 }

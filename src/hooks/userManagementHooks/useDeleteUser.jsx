@@ -24,7 +24,6 @@ export default function useDeleteUser(){
             if(deletedCount && !failedCount){ // all users deleted
             toast.success(`Deleted ${deletedCount} users successfully`, {
                 position: "top-center",
-                autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: false,
                 pauseOnHover: true,

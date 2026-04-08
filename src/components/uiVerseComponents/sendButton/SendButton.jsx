@@ -381,7 +381,6 @@ const sending = phase === "sending";
         <Box
           sx={{
             position: sending ? "absolute" : "relative",
-            display: "flex",
             alignItems: "center",
             pl: "29px",
             zIndex: 3,

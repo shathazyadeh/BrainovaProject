@@ -36,7 +36,6 @@ import { IoLockClosedOutline } from "react-icons/io5";
 import { SlEnergy } from "react-icons/sl";
 
 function PredictTumor() {
-
   const { isError, error, isLoading, data } = useGetQuestions();
 
   const {
@@ -62,12 +61,15 @@ function PredictTumor() {
   const { predictMRIMutation } = usePredictMRI();
   const { uploadMRIMutation } = useUploadMRI();
   const { preview, setPreview, handelImagePreview } = usePreviewMRI();
-   const { usePostMutation : submitReportMutation, serverErrors, isLoading : isLoadingBtn } = useSubmitReport();
-  const [showGradCam, setShowGradCam] = useState(false);  //عشان اخفي او اظهر الجراد كام من خلال البوتون
+  const {
+    usePostMutation: submitReportMutation,
+    serverErrors,
+    isLoading: isLoadingBtn,
+  } = useSubmitReport();
+  const [showGradCam, setShowGradCam] = useState(false); //عشان اخفي او اظهر الجراد كام من خلال البوتون
   const [showResult, setShowResult] = useState(false);
-  const [analysisTime, setAnalysisTime] = useState(null);//لحساب وقت التحليل 
-  const isLocked = showResult;//عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
-  
+  const [analysisTime, setAnalysisTime] = useState(null); //لحساب وقت التحليل
+  const isLocked = showResult; //عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
 
   console.log("data ", data);
 
@@ -101,13 +103,13 @@ function PredictTumor() {
     setIsSubmittedSuccessfully(false);
 
     if (!fileValue) {
-  if (isLocked) {
-    setFileError("Please upload a new MRI image to submit again");
-  } else {
-    setFileError("Please upload an MRI file");
-  }
-  return;
-}
+      if (isLocked) {
+        setFileError("Please upload a new MRI image to submit again");
+      } else {
+        setFileError("Please upload an MRI file");
+      }
+      return;
+    }
 
     setFileError("");
 
@@ -124,14 +126,14 @@ function PredictTumor() {
         answers: answersArray,
       });
       setIsSubmittedSuccessfully(true);
-      const startTime = Date.now();//عشان ابلش احسب الوقت 
+      const startTime = Date.now(); //عشان ابلش احسب الوقت
       const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
       console.log("model res ", modelResponse);
       setShowResult(true);
 
-      const endTime = Date.now();//نهاية الوقت 
+      const endTime = Date.now(); //نهاية الوقت
       const duration = ((endTime - startTime) / 1000).toFixed(2); //حولناها لثواني
-      setAnalysisTime(duration); //stateخزناها بال 
+      setAnalysisTime(duration); //stateخزناها بال
       // reset
       setCaseId(null);
       setPreviewGradCam(null);
@@ -142,7 +144,6 @@ function PredictTumor() {
       }, 3000);
     }
   };
-
 
   //لتعطيل باقي الاسئلة اا جاوب نو تيومر
   const preliminaryQuestion = data?.find(
@@ -163,13 +164,13 @@ function PredictTumor() {
 
       reset(emptyValues);
     }
-  }, [isNoTumor, data]);// رح يشتغل بس لما isNoTumor يتغير
+  }, [isNoTumor, data]); // رح يشتغل بس لما isNoTumor يتغير
 
   const isDisabled = (q) => {
-  if (isLocked) return true; //لقفل الفورم بعد النتيجة
-  if (q.code === "preliminary assesment") return false;
-  return isNoTumor;
-};
+    if (isLocked) return true; //لقفل الفورم بعد النتيجة
+    if (q.code === "preliminary assesment") return false;
+    return isNoTumor;
+  };
   //////////////////////////////////////
 
   return (
@@ -198,6 +199,12 @@ function PredictTumor() {
               display: "flex",
               alignItems: "center",
               gap: "8px",
+              "@media (max-width:700px)": {
+                fontSize: "14px",
+              },
+              "@media (max-width:430px)": {
+                fontSize: "12px",
+              },
             }}
           >
             <Typography component={"span"} className={style.pulse_wrapper}>
@@ -215,7 +222,7 @@ function PredictTumor() {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               textAlign: "center",
-              fontSize: { xs: "68px", md: "96px" },
+              fontSize: { xs: "35px", sm: "55px", md: "96px" },
               lineHeight: { xs: "70px", sm: "100px" },
             }}
           >
