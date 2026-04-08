@@ -1,8 +1,9 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axiosInstance from "../../Api/axiosInstance";
 
-export default function useDeleteFeedback(){
+export default function useDeleteFeedback(reportId){
+    const queryClient = useQueryClient();
 
     const deleteFeedbackMutation = useMutation({
         mutationFn: async(feedbackId)=>{
@@ -11,9 +12,10 @@ export default function useDeleteFeedback(){
         }, 
         onSuccess: (data) => {
            toast.success("Feedback deleted successfully.");
+           queryClient.setQueryData(['reportFeedback', reportId], null); // لحذف الفيدباك بشكل فوري من الصفحة
         },   
         onError: (error) => {
-            toast.success("Operation failed. Please try again.");
+            toast.error("Operation failed. Please try again.");
         }
     })
 

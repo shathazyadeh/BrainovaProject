@@ -14,6 +14,8 @@ import { LuBrain } from "react-icons/lu";
 import { TbMessage2Question } from "react-icons/tb";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { FaFileDownload } from "react-icons/fa";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { FaRegEdit } from "react-icons/fa";
 import { BiSolidCommentDetail } from "react-icons/bi";
 import { FaPlus } from "react-icons/fa";
 import { FaArrowLeftLong } from "react-icons/fa6";
@@ -24,10 +26,12 @@ import { FaImage } from "react-icons/fa6";
 import useGetFeedbackByReportId from "../../../hooks/supervisorHooks/useGetFeedbackByReportId";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { toast } from "react-toastify";
+import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
 
 function ReportDetails() {
   const { id } = useParams();
   const { isError, isLoading, error, data } = useGetReportDetails(id); //بعتله اي دي التقرير اللي بالرابط
+  const { deleteFeedbackMutation } = useDeleteFeedback(id);
   const {
     isError: isFeedbackError,
     isLoading: isFeedbackLoading,
@@ -38,6 +42,7 @@ function ReportDetails() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false); // عشان اتحكم بالسهم اللي عبوكس الاسئلة
   const [openModal, setOpenModal] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState(null);
   const tumorProbabilitiesArray = data?.probabilities.map((p) => p.value) || [];
   const tumorProbability = Math.max(...tumorProbabilitiesArray);
   const percentage = parseFloat((tumorProbability * 100).toFixed(2));
@@ -52,55 +57,14 @@ function ReportDetails() {
     setOpenModal(false);
   };
 
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          bgcolor: "var(--navy-color)",
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1,
-        }}
-      >
-        <Loader />
-      </Box>
-    );
-  }
+  const handleDeleteFeedback = async (feedbackId) => {
+    await deleteFeedbackMutation.mutateAsync(feedbackId);
+  };
 
-  if (isError) {
-    return (
-      <Box
-        component={"section"}
-        className="server_error_section flex_column"
-        sx={{
-          bgcolor: "var(--navy-color)",
-          position: "absolute",
-          inset: 0,
-          justifyContent: "center",
-          alignItems: "center",
-          zIndex: 1,
-        }}
-      >
-        <Typography
-          component={"h1"}
-          variant="h5"
-          sx={{
-            color: "white",
-            fontWeight: "700",
-            textAlign: "center",
-            "@media (max-width:456px)": {
-              fontSize: "20px",
-            },
-          }}
-        >
-          {error?.message}
-        </Typography>
-      </Box>
-    );
-  }
+  const handleChangeFeedback = async (feedback) => {
+    setOpenModal(true);
+    setSelectedFeedback(feedback);
+  };
 
   return (
     <Box
@@ -113,6 +77,60 @@ function ReportDetails() {
     >
       <DashboardNavbar />
       <Container maxWidth="lg">
+        {isError && (
+            <Box
+              component={"section"}
+              className="server_error_section flex_column"
+              sx={{
+                bgcolor: "var(--navy-color)",
+                position: "absolute",
+                inset: 0,
+                top: "80px",
+                left: "200px",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1,
+                "@media (max-width:899px)": {
+                  left: "0px",
+                },
+              }}
+            >
+              <Typography
+                component={"h1"}
+                variant="h5"
+                sx={{
+                  color: "white",
+                  fontWeight: "700",
+                  textAlign: "center",
+                  "@media (max-width:456px)": {
+                    fontSize: "20px",
+                  },
+                }}
+              >
+                {error?.message}
+              </Typography>
+            </Box>
+          )}
+          {isLoading && (
+            <Box
+              sx={{
+                bgcolor: "var(--navy-color)",
+                position: "absolute",
+                inset: 0,
+                top: "80px",
+                left: "200px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                zIndex: 1,
+                "@media (max-width:899px)": {
+                  left: "0px",
+                },
+              }}
+            >
+              <Loader />
+            </Box>
+          )}
         <Grid container spacing={1.5} alignItems="flex-start">
           <Grid item size={{ xs: 12, md: 9 }}>
             {/*اول بوكسين */}
@@ -349,6 +367,7 @@ function ReportDetails() {
               className="questions"
               sx={{
                 bgcolor: "#181b21",
+                border: "1px solid #57565662",
                 borderRadius: "8px",
                 p: 2,
                 mb: 2,
@@ -658,6 +677,7 @@ function ReportDetails() {
                 handleClose={handleClose}
                 reportId={id}
                 type="feedback"
+                feedback={selectedFeedback}
               />
               <Box
                 className="feedback_details"
@@ -719,7 +739,7 @@ function ReportDetails() {
                   >
                     <Box
                       sx={{
-                        maxHeight: "120px",
+                        maxHeight: "77px",
                         overflowY: "auto",
                         paddingLeft: "9px",
                         paddingRight: "5px",
@@ -746,6 +766,29 @@ function ReportDetails() {
                         {feedbackData.comment}
                       </Typography>
                     </Box>
+                    <Box
+                    className="action_icons"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      gap: "5px",
+                      marginY:"10px"
+                    }}
+                  >
+                    <DeleteIcon
+                      sx={{ color: "var(--primary-color)", cursor: "pointer", fontSize:"20px" }}
+                      onClick={() => handleDeleteFeedback(feedbackData?.id)}
+                    />
+                    <FaRegEdit
+                      size={16}
+                      style={{
+                        color: "var(--secondary-color)",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleChangeFeedback(feedbackData)}
+                    />
+                  </Box>
                   </Box>
                 ) : (
                   <Typography
@@ -797,3 +840,5 @@ function ReportDetails() {
 }
 
 export default ReportDetails;
+
+
