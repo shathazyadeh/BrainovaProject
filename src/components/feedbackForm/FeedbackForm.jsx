@@ -9,8 +9,10 @@ import {
 } from "@mui/material";
 import { SubmitFeedbackSchema } from "../../validations/SubmitFeedbackSchema";
 import useSubmitFeedback from "../../hooks/supervisorHooks/useSubmitFeedback";
+import useChangeFeedback from "../../hooks/supervisorHooks/useChangeFeedback";
+import { useEffect } from "react";
 
-export default function FeedbackForm({ reportId, handleClose }) {
+export default function FeedbackForm({ reportId, handleClose, feedback }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -22,10 +24,15 @@ export default function FeedbackForm({ reportId, handleClose }) {
     onSuccess: () => handleClose(),
   });
 
+  const { changeFeedbackMutation } = useChangeFeedback({
+    onSuccess: () => handleClose(),
+  });
+
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(SubmitFeedbackSchema),
@@ -35,8 +42,26 @@ export default function FeedbackForm({ reportId, handleClose }) {
 
   const commentValue = watch("comment");
 
+  useEffect(() => {
+    // عشان لما نفتح فيدباك نعمله ابديت يكون نصه موجود
+    if (feedback) {
+      reset({
+        comment: feedback.comment,
+      });
+    }
+  }, [feedback, reset]);
+
   const submitFeedback = (data) => {
-    submitFeedbackMutation.mutate({ comment: data.comment });
+    if (feedback) {
+      // edit
+      changeFeedbackMutation.mutate({
+        feedbackId: feedback.id,
+        comment: data.comment,
+      });
+    } else {
+      // add
+      submitFeedbackMutation.mutate({ comment: data.comment });
+    }
   };
 
   return (
@@ -88,6 +113,22 @@ export default function FeedbackForm({ reportId, handleClose }) {
           error={errors?.comment}
           helperText={errors.comment?.message}
           sx={{
+            "& textarea": {
+              overflowY: "auto",
+
+              "&::-webkit-scrollbar": {
+                width: "6px",
+              },
+
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "var(--primary-color)",
+                borderRadius: "3px",
+                cursor: "pointer",
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "#2a2a3d",
+              },
+            },
             "& .MuiOutlinedInput-root": {
               color: "#fff",
               borderRadius: "12px",
@@ -95,20 +136,6 @@ export default function FeedbackForm({ reportId, handleClose }) {
               "& fieldset": { borderColor: "#5b5b5b62" },
               "&:hover fieldset": { borderColor: "var(--primary-color)" },
               "&.Mui-focused fieldset": { borderColor: "var(--primary-color)" },
-            },
-            "& textarea": {
-              overflow: "auto",
-              "&::-webkit-scrollbar": {
-                width: "6px",
-                height: "20px",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "var(--primary-color)",
-                borderRadius: "3px",
-              },
-              "&::-webkit-scrollbar-track": {
-                backgroundColor: "#2a2a3d",
-              },
             },
           }}
         />

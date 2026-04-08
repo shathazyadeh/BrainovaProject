@@ -1,20 +1,33 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { FaRegEdit } from "react-icons/fa";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import useGetMyallFeedbacks from "../../../hooks/supervisorHooks/useGetMyallFeedbacks";
 import UsersSearch from "../../../components/usersSearch/UsersSearch";
 import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
+import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
 
 function SupervisorFeedback() {
   const { isError, error, isLoading, data } = useGetMyallFeedbacks();
   const { deleteFeedbackMutation } = useDeleteFeedback();
   const [search, setSearch] = useState("");
+  const [open, setOpen] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState(null);
   console.log("my feedbacks:", data);
 
   const handleDeleteFeedback = async (feedbackId) => {
     await deleteFeedbackMutation.mutateAsync(feedbackId);
+  };
+
+  const handleChangeFeedback = async (feedback) => {
+    setOpen(true);
+    setSelectedFeedback(feedback);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   if (isError) {
@@ -178,7 +191,7 @@ function SupervisorFeedback() {
                     borderLeft: "5px solid red",
                     borderRadius: "10px",
                     bgcolor: "#3636365b",
-                    padding: "20px",
+                    padding: "11px",
                     marginBottom: "30px",
                     transition: "all 0.5s ease",
                     "&:hover": { transform: "scale(1.03)" },
@@ -258,7 +271,6 @@ function SupervisorFeedback() {
                       paddingRight:"10px",
                       height: "38px",
                       overflowY: "auto",
-
                       "&::-webkit-scrollbar": {
                         width: "6px",
                       },
@@ -275,13 +287,34 @@ function SupervisorFeedback() {
                   </Typography>
                   <Box
                     className="action_icons"
-                    sx={{ display: "flex", justifyContent: "flex-end" ,marginTop:"10px" }}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      alignItems: "center",
+                      gap: "5px",
+                      marginTop:"10px"
+                    }}
                   >
                     <DeleteIcon
-                      sx={{ color: "var(--primary-color)", cursor: "pointer" }}
+                      sx={{ color: "var(--primary-color)", cursor: "pointer", fontSize:"20px" }}
                       onClick={() => handleDeleteFeedback(feedback.id)}
                     />
+                    <FaRegEdit
+                      size={16}
+                      style={{
+                        color: "var(--secondary-color)",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleChangeFeedback(feedback)}
+                    />
                   </Box>
+                  <BasicModal
+                    open={open}
+                    handleClose={handleClose}
+                    reportId={selectedFeedback?.reportId}
+                    feedback={selectedFeedback}
+                    type="feedback"
+                  />
                 </Box>
               </Box>
             ))}

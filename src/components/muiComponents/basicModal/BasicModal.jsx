@@ -16,6 +16,7 @@ export default function BasicModal({
   handleClose,
   user,
   reportId,
+  feedback,
   type,
 }) {
   //من رياكت هوك فورم بتعمل ريسيت لقيم الفورم
@@ -101,7 +102,7 @@ export default function BasicModal({
         )}
 
         {type === "feedback" && reportId && (
-          <FeedbackForm reportId={reportId} handleClose={handleClose} />
+          <FeedbackForm reportId={reportId} handleClose={handleClose} feedback={feedback}/>
         )}
       </Box>
     </Modal>

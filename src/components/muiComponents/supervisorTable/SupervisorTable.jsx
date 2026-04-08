@@ -358,7 +358,7 @@ function MobileCard({
                 size={18}
                 style={{ cursor: "pointer" }}
                 onClick={() =>
-                  navigate(`/dashboard/supervisor/addFeedback/${row.reportId}`)
+                  navigate(`/dashboard/supervisor/report-details/${row.reportId}`)
                 }
               />
               <BsFileEarmarkArrowDown
@@ -593,7 +593,7 @@ export default function CustomPaginationActionsTable({
                         style={{ cursor: "pointer" }}
                         onClick={() =>
                           navigate(
-                            `/dashboard/supervisor/addFeedback/${row.reportId}`,
+                            `/dashboard/supervisor/report-details/${row.reportId}`,
                           )
                         }
                       />

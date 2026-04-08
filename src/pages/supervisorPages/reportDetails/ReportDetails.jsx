@@ -25,7 +25,7 @@ import useGetFeedbackByReportId from "../../../hooks/supervisorHooks/useGetFeedb
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { toast } from "react-toastify";
 
-function AddFeedback() {
+function ReportDetails() {
   const { id } = useParams();
   const { isError, isLoading, error, data } = useGetReportDetails(id); //بعتله اي دي التقرير اللي بالرابط
   const {
@@ -796,4 +796,4 @@ function AddFeedback() {
   );
 }
 
-export default AddFeedback;
+export default ReportDetails;
