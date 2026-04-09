@@ -204,7 +204,9 @@ function SupervisorFeedback() {
                     <Typography sx={{ color: "#fff", flexGrow: "1" }}>
                       {feedback.supervisorName}
                     </Typography>
-                    <Typography sx={{ color: "red" }}>
+                    <Typography sx={{ color: "red", "@media (max-width:550px)": {
+                          fontSize:"11px",
+                        }}}>
                       {" "}
                       {feedback.createdAt.split("T")[0]}
                     </Typography>
@@ -212,13 +214,17 @@ function SupervisorFeedback() {
                       sx={{
                         color: "#758492",
                         paddingLeft: "6px",
-                        "@media (max-width:425px)": {
-                          display: "none",
+                        "@media (max-width:550px)": {
+                          fontSize:"11px",
                         },
                       }}
                     >
                       {" "}
-                      {feedback.createdAt.split("T")[1].split(".")[0]}
+                      {new Date(feedback.createdAt).toLocaleTimeString('en-US', {
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: true,
+})}
                     </Typography>
                   </Box>
 
@@ -235,6 +241,9 @@ function SupervisorFeedback() {
                         color: "#758492",
                         fontWeight: "400",
                         fontSize: "13px",
+                        "@media (max-width:550px)": {
+                          fontSize:"11px",
+                        },
                       }}
                     >
                       Student: {feedback.studentName} ·
@@ -247,6 +256,9 @@ function SupervisorFeedback() {
                           fontSize: "13px",
                           paddingX: "5px",
                           "@media (max-width:410px)": { paddingLeft: "0px" },
+                          "@media (max-width:550px)": {
+                          fontSize:"11px",
+                        },
                         }}
                       >
                         {feedback.predictionResult}{" "}
@@ -256,9 +268,18 @@ function SupervisorFeedback() {
                           color: "#758492",
                           fontWeight: "400",
                           fontSize: "13px",
+                          "@media (max-width:550px)": {
+                          fontSize:"11px",
+                        },
                         }}
                       >
-                        · {feedback.reportCreatedAt.split("T")[0]}
+                        · {feedback.reportCreatedAt.split("T")[0]} 
+                        {" ( "}
+                         {new Date(feedback.reportCreatedAt).toLocaleTimeString('en-US', {
+                         hour: '2-digit',
+                         minute: '2-digit',
+                         hour12: true,
+                       })} {")"}
                       </Typography>
                     </Box>
                   </Box>
@@ -336,7 +357,7 @@ function SupervisorFeedback() {
           component={"p"}
           sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
         >
-          © 2026{" "}
+          ©️ 2026{" "}
           <Typography
             component={"span"}
             sx={{ color: "var(--dark-red-color)" }}

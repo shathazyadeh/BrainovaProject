@@ -123,7 +123,7 @@ export default function FeedbackForm({ reportId, handleClose, feedback }) {
               "&::-webkit-scrollbar-thumb": {
                 backgroundColor: "var(--primary-color)",
                 borderRadius: "3px",
-                cursor: "pointer",
+                cursor: "grab",
               },
               "&::-webkit-scrollbar-track": {
                 backgroundColor: "#2a2a3d",

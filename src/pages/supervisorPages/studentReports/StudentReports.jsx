@@ -2,17 +2,21 @@ import React from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom';
 import useGetAllOfMyStudentsCases from '../../../hooks/supervisorHooks/useGetAllOfMyStudnetsCases';
-import useDownloadPDF from "../../../hooks/supervisorHooks/useDownloadPDF";
 import { Avatar, Box, Button, Container, Grid, Typography } from '@mui/material';
 import DashboardNavbar from '../../../components/muiComponents/dashboardNavbar/DashboardNavbar';
 import { Link as RouterLink } from "react-router-dom";
 import { IoMdEye } from "react-icons/io";
+import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa6";
+import { FaFileAlt } from "react-icons/fa";
+import useDownloadPDF from "../../../hooks/supervisorHooks/useDownloadPDF";
+import { BsFileEarmarkArrowDown } from "react-icons/bs";
 function StudentReports() {
   const {studentId}=useParams();
   const navigate=useNavigate();
   const { isError, error, isLoading, data } = useGetAllOfMyStudentsCases(studentId);
   console.log("dataaaaaa:",data);
+   const downloadMutation = useDownloadPDF();
   const total = data?.items?.length || 0;
 const digits = Math.max(3, String(total).length); //لكتابة اي دي التقرير 
 console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوصله في كتابة رقم التقرير
@@ -37,7 +41,7 @@ console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوص�
             }}
           >
             <Container maxWidth="lg">
-
+            <Box sx={{display:'flex',justifyContent: "space-between",marginBottom:'30px',alignItems:'center'}} >
               <Box className='student_info'>
                    <Box
                   sx={{
@@ -46,9 +50,7 @@ console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوص�
                     alignItems: "center",
                   }}
                 >
-
-
-                  <FaArrowLeft color='#fff' size={20} style={{ cursor: "pointer" }} onClick={() => navigate("/dashboard/supervisor/students")}/>
+                  <FaArrowLeft color='#fff' size={25} style={{ cursor: "pointer" }} onClick={() => navigate("/dashboard/supervisor/students")}/>
                   <Avatar
                     sx={{
                       marginLeft:'15px',
@@ -78,10 +80,26 @@ console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوص�
                   </Box>
                 </Box>
               </Box>
-
+              <Box className="numbers" sx={{display:'flex',gap:'10px'}}>
+                <Box className='total_reports' sx={{border: "1px solid #57565662",borderRadius: "15px",bgcolor:'#181b21',padding:'15px',}}>
+                  <Box sx={{display:'flex',alignItems:'center',gap:'10px'}}>
+                      <FaFileAlt size={17} color='#fa0202'/>
+                  <Typography sx={{color:'#7e8a9a',fontFamily: "var(--primary-font)",}}>Total Reports</Typography>
+                 </Box>
+                   <Typography sx={{color:'#fff',fontWeight:'600',fontSize:'20px'}}>1</Typography>
+                </Box>
+                <Box className='reviewed_reports' sx={{border: "1px solid #57565662",borderRadius: "15px",bgcolor:'#181b21',padding:'15px',}}>
+                  <Box sx={{display:'flex',alignItems:'center',gap:'10px',paddingX:'9px'}}>
+                      <FaArrowTrendUp size={18} color='#02fa13'/>
+                  <Typography sx={{color:'#7e8a9a',fontFamily: "var(--primary-font)",}}>Reviewed </Typography>
+                 </Box>
+                   <Typography sx={{color:'#fff',fontWeight:'600',fontSize:'20px',paddingLeft:'8px'}}>1</Typography>
+                </Box> 
+              </Box>
+           </Box>
               <Grid container spacing={2}>
                 {data?.items.map((report,index)=>
-                 <Grid item size={{md:4}}>
+                 <Grid item size={{xs:12,sm:6,md:4}}>
                       <Box className="report" sx={{bgcolor:'#15181e',padding:'25px',border: "1px solid #ff01013b",borderRadius: "15px",}}>
                         <Box className='report_details'>
                           <Typography sx={{color:'#fff',fontWeight:'500',fontSize:'15px',marginBottom:'10px',fontFamily: "var(--primary-font)",}}>{`RPT-${String(index + 1).padStart(digits, "0")}`}</Typography>
@@ -151,7 +169,7 @@ console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوص�
                                     </Typography>
                                 )}
                         </Box>
-                        <Box className="view_details">
+                        <Box className="view_details" sx={{display:'flex',gap:'10px',alignItems:'center'}}>
                            <Button component={RouterLink} to={`/dashboard/supervisor/report-details/${report.reportId}`}
                                sx={{
                                  borderRadius: "15px",
@@ -174,6 +192,7 @@ console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوص�
                                     <IoMdEye size={20}/>
                                   View Reports
                              </Button>
+                             <BsFileEarmarkArrowDown size={20} color='#fff' style={{ cursor: "pointer" }} onClick={() => downloadMutation.mutate(report.reportId)}/>
                         </Box>
                       </Box>
                     

@@ -197,6 +197,14 @@ function ReportDetails() {
                   </Typography>
                   <Typography sx={{ color: "#fff", fontSize: { xs: '12px', md: "14px" }, }}>
                     {data?.submittedAt.split("T")[0]}
+                    <Typography component={'span'} sx={{color:"#7e8a9a",fontSize:"13px"}}>
+                      {" ( "}
+                      {new Date(data?.submittedAt).toLocaleTimeString('en-US', {
+                         hour: '2-digit',
+                         minute: '2-digit',
+                         hour12: true,
+                       })} {")"}
+                    </Typography>
                   </Typography>
                 </Box>
               </Box>
@@ -750,6 +758,7 @@ function ReportDetails() {
                         "&::-webkit-scrollbar-thumb": {
                           bgcolor: "var(--primary-color)",
                           borderRadius: "3px",
+                          cursor: "grab",
                         },
                         "&::-webkit-scrollbar-track": {
                           bgcolor: "#2a2a3d",
@@ -823,7 +832,7 @@ function ReportDetails() {
             component={"p"}
             sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
           >
-            © 2026{" "}
+            ©️ 2026{" "}
             <Typography
               component={"span"}
               sx={{ color: "var(--dark-red-color)" }}
@@ -840,5 +849,3 @@ function ReportDetails() {
 }
 
 export default ReportDetails;
-
-
