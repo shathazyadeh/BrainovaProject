@@ -6,6 +6,8 @@ import useGetNewReports from '../../../hooks/supervisorHooks/useGetNewReports';
 import useGetDashboardSummary from '../../../hooks/supervisorHooks/useGetDashboardSummary';
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import { FiFileText, FiFilePlus, FiMessageSquare, FiUsers } from "react-icons/fi";
+import { LineChart } from "@mui/x-charts/LineChart";
+
 
 function SupervisorDashboard() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
@@ -48,6 +50,20 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
   return reportDate >= oneWeekAgo;
 }).length;
 
+// للبار تشارت
+const reportsPerDay = data?.items?.reduce((acc, report) => {
+  const date = new Date(report.reportSubmittedAt).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+  });
+
+  acc[date] = (acc[date] || 0) + 1;
+  return acc;
+}, {}) || {};
+const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
+  date,
+  count,
+}));
 
   return (
     <Box
@@ -360,6 +376,68 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
                   </Typography>
                 </Box>
               </Box>
+              <Box className ="line_chart"
+                sx={{
+                  bgcolor: "#232121b8",
+                  borderRadius: "12px",
+                  marginY: "23px",
+                  paddingRight: "15px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontWeight: "600",
+                    fontSize: "17px",
+                    fontFamily: "var(--primary-font)",
+                    paddingLeft: "30px",
+                    paddingTop: "10px",
+                  }}
+                >
+                  Reports per Day
+                </Typography>
+
+                <LineChart
+                  dataset={chartData}
+                  xAxis={[{ scaleType: "point", dataKey: "date" }]}
+                  series={[
+                    {
+                      dataKey: "count",
+                      label: "Reports",
+                      color: "var(--primary-color)",
+                      curve: "monotoneX",
+                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                    },
+                  ]}
+                  height={160}
+                  margin={{ left: 0 }}
+                  paddin={{ left: 0 }}
+                  sx={{
+  "& .MuiChartsAxis-tickLabel": { fill: "#fff" },
+  "& .MuiChartsAxis-line": { stroke: "#fff" },
+  "& .MuiChartsAxis-tick": { stroke: "#fff" },
+  "& .MuiChartsLegend-label": {
+    color: "#fff",
+    fontFamily: "var(--primary-font)",
+    fontWeight: "600",
+  },
+  "& .MuiChartsAxis-label": { fill: "#fff" },
+  "& .MuiMarkElement-root": {
+    fill: "var(--primary-color)",
+    stroke: "var(--primary-color)",
+  },
+}}
+                  slotProps={{
+                    legend: {
+                      position: {
+                        vertical: "top",
+                        horizontal: "end",
+                      },
+                    },
+                  }}
+                />
+              </Box>
+
               <SupervisorTable
                 rows={data?.items?.slice(0, 5)} //  أول 5 صفوف
                 count={5} // عدد الصفوف
