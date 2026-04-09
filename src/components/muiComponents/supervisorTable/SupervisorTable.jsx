@@ -24,6 +24,7 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { BsFileEarmarkArrowDown } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
@@ -272,6 +273,7 @@ function MobileCard({
               color: "#fff",
               fontSize: "14px",
               fontWeight: 500,
+              wordBreak:"break-all",
               "@media (max-width:353px)": { fontSize: "12px" },
             }}
           >
@@ -383,6 +385,7 @@ export default function CustomPaginationActionsTable({
   count = 0,
   handleOpenModal,
   showActions = true,
+  hidePagination = false
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("studentName");
@@ -400,6 +403,10 @@ export default function CustomPaginationActionsTable({
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  const paginatedRows = hidePagination
+    ? rows
+    : rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
   const displayedRows = sortedRows.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage,
@@ -414,6 +421,17 @@ export default function CustomPaginationActionsTable({
         minWidth: isMobile ? "unset" : "500px",
         bgcolor: "var(--navy-color)",
         borderRadius: "20px",
+        "&::-webkit-scrollbar": {
+          height: "8px",
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "#2a2a3d",
+          borderRadius: "10px",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "#777575",
+          borderRadius: "10px",
+        },
       }}
     >
       {/* Mobile View */}
@@ -443,6 +461,7 @@ export default function CustomPaginationActionsTable({
             ))
           )}
 
+{!hidePagination && (
           <Table>
             <TableFooter sx={{ bgcolor: "#232121b8" }}>
               <TableRow>
@@ -465,6 +484,7 @@ export default function CustomPaginationActionsTable({
               </TableRow>
             </TableFooter>
           </Table>
+)}
         </Box>
       ) : (
         /* Desktop View */
@@ -622,6 +642,7 @@ export default function CustomPaginationActionsTable({
             )}
           </TableBody>
 
+          {!hidePagination && (
           <TableFooter sx={{ bgcolor: "#232121b8" }}>
             <TableRow>
               <TablePagination
@@ -665,6 +686,7 @@ export default function CustomPaginationActionsTable({
               />
             </TableRow>
           </TableFooter>
+          )}
         </Table>
       )}
     </TableContainer>

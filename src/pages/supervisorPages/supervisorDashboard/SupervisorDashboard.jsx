@@ -361,9 +361,10 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
                 </Box>
               </Box>
               <SupervisorTable
-                rows={data?.items}
-                count={data?.items.length}
+                rows={data?.items?.slice(0, 5)} //  أول 5 صفوف
+                count={5} // عدد الصفوف
                 showActions={false}
+                hidePagination={true}
               />
             </Grid>
             <Grid item size={{ md: 4 }}>
