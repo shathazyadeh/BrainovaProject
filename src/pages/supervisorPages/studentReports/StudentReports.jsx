@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SupervisorDashboard() {
+function StudentReports() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ function SupervisorDashboard() {
   )
 }
 
-export default SupervisorDashboard
+export default StudentReports

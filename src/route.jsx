@@ -21,6 +21,7 @@ import SupervisorStudents from "./pages/supervisorPages/supervisorStudents/Super
 import SupervisorReports from "./pages/supervisorPages/supervisorReports/SupervisorReports.jsx";
 import ReportDetails from "./pages/supervisorPages/reportDetails/ReportDetails.jsx";
 import SupervisorFeedback from "./pages/supervisorPages/supervisorFeedback/SupervisorFeedback.jsx";
+import StudentReports from "./pages/supervisorPages/studentReports/StudentReports.jsx";
 
 
 const router = createBrowserRouter([
@@ -106,7 +107,11 @@ const router = createBrowserRouter([
        },{
         path:"supervisor/report-details/:id",
         element:<ReportDetails/>
+       },{
+        path:"supervisor/student-reports/:studentId",
+        element:<StudentReports/>
        }
+     
     ]
 
    }

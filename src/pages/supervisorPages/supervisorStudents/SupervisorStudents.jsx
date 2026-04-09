@@ -2,7 +2,7 @@ import { Box, Container, Grid } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
 import { Button, Typography } from "@mui/material";
 import { TfiEmail } from "react-icons/tfi";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useGetMyStudentsInfo from "../../../hooks/supervisorHooks/useGetMyStudentsInfo";
 import UsersSearch from "../../../components/usersSearch/UsersSearch";
@@ -13,6 +13,7 @@ function SupervisorStudents() {
   const { isError, error, isLoading, data } = useGetMyStudentsInfo();
   console.log("students info:", data);
   const [search, setSearch] = useState("");
+  const navigate=useNavigate();
 
   return (
     <Box
@@ -217,7 +218,7 @@ function SupervisorStudents() {
                     </Box>
                     <Button
                       component={RouterLink}
-                      to="/dashboard/supervisor/reports"
+                    to={`/dashboard/supervisor/student-reports/${student.studentId}`}
                       sx={{
                         borderRadius: "15px",
                         bgcolor: "#6f6e6e3b",

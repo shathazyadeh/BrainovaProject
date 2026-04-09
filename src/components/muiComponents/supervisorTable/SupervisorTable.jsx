@@ -24,7 +24,6 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { BsFileEarmarkArrowDown } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
@@ -383,6 +382,7 @@ export default function CustomPaginationActionsTable({
   rows = [],
   count = 0,
   handleOpenModal,
+  showActions = true,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("studentName");
@@ -500,16 +500,20 @@ export default function CustomPaginationActionsTable({
               >
                 PREDICTION
               </TableCell>
+
               <TableCell
                 sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
               >
                 FEEDBACK
               </TableCell>
-              <TableCell
-                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
-              >
-                ACTIONS
-              </TableCell>
+
+              {showActions && (
+                <TableCell
+                  sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+                >
+                  ACTIONS
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
 
@@ -568,6 +572,7 @@ export default function CustomPaginationActionsTable({
                   >
                     <PredictionBadge value={row.predictionResult} />
                   </TableCell>
+
                   <TableCell
                     sx={{
                       color: "#fff",
@@ -577,38 +582,41 @@ export default function CustomPaginationActionsTable({
                   >
                     <FeedbackBadge isReviewed={row.isReviewed} />
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      color: "#718296",
-                      borderTop: "1px solid #3b3a3a89",
-                      borderBottom: "1px solid #3b3a3a89",
-                    }}
-                  >
-                    <Box
-                      className="actions_icons"
-                      sx={{ display: "flex", gap: "5px" }}
+
+                  {showActions && (
+                    <TableCell
+                      sx={{
+                        color: "#718296",
+                        borderTop: "1px solid #3b3a3a89",
+                        borderBottom: "1px solid #3b3a3a89",
+                      }}
                     >
-                      <MdOutlineRemoveRedEye
-                        size={18}
-                        style={{ cursor: "pointer" }}
-                        onClick={() =>
-                          navigate(
-                            `/dashboard/supervisor/report-details/${row.reportId}`,
-                          )
-                        }
-                      />
-                      <BsFileEarmarkArrowDown
-                        size={18}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => downloadMutation.mutate(row.reportId)}
-                      />
-                      <FiPlus
-                        size={18}
-                        style={{ cursor: "pointer" }}
-                        onClick={() => handleOpenModal(row)}
-                      />
-                    </Box>
-                  </TableCell>
+                      <Box
+                        className="actions_icons"
+                        sx={{ display: "flex", gap: "5px" }}
+                      >
+                        <MdOutlineRemoveRedEye
+                          size={18}
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
+                            navigate(
+                              `/dashboard/supervisor/report-details/${row.reportId}`,
+                            )
+                          }
+                        />
+                        <BsFileEarmarkArrowDown
+                          size={18}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => downloadMutation.mutate(row.reportId)}
+                        />
+                        <FiPlus
+                          size={18}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleOpenModal(row)}
+                        />
+                      </Box>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))
             )}
