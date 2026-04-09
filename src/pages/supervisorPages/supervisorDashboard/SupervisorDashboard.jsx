@@ -3,16 +3,20 @@ import DashboardNavbar from '../../../components/muiComponents/dashboardNavbar/D
 import SupervisorTable from "../../../components/muiComponents/supervisorTable/SupervisorTable";
 import useGetAllOfMyStudnetsCases from '../../../hooks/supervisorHooks/useGetAllOfMyStudnetsCases';
 import useGetNewReports from '../../../hooks/supervisorHooks/useGetNewReports';
+import useGetDashboardSummary from '../../../hooks/supervisorHooks/useGetDashboardSummary';
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
-import { FiFileText } from "react-icons/fi";
-import { FiMessageSquare } from "react-icons/fi";
-
+import { FiFileText, FiFilePlus, FiMessageSquare, FiUsers } from "react-icons/fi";
 
 function SupervisorDashboard() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
   const { isError: isNewReportsError, error: newReportsError, isLoading: isNewReportsLoading, data: newReportsData } = useGetNewReports();
-console.log("data : ",data);
-function timeAgo(dateString) {
+  const { isError: isDashboardSummaryError, error: newDashboardSummaryError, isLoading: isDashboardSummaryLoading, data: dashboardSummaryData } = useGetDashboardSummary();
+
+console.log("newReportsData ", newReportsData);
+console.log("data ", data);
+console.log("dashboardSummaryData ", dashboardSummaryData);
+
+  function timeAgo(dateString) {
   const now = new Date();
   const past = new Date(dateString);
   const diffInSeconds = Math.floor((now - past) / 1000);
@@ -27,13 +31,23 @@ function timeAgo(dateString) {
   return `${days} days ago`;
 }
 
-// داخل SupervisorDashboard قبل ال-return
 const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار عنا بس اللي فيها فيدباك
   .filter(item => {
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // تاريخ قبل أسبوع
     return new Date(item.feedbackSubmittedAt) >= oneWeekAgo;
   });
+
+  const thisWeekCount = newReportsData?.items?.filter(report => {
+  const now = new Date();
+  const reportDate = new Date(report.submittedAt);
+
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(now.getDate() - 7);
+
+  return reportDate >= oneWeekAgo;
+}).length;
+
 
   return (
     <Box
@@ -115,6 +129,237 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
 
           <Grid container spacing={3}>
             <Grid item size={{ md: 8 }}>
+              <Box className="section_titel" sx={{ marginBottom: "23px" }}>
+                <Typography
+                  component={"h1"}
+                  variant="h4"
+                  sx={{
+                    color: "#fff",
+                    fontFamily: "var(--primary-font)",
+                    fontWeight: "600",
+                    display: "inline",
+                    marginRight: "10px",
+                    "@media (max-width:700px)": {
+                      fontSize: "22px",
+                    },
+                  }}
+                >
+                  Dashboard Overview
+                </Typography>
+                <Typography sx={{ color: "var(--secondary-color)" }}>
+                  Here's your activity summary.
+                </Typography>
+              </Box>
+              <Box
+                className="dashboard_summary"
+                sx={{ display: "flex", gap: "10px", marginBottom: "23px" }}
+              >
+                <Box
+                  className="total_students"
+                  sx={{
+                    bgcolor: "#232121b8",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "15px",
+                    paddingX: "15px",
+                    paddingTop: "18px",
+                    paddingBottom: "27px",
+                  }}
+                >
+                  <Box className="details flex_column" sx={{ gap: "10px" }}>
+                    <Typography
+                      sx={{
+                        color: "var(--secondary-color)",
+                        textTransform: "uppercase",
+                        fontSize: "13px",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      Total Students
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      {dashboardSummaryData?.totalStudents}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{
+                      bgcolor: "var(--primary-color)",
+                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                      borderRadius: "12px",
+                      padding: "8px",
+                      display: "flex",
+                    }}
+                  >
+                    <FiUsers size={20} color="#fff" />
+                  </Typography>
+                </Box>
+                <Box
+                  className="total_reports"
+                  sx={{
+                    bgcolor: "#232121b8",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "15px",
+                    paddingX: "15px",
+                    paddingTop: "18px",
+                    paddingBottom: "27px",
+                  }}
+                >
+                  <Box
+                    className="details flex_column"
+                    sx={{ gap: "10px", position: "relative" }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "var(--secondary-color)",
+                        textTransform: "uppercase",
+                        fontSize: "13px",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      Total Reports
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      {dashboardSummaryData?.totalReports}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#00ff88",
+                        fontSize: "10px",
+                        position: "absolute",
+                        bottom: "-20px",
+                      }}
+                    >
+                      +{thisWeekCount} this week
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{
+                      bgcolor: "var(--primary-color)",
+                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                      borderRadius: "12px",
+                      padding: "8px",
+                      display: "flex",
+                    }}
+                  >
+                    <FiFileText size={20} color="#fff" />
+                  </Typography>
+                </Box>
+                <Box
+                  className="new_reports"
+                  sx={{
+                    bgcolor: "#232121b8",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "15px",
+                    paddingX: "15px",
+                    paddingTop: "18px",
+                    paddingBottom: "27px",
+                  }}
+                >
+                  <Box className="details flex_column" sx={{ gap: "10px" }}>
+                    <Typography
+                      sx={{
+                        color: "var(--secondary-color)",
+                        textTransform: "uppercase",
+                        fontSize: "13px",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      New Reports
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      {dashboardSummaryData?.newReports}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{
+                      bgcolor: "var(--primary-color)",
+                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                      borderRadius: "12px",
+                      padding: "8px",
+                      display: "flex",
+                    }}
+                  >
+                    <FiFilePlus size={20} color="#fff" />
+                  </Typography>
+                </Box>
+                <Box
+                  className="feedback_given"
+                  sx={{
+                    bgcolor: "#232121b8",
+                    borderRadius: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "15px",
+                    paddingX: "15px",
+                    paddingTop: "18px",
+                    paddingBottom: "27px",
+                  }}
+                >
+                  <Box className="details flex_column" sx={{ gap: "10px" }}>
+                    <Typography
+                      sx={{
+                        color: "var(--secondary-color)",
+                        textTransform: "uppercase",
+                        fontSize: "13px",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      Feedback Given
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        fontSize: "20px",
+                        fontWeight: "600",
+                        fontFamily: "var(--primary-font)",
+                      }}
+                    >
+                      {dashboardSummaryData?.feedbackGiven}
+                    </Typography>
+                  </Box>
+                  <Typography
+                    sx={{
+                      bgcolor: "var(--primary-color)",
+                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                      borderRadius: "12px",
+                      padding: "8px",
+                      display: "flex",
+                    }}
+                  >
+                    <FiMessageSquare size={20} color="#fff" />
+                  </Typography>
+                </Box>
+              </Box>
               <SupervisorTable
                 rows={data?.items}
                 count={data?.items.length}
@@ -122,29 +367,29 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
               />
             </Grid>
             <Grid item size={{ md: 4 }}>
-
               <Box
                 className="recently_submitted"
                 sx={{
                   bgcolor: "#232121b8",
-                  borderTopLeftRadius: "12px",
-                  borderBottomLeftRadius: "12px",
+                  borderTopLeftRadius: "20px",
+                  borderBottomLeftRadius: "20px",
                   paddingX: "14px",
                   paddingY: "20px",
                   position: "relative",
-                  marginBottom:"23px",
+                  marginBottom: "23px",
+                  marginTop: "90px",
                   maxHeight: "350px",
                   overflowY: "auto",
-                        "&::-webkit-scrollbar": {
-                          width: "6px",
-                        },
-                        "&::-webkit-scrollbar-thumb": {
-                          bgcolor: "var(--primary-color)",
-                          cursor: "grab",
-                        },
-                        "&::-webkit-scrollbar-track": {
-                          bgcolor: "#2a2a3d",
-                        },
+                  "&::-webkit-scrollbar": {
+                    width: "6px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    bgcolor: "var(--primary-color)",
+                    cursor: "grab",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    bgcolor: "#2a2a3d",
+                  },
                 }}
               >
                 <Typography
@@ -208,6 +453,7 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
                           fontFamily: "var(--primary-font)",
                           fontWeight: "600",
                           fontSize: "13px",
+                          wordBreak: "break-all",
                         }}
                       >
                         {report.studentName}{" "}
@@ -235,30 +481,31 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
                   </Box>
                 ))}
               </Box>
-              
-              <Box className="recently_reviewed"
+              <Box
+                className="recently_reviewed"
                 sx={{
                   bgcolor: "#232121b8",
-                  borderTopLeftRadius: "12px",
-                  borderBottomLeftRadius: "12px",
+                  borderTopLeftRadius: "20px",
+                  borderBottomLeftRadius: "20px",
                   paddingX: "14px",
                   paddingY: "20px",
                   position: "relative",
-                  marginBottom:"23px",
-                  maxHeight: "360px",
+                  marginBottom: "23px",
+                  maxHeight: "367px",
                   overflowY: "auto",
-                        "&::-webkit-scrollbar": {
-                          width: "6px",
-                        },
-                        "&::-webkit-scrollbar-thumb": {
-                          bgcolor: "#1E86EE",
-                          cursor: "grab",
-                        },
-                        "&::-webkit-scrollbar-track": {
-                          bgcolor: "#2a2a3d",
-                        },
-                }}>
-                  <Typography
+                  "&::-webkit-scrollbar": {
+                    width: "6px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    bgcolor: "#1E86EE",
+                    cursor: "grab",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    bgcolor: "#2a2a3d",
+                  },
+                }}
+              >
+                <Typography
                   sx={{
                     fontFamily: "var(--primary-font)",
                     fontWeight: "600",
@@ -283,49 +530,63 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
                   {recentFeedbacks?.length} new notifications
                 </Typography>
                 {recentFeedbacks?.map((report) => (
-                  <Box key={report.reportId} 
-                      sx={{
+                  <Box
+                    key={report.reportId}
+                    sx={{
                       marginBottom: "10px",
                       padding: "5px",
                       borderRadius: "8px",
                       display: "flex",
                       alignItems: "center",
                       gap: 1.5,
-                    }}>
+                    }}
+                  >
                     <Typography
                       sx={{
                         bgcolor: "#162435",
                         borderRadius: "12px",
                         padding: "8px",
                         display: "flex",
-                        width:"fit-content"
+                        width: "fit-content",
                       }}
                     >
                       <FiMessageSquare color="#1E86EE" />
                     </Typography>
 
-                    <Box >
-                      <Typography component={'span'} sx={{
-                            color: "var(--secondary-color)",
-                            fontWeight: "400",
-                            fontSize: "13px",
-                          }}>
-                        <Typography component={'span'} sx={{
-                          color: "#fff",
-                          fontFamily: "var(--primary-font)",
-                          fontWeight: "600",
+                    <Box>
+                      <Typography
+                        component={"span"}
+                        sx={{
+                          color: "var(--secondary-color)",
+                          fontWeight: "400",
                           fontSize: "13px",
-                        }}>{`REP-${report?.reportId.slice(0, 6)}`}{" "}</Typography>
+                          wordBreak: "break-all",
+                        }}
+                      >
+                        <Typography
+                          component={"span"}
+                          sx={{
+                            color: "#fff",
+                            fontFamily: "var(--primary-font)",
+                            fontWeight: "600",
+                            fontSize: "13px",
+                          }}
+                        >
+                          {`REP-${report?.reportId.slice(0, 6)}`}{" "}
+                        </Typography>
                         feedback was added to {report.studentName}
-                    </Typography>
-                    <Typography component={'span'} sx={{
+                      </Typography>
+                      <Typography
+                        component={"span"}
+                        sx={{
                           color: "var(--secondary-color)",
                           fontSize: "12px",
-                        }}>
-                      {" "}{timeAgo(report.feedbackSubmittedAt)}{" "}
-                    </Typography>
+                        }}
+                      >
+                        {" "}
+                        {timeAgo(report.feedbackSubmittedAt)}{" "}
+                      </Typography>
                     </Box>
-
                   </Box>
                 ))}
               </Box>
@@ -350,7 +611,7 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
           component={"p"}
           sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
         >
-          ©️ 2026{" "}
+          © 2026{" "}
           <Typography
             component={"span"}
             sx={{ color: "var(--dark-red-color)" }}

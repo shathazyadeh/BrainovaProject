@@ -2,7 +2,7 @@ import { Box, Container, Grid } from "@mui/system";
 import Avatar from "@mui/material/Avatar";
 import { Button, Typography } from "@mui/material";
 import { TfiEmail } from "react-icons/tfi";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 import useGetMyStudentsInfo from "../../../hooks/supervisorHooks/useGetMyStudentsInfo";
 import UsersSearch from "../../../components/usersSearch/UsersSearch";
@@ -13,7 +13,6 @@ function SupervisorStudents() {
   const { isError, error, isLoading, data } = useGetMyStudentsInfo();
   console.log("students info:", data);
   const [search, setSearch] = useState("");
-  const navigate=useNavigate();
 
   return (
     <Box
@@ -180,7 +179,7 @@ function SupervisorStudents() {
                       <Avatar sx={{ bgcolor: "#e20404" }}>
                         {student.userName?.charAt(0).toUpperCase()}
                       </Avatar>
-                      <Typography sx={{ color: "#fff" }}>
+                      <Typography sx={{ color: "#fff" , wordBreak: "break-all",}}>
                         {student.fullName}
                       </Typography>
                     </Box>

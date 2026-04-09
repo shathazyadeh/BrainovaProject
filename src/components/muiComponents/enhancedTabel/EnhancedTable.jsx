@@ -323,7 +323,6 @@ export default function EnhancedTable({
     setPage(0);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
@@ -354,8 +353,7 @@ export default function EnhancedTable({
         <TableContainer
           sx={{
             "&::-webkit-scrollbar": {
-              width: "10px",
-              height: "10px",
+              height: "8px",
             },
             "&::-webkit-scrollbar-track": {
               background: "var(--table-color)",
@@ -572,7 +570,7 @@ export default function EnhancedTable({
           </Table>
         </TableContainer>
         <TablePagination
-          sx={{ bgcolor: "var(--table-color)", color: "#fff" }}
+          sx={{ bgcolor: "var(--table-color)", color: "#fff","& .MuiSelect-icon": {color: "#fff"} }}
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
           count={filteredRows.length}
