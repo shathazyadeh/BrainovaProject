@@ -18,11 +18,13 @@ import { LuBrain } from "react-icons/lu";
 import { IoBookOutline } from "react-icons/io5";
 import { FiUpload } from "react-icons/fi";
 import style from "./StarsNavbar.module.css"
+import { TbReportSearch } from "react-icons/tb";
 
 const pages = [
   { name: "Home", icon: <LuBrain size={20}/> },
   { name: "Analysis", icon: <FiUpload size={20}/> },
   { name: "Learning Hub", icon: <IoBookOutline size={20}/> },
+  { name: "My Cases", icon: <TbReportSearch size={20}/> },
 ];
 const settings = ['Profile', 'Logout'];
 
@@ -171,6 +173,7 @@ function StarsNavbar() {
                     to={
                       page.name == 'Home' ? '/home' :
                         page.name == 'Analysis' ? '/predict-tumor' :
+                             page.name == 'My Cases' ? '/my-Cases' :
                           '/'
                     }
                     sx={{ textAlign: 'center', color: 'white',
@@ -192,6 +195,7 @@ function StarsNavbar() {
   to={
     page.name == 'Home' ? '/home' :
     page.name == 'Analysis' ? '/predict-tumor' :
+     page.name == 'My Cases' ? '/my-Cases' :
     '/'
   }
   className={`upper_case ${style.navbar_btn}`}

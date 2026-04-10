@@ -22,6 +22,7 @@ import SupervisorReports from "./pages/supervisorPages/supervisorReports/Supervi
 import ReportDetails from "./pages/supervisorPages/reportDetails/ReportDetails.jsx";
 import SupervisorFeedback from "./pages/supervisorPages/supervisorFeedback/SupervisorFeedback.jsx";
 import StudentReports from "./pages/supervisorPages/studentReports/StudentReports.jsx";
+import MyCases from "./pages/studentPages/myCases/MyCases.jsx";
 
 
 const router = createBrowserRouter([
@@ -37,6 +38,9 @@ const router = createBrowserRouter([
         },{
             path:'profile',
             element:<StudentProfile/>
+        },{
+            path:'my-cases',
+            element:<MyCases/>
         }
     ]
    },
