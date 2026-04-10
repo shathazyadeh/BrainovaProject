@@ -11,7 +11,6 @@ import { FaUsers } from "react-icons/fa6";
 import { CgProfile } from "react-icons/cg";
 import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { VscNewFile } from "react-icons/vsc";
 import { FaRegFile } from "react-icons/fa";
 import { MdOutlineFeedback } from "react-icons/md";
 import useAuthStore from "../../../store/useAuthStore";
@@ -21,6 +20,7 @@ const drawerWidth = 240;
 export default function TemporaryDrawer() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
+  if (!user) return null; // هاي بتحل مشكلة لما نعمل لوج اوت ما تختفي عناويين الدراور الي بتخص السوبرفايزر
   const logout = useAuthStore((state) => state.logout);
   const handleLogout = () => {
     logout();
@@ -30,17 +30,23 @@ export default function TemporaryDrawer() {
   const location = useLocation();
 
   const routes = {
-    Dashboard: ["/dashboard/admin", "/dashboard/super-admin", "/dashboard/supervisor"],
-    Profile: ["/dashboard/admin/profile", "/dashboard/super-admin/profile", "/dashboard/supervisor/profile"],
+    Dashboard: [
+      "/dashboard/admin",
+      "/dashboard/super-admin",
+      "/dashboard/supervisor",
+    ],
+    Profile: [
+      "/dashboard/admin/profile",
+      "/dashboard/super-admin/profile",
+      "/dashboard/supervisor/profile",
+    ],
     "User Management": [
       "/dashboard/admin/user-management",
       "/dashboard/super-admin/user-management",
     ],
     Reports: ["/dashboard/supervisor/students-reports"],
-    "New Reports": ["/dashboard/supervisor/new-reports"],
     Students: ["/dashboard/supervisor/students"],
     Feedback: ["/dashboard/supervisor/feedback"],
-   
   };
 
   const DrawerList = (
@@ -95,7 +101,6 @@ export default function TemporaryDrawer() {
           {[
             "Dashboard",
             "Reports",
-            "New Reports",
             "Students",
             "Feedback",
             "Profile",
@@ -123,8 +128,6 @@ export default function TemporaryDrawer() {
                     navigate("/dashboard/supervisor");
                   } else if (text === "Reports") {
                     navigate("/dashboard/supervisor/students-reports");
-                  } else if (text === "New Reports") {
-                    navigate("/dashboard/supervisor/new-reports");
                   } else if (text === "Students") {
                     navigate("/dashboard/supervisor/students");
                   } else if (text === "Feedback") {
@@ -139,13 +142,11 @@ export default function TemporaryDrawer() {
                     <RiDashboard3Fill fill="#fff" size={22} />
                   ) : text === "Reports" ? (
                     <FaRegFile fill="#fff" size={22} />
-                  ) : text === "New Reports" ? (
-                    <VscNewFile fill="#fff" size={25} />
-                  ): text === "Students" ? (
+                  ) : text === "Students" ? (
                     <FaUsers fill="#fff" size={22} />
-                  ): text === "Feedback" ? (
+                  ) : text === "Feedback" ? (
                     <MdOutlineFeedback fill="#fff" size={22} />
-                  ): (
+                  ) : (
                     <CgProfile color="#fff" size={22} />
                   )}
                 </ListItemIcon>

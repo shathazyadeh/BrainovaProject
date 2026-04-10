@@ -1,11 +1,11 @@
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function UsersSearch({ search, setSearch }) {
+export default function UsersSearch({ search, setSearch, label="Search users..." }) {
   return (
     <TextField
       size="small"
-      placeholder="Search users..."
+      placeholder={label}
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       sx={{

@@ -16,7 +16,7 @@ export default function ReportsFilters({
           minWidth: 150,
           marginRight: { xs: "10px", md: "0" },
           "@media (max-width:404.98px)" :{
-              marginBottom: "17px",
+              marginBottom: showPredictionFilter ? "17px" : "0px",
           }
         }}
       >
