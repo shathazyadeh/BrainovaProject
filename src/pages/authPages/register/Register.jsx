@@ -42,9 +42,9 @@ function Register() {
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="var(--primary-color)"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 className="lucide lucide-brain w-8 h-8 text-red-500"
                 data-fg-caxq9="1.21:1.9465:/src/app/components/Login.tsx:32:17:1540:42:e:Brain::::::42K"
               >

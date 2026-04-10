@@ -19,6 +19,7 @@ import { IoBookOutline } from "react-icons/io5";
 import { FiUpload } from "react-icons/fi";
 import style from "./StarsNavbar.module.css"
 import { TbReportSearch } from "react-icons/tb";
+import useGetAllFeedbacks from '../../../hooks/studentHooks/useGetAllFeedbacks';
 
 const pages = [
   { name: "Home", icon: <LuBrain size={20}/> },
@@ -31,6 +32,12 @@ const settings = ['Profile', 'Logout'];
 function StarsNavbar() {
   const user = useAuthStore((state)=>state.user);
   const logout = useAuthStore((state)=>state.logout);
+
+  if(user){
+  const { isError, error, isLoading, data } = useGetAllFeedbacks();
+  console.log("student feedbacks : ", data);
+  }
+
   const navigate = useNavigate();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -104,10 +111,10 @@ function StarsNavbar() {
               viewBox="0 0 24 24"
               fill="white"
               stroke="var(--primary-color)"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-brain w-8 h-8 text-red-500"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-brain w-8 h-8 text-red-500"
               data-fg-caxq9="1.21:1.9465:/src/app/components/Login.tsx:32:17:1540:42:e:Brain::::::42K"
             >
               <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path>
