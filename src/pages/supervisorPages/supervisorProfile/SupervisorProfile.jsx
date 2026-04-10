@@ -32,13 +32,16 @@ function SupervisorProfile() {
               justifyContent: "center",
               alignItems: "center",
               paddingBottom: "45px",
+              paddingTop:{xs:"30px",md:"0px"},
             }}
           >
             <Box
               className="image"
               sx={{ filter: "drop-shadow(0 0 15px rgba(255,0,0,0.6))" }}
             >
-              <Box component={"img"} src={supervisorImg} alt="" width={200} />
+              <Box component={"img"} src={supervisorImg} alt="" width={200} sx={{
+              "@media (max-width:700px)": { width:"160px" }
+            }} />
             </Box>
             {user.role === "Admin" ? (
               <Typography
@@ -60,6 +63,7 @@ function SupervisorProfile() {
                   fontWeight: "600",
                   fontSize: "34px",
                   textAlign: "center",
+                  "@media (max-width:700px)": { fontSize: "26px" },
                 }}
               >
                 Dr. {user?.fullName} -
@@ -70,6 +74,7 @@ function SupervisorProfile() {
                     fontFamily: "var(--primary-font)",
                     fontWeight: "600",
                     fontSize: "34px",
+                    "@media (max-width:700px)": { fontSize: "26px" },
                   }}
                 >
                   {" "}
@@ -86,6 +91,7 @@ function SupervisorProfile() {
                 letterSpacing: "1px",
                 textAlign: "center",
                 marginTop: "4px",
+                "@media (max-width:700px)": { fontSize: "16px" },
               }}
             >
               Student Monitoring and Report Feedback
@@ -148,7 +154,7 @@ function SupervisorProfile() {
           margin: "auto",
           paddingX: { xs: "0px", md: "200px" },
           textAlign: "center",
-          marginTop: { xs: "60px", md: "0px" },
+          marginTop: { xs: "90px", md: "0px" },
         }}
       >
         <Typography

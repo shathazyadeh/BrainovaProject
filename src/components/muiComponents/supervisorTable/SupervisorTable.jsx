@@ -238,6 +238,7 @@ function MobileCard({
   handleOpenModal,
   navigate,
   downloadMutation,
+  showActions ,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -340,7 +341,7 @@ function MobileCard({
             </Typography>
             <FeedbackBadge isReviewed={row.isReviewed} />
           </Box>
-
+          {showActions && (
           <Box
             sx={{
               display: "flex",
@@ -374,6 +375,7 @@ function MobileCard({
               />
             </Box>
           </Box>
+          )}
         </Box>
       </Collapse>
     </Box>
@@ -457,6 +459,7 @@ export default function CustomPaginationActionsTable({
                 handleOpenModal={handleOpenModal}
                 navigate={navigate}
                 downloadMutation={downloadMutation}
+                showActions = {showActions}
               />
             ))
           )}

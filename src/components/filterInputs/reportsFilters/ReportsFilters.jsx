@@ -5,16 +5,17 @@ export default function ReportsFilters({
   setFeedbackFilter,
   predictionFilter,
   setPredictionFilter,
+  showPredictionFilter = true, 
 }) {
 
   return (
     <Box sx={{ display: { xs: "block", md: "flex" }, gap: 1, mb: 2 }}>
       <FormControl
         size="small"
-        sx={{
+       sx={{
           minWidth: 150,
           marginRight: { xs: "10px", md: "0" },
-          "@media (max-width:391.98px)" :{
+          "@media (max-width:404.98px)" :{
               marginBottom: "17px",
           }
         }}
@@ -59,7 +60,7 @@ export default function ReportsFilters({
           <MenuItem value="submitted">Submitted</MenuItem>
         </Select>
       </FormControl>
-
+ {showPredictionFilter && (
       <FormControl size="small" sx={{ minWidth: 200 }}>
         <Select
           value={predictionFilter}
@@ -121,6 +122,7 @@ export default function ReportsFilters({
           <MenuItem value="notumor">No Tumor</MenuItem>
         </Select>
       </FormControl>
+ )}
     </Box>
   );
 }

@@ -141,8 +141,9 @@ function SupervisorFeedback() {
                 color: "#fff",
                 fontFamily: "var(--primary-font)",
                 fontWeight: "600",
-                display: "inline",
+                display: "inline-block",
                 marginRight: "10px",
+                paddingTop: { xs: "30px", md: "0px" },
                 "@media (max-width:700px)": { fontSize: "22px" },
               }}
             >
@@ -204,9 +205,14 @@ function SupervisorFeedback() {
                     <Typography sx={{ color: "#fff", flexGrow: "1" }}>
                       {feedback.supervisorName}
                     </Typography>
-                    <Typography sx={{ color: "red", "@media (max-width:550px)": {
-                          fontSize:"11px",
-                        }}}>
+                    <Typography
+                      sx={{
+                        color: "red",
+                        "@media (max-width:550px)": {
+                          fontSize: "11px",
+                        },
+                      }}
+                    >
                       {" "}
                       {feedback.createdAt.split("T")[0]}
                     </Typography>
@@ -215,16 +221,19 @@ function SupervisorFeedback() {
                         color: "#758492",
                         paddingLeft: "6px",
                         "@media (max-width:550px)": {
-                          fontSize:"11px",
+                          fontSize: "11px",
                         },
                       }}
                     >
                       {" "}
-                      {new Date(feedback.createdAt).toLocaleTimeString('en-US', {
-  hour: '2-digit',
-  minute: '2-digit',
-  hour12: true,
-})}
+                      {new Date(feedback.createdAt).toLocaleTimeString(
+                        "en-US",
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        },
+                      )}
                     </Typography>
                   </Box>
 
@@ -242,7 +251,7 @@ function SupervisorFeedback() {
                         fontWeight: "400",
                         fontSize: "13px",
                         "@media (max-width:550px)": {
-                          fontSize:"11px",
+                          fontSize: "11px",
                         },
                       }}
                     >
@@ -257,8 +266,8 @@ function SupervisorFeedback() {
                           paddingX: "5px",
                           "@media (max-width:410px)": { paddingLeft: "0px" },
                           "@media (max-width:550px)": {
-                          fontSize:"11px",
-                        },
+                            fontSize: "11px",
+                          },
                         }}
                       >
                         {feedback.predictionResult}{" "}
@@ -269,17 +278,21 @@ function SupervisorFeedback() {
                           fontWeight: "400",
                           fontSize: "13px",
                           "@media (max-width:550px)": {
-                          fontSize:"11px",
-                        },
+                            fontSize: "11px",
+                          },
                         }}
                       >
-                        · {feedback.reportCreatedAt.split("T")[0]} 
+                        · {feedback.reportCreatedAt.split("T")[0]}
                         {" ( "}
-                         {new Date(feedback.reportCreatedAt).toLocaleTimeString('en-US', {
-                         hour: '2-digit',
-                         minute: '2-digit',
-                         hour12: true,
-                       })} {")"}
+                        {new Date(feedback.reportCreatedAt).toLocaleTimeString(
+                          "en-US",
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          },
+                        )}{" "}
+                        {")"}
                       </Typography>
                     </Box>
                   </Box>
@@ -289,7 +302,7 @@ function SupervisorFeedback() {
                       color: "#d3d9de",
                       fontWeight: "300",
                       wordBreak: "break-word",
-                      paddingRight:"10px",
+                      paddingRight: "10px",
                       height: "38px",
                       overflowY: "auto",
                       "&::-webkit-scrollbar": {
@@ -313,11 +326,15 @@ function SupervisorFeedback() {
                       justifyContent: "flex-end",
                       alignItems: "center",
                       gap: "5px",
-                      marginTop:"10px"
+                      marginTop: "10px",
                     }}
                   >
                     <DeleteIcon
-                      sx={{ color: "var(--primary-color)", cursor: "pointer", fontSize:"20px" }}
+                      sx={{
+                        color: "var(--primary-color)",
+                        cursor: "pointer",
+                        fontSize: "20px",
+                      }}
                       onClick={() => handleDeleteFeedback(feedback.id)}
                     />
                     <FaRegEdit
@@ -350,14 +367,14 @@ function SupervisorFeedback() {
           margin: "auto",
           paddingX: { xs: "0px", md: "200px" },
           textAlign: "center",
-          marginTop: { xs: "60px", md: "0px" },
+          marginTop: { xs: "10px", md: "0px" },
         }}
       >
         <Typography
           component={"p"}
           sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
         >
-          ©️ 2026{" "}
+          © 2026{" "}
           <Typography
             component={"span"}
             sx={{ color: "var(--dark-red-color)" }}

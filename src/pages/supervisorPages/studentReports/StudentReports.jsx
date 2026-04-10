@@ -42,6 +42,7 @@ console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوص�
                     display: "flex",
                     paddingBottom: "20px",
                     alignItems: "center",
+                    paddingTop:{xs:"30px",md:"0px"},
                   }}
                 >
 
@@ -192,7 +193,7 @@ console.log("digit:",digits);// كم اكبر عدد ديجيت ممكن اوص�
           margin: "auto",
           paddingX: { xs: "0px", md: "200px" },
           textAlign: "center",
-          marginTop: { xs: "60px", md: "0px" },
+          marginTop: { xs: "30px", md: "0px" },
         }}
       >
         <Typography

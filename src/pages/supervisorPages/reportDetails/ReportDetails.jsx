@@ -136,7 +136,7 @@ function ReportDetails() {
             {/*اول بوكسين */}
             <Box
               className="student-info_and_ai_prediction"
-              sx={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", }}
+              sx={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", paddingTop:{xs:"30px",md:"0px"},}}
             >
               <Box
                 className="student-info"
@@ -832,7 +832,7 @@ function ReportDetails() {
             component={"p"}
             sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
           >
-            ©️ 2026{" "}
+            © 2026{" "}
             <Typography
               component={"span"}
               sx={{ color: "var(--dark-red-color)" }}

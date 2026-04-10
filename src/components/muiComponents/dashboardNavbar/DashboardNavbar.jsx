@@ -39,6 +39,7 @@ export default function DashboardNavbar() {
     else  navigate("/dashboard/super-admin/profile");
     handleClose();
   };
+  
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -53,7 +54,7 @@ export default function DashboardNavbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+ if (!user) return null; //عشان بس نكبس لوج اوت بصير ريريندر وبكون قيمة اليوزر نل لو ما فحصنا هيك رح ينزل كمان مرة تحت ويعرض الايلس وتنعرض قائمة الادمن للحظة صغيرة قبل مانطلع للوج ان 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -138,55 +139,41 @@ export default function DashboardNavbar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem
-                  sx={{
-                    color: "#fff",
-                    paddingTop: "10px",
-                    "&:hover": {
-                      backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
-                    },
-                  }}
-                  onClick={handleDashboard}
-                >
-                  Dashboard
-                </MenuItem>
-                <MenuItem
-                  sx={{
-                    color: "#fff",
-                    paddingBottom: "10px",
-                    "&:hover": {
-                      backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
-                    },
-                  }}
-                  onClick={handleUserManagement}
-                >
-                  User Management
-                </MenuItem>
-                <MenuItem
-                  sx={{
-                    color: "#fff",
-                    paddingBottom: "10px",
-                    "&:hover": {
-                      backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
-                    },
-                  }}
-                  onClick={handleProfile}
-                >
-                  Profile
-                </MenuItem>
-                <MenuItem
-                  sx={{
-                    color: "#fff",
-                    paddingBottom: "10px",
-                    "&:hover": {
-                      backgroundColor: "rgba(255,255,255,0.1)", // لون الخلفية عند hover
-                    },
-                  }}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </MenuItem>
-              </Menu>
+       
+
+  {user?.role === "Supervisor" ? (
+    <>
+      {["Dashboard", "Reports",  "Students", "Feedback", "Profile", "Logout"].map((text) => (
+        <MenuItem
+          key={text}
+          sx={{ color: "#fff", paddingY: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }}
+          onClick={() => {
+            if (text === "Dashboard") navigate("/dashboard/supervisor");
+            else if (text === "Reports") navigate("/dashboard/supervisor/students-reports");
+            else if (text === "Students") navigate("/dashboard/supervisor/students");
+            else if (text === "Feedback") navigate("/dashboard/supervisor/feedback");
+            else if (text === "Profile") navigate("/dashboard/supervisor/profile");
+            else if (text === "Logout") handleLogout();
+            handleClose();
+          }}
+        >
+          {text}
+        </MenuItem>
+      ))}
+    </>
+  ) : (
+    <>
+      <MenuItem sx={{ color: "#fff", paddingTop: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleDashboard}>Dashboard</MenuItem>
+      <MenuItem sx={{ color: "#fff", paddingBottom: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleUserManagement}>User Management</MenuItem>
+      <MenuItem sx={{ color: "#fff", paddingBottom: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleProfile}>Profile</MenuItem>
+      <MenuItem sx={{ color: "#fff", paddingBottom: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleLogout}>Logout</MenuItem>
+    </>
+  )}
+  
+</Menu>
+                
+              
+           
             </div>
           )}
           <Typography
