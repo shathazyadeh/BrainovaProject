@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from '@mui/material'
+import { Box, Container, Grid, Typography, Link } from '@mui/material'
 import DashboardNavbar from '../../../components/muiComponents/dashboardNavbar/DashboardNavbar'
 import SupervisorTable from "../../../components/muiComponents/supervisorTable/SupervisorTable";
 import useGetAllOfMyStudnetsCases from '../../../hooks/supervisorHooks/useGetAllOfMyStudnetsCases';
@@ -6,7 +6,11 @@ import useGetNewReports from '../../../hooks/supervisorHooks/useGetNewReports';
 import useGetDashboardSummary from '../../../hooks/supervisorHooks/useGetDashboardSummary';
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import { FiFileText, FiFilePlus, FiMessageSquare, FiUsers } from "react-icons/fi";
+import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { LineChart } from "@mui/x-charts/LineChart";
+import { Link as RouterLink } from "react-router-dom";
+import { useMediaQuery } from "@mui/material";
+
 
 
 function SupervisorDashboard() {
@@ -17,6 +21,10 @@ function SupervisorDashboard() {
 console.log("newReportsData ", newReportsData);
 console.log("data ", data);
 console.log("dashboardSummaryData ", dashboardSummaryData);
+
+  const isCustomScreen = useMediaQuery("(max-width:1281px)");
+  const isPageLoading = isLoading || isNewReportsLoading || isDashboardSummaryLoading;
+  const pageError = error || newReportsError || newDashboardSummaryError;
 
   function timeAgo(dateString) {
   const now = new Date();
@@ -38,7 +46,8 @@ const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار �
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // تاريخ قبل أسبوع
     return new Date(item.feedbackSubmittedAt) >= oneWeekAgo;
-  });
+  }).sort((a, b) => 
+    new Date(b.feedbackSubmittedAt) - new Date(a.feedbackSubmittedAt));
 
   const thisWeekCount = newReportsData?.items?.filter(report => {
   const now = new Date();
@@ -72,6 +81,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        position:"relative"
       }}
     >
       <DashboardNavbar />
@@ -88,7 +98,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
       >
         <Container maxWidth="lg">
           {/* server errors */}
-          {isError && (
+          {pageError && (
             <Box
               component={"section"}
               className="server_error_section flex_column"
@@ -97,19 +107,15 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                left: "200px",
-                justifyContent: "center",
-                alignItems: "center",
+
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
               <Typography
                 component={"h1"}
                 variant="h5"
                 sx={{
+                  marginTop:"290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -118,33 +124,31 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   },
                 }}
               >
-                {error?.message}
+                {pageError?.message || "Something went wrong"}
               </Typography>
             </Box>
           )}
-          {isLoading && (
+          {isPageLoading && (
             <Box
               sx={{
                 bgcolor: "var(--navy-color)",
                 position: "absolute",
                 inset: 0,
+                bottom:"0px",
                 top: "90px",
-                left: "200px",
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
+              <Box sx={{marginTop:"290px"}}>
               <Loader />
+              </Box>
             </Box>
           )}
 
-          <Grid container spacing={3}>
-            <Grid item size={{ md: 8 }}>
+          <Grid container columnSpacing={3}>
+            <Grid item size={isCustomScreen ? 12 : {  md: 8 }} sx={{paddingTop:{xs:"30px",md:"0px"}}}>
               <Box className="section_titel" sx={{ marginBottom: "23px" }}>
                 <Typography
                   component={"h1"}
@@ -166,16 +170,19 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   Here's your activity summary.
                 </Typography>
               </Box>
-              <Box
-                className="dashboard_summary"
+              <Box className="dashboard_summary"
                 sx={{ display: "flex", gap: "10px", marginBottom: "23px" }}
               >
-                <Box
+                <Grid container spacing={1} sx={{width:"100%"}}>
+                  <Grid item size={{xs:6,sm:3}}>
+                    <Box
                   className="total_students"
                   sx={{
                     bgcolor: "#232121b8",
+                    height:"100%",
                     borderRadius: "12px",
                     display: "flex",
+                    justifyContent:"space-around",
                     alignItems: "center",
                     gap: "15px",
                     paddingX: "15px",
@@ -190,6 +197,9 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                         textTransform: "uppercase",
                         fontSize: "13px",
                         fontFamily: "var(--primary-font)",
+                        "@media (max-width:700px)": {
+                         fontSize: "11px",
+                        },
                       }}
                     >
                       Total Students
@@ -218,12 +228,16 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     <FiUsers size={20} color="#fff" />
                   </Typography>
                 </Box>
-                <Box
+                  </Grid>
+                  <Grid item size={{xs:6,sm:3}}>
+                    <Box
                   className="total_reports"
                   sx={{
                     bgcolor: "#232121b8",
+                    height:"100%",
                     borderRadius: "12px",
                     display: "flex",
+                    justifyContent:"space-around",
                     alignItems: "center",
                     gap: "15px",
                     paddingX: "15px",
@@ -241,6 +255,9 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                         textTransform: "uppercase",
                         fontSize: "13px",
                         fontFamily: "var(--primary-font)",
+                        "@media (max-width:700px)": {
+                         fontSize: "11px",
+                        },
                       }}
                     >
                       Total Reports
@@ -262,6 +279,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                         fontSize: "10px",
                         position: "absolute",
                         bottom: "-20px",
+                        whiteSpace: "nowrap"
                       }}
                     >
                       +{thisWeekCount} this week
@@ -279,12 +297,16 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     <FiFileText size={20} color="#fff" />
                   </Typography>
                 </Box>
-                <Box
+                  </Grid>
+                  <Grid item size={{xs:6,sm:3}}>
+                    <Box
                   className="new_reports"
                   sx={{
                     bgcolor: "#232121b8",
+                    height:"100%",
                     borderRadius: "12px",
                     display: "flex",
+                    justifyContent:"space-around",
                     alignItems: "center",
                     gap: "15px",
                     paddingX: "15px",
@@ -299,6 +321,9 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                         textTransform: "uppercase",
                         fontSize: "13px",
                         fontFamily: "var(--primary-font)",
+                        "@media (max-width:700px)": {
+                         fontSize: "11px",
+                        },
                       }}
                     >
                       New Reports
@@ -327,12 +352,16 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     <FiFilePlus size={20} color="#fff" />
                   </Typography>
                 </Box>
-                <Box
+                  </Grid>
+                  <Grid item size={{xs:6,sm:3}}>
+                    <Box
                   className="feedback_given"
                   sx={{
                     bgcolor: "#232121b8",
+                    height:"100%",
                     borderRadius: "12px",
                     display: "flex",
+                    justifyContent:"space-around",
                     alignItems: "center",
                     gap: "15px",
                     paddingX: "15px",
@@ -347,6 +376,9 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                         textTransform: "uppercase",
                         fontSize: "13px",
                         fontFamily: "var(--primary-font)",
+                        "@media (max-width:700px)": {
+                         fontSize: "11px",
+                        },
                       }}
                     >
                       Feedback Given
@@ -375,8 +407,10 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     <FiMessageSquare size={20} color="#fff" />
                   </Typography>
                 </Box>
+                  </Grid>
+                </Grid>
               </Box>
-              <Box className ="line_chart"
+              <Box className="line_chart"
                 sx={{
                   bgcolor: "#232121b8",
                   borderRadius: "12px",
@@ -388,7 +422,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   sx={{
                     color: "#fff",
                     fontWeight: "600",
-                    fontSize: "17px",
+                    fontSize: {xs:"15px",sm:"17px"},
                     fontFamily: "var(--primary-font)",
                     paddingLeft: "30px",
                     paddingTop: "10px",
@@ -406,27 +440,29 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                       label: "Reports",
                       color: "var(--primary-color)",
                       curve: "monotoneX",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
                     },
                   ]}
-                  height={160}
+                  height={154}
                   margin={{ left: 0 }}
-                  paddin={{ left: 0 }}
                   sx={{
-  "& .MuiChartsAxis-tickLabel": { fill: "#fff" },
-  "& .MuiChartsAxis-line": { stroke: "#fff" },
-  "& .MuiChartsAxis-tick": { stroke: "#fff" },
-  "& .MuiChartsLegend-label": {
-    color: "#fff",
-    fontFamily: "var(--primary-font)",
-    fontWeight: "600",
-  },
-  "& .MuiChartsAxis-label": { fill: "#fff" },
-  "& .MuiMarkElement-root": {
-    fill: "var(--primary-color)",
-    stroke: "var(--primary-color)",
-  },
-}}
+                    "& .MuiChartsAxis-tickLabel tspan": {
+                      fill: "#fff !important",
+                      stroke: "none !important",
+                    },
+                    "& .MuiChartsAxis-line": { stroke: "#fff !important" },
+                    "& .MuiChartsAxis-tick": { stroke: "#fff !important" },
+                    "& .MuiChartsLegend-label": {
+                      color: "#fff !important",
+                      fontFamily: "var(--primary-font) !important",
+                      fontWeight: "600 !important",
+                    },
+                    "& .MuiChartsAxisHighlight-root line": {
+                      stroke: "#ff0000 !important",
+                    },
+                    "& .MuiChartsAxisHighlight-root": {
+                      stroke: "#fff !important",
+                    },
+                  }}
                   slotProps={{
                     legend: {
                       position: {
@@ -437,15 +473,30 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   }}
                 />
               </Box>
-
               <SupervisorTable
                 rows={data?.items?.slice(0, 5)} //  أول 5 صفوف
                 count={5} // عدد الصفوف
                 showActions={false}
                 hidePagination={true}
               />
+              <Box className="link" sx={{display:"flex", justifyContent:"flex-end",paddingY:"10px",paddingRight:"10px","@media (max-width:768px)": {
+              paddingTop: "0px",
+            }}}>
+              <Link
+                component={RouterLink}
+                to={"/dashboard/supervisor/students-reports"}
+                sx={{
+                  color: "var(--primary-color)",
+                  fontSize: "13px",
+                  fontWeight: "600",
+                }}
+                className="auth_link"
+              >
+                View All <HiOutlineArrowNarrowRight />
+              </Link>
+              </Box>
             </Grid>
-            <Grid item size={{ md: 4 }}>
+            <Grid item size={isCustomScreen ? 12 : { md: 4 }}>
               <Box
                 className="recently_submitted"
                 sx={{
@@ -453,11 +504,11 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   borderTopLeftRadius: "20px",
                   borderBottomLeftRadius: "20px",
                   paddingX: "14px",
-                  paddingY: "20px",
+                  paddingTop: "20px",
                   position: "relative",
                   marginBottom: "23px",
-                  marginTop: "90px",
-                  maxHeight: "350px",
+                  marginTop: isCustomScreen ? "0px" :"90px",
+                  height: "364px",
                   overflowY: "auto",
                   "&::-webkit-scrollbar": {
                     width: "6px",
@@ -476,19 +527,12 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     fontFamily: "var(--primary-font)",
                     fontWeight: "600",
                     color: "#fff",
-                    fontSize: "17px",
+                    fontSize: {xs:"15px",sm:"17px"},
                     marginBottom: "10px",
                   }}
                 >
                   Recently Submitted
-                </Typography>
-                {isNewReportsLoading && <Loader />}
-
-                {isNewReportsError && (
-                  <Typography sx={{ color: "red" }}>
-                    {newReportsError?.message}
-                  </Typography>
-                )}
+                </Typography>                
                 <Typography
                   className="no_of_notifications"
                   sx={{
@@ -502,8 +546,25 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 >
                   {newReportsData?.totalCount} new notifications
                 </Typography>
-                {newReportsData?.items?.map((report) => (
-                  <Box
+                {newReportsData?.items?.length === 0 ? (
+  <Typography
+    sx={{
+      fontSize: "13px",
+      color:"var(--primary-color)",
+      textAlign: "center",
+      margin:"auto",
+      marginTop: "140px",
+      bgcolor: "#291A1F",
+      width : "fit-content",
+      padding:"10px",
+      borderRadius:"16px"
+    }}
+  >
+    No recent submissions
+  </Typography>
+) : (
+  newReportsData?.items?.map((report) => (
+    <Box component={RouterLink} to={`/dashboard/supervisor/report-details/${report.reportId}`}
                     key={report.reportId}
                     sx={{
                       marginBottom: "10px",
@@ -558,7 +619,8 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                       </Typography>
                     </Box>
                   </Box>
-                ))}
+  ))
+)}
               </Box>
               <Box
                 className="recently_reviewed"
@@ -567,10 +629,9 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   borderTopLeftRadius: "20px",
                   borderBottomLeftRadius: "20px",
                   paddingX: "14px",
-                  paddingY: "20px",
+                  paddingTop: "20px",
                   position: "relative",
-                  marginBottom: "23px",
-                  maxHeight: "367px",
+                  height: "368px",
                   overflowY: "auto",
                   "&::-webkit-scrollbar": {
                     width: "6px",
@@ -589,7 +650,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     fontFamily: "var(--primary-font)",
                     fontWeight: "600",
                     color: "#fff",
-                    fontSize: "17px",
+                    fontSize: {xs:"15px",sm:"17px"},
                     marginBottom: "10px",
                   }}
                 >
@@ -608,8 +669,25 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 >
                   {recentFeedbacks?.length} new notifications
                 </Typography>
-                {recentFeedbacks?.map((report) => (
-                  <Box
+                {recentFeedbacks?.length === 0 ? (
+  <Typography
+    sx={{
+      fontSize: "13px",
+      color:"#1E86EE",
+      textAlign: "center",
+      margin:"auto",
+      marginTop: "140px",
+      bgcolor: "#162435",
+      width : "fit-content",
+      padding:"10px",
+      borderRadius:"16px"
+    }}
+  >
+    No recent feedback
+  </Typography>
+) : (
+  recentFeedbacks?.map((report) => (
+    <Box component={RouterLink} to={`/dashboard/supervisor/report-details/${report.reportId}`}
                     key={report.reportId}
                     sx={{
                       marginBottom: "10px",
@@ -639,7 +717,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                           color: "var(--secondary-color)",
                           fontWeight: "400",
                           fontSize: "13px",
-                          wordBreak: "break-all",
+                          wordBreak: "break-word",
                         }}
                       >
                         <Typography
@@ -667,7 +745,8 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                       </Typography>
                     </Box>
                   </Box>
-                ))}
+  ))
+)}
               </Box>
             </Grid>
           </Grid>
@@ -683,17 +762,28 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
           margin: "auto",
           paddingX: { xs: "0px", md: "200px" },
           textAlign: "center",
-          marginTop: { xs: "60px", md: "0px" },
+          marginTop: { xs: "1px", md: "0px" },
         }}
       >
         <Typography
           component={"p"}
-          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+          sx={{
+            color: "var(--mid-gray-color)",
+            paddingY: "30px",
+            "@media (max-width:430px)": {
+              fontSize: "12px",
+            },
+          }}
         >
           © 2026{" "}
           <Typography
             component={"span"}
-            sx={{ color: "var(--dark-red-color)" }}
+            sx={{
+              color: "var(--dark-red-color)",
+              "@media (max-width:430px)": {
+                fontSize: "12px",
+              },
+            }}
           >
             Brainova
           </Typography>
