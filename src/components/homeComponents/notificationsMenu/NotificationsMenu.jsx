@@ -6,11 +6,14 @@ import { styled } from "@mui/material/styles";
 import { useState } from "react";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { FaCheck } from "react-icons/fa6";
+import { LuCheckCheck } from "react-icons/lu";
 import useGetAllFeedbacks from "../../../hooks/studentHooks/useGetAllFeedbacks";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import style from "./NotificationsMenu.module.css";
 import useMarksAsSeen from "../../../hooks/studentHooks/useMarksAsSeen";
+import useMarkAllAsSeen from "../../../hooks/studentHooks/useMarkAllAsSeen";
+import { Grid } from "@mui/material";
 
 const StyledListHeader = styled(ListSubheader)({
   backgroundImage: "var(--Paper-overlay)",
@@ -18,11 +21,8 @@ const StyledListHeader = styled(ListSubheader)({
 
 export default function NotificationsMenu() {
   const { isError, error, isLoading, data } = useGetAllFeedbacks();
-  const {
-    markAsSeen,
-    serverErrors,
-    isLoading: isMarkSeenLoading,
-  } = useMarksAsSeen();
+  const { markAsSeen, serverErrors, isLoading: isMarkSeenLoading } = useMarksAsSeen();
+  const { usePostMutation: markAllSeenMutation, serverErrors: serverMarkAllSeenErrors, isLoading: isMarkAllSeenLoading } = useMarkAllAsSeen();
   const [seenIds, setSeenIds] = useState([]);
 
   const handelMarkSeen = async (feedbackId) => {
@@ -34,6 +34,9 @@ export default function NotificationsMenu() {
       setSeenIds((prevIds) => prevIds.filter((id) => id !== feedbackId)); //في حال فشل الطلب بنشيلها من القائمة
     }
   };
+  const handleMarkAllSeen = async()=>{
+    await markAllSeenMutation.mutateAsync();
+  }
 
   console.log("data  : ", data);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -88,7 +91,10 @@ export default function NotificationsMenu() {
           },
         }}
       >
-        <Typography
+        <Box className="notification_header">
+          <Grid container spacing={5}>
+            <Grid item size={{xs:6}}>
+              <Typography
           sx={{
             fontFamily: "var(--primary-font)",
             fontWeight: "600",
@@ -100,6 +106,15 @@ export default function NotificationsMenu() {
         >
           Notifications
         </Typography>
+            </Grid>
+            <Grid item sx={{display:"flex",justifyContent:"flex-end",alignItems:"center"}} size={{xs:6}}>
+              <Typography onClick={handleMarkAllSeen} sx={{color:"var(--primary-color)",fontSize:"10px",paddingRight:"10px",display:"flex",alignItems:"center"}}>
+                <LuCheckCheck style={{marginRight:"5px"}}/>
+                Mark all read
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
         {data?.items.map((feedback) => {
           const isSeen =
             feedback.isSeen || seenIds.includes(feedback.feedbackId);
