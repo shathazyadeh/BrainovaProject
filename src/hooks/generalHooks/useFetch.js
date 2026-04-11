@@ -12,8 +12,10 @@ import axiosInstance from "../../Api/axiosInstance";
             return response.data;
         },
         ...options // بتخلي أي قيمة بنبعتها من برا تستبدل القيمة الأصلية
+       
     });
 
 
     return query;
  }
+ 
