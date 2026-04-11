@@ -1,11 +1,13 @@
-import { Box, Container, Grid, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Container, Grid, Modal, Typography } from '@mui/material'
+import React, { useState } from 'react'
 import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
 import { LuNotebookPen } from "react-icons/lu";
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import useGetSupervisorFeedbackByReportid from '../../../hooks/studentHooks/useGetSupervisorFeedbackByReportid.js';
+import { IoMdClose } from "react-icons/io";
 
   function FeedbackCommet({ Id, isReviewed }) {
+
     if (!isReviewed) {
   return (
     <Typography sx={{ color: '#797979', fontSize: '13px' }}>
@@ -14,21 +16,69 @@ import useGetSupervisorFeedbackByReportid from '../../../hooks/studentHooks/useG
   );
 }
   const { isError,isLoading,error, data: feedback } = useGetSupervisorFeedbackByReportid(Id); 
+ const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
 console.log("feedbackkkk:",feedback);
    if (isLoading) {
     return <Typography sx={{ color: '#797979' }}>Loading...</Typography>;
   }
-
   if (isError) {
     return <Typography sx={{ color: 'red' }}>Error loading feedback</Typography>;
   }
   return (
-    <Typography sx={{ color: '#797979', fontSize: '13px' ,WebkitLineClamp: 1,  display: '-webkit-box',    // عدد الأسطر
-    WebkitBoxOrient: 'vertical',
-    overflow: 'hidden',}}>
+    <Box>
+    <Typography sx={{ color: '#797979', fontSize: '13px' ,WebkitLineClamp: 1,  display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden',}}>
       {feedback?.comment || "No feedback yet"}
     </Typography>
-  
+    <Typography onClick={()=> setOpen(true)} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
+    Read more
+  </Typography>
+
+  <Modal  open={open} onClose={() => setOpen(false)}  slotProps={{
+    backdrop: {
+      sx: {
+        backdropFilter: "blur(5px)",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        
+      },
+    },
+  }}>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 600,
+      bgcolor: "#0a0a0a",
+      color: "#fff",
+      borderRadius: "15px",
+      border:'1px solid #35353568',
+      boxShadow: 24,
+      p: 3,
+      boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+      outline: "none",
+  "&:focus": {
+    outline: "none",
+  },
+  "&:focus-visible": {
+    outline: "none",
+  },
+      
+    }}
+  >
+    <Box className='modal_title' sx={{display:'flex',justifyContent:'space-between'}}>
+     <Box sx={{display:'flex' ,alignItems:'center',gap:'5px',paddingTop:'4px',paddingBottom:'10px'}}>
+         <LuNotebookPen size={25} color='#c21313'/>
+         <Typography sx={{color:'#fff',fontSize:'20px',fontWeight:'500',letterSpacing: "1px",paddingLeft:'10px'}}>Feedback </Typography>
+      </Box>
+        <IoMdClose size={20}  onClick={() => setOpen(false)} style={{cursor:'pointer'}}/>
+     </Box>
+    <Typography sx={{ color: "#797979" }}>
+      {feedback?.comment}
+    </Typography>
+  </Box>
+</Modal>
+  </Box>
   );
 }
 function MyCases() {
@@ -98,6 +148,7 @@ function MyCases() {
           )}
         <Grid container spacing={2}>
           {data?.items?.map((item , index) => (
+            
             <Grid item size={{md:4}} key={item.caseId}>
               <Box  className='student_case flex_column' sx={{bgcolor:'#1f1f1f',padding:'20px',borderRadius:'15px',border:'1px solid #525252a8',gap:'5px',}}>
                             
