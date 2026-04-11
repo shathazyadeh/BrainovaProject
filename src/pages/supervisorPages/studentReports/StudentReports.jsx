@@ -338,22 +338,29 @@ function StudentReports() {
                 justifyContent: "center",
                 alignItems: "center",
                 minHeight: "60vh",
+                position:"relative"
               }}
             >
+              <FaArrowLeft
+                      color="#fff"
+                      size={25}
+                      style={{ cursor: "pointer" , position:"absolute", left:"0",top:"34px"}}
+                      onClick={() => navigate("/dashboard/supervisor/students")}
+              />
               <Box
                 sx={{
                   marginTop: "200px",
                   textAlign: "center",
                   bgcolor: "#1a1d25",
                   paddingY: "50px",
-                  paddingX: "90px",
+                  paddingX: {xs:"30px",sm:"90px"},
                   borderRadius: "15px",
                   boxShadow: "0 0 15px rgba(255, 255, 255, 0.34)",
                   fontFamily: "var(--primary-font)",  
                   fontWeight: '500'
                 }}
               >
-                <Typography sx={{ color: "#fff", fontSize: "20px" }}>
+                <Typography sx={{ color: "#fff", fontSize: {xs:"15px",sm:"20px"} }}>
                   No reports found for this student.
                 </Typography>
               </Box>
@@ -361,7 +368,7 @@ function StudentReports() {
           ) : (
             <Grid container spacing={2}>
               {filteredReports?.map((report) => (
-                <Grid item size={{ xs: 12, sm: 6, lg: 4 }}>
+                <Grid item size={{ xs: 12, sm: 6, lg: 4 }} key={report.reportId}>
                   <Box
                     className="report"
                     sx={{
@@ -400,7 +407,7 @@ function StudentReports() {
                           fontFamily: "var(--primary-font)",
                         }}
                       >
-                        {report.reportSubmittedAt.split("T")[0]}
+                        {report.reportSubmittedAt?.split("T")[0]}
                       </Typography>
                     </Box>
                     <Box

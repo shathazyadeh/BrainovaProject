@@ -43,7 +43,7 @@ function ReportDetails() {
   const [open, setOpen] = useState(false); // عشان اتحكم بالسهم اللي عبوكس الاسئلة
   const [openModal, setOpenModal] = useState(false);
   const [selectedFeedback, setSelectedFeedback] = useState(null);
-  const tumorProbabilitiesArray = data?.probabilities.map((p) => p.value) || [];
+  const tumorProbabilitiesArray = data?.probabilities?.map((p) => p.value) || [];
   const tumorProbability = Math.max(...tumorProbabilitiesArray);
   const percentage = parseFloat((tumorProbability * 100).toFixed(2));
   const { refetch, isFetching } = useGetPDF(id);
@@ -424,7 +424,7 @@ function ReportDetails() {
                   }}
                 >
                   {data?.answers.map((question, index) => (
-                    <Box
+                    <Box key={question.questionId}
                       className="questions_and_answers"
                       sx={{
                         bgcolor: "#24272d6a",

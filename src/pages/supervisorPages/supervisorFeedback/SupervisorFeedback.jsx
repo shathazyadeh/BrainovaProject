@@ -141,8 +141,9 @@ function SupervisorFeedback() {
                 color: "#fff",
                 fontFamily: "var(--primary-font)",
                 fontWeight: "600",
-                display: "inline",
+                display: "inline-block",
                 marginRight: "10px",
+                paddingTop:{xs:"30px",md:"0px"},
                 "@media (max-width:700px)": { fontSize: "22px" },
               }}
             >

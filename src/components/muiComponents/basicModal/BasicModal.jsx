@@ -8,7 +8,6 @@ import RegisterForm from "../../registerForm/RegisterForm";
 import useAuthStore from "../../../store/useAuthStore";
 import useUpdateUserInfo from "../../../hooks/userManagementHooks/useUpdateUserInfo";
 import { UpdateUserInfoSchema } from "../../../validations/UpdateUserInfoSchema";
-import usePost from "../../../hooks/generalHooks/usePost";
 import FeedbackForm from "../../feedbackForm/FeedbackForm";
 
 export default function BasicModal({

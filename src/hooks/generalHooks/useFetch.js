@@ -6,7 +6,6 @@ import axiosInstance from "../../Api/axiosInstance";
     const query = useQuery({
         queryKey:queryKey,
         staleTime:0, //كل 2 دقائق بعمل بحكي للكويري انه الرداتا بطلت فرش و اذا المستخدمم طلع من التاب ورجع بعمل ريكويست
-        refetchInterval:1000, //كل 1 دقائق بعمل ريكويست عالباك
         queryFn: async()=>{
             const response = await axiosInstance.get(url);
             return response.data;

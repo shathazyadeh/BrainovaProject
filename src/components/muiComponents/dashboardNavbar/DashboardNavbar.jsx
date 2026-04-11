@@ -141,34 +141,34 @@ export default function DashboardNavbar() {
               >
        
 
-  {user?.role === "Supervisor" ? (
-    <>
-      {["Dashboard", "Reports",  "Students", "Feedback", "Profile", "Logout"].map((text) => (
-        <MenuItem
-          key={text}
-          sx={{ color: "#fff", paddingY: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }}
-          onClick={() => {
-            if (text === "Dashboard") navigate("/dashboard/supervisor");
-            else if (text === "Reports") navigate("/dashboard/supervisor/students-reports");
-            else if (text === "Students") navigate("/dashboard/supervisor/students");
-            else if (text === "Feedback") navigate("/dashboard/supervisor/feedback");
-            else if (text === "Profile") navigate("/dashboard/supervisor/profile");
-            else if (text === "Logout") handleLogout();
-            handleClose();
-          }}
-        >
-          {text}
-        </MenuItem>
-      ))}
-    </>
-  ) : (
-    <>
-      <MenuItem sx={{ color: "#fff", paddingTop: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleDashboard}>Dashboard</MenuItem>
-      <MenuItem sx={{ color: "#fff", paddingBottom: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleUserManagement}>User Management</MenuItem>
-      <MenuItem sx={{ color: "#fff", paddingBottom: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleProfile}>Profile</MenuItem>
-      <MenuItem sx={{ color: "#fff", paddingBottom: "10px", "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" } }} onClick={handleLogout}>Logout</MenuItem>
-    </>
-  )}
+  {user?.role === "Supervisor"
+  ? ["Dashboard", "Reports", "Students", "Feedback", "Profile", "Logout"].map((text) => (
+      <MenuItem
+        key={text}
+        sx={{
+          color: "#fff",
+          paddingY: "10px",
+          "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
+        }}
+        onClick={() => {
+          if (text === "Dashboard") navigate("/dashboard/supervisor");
+          else if (text === "Reports") navigate("/dashboard/supervisor/students-reports");
+          else if (text === "Students") navigate("/dashboard/supervisor/students");
+          else if (text === "Feedback") navigate("/dashboard/supervisor/feedback");
+          else if (text === "Profile") navigate("/dashboard/supervisor/profile");
+          else if (text === "Logout") handleLogout();
+          handleClose();
+        }}
+      >
+        {text}
+      </MenuItem>
+    ))
+  : [
+      <MenuItem key="dashboard" onClick={handleDashboard}>Dashboard</MenuItem>,
+      <MenuItem key="users" onClick={handleUserManagement}>User Management</MenuItem>,
+      <MenuItem key="profile" onClick={handleProfile}>Profile</MenuItem>,
+      <MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
+    ]}
   
 </Menu>
                 

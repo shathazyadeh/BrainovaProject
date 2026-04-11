@@ -40,7 +40,7 @@ export default function useDeleteUser(){
             <Box>Deleted <Box component={'span'} sx={{color:'rgb(239, 229, 87)'}}>{deletedCount}</Box> users, but</Box>
             <Box>Failed to delete:</Box>
             {data.failed.map((user) => (
-                <Box>
+                <Box key={user.userId}>
                     <Box component={'span'} sx={{color:'rgb(239, 229, 87)'}}>{user.userName}</Box> because {user.reason}
                 </Box>
             ))}
@@ -57,7 +57,7 @@ export default function useDeleteUser(){
         <Box>
             <Box>Failed to delete:</Box>
             {data.failed.map((user) => (
-                <Box>
+                <Box key={user.userId}>
                      <Box component={'span'} sx={{color:'rgb(218, 72, 72)'}}>{user.userName}</Box> because {user.reason}
                 </Box>
             ))}

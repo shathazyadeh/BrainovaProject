@@ -206,16 +206,18 @@ function ResetPassword() {
               )}
             </Button>
             <Link
-              className="verify_link"
+              className="verify_link upper_case"
               type="Button" //ضرورية عشان لما اكبس عليها ما يعتبرها سبمت للفورم لانها موجودة داخل فورم
-              component={"Button"}
+              component={Button}
               onClick={handleResendCode}
               sx={{
                 background: "transparent",
                 border: "none",
                 color: "#000",
                 textDecorationColor: "#000",
-                cursor:'pointer'
+                cursor:'pointer',
+                width:"fit-content",
+                margin:"auto"
               }}
             >
               Resend Code
