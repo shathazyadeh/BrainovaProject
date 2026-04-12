@@ -328,26 +328,8 @@ function MyCases() {
                                             paddingX: "10px",
                                             borderRadius: "15px",
                                             display: "inline-flex",
-                                            bgcolor:
-                                              item?.predictionResult === "meningioma"
-                                                ? "rgb(55, 44, 28)"
-                                                : item?.predictionResult === "glioma"
-                                                  ? "rgb(51, 26, 32)"
-                                                  : item?.predictionResult === "notumor"
-                                                    ? "rgb(23, 49, 40)"
-                                                    : item?.predictionResult === "pituitary"
-                                                      ? "#400f4d7c"
-                                                      : "#781234",
-                                            color:
-                                              item?.predictionResult === "meningioma"
-                                                ? "rgb(218, 148, 14)"
-                                                : item?.predictionResult === "glioma"
-                                                  ? "rgb(196, 36, 38)"
-                                                  : item?.predictionResult === "notumor"
-                                                    ? "rgb(30, 167, 69)"
-                                                    : item?.predictionResult === "pituitary"
-                                                      ? "#9f05ffab"
-                                                      : "var(--primary-color)",
+                                            bgcolor:"rgb(51, 26, 32)",
+                                            color:"rgb(196, 36, 38)"
                                           }}
                                         >
                                           ● {item?.predictionResult}
