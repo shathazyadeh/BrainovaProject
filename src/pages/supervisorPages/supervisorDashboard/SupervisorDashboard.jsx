@@ -107,7 +107,6 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-
                 zIndex: 1,
               }}
             >
@@ -134,7 +133,6 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 bgcolor: "var(--navy-color)",
                 position: "absolute",
                 inset: 0,
-                bottom:"0px",
                 top: "90px",
                 display: "flex",
                 justifyContent: "center",
@@ -549,8 +547,8 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 {newReportsData?.items?.length === 0 ? (
   <Typography
     sx={{
-      fontSize: "13px",
       color:"var(--primary-color)",
+      fontSize: "13px",
       textAlign: "center",
       margin:"auto",
       marginTop: "140px",

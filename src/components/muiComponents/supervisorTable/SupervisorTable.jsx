@@ -30,7 +30,8 @@ import { BsFileEarmarkArrowDown } from "react-icons/bs";
 import { FiPlus } from "react-icons/fi";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useDownloadPDF from "../../../hooks/supervisorHooks/useDownloadPDF";
+import useDownloadSupervisorPDF from "../../../hooks/supervisorHooks/useDownloadSupervisorPDF";
+
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -414,8 +415,7 @@ export default function CustomPaginationActionsTable({
     page * rowsPerPage + rowsPerPage,
   );
 
-  const downloadMutation = useDownloadPDF();
-
+const downloadMutation = useDownloadSupervisorPDF();
   return (
     <TableContainer
       component={Paper}

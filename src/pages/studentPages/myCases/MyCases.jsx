@@ -1,22 +1,76 @@
-import { Box, Container, Grid, Modal, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Button, Container, Grid, Modal, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
 import { LuNotebookPen } from "react-icons/lu";
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import useGetSupervisorFeedbackByReportid from '../../../hooks/studentHooks/useGetSupervisorFeedbackByReportid.js';
 import { IoMdClose } from "react-icons/io";
+import { toast } from 'react-toastify';
+import useGetStudentPdf from '../../../hooks/studentHooks/useGetStudentPdf.js';
+import { LuDownload } from "react-icons/lu";
+import { FaRegEye } from "react-icons/fa";
+import useDownloadStudentPDF from '../../../hooks/studentHooks/useDownloadStudentPDF.js';
 
   function FeedbackCommet({ Id, isReviewed }) {
+ const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
 
     if (!isReviewed) {
   return (
+    <Box>
     <Typography sx={{ color: '#797979', fontSize: '13px' }}>
       No feedback yet
     </Typography>
+     <Typography onClick={()=> setOpen(true)} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
+    Read more
+  </Typography>
+   <Modal  open={open} onClose={() => setOpen(false)}  slotProps={{
+    backdrop: {
+      sx: {
+        backdropFilter: "blur(5px)",
+        backgroundColor: "rgba(0,0,0,0.5)",
+        
+      },
+    },
+  }}>
+  <Box
+    sx={{
+      position: "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 600,
+      bgcolor: "#0a0a0a",
+      color: "#fff",
+      borderRadius: "15px",
+      border:'1px solid #35353568',
+      p: 3,
+      boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+      outline: "none",
+  "&:focus": {
+    outline: "none",
+  },
+  "&:focus-visible": {
+    outline: "none",
+  },
+      
+    }}
+  >
+    <Box className='modal_title' sx={{display:'flex',justifyContent:'space-between'}}>
+     <Box sx={{display:'flex' ,alignItems:'center',gap:'5px',paddingTop:'4px',paddingBottom:'10px'}}>
+         <LuNotebookPen size={25} color='#c21313'/>
+         <Typography sx={{color:'#fff',fontSize:'20px',fontWeight:'500',letterSpacing: "1px",paddingLeft:'10px'}}>Feedback </Typography>
+      </Box>
+        <IoMdClose size={20}  onClick={() => setOpen(false)} style={{cursor:'pointer'}}/>
+     </Box>
+    <Typography sx={{ color: "#797979" }}>
+           No feedback yet
+    </Typography>
+  </Box>
+</Modal>
+    </Box>
   );
 }
   const { isError,isLoading,error, data: feedback } = useGetSupervisorFeedbackByReportid(Id); 
- const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
 console.log("feedbackkkk:",feedback);
    if (isLoading) {
     return <Typography sx={{ color: '#797979' }}>Loading...</Typography>;
@@ -53,7 +107,6 @@ console.log("feedbackkkk:",feedback);
       color: "#fff",
       borderRadius: "15px",
       border:'1px solid #35353568',
-      boxShadow: 24,
       p: 3,
       boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
       outline: "none",
@@ -86,7 +139,31 @@ function MyCases() {
     console.log('data5:',data);
     const totalReports = data?.items.length || 0;
     const digits = Math.max(3, String(totalReports).length); //لكتابة اي دي التقرير
+    const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
+    const { refetch, isFetching } = useGetStudentPdf(selectedId); 
+    const downloadMutation = useDownloadStudentPDF();
   
+   useEffect(() => {//اول ما السيت سيليكتيد اي دي يتغير بتشتغل اليوز فيتش
+  if (!selectedId) return;
+
+  const loadPdf = async () => {
+    const result = await refetch(); //عملنا ريكويست جديد
+
+    if (result.isError) {
+      toast.error("Failed to load PDF");
+      return;
+    }
+
+    if (result.data) {
+      const url = window.URL.createObjectURL(result.data);
+      window.open(url, "_blank");
+    }
+
+    setSelectedId(null);
+  };
+
+  loadPdf();
+}, [selectedId]);
 
   return (
     <Box className='section' sx={{hight:'100vh',bgcolor:'var(--navy-color)',paddingTop:'70px',flex: 1,  minHeight: '100vh',}}>
@@ -146,13 +223,59 @@ function MyCases() {
               <Loader />
             </Box>
           )}
+            <Box className="section_titel" sx={{marginBottom:'20px'}}>
+            <Typography
+              component={"h1"}
+              variant="h4"
+              sx={{
+                color: "#fff",
+                fontFamily: "var(--primary-font)",
+                fontWeight: "600",
+                display: "inline-block",
+                marginRight: "10px",
+                paddingTop:{xs:"30px",md:"0px"},
+                paddingLeft:{xs:"13px",md:"0px"},
+                "@media (max-width:700px)": {
+                  fontSize: "22px",
+                },
+              }}
+            >
+              My Cases
+            </Typography>
+            <Typography
+              component={"span"}
+              sx={{
+                color: "#fff",
+                fontFamily: "var(--primary-font)",
+                fontSize: "20px",
+                "@media (max-width:700px)": {
+                  fontSize: "15px",
+                },
+              }}
+            >
+              <Typography
+                component={"span"}
+                sx={{
+                  color: "var(--primary-color)",
+                  fontFamily: "var(--primary-font)",
+                }}
+              >
+               {data?.items.length}
+              </Typography>{" "}
+              cases found
+            </Typography>
+          </Box>
+          
         <Grid container spacing={2}>
           {data?.items?.map((item , index) => (
             
             <Grid item size={{md:4}} key={item.caseId}>
-              <Box  className='student_case flex_column' sx={{bgcolor:'#1f1f1f',padding:'20px',borderRadius:'15px',border:'1px solid #525252a8',gap:'5px',}}>
-                            
-                <Box className='img_container' sx={{height:'300px',bgcolor:'#000000',border:'1px solid #525252a8',borderRadius:'15px',padding:'30px',display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'20px'}}> {/*بوكس الصورة */}
+              <Box  className='student_case flex_column' sx={{bgcolor:'#1f1f1f',padding:'15px',borderRadius:'15px',border:'1px solid #525252a8',gap:'5px', transition:'all 0.4s', "&:hover": {
+                           border:"1px solid #ff00009f",
+                            boxShadow: "0 0 30px rgba(207, 25, 25, 0.48)",
+                          },}}>
+                          
+                <Box className='img_container' sx={{height:'250px',bgcolor:'#000000',border:'1px solid #525252a8',borderRadius:'15px',padding:'30px',display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'5px'}}> {/*بوكس الصورة */}
                   <img src={item.imageUrl} style={{height:'100%',width:'100%',  objectFit: 'contain'}}/>
                 </Box>
 
@@ -196,9 +319,39 @@ function MyCases() {
                                       )}
               </Box>
 
-              <Box className='prediction' sx={{display:'flex',justifyContent:'space-between'}}>  {/*بوكس البريديكشين */}
+              <Box className='prediction' sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>  {/*بوكس البريديكشين */}
                  <Typography sx={{color:'#797979',fontSize:'13px',fontWeight:'500'}}>Prediction</Typography>
-                  <Typography sx={{color:'#fff',fontSize:'13px',fontWeight:'500'}}>{item.predictionResult}</Typography>
+                   <Typography
+                                          sx={{
+                                            fontSize: "13px",
+                                            paddingY: "3px",
+                                            paddingX: "10px",
+                                            borderRadius: "15px",
+                                            display: "inline-flex",
+                                            bgcolor:
+                                              item?.predictionResult === "meningioma"
+                                                ? "rgb(55, 44, 28)"
+                                                : item?.predictionResult === "glioma"
+                                                  ? "rgb(51, 26, 32)"
+                                                  : item?.predictionResult === "notumor"
+                                                    ? "rgb(23, 49, 40)"
+                                                    : item?.predictionResult === "pituitary"
+                                                      ? "#400f4d7c"
+                                                      : "#781234",
+                                            color:
+                                              item?.predictionResult === "meningioma"
+                                                ? "rgb(218, 148, 14)"
+                                                : item?.predictionResult === "glioma"
+                                                  ? "rgb(196, 36, 38)"
+                                                  : item?.predictionResult === "notumor"
+                                                    ? "rgb(30, 167, 69)"
+                                                    : item?.predictionResult === "pituitary"
+                                                      ? "#9f05ffab"
+                                                      : "var(--primary-color)",
+                                          }}
+                                        >
+                                          ● {item?.predictionResult}
+                   </Typography>
               </Box>
 
                <Box className='submittedAt' sx={{display:'flex',justifyContent:'space-between'}}>  {/*بوكس تاريخ التسليم  */}
@@ -206,9 +359,7 @@ function MyCases() {
                   <Typography sx={{color:'#797979',fontSize:'13px',fontWeight:'500'}}>{item.reportSubmittedAt.split("T")[0]}</Typography>
               </Box>
                
-               
-
-              <Box className='feedback flex_column' sx={{borderTop:'1px solid #4f4f4f75' ,gap:'5px',padding:'4px'}}>
+              <Box className='feedback flex_column' sx={{borderTop:'1px solid #4f4f4f75', borderBottom:'1px solid #4f4f4f75',gap:'5px',padding:'4px'}}>
                   <Box sx={{display:'flex' ,alignItems:'center',gap:'5px',paddingTop:'4px'}}>
                     <LuNotebookPen color='#c21313'/>
                     <Typography sx={{color:'#fff'}}>Feedback</Typography>
@@ -217,6 +368,61 @@ function MyCases() {
                   <FeedbackCommet Id={item?.reportId} isReviewed={item?.isReviewed} />
 
               </Box>
+
+                       <Box className='pdf' sx={{display:'flex',gap:"10px",marginTop:'5px',justifyContent:'center',width:'100%'}}>
+                    <Button
+                    disabled={isFetching} //عشان مانضل نكبس عالزر اكثر من مرة وهو لسا بحمل بالملف
+                    onClick={() => setSelectedId(item.reportId)}
+                    sx={{
+                      flex: 1,
+                      bgcolor: "#0e1115",
+                      color: "#f0f2f5",
+                      display: "flex",
+                      gap: '10px',
+                      justifyContent: "center",
+                      textAlign: "center",
+                      borderRadius: "10px",
+                      border: "1px solid rgb(37, 41, 49)",
+                      whiteSpace: "nowrap",
+                      "&:hover": { backgroundColor: "#ff0000" },
+                      "&.Mui-disabled": {
+                        color: "#999",
+                        bgcolor: "#1a1d23",
+                        width:'50%'
+                      },
+                    }}
+                  > <Box sx={{ alignItems: 'center', display: 'flex' }}>
+                      <FaRegEye size={15} style={{ flexShrink: 0 }} />
+                    </Box>
+                    <Typography sx={{ fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' ,textTransform: "capitalize"}}> Open PDF </Typography>
+                  </Button>
+                  
+
+                  <Button   onClick={() => downloadMutation.mutate(item.reportId)}
+                   sx={{
+                      flex: 1,
+                      width:'50%',
+                      bgcolor: "#0e1115",
+                      color: "#f0f2f5",
+                      display: "flex",
+                      gap: '10px',
+                      justifyContent: "center",
+                      textAlign: "center",
+                      borderRadius: "10px",
+                      border: "1px solid rgb(37, 41, 49)",
+                      whiteSpace: "nowrap",
+                      "&:hover": { backgroundColor: "#ff0000" },
+                      "&.Mui-disabled": {
+                        color: "#999",
+                        bgcolor: "#1a1d23",
+                      },
+                    }}> 
+                    <Box sx={{ alignItems: 'center', display: 'flex' }}>
+                      <LuDownload size={15} style={{ flexShrink: 0 }} />
+                    </Box>
+                    <Typography sx={{ fontSize: { xs: "14px", md: "11px", lg: "14px" ,textTransform: "capitalize"}, justifyContent: "flex-start", display: 'flex' }}> Download PDF </Typography></Button>
+               </Box>
+
               </Box>
             </Grid>
             ))}

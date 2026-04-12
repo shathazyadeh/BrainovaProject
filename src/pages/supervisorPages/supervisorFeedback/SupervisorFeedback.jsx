@@ -30,32 +30,7 @@ function SupervisorFeedback() {
     setOpen(false);
   };
 
-  if (isError) {
-    //server errors
-    return (
-      <Box
-        component={"section"}
-        className="server_error_section flex_column"
-        sx={{
-          bgcolor: "var(--navy-color)",
-          position: "fixed",
-          inset: 0,
-          zIndex: 9999,
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "20px",
-        }}
-      >
-        <Typography
-          component={"h1"}
-          variant="h5"
-          sx={{ color: "white", fontWeight: "700", textAlign: "center" }}
-        >
-          {error?.message}
-        </Typography>
-      </Box>
-    );
-  }
+
 
   return (
     <Box
@@ -64,6 +39,7 @@ function SupervisorFeedback() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        position:"relative"
       }}
     >
       <DashboardNavbar />
@@ -87,19 +63,14 @@ function SupervisorFeedback() {
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                left: "200px",
-                justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
               <Typography
                 component={"h1"}
                 variant="h5"
                 sx={{
+                  marginTop:"290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -119,17 +90,14 @@ function SupervisorFeedback() {
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                left: "200px",
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
+              <Box sx={{marginTop:"290px"}}>
               <Loader />
+              </Box>
             </Box>
           )}
 

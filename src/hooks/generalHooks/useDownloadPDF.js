@@ -2,10 +2,10 @@ import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../Api/axiosInstance";
 import { toast } from "react-toastify";
 
-export default function useDownloadPDF() {
+export default function useDownloadPDF(getUrl) {
   const downloadMutation = useMutation({
     mutationFn: (reportId) =>
-      axiosInstance.get(`/Supervisor/Reports/${reportId}/pdf`, {
+      axiosInstance.get(getUrl(reportId), {
         responseType: "blob",
       }),
 

@@ -73,6 +73,7 @@ function ReportDetails() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        position:"relative"
       }}
     >
       <DashboardNavbar />
@@ -85,20 +86,15 @@ function ReportDetails() {
                 bgcolor: "var(--navy-color)",
                 position: "absolute",
                 inset: 0,
-                top: "80px",
-                left: "200px",
-                justifyContent: "center",
-                alignItems: "center",
+                top: "88px",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
               <Typography
                 component={"h1"}
                 variant="h5"
                 sx={{
+                  marginTop:"290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -117,18 +113,15 @@ function ReportDetails() {
                 bgcolor: "var(--navy-color)",
                 position: "absolute",
                 inset: 0,
-                top: "80px",
-                left: "200px",
+                top: "88px",
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
+              <Box sx={{marginTop:"290px"}}>
               <Loader />
+              </Box>
             </Box>
           )}
         <Grid container spacing={1.5} alignItems="flex-start">

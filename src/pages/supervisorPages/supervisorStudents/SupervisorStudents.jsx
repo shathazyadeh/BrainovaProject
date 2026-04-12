@@ -21,6 +21,7 @@ function SupervisorStudents() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        position:"relative"
       }}
     >
       {" "}
@@ -47,19 +48,14 @@ function SupervisorStudents() {
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                left: "200px",
-                justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
               <Typography
                 component={"h1"}
                 variant="h5"
                 sx={{
+                  marginTop:"290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -79,17 +75,14 @@ function SupervisorStudents() {
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                left: "200px",
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
+              <Box sx={{marginTop:"290px"}}>
               <Loader />
+              </Box>
             </Box>
           )}
           <Box className="section_titel">

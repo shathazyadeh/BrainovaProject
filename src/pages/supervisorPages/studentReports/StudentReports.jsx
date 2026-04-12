@@ -16,17 +16,18 @@ import { IoMdEye } from "react-icons/io";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaFileAlt } from "react-icons/fa";
-import useDownloadPDF from "../../../hooks/supervisorHooks/useDownloadPDF";
+
 import { BsFileEarmarkArrowDown } from "react-icons/bs";
 import UsersSearch from "../../../components/usersSearch/UsersSearch";
 import ReportsFilters from "../../../components/filterInputs/reportsFilters/ReportsFilters";
+import useDownloadSupervisorPDF from "../../../hooks/supervisorHooks/useDownloadSupervisorPDF";
 function StudentReports() {
   const { studentId } = useParams();
   const navigate = useNavigate();
   const { isError, error, isLoading, data } =
     useGetAllOfMyStudentsCases(studentId);
   console.log("useGetAllOfMyStudentsCases:", data);
-  const downloadMutation = useDownloadPDF();
+ const downloadMutation = useDownloadSupervisorPDF();
   const reviewedCount =
     data?.items?.filter((report) => report.isReviewed)?.length || 0; // لعرض عدد الريفيود
   const totalReports = data?.items.length || 0;
@@ -64,6 +65,7 @@ function StudentReports() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        position:"relative"
       }}
     >
       <DashboardNavbar />
@@ -80,7 +82,7 @@ function StudentReports() {
       >
         <Container maxWidth="lg">
           {/* server errors */}
-          {isError && (
+        {isError && (
             <Box
               component={"section"}
               className="server_error_section flex_column"
@@ -89,19 +91,14 @@ function StudentReports() {
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                left: "200px",
-                justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
               <Typography
                 component={"h1"}
                 variant="h5"
                 sx={{
+                  marginTop:"290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -120,21 +117,17 @@ function StudentReports() {
                 bgcolor: "var(--navy-color)",
                 position: "absolute",
                 inset: 0,
-                top: "88px",
-                left: "200px",
+                top: "90px",
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
                 zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
               }}
             >
+              <Box sx={{marginTop:"290px"}}>
               <Loader />
+              </Box>
             </Box>
           )}
-
           {totalReports > 0 && (
             <>
               <Box
@@ -550,7 +543,7 @@ function StudentReports() {
                         }}
                       >
                         <IoMdEye size={20} />
-                        View Reports
+                        View Report
                       </Button>
                       <BsFileEarmarkArrowDown
                         size={20}
