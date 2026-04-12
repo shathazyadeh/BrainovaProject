@@ -10,6 +10,8 @@ import useGetStudentPdf from '../../../hooks/studentHooks/useGetStudentPdf.js';
 import { LuDownload } from "react-icons/lu";
 import { FaRegEye } from "react-icons/fa";
 import useDownloadStudentPDF from '../../../hooks/studentHooks/useDownloadStudentPDF.js';
+import Pagination from '@mui/material/Pagination';
+
 
   function FeedbackCommet({ Id, isReviewed }) {
  const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
@@ -139,10 +141,24 @@ function MyCases() {
     console.log('data5:',data);
     const totalReports = data?.items.length || 0;
     const digits = Math.max(3, String(totalReports).length); //لكتابة اي دي التقرير
+    
     const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
     const { refetch, isFetching } = useGetStudentPdf(selectedId); 
     const downloadMutation = useDownloadStudentPDF();
   
+
+  const [page, setPage] = useState(1);//رقم الصفحة الحالي بالبداية خليته 1
+  const itemsPerPage = 6;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
+
+  const paginatedData = data?.items?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  
+  const totalPages = Math.ceil((data?.items?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
+
+
    useEffect(() => {//اول ما السيت سيليكتيد اي دي يتغير بتشتغل اليوز فيتش
   if (!selectedId) return;
 
@@ -267,7 +283,7 @@ function MyCases() {
           </Box>
           
         <Grid container spacing={2}>
-          {data?.items?.map((item , index) => (
+          {paginatedData?.map((item , index) => (
             
             <Grid item size={{md:4}} key={item.caseId}>
               <Box  className='student_case flex_column' sx={{bgcolor:'#1f1f1f',padding:'15px',borderRadius:'15px',border:'1px solid #525252a8',gap:'5px', transition:'all 0.4s', "&:hover": {
@@ -351,7 +367,7 @@ function MyCases() {
 
               </Box>
 
-                       <Box className='pdf' sx={{display:'flex',gap:"10px",marginTop:'5px',justifyContent:'center',width:'100%'}}>
+                <Box className='pdf' sx={{display:'flex',gap:"10px",marginTop:'5px',justifyContent:'center',width:'100%'}}>
                     <Button
                     disabled={isFetching} //عشان مانضل نكبس عالزر اكثر من مرة وهو لسا بحمل بالملف
                     onClick={() => setSelectedId(item.reportId)}
@@ -409,6 +425,24 @@ function MyCases() {
             </Grid>
             ))}
         </Grid>
+
+        <Box className="pagination" sx={{ display: "flex", justifyContent: "center", marginTop: "30px",padding:"20px" }}>
+          <Pagination
+            count={totalPages} // عدد الصفحات وهن الارقام اللي مبينات بالباجينيشن 
+            page={page} // الصفحة الحالية
+            onChange={(event, value) => setPage(value)} //  تغيير الصفحة لما نكبس عالباجينيشن جيب رقمها وحطها بسيت البيج عشان نرجع نعيد الموضوع من الاول للصفحة الجديدة
+            sx={{
+              "& .MuiPaginationItem-root": {
+                color: "#fff",
+                borderRadius:'10px',
+              },
+              "& .Mui-selected": {
+                backgroundColor: "#ff0000 !important",
+                color: "#fff",
+              },
+            }}
+          />
+        </Box>
       </Container>
 
 
