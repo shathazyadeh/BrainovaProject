@@ -3,17 +3,17 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
-import { IoMdNotificationsOutline } from "react-icons/io";
+import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
-import { LuCheckCheck } from "react-icons/lu";
+import { LuCheckCheck, LuNotebookPen } from "react-icons/lu";
+import { IoMdNotificationsOutline, IoMdClose } from "react-icons/io";
 import useGetAllFeedbacks from "../../../hooks/studentHooks/useGetAllFeedbacks";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import style from "./NotificationsMenu.module.css";
 import useMarksAsSeen from "../../../hooks/studentHooks/useMarksAsSeen";
 import useMarkAllAsSeen from "../../../hooks/studentHooks/useMarkAllAsSeen";
-import { Badge, Grid } from "@mui/material";
+import { Badge, Grid, Modal } from "@mui/material";
 import useGetUnseenFeedbacks from "../../../hooks/studentHooks/useGetUnseenFeedbacks";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -42,16 +42,31 @@ export default function NotificationsMenu() {
   } = useMarkAllAsSeen();
   const [seenIds, setSeenIds] = useState([]);
   const [openUnseenOnly, setOpenUnseenOnly] = useState(false);
+  const [openModal, setOpenModal] = useState(false); //عشان نسكر ونفتح المودال
+  const [selectedFeedback, setSelectedFeedback] = useState(null); // الي رح نعرضه بالمودال
+  const handelMarkSeen = async (feedback) => {
+    const isAlreadySeen =
+      feedback.isSeen || seenIds.includes(feedback.feedbackId); //عشان اذا هو اصلا سيين ما نعمل ريكويست لما ينكبس عليه
 
-  const handelMarkSeen = async (feedbackId) => {
-    setSeenIds((prevIds) => [...prevIds, feedbackId]); //ضفنا الفيدباك الي وصل على قائمة الفيداباكات السابقة المقروءة
+    if (isAlreadySeen) {
+      setSelectedFeedback(feedback);
+      setOpenModal(true);
+      return;
+    }
+
+    setSeenIds((prevIds) => [...prevIds, feedback.feedbackId]); //ضفنا الفيدباك الي وصل على قائمة الفيداباكات السابقة المقروءة
 
     try {
-      await markAsSeen(feedbackId);
+      await markAsSeen(feedback.feedbackId);
+      setSelectedFeedback(feedback);
+      setOpenModal(true);
     } catch (err) {
-      setSeenIds((prevIds) => prevIds.filter((id) => id !== feedbackId)); //في حال فشل الطلب بنشيلها من القائمة
+      setSeenIds(
+        (prevIds) => prevIds.filter((id) => id !== feedback.feedbackId), //في حال فشل الطلب بنشيلها من القائمة
+      );
     }
   };
+
   const handleMarkAllSeen = async () => {
     await markAllSeenMutation.mutateAsync();
     queryClient.invalidateQueries({ queryKey: ["studentFeedbacks"] });
@@ -64,8 +79,6 @@ export default function NotificationsMenu() {
     setOpenUnseenOnly(false);
   };
 
-  console.log("data  : ", data);
-  console.log("unseenFeedbacksData :", unseenFeedbacksData);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -75,47 +88,67 @@ export default function NotificationsMenu() {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (open) {
+        handleClose();
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [open]);
+
   return (
     <Box>
       <Button
+        disableRipple
+        sx={{
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+        }}
         id="basic-button"
         aria-controls={open ? "grouped-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-       <Badge
-  badgeContent={
-    unseenFeedbacksData?.items?.filter(
-      (f) => !seenIds.includes(f.feedbackId)
-    ).length
-  }
-  color="error"
-  max={99}
-  sx={{
-    "& .MuiBadge-badge": {
-      fontSize: "9px",
-      height: "16px",
-      minWidth: "16px",
-      padding: "0 4px",
-      top: 6,
-      right: 2,
-    },
-  }}
->
-  <Box
-    className="notifications_icon"
-    sx={{
-      bgcolor: "#201F1F",
-      padding: "6px",
-      borderRadius: "10px",
-      cursor: "pointer",
-      display: "flex",
-    }}
-  >
-    <IoMdNotificationsOutline size={22} color="#fff" />
-  </Box>
-</Badge>
+        <Badge
+          badgeContent={
+            unseenFeedbacksData?.items?.filter(
+              (f) => !seenIds.includes(f.feedbackId),
+            ).length
+          }
+          color="error"
+          max={99}
+          sx={{
+            "& .MuiBadge-badge": {
+              fontSize: "9px",
+              height: "16px",
+              minWidth: "16px",
+              padding: "0 4px",
+              top: 6,
+              right: 2,
+            },
+          }}
+        >
+          <Box
+            className="notifications_icon"
+            sx={{
+              bgcolor: "#201F1F",
+              padding: "6px",
+              borderRadius: "10px",
+              cursor: "pointer",
+              display: "flex",
+            }}
+          >
+            <IoMdNotificationsOutline size={22} color="#fff" />
+          </Box>
+        </Badge>
       </Button>
       <Menu
         id="grouped-menu"
@@ -130,6 +163,7 @@ export default function NotificationsMenu() {
             bgcolor: "#000000",
             borderRadius: "10px",
             paddingTop: "10px",
+            marginLeft: "-20px",
           },
         }}
         sx={{
@@ -198,10 +232,10 @@ export default function NotificationsMenu() {
             >
               <Typography
                 onClick={
-    data?.items?.some((f) => !f.isSeen)
-      ? handleMarkAllSeen
-      : undefined
-  }
+                  data?.items?.some((f) => !f.isSeen)
+                    ? handleMarkAllSeen
+                    : undefined
+                }
                 sx={{
                   color: "var(--primary-color)",
                   fontSize: "10px",
@@ -209,8 +243,9 @@ export default function NotificationsMenu() {
                   display: "flex",
                   alignItems: "center",
                   cursor: data?.items?.some((f) => !f.isSeen)
-      ? "pointer"
-      : "not-allowed",}}
+                    ? "pointer"
+                    : "not-allowed",
+                }}
               >
                 <LuCheckCheck style={{ marginRight: "5px" }} />
                 Mark all read
@@ -220,22 +255,40 @@ export default function NotificationsMenu() {
         </Box>
 
         {openUnseenOnly ? (
-  unseenFeedbacksData?.items?.filter((f) => !seenIds.includes(f.feedbackId)).length === 0 ? (
-
-    <Box sx={{ color: "var(--secondary-color)",display:"flex",justifyContent:"center",alignItems:"center", paddingY:"30px"}}>
-      <Typography sx={{fontFamily:"var(--primary-font)",fontSize:"12px",bgcolor:"#fa040433",paddingX:"10px",paddingY:"3px",borderRadius:"15px"}}>
-        No unread notifications
-      </Typography>
-    </Box>
-    
-  ) : (
-
-    unseenFeedbacksData?.items?.filter((feedback) => !seenIds.includes(feedback.feedbackId)).map((feedback) => {
-        const isSeen =
-          feedback.isSeen || seenIds.includes(feedback.feedbackId);
-        return (
-          <MenuItem
-                    onClick={() => handelMarkSeen(feedback.feedbackId)}
+          unseenFeedbacksData?.items?.filter(
+            (f) => !seenIds.includes(f.feedbackId),
+          ).length === 0 ? (
+            <Box
+              sx={{
+                color: "var(--secondary-color)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                paddingY: "30px",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "var(--primary-font)",
+                  fontSize: "12px",
+                  bgcolor: "#fa040433",
+                  paddingX: "10px",
+                  paddingY: "3px",
+                  borderRadius: "15px",
+                }}
+              >
+                No unread notifications
+              </Typography>
+            </Box>
+          ) : (
+            unseenFeedbacksData?.items
+              ?.filter((feedback) => !seenIds.includes(feedback.feedbackId))
+              .map((feedback) => {
+                const isSeen =
+                  feedback.isSeen || seenIds.includes(feedback.feedbackId);
+                return (
+                  <MenuItem
+                    onClick={() => handelMarkSeen(feedback)}
                     key={feedback.feedbackId}
                     sx={{
                       bgcolor: isSeen ? "transparent" : "#f2080820",
@@ -308,101 +361,200 @@ export default function NotificationsMenu() {
                       </Typography>
                     </Box>
                   </MenuItem>
-        );
-      })
-
-  )
-
-) : (
-  data?.items?.length === 0 ? (
-
-    <Box sx={{ color: "var(--secondary-color)",display:"flex",justifyContent:"center",alignItems:"center", paddingY:"30px"}}>
-      <Typography sx={{fontFamily:"var(--primary-font)",fontSize:"12px",bgcolor:"#fa040433",paddingX:"10px",paddingY:"3px",borderRadius:"15px"}}>
-        No notifications yet
-      </Typography>
-    </Box>
-
-  ) : (
-
-    data?.items?.map((feedback) => {
-      const isSeen =
-        feedback.isSeen || seenIds.includes(feedback.feedbackId);
-
-      return (
-        <MenuItem
-          onClick={() => handelMarkSeen(feedback.feedbackId)}
-          key={feedback.feedbackId}
-          sx={{
-            bgcolor: isSeen ? "transparent" : "#f2080820",
-            alignItems: "flex-start",
-            display: "flex",
-            gap: "10px",
-            paddingY: "13px",
-            transition: "all 0.3s ease",
-            "&:hover": { bgcolor: "#f5f5f52b" },
-          }}
-        >
-          {isSeen ? (
-            <FaCheck
-              fill={"var(--secondary-color)"}
-              size={10}
-              style={{ marginTop: "3px" }}
-            />
-          ) : (
-            <Box
-              component={"span"}
-              className={style.pulse_wrapper}
-              sx={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                bgcolor: "var(--primary-color)",
-                marginTop: "5px",
-              }}
-            ></Box>
-          )}
-          <Box className="content flex_column">
+                );
+              })
+          )
+        ) : data?.items?.length === 0 ? (
+          <Box
+            sx={{
+              color: "var(--secondary-color)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingY: "30px",
+            }}
+          >
             <Typography
               sx={{
                 fontFamily: "var(--primary-font)",
-                fontWeight: "500",
-                fontSize: "13px",
-                color: "#fff",
+                fontSize: "12px",
+                bgcolor: "#fa040433",
+                paddingX: "10px",
+                paddingY: "3px",
+                borderRadius: "15px",
               }}
             >
-              {feedback.supervisorName}
+              No notifications yet
             </Typography>
-            <Typography
-              sx={{ fontSize: "11px", color: "var(--secondary-color)" }}
+          </Box>
+        ) : (
+          data?.items?.map((feedback) => {
+            const isSeen =
+              feedback.isSeen || seenIds.includes(feedback.feedbackId);
+
+            return (
+              <MenuItem
+                onClick={() => handelMarkSeen(feedback)}
+                key={feedback.feedbackId}
+                sx={{
+                  bgcolor: isSeen ? "transparent" : "#f2080820",
+                  alignItems: "flex-start",
+                  display: "flex",
+                  gap: "10px",
+                  paddingY: "13px",
+                  transition: "all 0.3s ease",
+                  "&:hover": { bgcolor: "#f5f5f52b" },
+                }}
+              >
+                {isSeen ? (
+                  <FaCheck
+                    fill={"var(--secondary-color)"}
+                    size={10}
+                    style={{ marginTop: "3px" }}
+                  />
+                ) : (
+                  <Box
+                    component={"span"}
+                    className={style.pulse_wrapper}
+                    sx={{
+                      width: "6px",
+                      height: "6px",
+                      borderRadius: "50%",
+                      bgcolor: "var(--primary-color)",
+                      marginTop: "5px",
+                    }}
+                  ></Box>
+                )}
+                <Box className="content flex_column">
+                  <Typography
+                    sx={{
+                      fontFamily: "var(--primary-font)",
+                      fontWeight: "500",
+                      fontSize: "13px",
+                      color: "#fff",
+                    }}
+                  >
+                    {feedback.supervisorName}
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: "11px", color: "var(--secondary-color)" }}
+                  >
+                    {feedback.comment.length > 55
+                      ? feedback.comment.slice(0, 55) + "..."
+                      : feedback.comment}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "10px",
+                      color: "var(--secondary-color)",
+                      fontWeight: "300",
+                    }}
+                  >
+                    {feedback.createdAt.split("T")[0]}
+                    {" ( "}
+                    {new Date(feedback.createdAt).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}{" "}
+                    {")"}
+                  </Typography>
+                </Box>
+              </MenuItem>
+            );
+          })
+        )}
+        <Modal
+          open={openModal}
+          onClose={() => setOpenModal(false)}
+          slotProps={{
+            backdrop: {
+              sx: {
+                backdropFilter: "blur(5px)",
+                backgroundColor: "rgba(0,0,0,0.5)",
+              },
+            },
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 600,
+              bgcolor: "#0a0a0a",
+              color: "#fff",
+              borderRadius: "15px",
+              border: "1px solid #35353568",
+              p: 3,
+              boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+              outline: "none",
+              "&:focus": {
+                outline: "none",
+              },
+              "&:focus-visible": {
+                outline: "none",
+              },
+            }}
+          >
+            <Box
+              className="modal_title"
+              sx={{ display: "flex", justifyContent: "space-between" }}
             >
-              {feedback.comment.length > 55
-                ? feedback.comment.slice(0, 55) + "..."
-                : feedback.comment}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                  paddingTop: "4px",
+                  paddingBottom: "10px",
+                }}
+              >
+                <LuNotebookPen size={25} color="var(--primary-color)" />
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: "20px",
+                    fontWeight: "500",
+                    letterSpacing: "1px",
+                    paddingLeft: "10px",
+                  }}
+                >
+                  {selectedFeedback?.supervisorName}
+                </Typography>
+              </Box>
+              <IoMdClose
+                size={20}
+                onClick={() => setOpenModal(false)}
+                style={{ cursor: "pointer" }}
+              />
+            </Box>
+            <Typography sx={{ color: "var(--secondary-color)" }}>
+              {selectedFeedback?.comment}
             </Typography>
             <Typography
               sx={{
+                color: "var(--primary-color)",
                 fontSize: "10px",
-                color: "var(--secondary-color)",
-                fontWeight: "300",
+                fontWeight: "400",
+                marginTop: "20px",
               }}
             >
-              {feedback.createdAt.split("T")[0]}
+              {selectedFeedback?.createdAt.split("T")[0]}
               {" ( "}
-              {new Date(feedback.createdAt).toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}{" "}
+              {new Date(selectedFeedback?.createdAt).toLocaleTimeString(
+                "en-US",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                },
+              )}{" "}
               {")"}
             </Typography>
           </Box>
-        </MenuItem>
-      );
-    })
-
-  )
-
-)}
+        </Modal>
       </Menu>
     </Box>
   );
