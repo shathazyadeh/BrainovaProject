@@ -12,7 +12,7 @@ import { FaRegEye } from "react-icons/fa";
 import useDownloadStudentPDF from '../../../hooks/studentHooks/useDownloadStudentPDF.js';
 import Pagination from '@mui/material/Pagination';
 import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
-
+import { FiFilter } from "react-icons/fi";
 
   function FeedbackCommet({ Id, isReviewed ,feedbackId}) {
  const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
@@ -149,24 +149,35 @@ import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
 function MyCases() {
     const{isError,isLoading,error,data}=useGetAllMyCases();
     console.log('data5:',data);
-    const totalReports = data?.items.length || 0;
-    const digits = Math.max(3, String(totalReports).length); //لكتابة اي دي التقرير
-    
+    const [filter, setFilter] = useState("all");//للفلترة
     const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
     const { refetch, isFetching } = useGetStudentPdf(selectedId); 
     const downloadMutation = useDownloadStudentPDF();
   
+const filteredData = data?.items?.filter((item) => {   //للفلترة
+  if (filter === "all") return true;
+
+  if (filter === "noFeedback") {
+    return !item.isReviewed;
+  }
+
+  if (filter === "reviewed") {
+    return item.isReviewed;
+  }
+
+  return true;
+});
 
   const [page, setPage] = useState(1);//رقم الصفحة الحالي بالبداية خليته 1
   const itemsPerPage = 6;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
 
-  const paginatedData = data?.items?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
+  const paginatedData = filteredData?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
 
   
-  const totalPages = Math.ceil((data?.items?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
+  const totalPages = Math.ceil((filteredData?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
 
 
    useEffect(() => {//اول ما السيت سيليكتيد اي دي يتغير بتشتغل اليوز فيتش
@@ -192,7 +203,7 @@ function MyCases() {
 }, [selectedId]);
 
   return (
-    <Box className='section' sx={{hight:'100vh',bgcolor:'var(--navy-color)',paddingTop:'70px',flex: 1,  minHeight: '100vh',}}>
+    <Box className='section' sx={{hight:'100vh',bgcolor:'var(--navy-color)',paddingTop:{md:'40px',xs:'20px'},flex: 1,  minHeight: '100vh',}}>
       <Container maxWidth='lg'>
          {/* server errors */}
           {isError && (
@@ -249,7 +260,7 @@ function MyCases() {
               <Loader />
             </Box>
           )}
-            <Box className="section_titel" sx={{marginBottom:'20px'}}>
+           <Box className="section_titel" sx={{marginBottom:'20px'}}>
             <Typography
               component={"h1"}
               variant="h4"
@@ -291,11 +302,36 @@ function MyCases() {
               cases found
             </Typography>
           </Box>
+          <Box className='filter' sx={{ display: "flex", gap: "10px", marginBottom: "20px" ,alignItems:'center'}}>
+         <FiFilter size={20} color='#797979'/>
+
+     {["all", "noFeedback", "reviewed"].map((item) => ( // للفلترة
+     <Button
+      key={item}
+      onClick={() => setFilter(item)}
+      sx={{
+        borderRadius: "20px",
+        paddingX: "20px",
+        textTransform: "capitalize",
+        backgroundColor: filter === item ? "#ff0000" : "#1f1f1f",
+        color: filter === item ? "#fff" : "#aaa",
+        "&:hover": {
+          backgroundColor: filter === item ? "#ff0000" : "#333",
+        },
+      }}
+    >
+      {item === "all"  ? "All" // حتى نعرض بالبوتون
+        : item === "noFeedback" ? "No Feedback" : "Reviewed"}
+    </Button>
+  ))}
+
+</Box>
+           
           
         <Grid container spacing={2}>
           {paginatedData?.map((item , index) => (
             
-            <Grid item size={{md:4}} key={item.caseId}>
+            <Grid item size={{lg:4 , xs:12,sm:6}} key={item.caseId}>
               <Box  className='student_case flex_column' sx={{bgcolor:'#1f1f1f',padding:'15px',borderRadius:'15px',border:'1px solid #525252a8',gap:'5px', transition:'all 0.4s', "&:hover": {
                            border:"1px solid #ff00009f",
                             boxShadow: "0 0 30px rgba(207, 25, 25, 0.48)",
@@ -306,7 +342,7 @@ function MyCases() {
                 </Box>
 
               <Box className='predictedAt' sx={{display:'flex',justifyContent:'space-between'}}>  {/*بوكس ا ذا في فييدباك   */}
-                  <Typography sx={{color:'#ffffff',fontSize:'13px',fontWeight:'500'}}>{`RPT-${String(index + 1).padStart(digits, "0")}`}</Typography>
+                  <Typography sx={{color:'#ffffff',fontSize:'13px',fontWeight:'500'}}>{item.reportCode}</Typography>
 
                 {item?.isReviewed ?  (   <Typography
                                           sx={{
@@ -352,9 +388,7 @@ function MyCases() {
                                             fontSize: "13px",
                                             paddingY: "3px",
                                             paddingX: "10px",
-                                            borderRadius: "15px",
                                             display: "inline-flex",
-                                            bgcolor:"rgb(51, 26, 32)",
                                             color:"rgb(196, 36, 38)"
                                           }}
                                         >
