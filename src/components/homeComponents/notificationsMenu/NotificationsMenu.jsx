@@ -2,7 +2,7 @@ import Button from "@mui/material/Button";
 import ListSubheader from "@mui/material/ListSubheader";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
 import { LuCheckCheck, LuNotebookPen } from "react-icons/lu";
@@ -13,7 +13,7 @@ import Typography from "@mui/material/Typography";
 import style from "./NotificationsMenu.module.css";
 import useMarksAsSeen from "../../../hooks/studentHooks/useMarksAsSeen";
 import useMarkAllAsSeen from "../../../hooks/studentHooks/useMarkAllAsSeen";
-import { Badge, Grid, Modal } from "@mui/material";
+import { Badge, Grid, Modal, useMediaQuery } from "@mui/material";
 import useGetUnseenFeedbacks from "../../../hooks/studentHooks/useGetUnseenFeedbacks";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -23,23 +23,12 @@ const StyledListHeader = styled(ListSubheader)({
 
 export default function NotificationsMenu() {
   const queryClient = useQueryClient();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { isError, error, isLoading, data } = useGetAllFeedbacks();
-  const {
-    isError: isUnseenFeedbacksError,
-    error: unseenFeedbacksError,
-    isLoading: isUnseenFeedbacksLoading,
-    data: unseenFeedbacksData,
-  } = useGetUnseenFeedbacks();
-  const {
-    markAsSeen,
-    serverErrors,
-    isLoading: isMarkSeenLoading,
-  } = useMarksAsSeen();
-  const {
-    usePostMutation: markAllSeenMutation,
-    serverErrors: serverMarkAllSeenErrors,
-    isLoading: isMarkAllSeenLoading,
-  } = useMarkAllAsSeen();
+  const { isError: isUnseenFeedbacksError, error: unseenFeedbacksError, isLoading: isUnseenFeedbacksLoading, data: unseenFeedbacksData } = useGetUnseenFeedbacks();
+  const { markAsSeen, serverErrors, isLoading: isMarkSeenLoading } = useMarksAsSeen();
+  const { usePostMutation: markAllSeenMutation, serverErrors: serverMarkAllSeenErrors, isLoading: isMarkAllSeenLoading } = useMarkAllAsSeen();
   const [seenIds, setSeenIds] = useState([]);
   const [openUnseenOnly, setOpenUnseenOnly] = useState(false);
   const [openModal, setOpenModal] = useState(false); //عشان نسكر ونفتح المودال
@@ -78,7 +67,6 @@ export default function NotificationsMenu() {
   const closeUnreedList = async () => {
     setOpenUnseenOnly(false);
   };
-
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -163,13 +151,13 @@ export default function NotificationsMenu() {
             bgcolor: "#000000",
             borderRadius: "10px",
             paddingTop: "10px",
-            marginLeft: "-20px",
+            marginLeft: isMobile ? "0px" : "-20px",
           },
         }}
         sx={{
           "& .MuiMenu-list": {
             paddingBottom: "0 !important",
-            maxHeight: "300px",
+            maxHeight: isMobile ? "200px" : "300px",
             overflowY: "auto",
             "&::-webkit-scrollbar": {
               width: "6px",
@@ -232,7 +220,7 @@ export default function NotificationsMenu() {
             >
               <Typography
                 onClick={
-                  data?.items?.some((f) => !f.isSeen)
+                  !isMarkAllSeenLoading && data?.items?.some((f) => !f.isSeen)
                     ? handleMarkAllSeen
                     : undefined
                 }
@@ -254,7 +242,26 @@ export default function NotificationsMenu() {
           </Grid>
         </Box>
 
-        {openUnseenOnly ? (
+        {isLoading || isUnseenFeedbacksLoading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+            <Typography
+              sx={{
+                color: "var(--secondary-color)",
+                fontSize: isMobile ? "10px" : "12px",
+              }}
+            >
+              Loading notifications...
+            </Typography>
+          </Box>
+        ) : isError || isUnseenFeedbacksError ? (
+          <Box sx={{ display: "flex", justifyContent: "center", p: 2 }}>
+            <Typography
+              sx={{ color: "red", fontSize: isMobile ? "10px" : "12px" }}
+            >
+              Failed to load notifications
+            </Typography>
+          </Box>
+        ) : openUnseenOnly ? (
           unseenFeedbacksData?.items?.filter(
             (f) => !seenIds.includes(f.feedbackId),
           ).length === 0 ? (
@@ -270,7 +277,7 @@ export default function NotificationsMenu() {
               <Typography
                 sx={{
                   fontFamily: "var(--primary-font)",
-                  fontSize: "12px",
+                  fontSize: isMobile ? "10px" : "12px",
                   bgcolor: "#fa040433",
                   paddingX: "10px",
                   paddingY: "3px",
@@ -288,7 +295,9 @@ export default function NotificationsMenu() {
                   feedback.isSeen || seenIds.includes(feedback.feedbackId);
                 return (
                   <MenuItem
-                    onClick={() => handelMarkSeen(feedback)}
+                    onClick={() =>
+                      !isMarkSeenLoading && handelMarkSeen(feedback)
+                    }
                     key={feedback.feedbackId}
                     sx={{
                       bgcolor: isSeen ? "transparent" : "#f2080820",
@@ -336,9 +345,14 @@ export default function NotificationsMenu() {
                           color: "var(--secondary-color)",
                         }}
                       >
-                        {feedback.comment.length > 55
-                          ? feedback.comment.slice(0, 55) + "..."
-                          : feedback.comment}
+                        {!isMobile
+                          ? feedback.comment.length > 55
+                            ? feedback.comment.slice(0, 55) + "..."
+                            : feedback.comment
+                          : // moblie
+                            feedback.comment.length > 44
+                            ? feedback.comment.slice(0, 44) + "..."
+                            : feedback.comment}
                       </Typography>
                       <Typography
                         sx={{
@@ -377,7 +391,7 @@ export default function NotificationsMenu() {
             <Typography
               sx={{
                 fontFamily: "var(--primary-font)",
-                fontSize: "12px",
+                fontSize: isMobile ? "10px" : "12px",
                 bgcolor: "#fa040433",
                 paddingX: "10px",
                 paddingY: "3px",
@@ -394,7 +408,7 @@ export default function NotificationsMenu() {
 
             return (
               <MenuItem
-                onClick={() => handelMarkSeen(feedback)}
+                onClick={() => !isMarkSeenLoading && handelMarkSeen(feedback)}
                 key={feedback.feedbackId}
                 sx={{
                   bgcolor: isSeen ? "transparent" : "#f2080820",
@@ -439,9 +453,14 @@ export default function NotificationsMenu() {
                   <Typography
                     sx={{ fontSize: "11px", color: "var(--secondary-color)" }}
                   >
-                    {feedback.comment.length > 55
-                      ? feedback.comment.slice(0, 55) + "..."
-                      : feedback.comment}
+                    {!isMobile
+                      ? feedback.comment.length > 55
+                        ? feedback.comment.slice(0, 55) + "..."
+                        : feedback.comment
+                      : //moblie
+                        feedback.comment.length > 44
+                        ? feedback.comment.slice(0, 44) + "..."
+                        : feedback.comment}
                   </Typography>
                   <Typography
                     sx={{
