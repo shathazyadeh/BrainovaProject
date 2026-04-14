@@ -11,10 +11,18 @@ import { LuDownload } from "react-icons/lu";
 import { FaRegEye } from "react-icons/fa";
 import useDownloadStudentPDF from '../../../hooks/studentHooks/useDownloadStudentPDF.js';
 import Pagination from '@mui/material/Pagination';
+import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
 
 
-  function FeedbackCommet({ Id, isReviewed }) {
+  function FeedbackCommet({ Id, isReviewed ,feedbackId}) {
  const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
+  
+  const { markAsSeen, serverErrors, isLoading: isMarkSeenLoading } = useMarksAsSeen(); //؟
+
+  const handleOpen = async () => { // عشان نفتح المودال ونعمل مارك از سيين 
+    setOpen(true);
+     const result = await markAsSeen(feedbackId);
+  };
 
     if (!isReviewed) {
   return (
@@ -22,7 +30,7 @@ import Pagination from '@mui/material/Pagination';
     <Typography sx={{ color: '#797979', fontSize: '13px' }}>
       No feedback yet
     </Typography>
-     <Typography onClick={()=> setOpen(true)} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
+     <Typography onClick={handleOpen} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
     Read more
   </Typography>
    <Modal  open={open} onClose={() => setOpen(false)}  slotProps={{
@@ -73,7 +81,7 @@ import Pagination from '@mui/material/Pagination';
   );
 }
   const { isError,isLoading,error, data: feedback } = useGetSupervisorFeedbackByReportid(Id); 
-console.log("feedbackkkk:",feedback);
+  console.log("feedbackkkk:",feedback);
    if (isLoading) {
     return <Typography sx={{ color: '#797979' }}>Loading...</Typography>;
   }
@@ -85,7 +93,7 @@ console.log("feedbackkkk:",feedback);
     <Typography sx={{ color: '#797979', fontSize: '13px' ,WebkitLineClamp: 1,  display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden',}}>
       {feedback?.comment || "No feedback yet"}
     </Typography>
-    <Typography onClick={()=> setOpen(true)} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
+    <Typography onClick={handleOpen} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
     Read more
   </Typography>
 
@@ -226,7 +234,7 @@ function MyCases() {
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                left: "200px",
+                left: "80px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
@@ -363,7 +371,7 @@ function MyCases() {
                     <Typography sx={{color:'#fff'}}>Feedback</Typography>
                   </Box>
                   
-                  <FeedbackCommet Id={item?.reportId} isReviewed={item?.isReviewed} />
+                  <FeedbackCommet Id={item?.reportId} isReviewed={item?.isReviewed} feedbackId={item?.feedbackId} />
 
               </Box>
 
