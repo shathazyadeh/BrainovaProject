@@ -16,6 +16,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import useCreateAdmin from "../../../hooks/createHooks/useCreateAdmin";
 import { CreateAdminSchema } from "../../../validations/CreateAdminSchema";
 import useAuthStore from "../../../store/useAuthStore";
+import { useMediaQuery } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -40,6 +41,7 @@ function ChildModal({ role }) {
   const handleClose = () => {
     setOpen(false);
   };
+  const isCustomScreen = useMediaQuery("(max-width:500px)");
 
   return (
     <React.Fragment>
@@ -97,6 +99,7 @@ function ChildModal({ role }) {
                 useHook={useCreateStudent}
                 showPassword={false}
                 textfieldColor={"textfield_black"}
+                fullWidthInput ={isCustomScreen? true : false}
               />
             </>
           ) : role === "supervisor" ?(
@@ -108,6 +111,7 @@ function ChildModal({ role }) {
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
+                fullWidthInput ={isCustomScreen? true : false}
               />
             </>
              // else role is admin
@@ -119,6 +123,7 @@ function ChildModal({ role }) {
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
+                fullWidthInput ={isCustomScreen? true : false}
           />
           </> 
           ): ""}
@@ -183,7 +188,8 @@ export default function NestedModal() {
         <Box
           sx={{
             ...style,
-            width: 400,
+            width: "90%",
+            maxWidth: "400px",
             borderRadius: "10px",
             display: "flex",
             flexDirection: "column",
@@ -194,7 +200,7 @@ export default function NestedModal() {
             boxShadow: "0 0 80px rgba(76, 77, 91, 0.7)",
           }}
         >
-          <h2 id="parent-modal-title">Select the role for the new user</h2>
+          <Box component={'h2'} id="parent-modal-title" sx={{ fontSize: { xs: "19px", sm: "22px" } }}>Select the role for the new user</Box>
           <FormControl>
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"

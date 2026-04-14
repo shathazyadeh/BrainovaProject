@@ -501,7 +501,8 @@ export default function NotificationsMenu() {
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: 600,
+              width: "90%",
+              maxWidth: "600px",
               bgcolor: "#0a0a0a",
               color: "#fff",
               borderRadius: "15px",
@@ -534,7 +535,7 @@ export default function NotificationsMenu() {
                 <Typography
                   sx={{
                     color: "#fff",
-                    fontSize: "20px",
+                    fontSize: { xs: "17px", sm: "20px"},
                     fontWeight: "500",
                     letterSpacing: "1px",
                     paddingLeft: "10px",
@@ -549,7 +550,7 @@ export default function NotificationsMenu() {
                 style={{ cursor: "pointer" }}
               />
             </Box>
-            <Typography sx={{ color: "var(--secondary-color)" }}>
+            <Typography sx={{ color: "var(--secondary-color)" , fontSize: { xs: "13px", sm: "17px"} }}>
               {selectedFeedback?.comment}
             </Typography>
             <Typography

@@ -48,7 +48,8 @@ import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: 600,
+      width: "90%",
+      maxWidth: "600px",
       bgcolor: "#0a0a0a",
       color: "#fff",
       borderRadius: "15px",
@@ -68,11 +69,11 @@ import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
     <Box className='modal_title' sx={{display:'flex',justifyContent:'space-between'}}>
      <Box sx={{display:'flex' ,alignItems:'center',gap:'5px',paddingTop:'4px',paddingBottom:'10px'}}>
          <LuNotebookPen size={25} color='#c21313'/>
-         <Typography sx={{color:'#fff',fontSize:'20px',fontWeight:'500',letterSpacing: "1px",paddingLeft:'10px'}}>Feedback </Typography>
+         <Typography sx={{color:'#fff',fontSize:'20px',fontWeight:'500',letterSpacing: "1px",paddingLeft:'10px',fontSize: { xs: "17px", sm: "20px"}}}>Feedback </Typography>
       </Box>
         <IoMdClose size={20}  onClick={() => setOpen(false)} style={{cursor:'pointer'}}/>
      </Box>
-    <Typography sx={{ color: "#797979" }}>
+    <Typography sx={{ color: "var(--secondary-color)", fontSize: { xs: "13px", sm: "17px"} }}>
            No feedback yet
     </Typography>
   </Box>
@@ -112,7 +113,8 @@ import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
       top: "50%",
       left: "50%",
       transform: "translate(-50%, -50%)",
-      width: 600,
+      width: "90%",
+      maxWidth: "600px",
       bgcolor: "#0a0a0a",
       color: "#fff",
       borderRadius: "15px",

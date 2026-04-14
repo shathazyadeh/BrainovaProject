@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -26,6 +26,7 @@ export default function BasicModal({
 
   const { reset } = formMethods;
   const currentUser = useAuthStore((state) => state.user); // المستخدم الحالي ادمن او سوبر ادمن
+  const isCustomScreen = useMediaQuery("(max-width:500px)");
 
   // نعمل reset لقيم الفورم عند فتح المودال حتى ترجع القيم الأصلية للمستخدم
   // لأن react-hook-form يحتفظ بالقيم التي كتبها المستخدم حتى لو أغلق المودال بدون حفظ
@@ -96,6 +97,7 @@ export default function BasicModal({
               textfieldColor={"textfield_black"}
               rowUser={user}
               onSuccess={handleClose} // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
+              fullWidthInput ={isCustomScreen? true : false}
             />
           </>
         )}
