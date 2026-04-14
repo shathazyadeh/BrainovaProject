@@ -18,10 +18,6 @@ function SupervisorDashboard() {
   const { isError: isNewReportsError, error: newReportsError, isLoading: isNewReportsLoading, data: newReportsData } = useGetNewReports();
   const { isError: isDashboardSummaryError, error: newDashboardSummaryError, isLoading: isDashboardSummaryLoading, data: dashboardSummaryData } = useGetDashboardSummary();
 
-console.log("newReportsData ", newReportsData);
-console.log("data ", data);
-console.log("dashboardSummaryData ", dashboardSummaryData);
-
   const isCustomScreen = useMediaQuery("(max-width:1281px)");
   const isPageLoading = isLoading || isNewReportsLoading || isDashboardSummaryLoading;
   const pageError = error || newReportsError || newDashboardSummaryError;

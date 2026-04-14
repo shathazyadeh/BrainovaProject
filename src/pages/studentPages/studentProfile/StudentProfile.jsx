@@ -7,13 +7,64 @@ import useUpdateUserInfo from '../../../hooks/userManagementHooks/useUpdateUserI
 import { UpdateUserInfoSchema } from '../../../validations/UpdateUserInfoSchema';
 import useAuthStore from '../../../store/useAuthStore';
 import studentImg from './../../../assets/images/profile/studentImg.webp'
+import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
+import { FiFileText } from "react-icons/fi";
+import useGetStudentPdf from '../../../hooks/studentHooks/useGetStudentPdf';
+import { useEffect, useState } from 'react';
 
 
 function StudentProfile() {
   const user = useAuthStore(state => state.user);
   const userId = user?.id;
-  const { data } = useGetUserById();
-  console.log(data);
+  const { isError,isLoading,error, data } = useGetUserById();
+  const{isError:isAllMyCasesError,isLoading:isAllMyCasesLoading,error:allMyCasesError,data:allMyCasesData }=useGetAllMyCases();
+  const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
+  const { refetch, isFetching } = useGetStudentPdf(selectedId);
+  console.log(allMyCasesData);
+
+   function timeAgo(dateString) {
+  const now = new Date();
+  const past = new Date(dateString);
+  const diffInSeconds = Math.floor((now - past) / 1000);
+
+  const minutes = Math.floor(diffInSeconds / 60);
+  const hours = Math.floor(diffInSeconds / 3600);
+  const days = Math.floor(diffInSeconds / 86400);
+
+  if (diffInSeconds < 60) return "just now";
+  if (minutes < 60) return `${minutes} min ago`;
+  if (hours < 24) return `${hours} hours ago`;
+  return `${days} days ago`;
+}
+
+  const recentSubmitted = allMyCasesData?.items?.filter(report => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // تاريخ قبل أسبوع
+    return new Date(report.reportSubmittedAt) >= oneWeekAgo;
+  }).sort((a, b) => 
+    new Date(b.reportSubmittedAt) - new Date(a.reportSubmittedAt));
+
+    useEffect(() => {//اول ما السيت سيليكتيد اي دي يتغير بتشتغل اليوز فيتش
+      if (!selectedId) return;
+    
+      const loadPdf = async () => {
+        const result = await refetch(); //عملنا ريكويست جديد
+    
+        if (result.isError) {
+          toast.error("Failed to load PDF");
+          return;
+        }
+    
+        if (result.data) {
+          const url = window.URL.createObjectURL(result.data);
+          window.open(url, "_blank");
+        }
+    
+        setSelectedId(null);
+      };
+    
+      loadPdf();
+    }, [selectedId]);
 
   return (
     <Box component={'section'} className="profile" sx={{ paddingTop: "50px" }}>
@@ -98,7 +149,7 @@ function StudentProfile() {
                   borderBottomRightRadius: "40px",
                   gap: "40px",
                   padding: '60px',
-                  bgcolor: '#000'
+                  bgcolor: 'var(--navy-color)'
                 }}
               >
                 {console.log("sup id :" ,data?.supervisorId)}
@@ -112,10 +163,10 @@ function StudentProfile() {
                   fullWidthInput={true}
                   textfieldColor={"textfield_black"}
                   defaultValues={{
-                    fullName: user.fullName,
-                    userName: user.userName,
-                    email: user.email,
-                    phoneNumber: user.phoneNumber,
+                    fullName: user?.fullName,
+                    userName: user?.userName,
+                    email: user?.email,
+                    phoneNumber: user?.phoneNumber,
                     supervisorUserId : data?.supervisorId
                   }}
                 />
@@ -138,10 +189,138 @@ function StudentProfile() {
             </Grid>
 
             <Grid item size={{ md: 4 }}>
-              <Box sx={{ bgcolor: '#000', padding: '20px' }}>
-                <Typography> hii</Typography>
-
-              </Box>
+              <Box
+                              className="recently_submitted"
+                              sx={{
+                                bgcolor: "var(--navy-color)",
+                                borderTopLeftRadius: "20px",
+                                borderBottomLeftRadius: "20px",
+                                paddingX: "14px",
+                                paddingTop: "20px",
+                                position: "relative",
+                                height: "91%",
+                                overflowY: "auto",
+                                "&::-webkit-scrollbar": {
+                                  width: "6px",
+                                },
+                                "&::-webkit-scrollbar-thumb": {
+                                  bgcolor: "var(--primary-color)",
+                                  cursor: "grab",
+                                },
+                                "&::-webkit-scrollbar-track": {
+                                  bgcolor: "#2a2a3d",
+                                },
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  fontFamily: "var(--primary-font)",
+                                  fontWeight: "600",
+                                  color: "#fff",
+                                  fontSize: {xs:"15px",sm:"17px"},
+                                  marginBottom: "10px",
+                                }}
+                              >
+                                Recently Submitted
+                              </Typography>
+                              <Typography
+                                className="no_of_notifications"
+                                sx={{
+                                  color: "var(--secondary-color)",
+                                  fontWeight: "500",
+                                  fontSize: "10px",
+                                  position: "absolute",
+                                  top: "25px",
+                                  right: "14px",
+                                }}
+                              >
+                                {recentSubmitted?.length} new notifications
+                              </Typography>
+                              {recentSubmitted?.length === 0 ? (
+                <Typography
+                  sx={{
+                    fontSize: "13px",
+                    color:"var(--primary-color)",
+                    textAlign: "center",
+                    margin:"auto",
+                    marginTop: "140px",
+                    bgcolor: "#291A1F",
+                    width : "fit-content",
+                    padding:"10px",
+                    borderRadius:"16px"
+                  }}
+                >
+                  No recent submissions
+                </Typography>
+              ) : (
+                recentSubmitted?.map((report) => (
+                  <Box 
+                    onClick={() => {
+                       if (isFetching) return;
+  setSelectedId(report.reportId);
+}}
+                                  key={report.reportId}
+                                  sx={{
+                                    marginBottom: "10px",
+                                    padding: "5px",
+                                    borderRadius: "8px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1.5,
+                                    cursor:"pointer",
+                                    bgcolor:"#6b6a6a3f",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      bgcolor: "#291A1F",
+                                      borderRadius: "12px",
+                                      padding: "8px",
+                                      display: "flex",
+                                      width: "fit-content",
+                                    }}
+                                  >
+                                    <FiFileText color="var(--primary-color)" />
+                                  </Typography>
+              
+                                  <Box>
+                                    <Typography
+                                      component={"span"}
+                                      sx={{
+                                        color: "var(--secondary-color)",
+                                        fontWeight: "400",
+                                        fontSize: "13px",
+                                        wordBreak: "break-word",
+                                      }}
+                                    >
+                                      <Typography
+                                        component={"span"}
+                                        sx={{
+                                          color: "#fff",
+                                          fontFamily: "var(--primary-font)",
+                                          fontWeight: "600",
+                                          fontSize: "13px",
+                                        }}
+                                      >
+                                        {/*`RPT-${String(index + 1).padStart(digits, "0")}`*/}
+                                        {`REP-${report?.reportId.slice(0, 6)}`}{" "}
+                                      </Typography>
+                                      was recently submitted
+                                    </Typography>
+                                    <Typography
+                                      sx={{
+                                        color: "var(--secondary-color)",
+                                        fontSize: "10px",
+                                      }}
+                                    >
+                                      {" "}
+                                      {timeAgo(report.reportSubmittedAt)}{" "}
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                ))
+              )}
+                            </Box>
             </Grid>
           </Grid>
         </Box>
