@@ -312,6 +312,7 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
       sx={{
         borderRadius: "20px",
         paddingX: "20px",
+        whiteSpace:'nowrap',
         textTransform: "capitalize",
         backgroundColor: filter === item ? "#ff0000" : "#1f1f1f",
         color: filter === item ? "#fff" : "#aaa",
@@ -436,7 +437,7 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                   > <Box sx={{ alignItems: 'center', display: 'flex' }}>
                       <FaRegEye size={15} style={{ flexShrink: 0 }} />
                     </Box>
-                    <Typography sx={{ fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' ,textTransform: "capitalize"}}> Open PDF </Typography>
+                    <Typography sx={{ fontSize: { xs: "12px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' ,textTransform: "capitalize"}}> Open PDF </Typography>
                   </Button>
                   
 
@@ -462,7 +463,7 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                     <Box sx={{ alignItems: 'center', display: 'flex' }}>
                       <LuDownload size={15} style={{ flexShrink: 0 }} />
                     </Box>
-                    <Typography sx={{ fontSize: { xs: "14px", md: "11px", lg: "14px" ,textTransform: "capitalize"}, justifyContent: "flex-start", display: 'flex' }}> Download PDF </Typography></Button>
+                    <Typography sx={{ fontSize: { xs: "12px", md: "11px", lg: "14px" },textTransform: "capitalize", justifyContent: "flex-start", display: 'flex' }}> Download PDF </Typography></Button>
                </Box>
 
               </Box>

@@ -148,7 +148,7 @@ export default function NotificationsMenu() {
         PaperProps={{
           sx: {
             border: "1px solid rgba(207, 25, 25, 0.44)",
-            bgcolor: "#000000",
+            bgcolor: "var(--navy-color)",
             borderRadius: "10px",
             paddingTop: "10px",
             marginLeft: isMobile ? "0px" : "-20px",
