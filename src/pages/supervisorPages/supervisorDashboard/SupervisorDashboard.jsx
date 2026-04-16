@@ -723,7 +723,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                             fontSize: "13px",
                           }}
                         >
-                          {`REP-${report?.reportId.slice(0, 6)}`}{" "}
+                          {report.reportCode}{" "}
                         </Typography>
                         feedback was added to {report.studentName}
                       </Typography>

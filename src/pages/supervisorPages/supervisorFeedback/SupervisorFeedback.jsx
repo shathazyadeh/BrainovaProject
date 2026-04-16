@@ -8,6 +8,7 @@ import useGetMyallFeedbacks from "../../../hooks/supervisorHooks/useGetMyallFeed
 import UsersSearch from "../../../components/usersSearch/UsersSearch";
 import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
 import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
+import { useNavigate } from "react-router-dom";
 
 function SupervisorFeedback() {
   const { isError, error, isLoading, data } = useGetMyallFeedbacks();
@@ -15,6 +16,7 @@ function SupervisorFeedback() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedFeedback, setSelectedFeedback] = useState(null);
+  const navigate = useNavigate();
   console.log("my feedbacks:", data);
 
   const handleDeleteFeedback = async (feedbackId) => {
@@ -204,15 +206,14 @@ function SupervisorFeedback() {
                           {feedback.supervisorName}
                         </Typography>
                         <Box
-
                           sx={{
                             display: "flex",
                             marginBottom: "18px",
                             "@media (max-width:410px)": { flexDirection: "column" },
                           }}
                         >
-                          <Box className='student_info' sx={{
-                            display: "flex", "@media (max-width:718px)": { flexDirection: 'column' },
+                          <Box className='student_info' onClick={() => navigate(`/dashboard/supervisor/report-details/${feedback.reportId}`)}
+                          sx={{cursor:"pointer",display: "flex", "@media (max-width:718px)": { flexDirection: 'column' },
                           }}>
                             <Typography
                               sx={{
@@ -241,31 +242,9 @@ function SupervisorFeedback() {
                             >
                               {feedback.predictionResult}{" "}
                             </Typography>
-                            <Typography
-                              sx={{
-                                color: "#758492",
-                                fontWeight: "400",
-                                fontSize: "13px",
-                                "@media (max-width:550px)": {
-                                  fontSize: "11px",
-                                },
-                              }}
-                            >
-                              {feedback.reportCreatedAt.split("T")[0]}
-                              {" ( "}
-                              {new Date(feedback.reportCreatedAt).toLocaleTimeString('en-US', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                hour12: true,
-                              })} {")"}
-                            </Typography>
                           </Box>
                         </Box>
                       </Box>
-
-
-
-
                       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         <Box className='seen_unseen'
                           sx={{

@@ -1,5 +1,5 @@
 import { Box, Button, Container, Grid, Modal, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
 import { LuNotebookPen } from "react-icons/lu";
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
@@ -8,11 +8,12 @@ import { IoMdClose } from "react-icons/io";
 import { toast } from 'react-toastify';
 import useGetStudentPdf from '../../../hooks/studentHooks/useGetStudentPdf.js';
 import { LuDownload } from "react-icons/lu";
-import { FaRegEye } from "react-icons/fa";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 import useDownloadStudentPDF from '../../../hooks/studentHooks/useDownloadStudentPDF.js';
 import Pagination from '@mui/material/Pagination';
 import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
 import { FiFilter } from "react-icons/fi";
+import style from './MyCases.module.css';
 
   function FeedbackCommet({ Id, isReviewed ,feedbackId}) {
  const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
@@ -27,7 +28,7 @@ import { FiFilter } from "react-icons/fi";
     if (!isReviewed) {
   return (
     <Box>
-    <Typography sx={{ color: '#797979', fontSize: '13px' }}>
+    <Typography sx={{ color: "var(--secondary-color)", fontSize: '13px' }}>
       No feedback yet
     </Typography>
      <Typography onClick={handleOpen} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
@@ -84,14 +85,14 @@ import { FiFilter } from "react-icons/fi";
   const { isError,isLoading,error, data: feedback } = useGetSupervisorFeedbackByReportid(Id); 
   console.log("feedbackkkk:",feedback);
    if (isLoading) {
-    return <Typography sx={{ color: '#797979' }}>Loading...</Typography>;
+    return <Typography sx={{ color: "var(--secondary-color)" }}>Loading...</Typography>;
   }
   if (isError) {
-    return <Typography sx={{ color: 'red' }}>Error loading feedback</Typography>;
+    return <Typography sx={{ color: 'var(--primary-color)' }}>Error loading feedback</Typography>;
   }
   return (
     <Box>
-    <Typography sx={{ color: '#797979', fontSize: '13px' ,WebkitLineClamp: 1,  display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden',}}>
+    <Typography sx={{ color: "var(--secondary-color)", fontSize: '13px' ,WebkitLineClamp: 1,  display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden',}}>
       {feedback?.comment || "No feedback yet"}
     </Typography>
     <Typography onClick={handleOpen} sx={{ color: '#e01313', fontSize: '13px' ,cursor:'pointer',paddingTop:'5px'}}>
@@ -134,11 +135,11 @@ import { FiFilter } from "react-icons/fi";
     <Box className='modal_title' sx={{display:'flex',justifyContent:'space-between'}}>
      <Box sx={{display:'flex' ,alignItems:'center',gap:'5px',paddingTop:'4px',paddingBottom:'10px'}}>
          <LuNotebookPen size={25} color='#c21313'/>
-         <Typography sx={{color:'#fff',fontSize:'20px',fontWeight:'500',letterSpacing: "1px",paddingLeft:'10px'}}>Feedback </Typography>
+         <Typography sx={{color:'#fff',fontSize:'20px',fontWeight:'500',letterSpacing: "1px",paddingLeft:'10px',fontSize: { xs: "17px", sm: "20px"}}}>Feedback </Typography>
       </Box>
         <IoMdClose size={20}  onClick={() => setOpen(false)} style={{cursor:'pointer'}}/>
      </Box>
-    <Typography sx={{ color: "#797979" }}>
+    <Typography sx={{ color: "var(--secondary-color)", fontSize: { xs: "13px", sm: "17px"} }}>
       {feedback?.comment}
     </Typography>
   </Box>
@@ -148,6 +149,11 @@ import { FiFilter } from "react-icons/fi";
 }
 function MyCases() {
     const{isError,isLoading,error,data}=useGetAllMyCases();
+    const totalCases = data?.items?.length || 0;
+
+const reviewedCount = data?.items?.filter(item => item.isReviewed).length || 0;
+
+const noFeedbackCount = data?.items?.filter(item => !item.isReviewed).length || 0;
     console.log('data5:',data);
     const [filter, setFilter] = useState("all");//للفلترة
     const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
@@ -260,21 +266,26 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
               <Loader />
             </Box>
           )}
-           <Box className="section_titel" sx={{marginBottom:'20px'}}>
+           <Box className={style.section_titel} sx={{marginBottom:'20px', paddingX:'50px',paddingY:'80px',display:'flex',justifyContent:'center',flexDirection:'column'}}>
+         <Box sx={{  borderLeft:'10px solid var(--primary-color)',borderRadius:'5px',}}>
             <Typography
               component={"h1"}
               variant="h4"
               sx={{
+             
+                paddingLeft:'15px',
+                fontSize: "50px",
                 color: "#fff",
                 fontFamily: "var(--primary-font)",
                 fontWeight: "600",
                 display: "inline-block",
                 marginRight: "10px",
                 paddingTop:{xs:"30px",md:"0px"},
-                paddingLeft:{xs:"13px",md:"0px"},
                 "@media (max-width:700px)": {
+                  fontSize: "28px",
+                },"@media (max-width:450px)": {
                   fontSize: "22px",
-                },
+                }
               }}
             >
               My Cases
@@ -293,6 +304,7 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
               <Typography
                 component={"span"}
                 sx={{
+                  
                   color: "var(--primary-color)",
                   fontFamily: "var(--primary-font)",
                 }}
@@ -301,9 +313,27 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
               </Typography>{" "}
               cases found
             </Typography>
+            <Typography sx={{color:'var(--secondary-color)',paddingLeft:'15px',paddingBottom:'10px',marginTop:'10px',letterSpacing:'2px',fontWeight:'500'}}>Track your submitted analyses, predictions, and supervisor feedback</Typography>
+         </Box>
+         <Box sx={{ display: "flex", gap: "20px", marginBottom: "15px" }}>
+ <Box sx={{display:'flex' , gap:'10px',marginLeft:'22px',borderTop:'1px solid #55555585',paddingTop:'20px'}}> 
+ 
+  <Typography sx={{ bgcolor:"#66656549", color: "#fa0000" ,border:'1px solid #777575a8'  , paddingX:'15px',paddingY:'5px',borderRadius:'10px'}}>
+   ● Total Cases: {totalCases}
+  </Typography>
+
+  <Typography sx={{bgcolor:"#66656549", color: "#24b362",border:'1px solid #777575a8' , paddingX:'15px',paddingY:'5px',borderRadius:'10px' }}>
+   ● Reviewed: {reviewedCount}
+  </Typography>
+
+  <Typography sx={{bgcolor:"#66656549", color: "#e0c13a" ,border:'1px solid #777575a8' , paddingX:'15px',paddingY:'5px',borderRadius:'10px'}}>
+   ● No Feedback: {noFeedbackCount}
+  </Typography>
+  </Box>
+</Box>
           </Box>
           <Box className='filter' sx={{ display: "flex", gap: "10px", marginBottom: "20px" ,alignItems:'center'}}>
-         <FiFilter size={20} color='#797979'/>
+         <FiFilter size={20} color='var(--secondary-color)'/>
 
      {["all", "noFeedback", "reviewed"].map((item) => ( // للفلترة
      <Button
@@ -314,8 +344,9 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
         paddingX: "20px",
         whiteSpace:'nowrap',
         textTransform: "capitalize",
+        fontSize:{xs:"11px",sm:"14px"},
         backgroundColor: filter === item ? "#ff0000" : "#1f1f1f",
-        color: filter === item ? "#fff" : "#aaa",
+        color: filter === item ? "#fff" : "var(--secondary-color)",
         "&:hover": {
           backgroundColor: filter === item ? "#ff0000" : "#333",
         },
@@ -328,35 +359,40 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
 
 </Box>
            
-          
         <Grid container spacing={2}>
-          {paginatedData?.map((item , index) => (
+          {paginatedData?.map((item ) => (
             
             <Grid item size={{lg:4 , xs:12,sm:6}} key={item.caseId}>
-              <Box  className='student_case flex_column' sx={{bgcolor:'#1f1f1f',padding:'15px',borderRadius:'15px',border:'1px solid #525252a8',gap:'5px', transition:'all 0.4s', "&:hover": {
+              <Box  className='student_case flex_column' sx={{bgcolor:'#1f1f1f',borderRadius:'15px',padding:'10px',border:'1px solid #525252a8',gap:'5px', transition:'all 0.4s', "&:hover": {
                            border:"1px solid #ff00009f",
                             boxShadow: "0 0 30px rgba(207, 25, 25, 0.48)",
                           },}}>
                           
-                <Box className='img_container' sx={{height:'250px',bgcolor:'#000000',border:'1px solid #525252a8',borderRadius:'15px',padding:'30px',display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'5px'}}> {/*بوكس الصورة */}
+                <Box className='img_container' sx={{height:'250px',bgcolor:'var(--navy-color)',borderRadius:'15px',padding:'30px',display:'flex',justifyContent:'center',alignItems:'center',marginBottom:'5px'}}> {/*بوكس الصورة */}
                   <img src={item.imageUrl} style={{height:'100%',width:'100%',  objectFit: 'contain'}}/>
                 </Box>
 
-              <Box className='predictedAt' sx={{display:'flex',justifyContent:'space-between'}}>  {/*بوكس ا ذا في فييدباك   */}
-                  <Typography sx={{color:'#ffffff',fontSize:'13px',fontWeight:'500'}}>{item.reportCode}</Typography>
-
-                {item?.isReviewed ?  (   <Typography
+              <Box className='card_details' sx={{display:'flex',justifyContent:'space-between'}}>
+<Box className='left_side flex_column ' sx={{gap:'5PX'}}>
+   <Typography sx={{color:'#ffff',fontSize:'13px',fontWeight:'500'}}>{item.reportCode}</Typography>
+    <Typography sx={{color:"var(--secondary-color)",fontSize:'13px',fontWeight:'500'}}>Prediction</Typography>
+     <Typography sx={{color:"var(--secondary-color)",fontSize:'13px',fontWeight:'500'}}>Submitted</Typography>
+  
+  </Box> 
+  <Box className='right_side flex_column ' sx={{gap:'5PX'}}>
+  {item?.isReviewed ?  (   <Typography
                                           sx={{
                                             width: "fit-content",
                                             paddingX: "14px",
                                             paddingY: "5px",
                                             borderRadius: "20px",
                                             backgroundColor: "#183222",
-                                            color: "#24c86b",
-                                            fontSize: "13px",
+                                            color: "#24b362",
+                                            fontSize: "12px",
                                             fontWeight:'600',
                                             display: "flex",
                                             whiteSpace: "nowrap",
+                                            
                                             
                                           }}
                                         >
@@ -369,9 +405,9 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                                             paddingX: "10px",
                                             paddingY: "5px",
                                             borderRadius: "20px",
-                                            backgroundColor: "#13212f",
-                                            color: "#2a74be",
-                                            fontSize: "13px",
+                                            backgroundColor: "#2d2f13",
+                                            color: "#bebe2a",
+                                            fontSize: "12px",
                                             fontWeight:'600',
                                             display: "flex",
                                             whiteSpace: "nowrap",
@@ -380,34 +416,31 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                                           No Feedback
                                         </Typography>
                                       )}
-              </Box>
 
-              <Box className='prediction' sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>  {/*بوكس البريديكشين */}
-                 <Typography sx={{color:'#797979',fontSize:'13px',fontWeight:'500'}}>Prediction</Typography>
-                   <Typography
+ <Typography
                                           sx={{
                                             fontSize: "13px",
-                                            paddingY: "3px",
-                                            paddingX: "10px",
+                                            fontWeight:'500',
+                                            paddingRight:"31px",
                                             display: "inline-flex",
-                                            color:"rgb(196, 36, 38)"
+                                            color:"var(--secondary-color)",
+                                             marginLeft:'10px'
                                           }}
                                         >
-                                          ● {item?.predictionResult}
+                                          {item?.predictionResult}
                    </Typography>
-              </Box>
+                                     <Typography sx={{color:"var(--secondary-color)",fontSize:'12px',fontWeight:'500',paddingRight:"18px", marginLeft:'10px'}}>{item.reportSubmittedAt.split("T")[0]}</Typography>
 
-               <Box className='submittedAt' sx={{display:'flex',justifyContent:'space-between'}}>  {/*بوكس تاريخ التسليم  */}
-                 <Typography sx={{color:'#797979',fontSize:'13px',fontWeight:'500'}}>Submitted</Typography>
-                  <Typography sx={{color:'#797979',fontSize:'13px',fontWeight:'500'}}>{item.reportSubmittedAt.split("T")[0]}</Typography>
-              </Box>
+
+  </Box>
+
+ </Box>
                
-              <Box className='feedback flex_column' sx={{borderTop:'1px solid #4f4f4f75', borderBottom:'1px solid #4f4f4f75',gap:'5px',padding:'4px'}}>
+              <Box className='feedback flex_column' sx={{borderTop:'1px solid #4f4f4f75',gap:'5px',padding:'4px'}}>
                   <Box sx={{display:'flex' ,alignItems:'center',gap:'5px',paddingTop:'4px'}}>
                     <LuNotebookPen color='#c21313'/>
                     <Typography sx={{color:'#fff'}}>Feedback</Typography>
                   </Box>
-                  
                   <FeedbackCommet Id={item?.reportId} isReviewed={item?.isReviewed} feedbackId={item?.feedbackId} />
 
               </Box>
@@ -418,16 +451,17 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                     onClick={() => setSelectedId(item.reportId)}
                     sx={{
                       flex: 1,
-                      bgcolor: "#0e1115",
+                      bgcolor: "var(--primary-color)",
                       color: "#f0f2f5",
                       display: "flex",
-                      gap: '10px',
+                      gap: '5px',
                       justifyContent: "center",
                       textAlign: "center",
                       borderRadius: "10px",
                       border: "1px solid rgb(37, 41, 49)",
                       whiteSpace: "nowrap",
-                      "&:hover": { backgroundColor: "#ff0000" },
+                      transition:"all .3s",
+                      "&:hover": { backgroundColor: "#ff000067" },
                       "&.Mui-disabled": {
                         color: "#999",
                         bgcolor: "#1a1d23",
@@ -435,26 +469,27 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                       },
                     }}
                   > <Box sx={{ alignItems: 'center', display: 'flex' }}>
-                      <FaRegEye size={15} style={{ flexShrink: 0 }} />
+                      <MdOutlineRemoveRedEye size={17} style={{ flexShrink: 0 }} />
                     </Box>
-                    <Typography sx={{ fontSize: { xs: "12px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' ,textTransform: "capitalize"}}> Open PDF </Typography>
+                    <Typography sx={{ fontSize: { xs: "12px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex' ,textTransform: "capitalize",fontWeight:"500"}}> Open PDF </Typography>
                   </Button>
                   
 
-                  <Button   onClick={() => downloadMutation.mutate(item.reportId)}
+                  <Button onClick={() => downloadMutation.mutate(item.reportId)}
                    sx={{
                       flex: 1,
                       width:'50%',
-                      bgcolor: "#0e1115",
-                      color: "#f0f2f5",
+                      bgcolor: "#ffffffa7",
+                      color: "var(--navy-color)",
                       display: "flex",
-                      gap: '10px',
+                      gap: '5px',
                       justifyContent: "center",
                       textAlign: "center",
                       borderRadius: "10px",
                       border: "1px solid rgb(37, 41, 49)",
                       whiteSpace: "nowrap",
-                      "&:hover": { backgroundColor: "#ff0000" },
+                      transition:"all .3s",
+                      "&:hover": { backgroundColor: "#ffffffb0" },
                       "&.Mui-disabled": {
                         color: "#999",
                         bgcolor: "#1a1d23",
@@ -463,7 +498,7 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                     <Box sx={{ alignItems: 'center', display: 'flex' }}>
                       <LuDownload size={15} style={{ flexShrink: 0 }} />
                     </Box>
-                    <Typography sx={{ fontSize: { xs: "12px", md: "11px", lg: "14px" },textTransform: "capitalize", justifyContent: "flex-start", display: 'flex' }}> Download PDF </Typography></Button>
+                    <Typography sx={{ fontSize: { xs: "12px", md: "11px", lg: "14px" },textTransform: "capitalize", justifyContent: "flex-start", display: 'flex',fontWeight:"500" }}> Download PDF </Typography></Button>
                </Box>
 
               </Box>

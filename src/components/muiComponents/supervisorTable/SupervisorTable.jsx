@@ -235,7 +235,6 @@ function FeedbackBadge({ isReviewed }) {
 
 function MobileCard({
   row,
-  index,
   handleOpenModal,
   navigate,
   downloadMutation,
@@ -268,7 +267,7 @@ function MobileCard({
       >
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
           <Typography sx={{ color: "#718296", fontSize: "13px" }}>
-            #{index}
+            {row.reportCode}{" "}
           </Typography>
           <Typography
             sx={{
@@ -497,7 +496,7 @@ const downloadMutation = useDownloadSupervisorPDF();
               <TableCell
                 sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
               >
-                #
+                REPORT
               </TableCell>
               <TableCell
                 sx={{
@@ -562,12 +561,12 @@ const downloadMutation = useDownloadSupervisorPDF();
                 >
                   <TableCell
                     sx={{
-                      color: "#fff",
+                      color: "#718296",
                       borderTop: "1px solid #3b3a3a89",
                       borderBottom: "1px solid #3b3a3a89",
                     }}
                   >
-                    {page * rowsPerPage + index + 1}
+                    {row.reportCode}{" "}
                   </TableCell>
                   <TableCell
                     sx={{

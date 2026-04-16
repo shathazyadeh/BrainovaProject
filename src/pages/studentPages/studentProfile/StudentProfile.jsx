@@ -26,7 +26,7 @@ function StudentProfile() {
 
   const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
   const { refetch, isFetching } = useGetStudentPdf(selectedId);
-  console.log(summaryData);
+  console.log(allMyCasesData);
 
   function timeAgo(dateString) {
     const now = new Date();
@@ -639,8 +639,7 @@ function StudentProfile() {
                               fontSize: "13px",
                             }}
                           >
-                            {/*`RPT-${String(index + 1).padStart(digits, "0")}`*/}
-                            {`REP-${report?.reportId.slice(0, 6)}`}{" "}
+                            {report.reportCode}{" "}
                           </Typography>
                           was recently submitted
                         </Typography>

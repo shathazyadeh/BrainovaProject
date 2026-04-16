@@ -35,21 +35,14 @@ function StudentReports() {
   console.log("digit:", digits); // كم اكبر عدد ديجيت ممكن اوصله في كتابة رقم التقرير
   const [search, setSearch] = useState("");
   const [feedbackFilter, setFeedbackFilter] = useState("all"); // "all" | "reviewed" | "noFeedback"
-  // أول شي نضيف reportNumber و simpleNumber لكل تقرير
-  const reportsWithNumbers = data?.items?.map((report, index) => ({
-    ...report,
-    reportNumber: `RPT-${String(index + 1).padStart(digits, "0")}`,
-    simpleNumber: String(index + 1),
-  }));
 
-  // نفلتر حسب البحث
-  let filteredReports = reportsWithNumbers?.filter((report) => {
-    if (!search) return true; // لو البحث فاضي، نرجع كل التقارير
-    return (
-      report.reportNumber.toLowerCase().includes(search.toLowerCase()) ||
-      report.simpleNumber.includes(search)
-    );
-  });
+  let filteredReports = data?.items?.filter((report) => {
+  if (!search) return true;
+
+  return (
+    report.reportCode?.toLowerCase().includes(search.toLowerCase())
+  );
+});
 
   // نفلتر حسب feedback
   if (feedbackFilter !== "all") {
@@ -381,7 +374,7 @@ function StudentReports() {
                           fontFamily: "var(--primary-font)",
                         }}
                       >
-                        {report.reportNumber}
+                        {report.reportCode}
                       </Typography>
                       <Typography
                         sx={{

@@ -647,9 +647,18 @@ function ReportDetails() {
                       color: "#ffffff",
                       fontSize: "11px",
                       paddingBottom: "10px",
+                      whiteSpace:"nowrap"
                     }}
                   >
                     {data?.submittedAt.split("T")[0]}
+                    <Typography component={'span'} sx={{fontSize:"11px"}}>
+                      {" ( "}
+                      {new Date(data?.submittedAt).toLocaleTimeString('en-US', {
+                         hour: '2-digit',
+                         minute: '2-digit',
+                         hour12: true,
+                       })} {")"}
+                    </Typography>
                   </Typography>
                   <Typography sx={{ color: "#7e8a9a", fontSize: { xs: "15px", md: "13px" }, }}>
                     Report ID
@@ -660,7 +669,7 @@ function ReportDetails() {
                       fontSize: "11px",
                       paddingBottom: "10px",
                     }}
-                  >{`REP-${data?.reportId.slice(0, 6)}`}</Typography>
+                  >{data?.reportCode}</Typography>
                   <Typography sx={{ color: "#7e8a9a", fontSize: { xs: "15px", md: "13px" }, }}>
                     Case ID
                   </Typography>

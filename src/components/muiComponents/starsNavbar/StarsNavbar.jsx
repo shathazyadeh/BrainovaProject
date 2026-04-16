@@ -174,6 +174,7 @@ function StarsNavbar() {
                     to={
                       page.name == 'Home' ? '/home' :
                         page.name == 'Analysis' ? '/predict-tumor' :
+                          page.name == 'Learning Hub' ? '/learning-hub' :
                              page.name == 'My Cases' ? '/my-cases' :
                           '/'
                     }
@@ -196,6 +197,7 @@ function StarsNavbar() {
   to={
     page.name == 'Home' ? '/home' :
     page.name == 'Analysis' ? '/predict-tumor' :
+     page.name == 'Learning Hub' ? '/learning-hub' :
     page.name == 'My Cases' ? '/my-cases' :
     '/'
   }
