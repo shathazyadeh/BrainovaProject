@@ -29,7 +29,7 @@ const pages = [
 ];
 const settings = ['Profile', 'Logout'];
 
-function StarsNavbar() {
+function StarsNavbar({linkColor}) {
   const user = useAuthStore((state)=>state.user);
   const logout = useAuthStore((state)=>state.logout);
   const navigate = useNavigate();
@@ -91,7 +91,7 @@ function StarsNavbar() {
               fontWeight: 800,
               fontSize: 28,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: linkColor,
               textDecoration: 'none',
               gap: '10px',
               "@media (max-width:356px)": {
@@ -178,7 +178,7 @@ function StarsNavbar() {
                              page.name == 'My Cases' ? '/my-cases' :
                           '/'
                     }
-                    sx={{ textAlign: 'center', color: 'white',
+                    sx={{ textAlign: 'center', color: linkColor,
                       display: "flex",
                       alignItems: "center",
                       gap: "6px"}}>
@@ -204,7 +204,7 @@ function StarsNavbar() {
   className={`upper_case ${style.navbar_btn}`}
   sx={{
     my: 2,
-    color: 'white',
+    color: linkColor,
     display: 'flex',
     alignItems: 'center',
     gap: '6px',
@@ -267,7 +267,7 @@ function StarsNavbar() {
                     backgroundColor: "rgba(255,255,255,0.1)",
                   }
                 }} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ color: 'white', textAlign: 'center' }}
+                  <Typography sx={{ color: linkColor, textAlign: 'center' }}
                   onClick={()=> {(setting==='Logout')? handleLogout(): handleProfile()}}
                    >{setting}
                    </Typography>

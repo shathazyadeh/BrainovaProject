@@ -8,13 +8,15 @@ function MainLayout() {
 
   // تحديد لون الفوتر حسب الصفحة
   let footerBg = "#171717";
-  let navbarBg = "#171717"
-  if (location.pathname === "/home" ||location.pathname === "/my-cases") {footerBg = "#000"; navbarBg="var(--navy-color)"}
+  let navbarBg = "#171717";
+  let linkColor = "#fff";
+  if (location.pathname === "/home" || location.pathname === "/my-cases" ) {footerBg = "#000"; navbarBg="var(--navy-color)"}
+  else if( location.pathname === "/learning-hub") {footerBg = "#E8E0E4"; navbarBg="#E8E0E4";linkColor="var(--navy-color)"}
 
   return (
     <Box sx={{ bgcolor: "#171717" }}>
       <Box sx={{bgcolor: navbarBg, paddingTop:"20px"}}>
-        <StarsNavbar />
+        <StarsNavbar linkColor={linkColor} />
       </Box>
       <Outlet />
       <Box sx={{ bgcolor: footerBg }}>

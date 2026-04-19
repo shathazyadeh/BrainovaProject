@@ -3,8 +3,12 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import BrainCard from "../brainCard/BrainCard";
+import { BsFillBadge3dFill } from "react-icons/bs";
+import style from "./BrainModel.module.css"
+
+
 
 const HOTSPOTS = [
   {
@@ -59,6 +63,8 @@ export default function BrainModel() {
   const setActiveLabelRef = useRef(setActiveLabel);
   setActiveLabelRef.current = setActiveLabel;
 
+  const isMobile = useMediaQuery("(max-width: 1474px)");
+
   const moveCameraTo = (position) => {
     const camera = cameraRef.current;
     const controls = controlsRef.current;
@@ -104,9 +110,13 @@ export default function BrainModel() {
     if (!container || rendererRef.current) return;
 
     const width = container.clientWidth;
-    const height = window.innerHeight * 0.92;
+const isMobileView = window.innerWidth < 900;
+const height = isMobileView 
+  ? window.innerHeight * 0.5
+  : window.innerHeight * 0.92;
+
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color("#000000");
+    scene.background = new THREE.Color("#000");
 
     const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     camera.position.set(2, 0.5, 0.5);
@@ -124,7 +134,9 @@ export default function BrainModel() {
       if (!container) return;
 
       const newWidth = container.clientWidth;
-      const newHeight = window.innerHeight * 0.65;
+      const newHeight = isMobileNow
+  ? window.innerHeight * 0.5
+  : window.innerHeight * 0.65;
 
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
@@ -199,36 +211,43 @@ export default function BrainModel() {
     };
 
     let animId;
-    const animate = () => {
-      animId = requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
+    let lastUpdate = 0;
+    const animate = (time = 0) => {
+  animId = requestAnimationFrame(animate);
 
-      const rect = renderer.domElement.getBoundingClientRect();
-      const updated = hotspotsRef.current.map((h) => {
-        const screenPos = toScreenPos(h.position, camera, rect);
+  controls.update();
+  renderer.render(scene, camera);
 
-        const dir = h.position.clone().sub(camera.position).normalize();
-        raycaster.set(camera.position, dir);
+  const rect = renderer.domElement.getBoundingClientRect();
 
-        const distToHotspot = camera.position.distanceTo(h.position);
-        const intersects = brainRef.current
-          ? raycaster.intersectObject(brainRef.current, true)
-          : [];
+  const updated = hotspotsRef.current.map((h) => {
+    const screenPos = toScreenPos(h.position, camera, rect);
 
-        const occluded = intersects.some(
-          (hit) => hit.distance < distToHotspot - 0.05,
-        );
+    const dir = h.position.clone().sub(camera.position).normalize();
+    raycaster.set(camera.position, dir);
 
-        return {
-          ...h,
-          screen: screenPos,
-          visible: !occluded,
-        };
-      });
-      setDots(updated);
+    const distToHotspot = camera.position.distanceTo(h.position);
+    const intersects = brainRef.current
+      ? raycaster.intersectObject(brainRef.current, true)
+      : [];
+
+    const occluded = intersects.some(
+      (hit) => hit.distance < distToHotspot - 0.05
+    );
+
+    return {
+      ...h,
+      screen: screenPos,
+      visible: !occluded,
     };
-    animate();
+  });
+
+  if (time - lastUpdate > 100) {
+    setDots(updated);
+    lastUpdate = time;
+  }
+};
+    requestAnimationFrame(animate);
 
     return () => {
       cancelAnimationFrame(animId);
@@ -248,12 +267,20 @@ export default function BrainModel() {
   }, []);
 
   return (
-    <Box style={{ display: "flex", width: "100%" }}>
-      <Box
-        style={{ width: "70%", position: "relative" }}
+    <Box sx={{bgcolor:isMobile?"transparent":"#000",borderRadius:"30px",marginX:"30px"}}>
+      <Grid container>
+        <Grid item size={{xs:12,md:isMobile?12:8}}>
+          <Box
+        style={{position: "relative" , borderRadius: "30px",overflow: "hidden"}}
         onClick={() => setActiveLabel(null)}
       >
-        <Box ref={mountRef} />
+        <Box ref={mountRef} sx={{cursor:"grab",margin:"auto",justifyContent: "center",
+  "& canvas": {        // ← استهدف الـ canvas مباشرة
+    display: "block",
+    margin: "0 auto",
+    borderRadius:"30px"
+  }
+}} />
 
         <svg
           style={{
@@ -352,6 +379,7 @@ export default function BrainModel() {
             onClick={(e) => {
               e.stopPropagation();
               setActiveLabel(activeLabel?.id === dot.id ? null : dot);
+              setLabelsVisible(false);
               moveCameraTo(dot.position);
             }}
             style={{
@@ -409,14 +437,21 @@ export default function BrainModel() {
               </Box>
             );
           })()}
-      </Box>
 
-      <Box
+          <Typography className={style.label} sx={{color:"#fff", position:"absolute",bottom:isMobile?"13px":"20px",left:isMobile?"231px":"30px",fontFamily:"var(--primary-font)",display:"flex",gap:"5px",alignItems:"center"}}>
+            <BsFillBadge3dFill size={"18px"}/> Brain Model
+            </Typography>
+      </Box>
+        </Grid>
+      <Grid item size={{xs:12,md:isMobile?12:4}}>
+        <Box
         className="model_card"
-        sx={{ marginRight: "60px", marginTop: "140px", width: "30%" }}
+        sx={{ marginTop: isMobile?"20px":"80px",display:"flex",justifyContent:"center"}}
       >
         <BrainCard activeLabel={activeLabel} />
       </Box>
+      </Grid>
+      </Grid>
     </Box>
   );
 }
