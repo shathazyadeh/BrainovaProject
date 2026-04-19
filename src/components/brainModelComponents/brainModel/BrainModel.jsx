@@ -6,9 +6,7 @@ import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment
 import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import BrainCard from "../brainCard/BrainCard";
 import { BsFillBadge3dFill } from "react-icons/bs";
-import style from "./BrainModel.module.css"
-
-
+import style from "./BrainModel.module.css";
 
 const HOTSPOTS = [
   {
@@ -64,6 +62,8 @@ export default function BrainModel() {
   setActiveLabelRef.current = setActiveLabel;
 
   const isMobile = useMediaQuery("(max-width: 1474px)");
+  const isSmall = useMediaQuery("(max-width:900px)");
+  const isVerySmall = useMediaQuery("(max-width:749px)");
 
   const moveCameraTo = (position) => {
     const camera = cameraRef.current;
@@ -110,10 +110,15 @@ export default function BrainModel() {
     if (!container || rendererRef.current) return;
 
     const width = container.clientWidth;
-const isMobileView = window.innerWidth < 900;
-const height = isMobileView 
-  ? window.innerHeight * 0.5
-  : window.innerHeight * 0.92;
+    const getCanvasHeight = () => {
+      const w = window.innerWidth;
+      if (w < 600) return window.innerHeight * 0.45;
+      if (w < 900) return window.innerHeight * 0.55;
+      if (w < 1200) return window.innerHeight * 0.7;
+      return window.innerHeight * 0.92;
+    };
+
+    const height = getCanvasHeight();
 
     const scene = new THREE.Scene();
     scene.background = new THREE.Color("#000");
@@ -134,17 +139,31 @@ const height = isMobileView
       if (!container) return;
 
       const newWidth = container.clientWidth;
-      const newHeight = isMobileNow
-  ? window.innerHeight * 0.5
-  : window.innerHeight * 0.65;
+      const newHeight = getCanvasHeight();
 
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
-
       renderer.setSize(newWidth, newHeight);
+      if (brainRef.current) {
+        const rect = renderer.domElement.getBoundingClientRect();
+        setDots((prev) =>
+          prev.map((h) => {
+            const vec = h.position.clone().project(camera);
+            return {
+              ...h,
+              screen: {
+                x: (vec.x * 0.5 + 0.5) * rect.width,
+                y: (-vec.y * 0.5 + 0.5) * rect.height,
+              },
+            };
+          }),
+        );
+      }
     };
 
     window.addEventListener("resize", handleResize);
+    const resizeObserver = new ResizeObserver(() => handleResize());
+    resizeObserver.observe(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -162,7 +181,9 @@ const height = isMobileView
     loader.load("/brain/scene.gltf", (gltf) => {
       const brainModel = gltf.scene;
 
-      brainModel.scale.set(7, 7, 7);
+      const w = window.innerWidth;
+      const brainScale = w < 600 ? 4.5 : w < 900 ? 5.5 : w < 1200 ? 6.2 : 7;
+      brainModel.scale.set(brainScale, brainScale, brainScale);
 
       brainRef.current = brainModel;
       scene.add(brainModel);
@@ -213,40 +234,40 @@ const height = isMobileView
     let animId;
     let lastUpdate = 0;
     const animate = (time = 0) => {
-  animId = requestAnimationFrame(animate);
+      animId = requestAnimationFrame(animate);
 
-  controls.update();
-  renderer.render(scene, camera);
+      controls.update();
+      renderer.render(scene, camera);
 
-  const rect = renderer.domElement.getBoundingClientRect();
+      const rect = renderer.domElement.getBoundingClientRect();
 
-  const updated = hotspotsRef.current.map((h) => {
-    const screenPos = toScreenPos(h.position, camera, rect);
+      const updated = hotspotsRef.current.map((h) => {
+        const screenPos = toScreenPos(h.position, camera, rect);
 
-    const dir = h.position.clone().sub(camera.position).normalize();
-    raycaster.set(camera.position, dir);
+        const dir = h.position.clone().sub(camera.position).normalize();
+        raycaster.set(camera.position, dir);
 
-    const distToHotspot = camera.position.distanceTo(h.position);
-    const intersects = brainRef.current
-      ? raycaster.intersectObject(brainRef.current, true)
-      : [];
+        const distToHotspot = camera.position.distanceTo(h.position);
+        const intersects = brainRef.current
+          ? raycaster.intersectObject(brainRef.current, true)
+          : [];
 
-    const occluded = intersects.some(
-      (hit) => hit.distance < distToHotspot - 0.05
-    );
+        const occluded = intersects.some(
+          (hit) => hit.distance < distToHotspot - 0.05,
+        );
 
-    return {
-      ...h,
-      screen: screenPos,
-      visible: !occluded,
+        return {
+          ...h,
+          screen: screenPos,
+          visible: !occluded,
+        };
+      });
+
+      if (time - lastUpdate > 100) {
+        setDots(updated);
+        lastUpdate = time;
+      }
     };
-  });
-
-  if (time - lastUpdate > 100) {
-    setDots(updated);
-    lastUpdate = time;
-  }
-};
     requestAnimationFrame(animate);
 
     return () => {
@@ -256,6 +277,8 @@ const height = isMobileView
       renderer.domElement.removeEventListener("pointermove", onPointerMove);
 
       window.removeEventListener("resize", handleResize);
+
+      resizeObserver.disconnect();
 
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
@@ -267,190 +290,235 @@ const height = isMobileView
   }, []);
 
   return (
-    <Box sx={{bgcolor:isMobile?"transparent":"#000",borderRadius:"30px",marginX:"30px"}}>
+    <Box
+      sx={{
+        bgcolor: isMobile ? "transparent" : "#000",
+        borderRadius: "30px",
+        marginX: "30px",
+      }}
+    >
       <Grid container>
-        <Grid item size={{xs:12,md:isMobile?12:8}}>
+        <Grid item size={{ xs: 12, md: isMobile ? 12 : 8 }}>
           <Box
-        style={{position: "relative" , borderRadius: "30px",overflow: "hidden"}}
-        onClick={() => setActiveLabel(null)}
-      >
-        <Box ref={mountRef} sx={{cursor:"grab",margin:"auto",justifyContent: "center",
-  "& canvas": {        // ← استهدف الـ canvas مباشرة
-    display: "block",
-    margin: "0 auto",
-    borderRadius:"30px"
-  }
-}} />
-
-        <svg
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            pointerEvents: "none",
-            zIndex: 5,
-            opacity: labelsVisible ? 1 : 0,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          {dots.map((dot) => {
-            const x = dot.screen?.x ?? 0;
-            const y = dot.screen?.y ?? 0;
-            const canvasWidth =
-              rendererRef.current?.domElement?.clientWidth || 0;
-            const isRight = x < canvasWidth / 2;
-            const lx = isRight ? x - 70 : x + 70;
-            const ly = y - 30;
-
-            return (
-              <g key={dot.id}>
-                <polyline
-                  points={`${x},${y - 14} ${x},${ly} ${lx},${ly}`}
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1.2"
-                />
-                <circle cx={x} cy={y - 14} r="2.5" fill="white" />
-
-                <rect
-                  x={isRight ? lx - 140 : lx}
-                  y={ly - 18}
-                  width={dot.id == 5 ? "180" : "150"}
-                  height="35"
-                  rx="10"
-                  fill="rgba(255,255,255,0.9)"
-                />
-                {/* دائرة الرقم جوا الـ pill */}
-                <circle
-                  cx={isRight ? lx - 122 : lx + 18}
-                  cy={ly}
-                  r="13"
-                  fill={
-                    dot.id == 1
-                      ? "#479EB9"
-                      : dot.id == 2
-                        ? "#409748"
-                        : dot.id == 3
-                          ? "#96241F"
-                          : dot.id == 4
-                            ? "#CECF5A"
-                            : dot.id == 5
-                              ? "#479EB9"
-                              : dot.id == 6
-                                ? "#6E2C1E"
-                                : ""
-                  }
-                />
-
-                <text
-                  x={isRight ? lx - 122 : lx + 18}
-                  y={ly}
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fontSize="12"
-                  fontWeight="700"
-                  fill="white"
-                >
-                  {dot.id}
-                </text>
-                {/* الاسم بعد الدائرة */}
-                <text
-                  x={isRight ? lx - 104 : lx + 36}
-                  y={ly}
-                  textAnchor="start"
-                  dominantBaseline="middle"
-                  fontSize="14"
-                  fontWeight="600"
-                  fill="#080808"
-                  fontFamily="var(--primary-font)"
-                >
-                  {dot.label}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-
-        {dots.map((dot) => (
-          <Box
-            key={dot.id}
-            onClick={(e) => {
-              e.stopPropagation();
-              setActiveLabel(activeLabel?.id === dot.id ? null : dot);
-              setLabelsVisible(false);
-              moveCameraTo(dot.position);
-            }}
             style={{
-              position: "absolute",
-              left: dot.screen?.x,
-              top: dot.screen?.y,
-              transform: "translate(-50%, -50%)",
-              width: 28,
-              height: 28,
-              borderRadius: "50%",
-              background:
-                activeLabel?.id === dot.id
-                  ? "rgba(249, 246, 246, 0.85)"
-                  : "#1a1a2e",
-              border: "2px solid #ffffff",
-              color: activeLabel?.id === dot.id ? "#000000" : "#ffffff",
-              fontSize: 15,
-              fontWeight: "bold",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              zIndex: 10,
-              userSelect: "none",
-              opacity: dot.visible ? 1 : 0.15,
-              transition: "opacity 0.2s ease",
+              position: "relative",
+              borderRadius: "30px",
+              overflow: "hidden",
             }}
+            onClick={() => setActiveLabel(null)}
           >
-            {dot.id}
-          </Box>
-        ))}
-        {activeLabel &&
-          (() => {
-            const liveDot = dots.find((d) => d.id === activeLabel.id);
-            return (
-              <Box
+            <Box
+              ref={mountRef}
+              sx={{
+                cursor: "grab",
+                margin: "auto",
+                justifyContent: "center",
+                "& canvas": {
+                  // ← استهدف الـ canvas مباشرة
+                  display: "block",
+                  margin: "0 auto",
+                  borderRadius: "30px",
+                },
+              }}
+            />
+            {!isVerySmall && (
+              <svg
                 style={{
                   position: "absolute",
-                  left: (liveDot?.screen?.x ?? activeLabel.screen?.x) + 20,
-                  top: (liveDot?.screen?.y ?? activeLabel.screen?.y) - 20,
-                  background: "rgba(249, 246, 246, 0.85)",
-                  color: "#000",
-                  padding: "8px 14px",
-                  borderRadius: 8,
-                  fontSize: 17,
-                  fontWeight: "500",
-                  fontFamily: "var(--primary-font)",
-                  zIndex: 20,
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
                   pointerEvents: "none",
-                  whiteSpace: "nowrap",
-                  border: "1px solid rgba(255,255,255,0.2)",
+                  zIndex: 5,
+                  opacity: labelsVisible ? 1 : 0,
+                  transition: "opacity 0.3s ease",
                 }}
               >
-                {activeLabel.label}
-              </Box>
-            );
-          })()}
+                {dots.map((dot) => {
+                  const x = dot.screen?.x ?? 0;
+                  const y = dot.screen?.y ?? 0;
+                  const canvasWidth =
+                    rendererRef.current?.domElement?.clientWidth || 0;
+                  const isRight = x < canvasWidth / 2;
+                  const lx = isRight ? x - 70 : x + 70;
+                  const ly = y - 30;
 
-          <Typography className={style.label} sx={{color:"#fff", position:"absolute",bottom:isMobile?"13px":"20px",left:isMobile?"231px":"30px",fontFamily:"var(--primary-font)",display:"flex",gap:"5px",alignItems:"center"}}>
-            <BsFillBadge3dFill size={"18px"}/> Brain Model
+                  return (
+                    <g key={dot.id}>
+                      <polyline
+                        points={`${x},${isSmall ? y - 8 : y - 14} ${x},${ly} ${lx},${ly}`}
+                        fill="none"
+                        stroke="white"
+                        strokeWidth="1.2"
+                      />
+                      <circle
+                        cx={x}
+                        cy={isSmall ? y - 6 : y - 14}
+                        r="2.5"
+                        fill="white"
+                      />
+
+                      <rect
+                        x={isRight ? lx - 140 : lx}
+                        y={ly - 18}
+                        width={dot.id == 5 ? "180" : "150"}
+                        height={isSmall ? "20" : "35"}
+                        rx="10"
+                        fill="rgba(255,255,255,0.9)"
+                      />
+                      {/* دائرة الرقم جوا الـ pill */}
+                      <circle
+                        cx={isRight ? lx - 122 : lx + 18}
+                        cy={isSmall ? ly - 7 : ly}
+                        r={isSmall ? "8" : "13"}
+                        fill={
+                          dot.id == 1
+                            ? "#479EB9"
+                            : dot.id == 2
+                              ? "#409748"
+                              : dot.id == 3
+                                ? "#96241F"
+                                : dot.id == 4
+                                  ? "#CECF5A"
+                                  : dot.id == 5
+                                    ? "#479EB9"
+                                    : dot.id == 6
+                                      ? "#6E2C1E"
+                                      : ""
+                        }
+                      />
+
+                      <text
+                        x={isRight ? lx - 122 : lx + 18}
+                        y={isSmall ? ly - 7 : ly}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        fontSize={isSmall ? "10" : "12"}
+                        fontWeight="700"
+                        fill="white"
+                      >
+                        {dot.id}
+                      </text>
+                      {/* الاسم بعد الدائرة */}
+                      <text
+                        x={
+                          isRight
+                            ? lx - (isSmall ? 110 : 104)
+                            : lx + (isSmall ? 30 : 36)
+                        }
+                        y={isSmall ? ly - 7 : ly}
+                        textAnchor="start"
+                        dominantBaseline="middle"
+                        fontSize={isSmall ? "10" : "14"}
+                        fontWeight="600"
+                        fill="#080808"
+                        fontFamily="var(--primary-font)"
+                      >
+                        {dot.label}
+                      </text>
+                    </g>
+                  );
+                })}
+              </svg>
+            )}
+
+            {dots.map((dot) => (
+              <Box
+                key={dot.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveLabel(activeLabel?.id === dot.id ? null : dot);
+                  setLabelsVisible(false);
+                  moveCameraTo(dot.position);
+                }}
+                style={{
+                  position: "absolute",
+                  left: dot.screen?.x,
+                  top: dot.screen?.y,
+                  transform: "translate(-50%, -50%)",
+                  width: isSmall ? 18 : 28,
+                  height: isSmall ? 18 : 28,
+                  borderRadius: "50%",
+                  background:
+                    activeLabel?.id === dot.id
+                      ? "rgba(249, 246, 246, 0.85)"
+                      : "#1a1a2e",
+                  border: "2px solid #ffffff",
+                  color: activeLabel?.id === dot.id ? "#000000" : "#ffffff",
+                  fontSize: isSmall ? 12 : 15,
+                  fontWeight: "bold",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  zIndex: 10,
+                  userSelect: "none",
+                  opacity: dot.visible ? 1 : 0.15,
+                  transition: "opacity 0.2s ease",
+                }}
+              >
+                {dot.id}
+              </Box>
+            ))}
+            {activeLabel &&
+              (() => {
+                const liveDot = dots.find((d) => d.id === activeLabel.id);
+                return (
+                  <Box
+                    style={{
+                      position: "absolute",
+                      left: (liveDot?.screen?.x ?? activeLabel.screen?.x) + 20,
+                      top: (liveDot?.screen?.y ?? activeLabel.screen?.y) - 20,
+                      background: "rgba(249, 246, 246, 0.85)",
+                      color: "#000",
+                      padding: isSmall ? "3px 6px" : "8px 14px",
+                      borderRadius: 8,
+                      fontSize: isSmall ? 8 : 17,
+                      fontWeight: "500",
+                      fontFamily: "var(--primary-font)",
+                      zIndex: 20,
+                      pointerEvents: "none",
+                      whiteSpace: "nowrap",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                    }}
+                  >
+                    {activeLabel.label}
+                  </Box>
+                );
+              })()}
+
+            <Typography
+              className={style.label}
+              sx={{
+                color: "#fff",
+                position: "absolute",
+                bottom: { xs: "10px", md: "20px" },
+                left: { xs: "60px", sm: "80px", md: "30px" },
+                transform: { xs: "translateX(-50%)", md: "none" },
+                fontFamily: "var(--primary-font)",
+                fontSize: { xs: "10px", sm: "14px", md: "17px" },
+                display: "flex",
+                gap: "5px",
+                alignItems: "center",
+              }}
+            >
+              <BsFillBadge3dFill style={{ fontSize: "inherit" }} /> Brain Model
             </Typography>
-      </Box>
+          </Box>
         </Grid>
-      <Grid item size={{xs:12,md:isMobile?12:4}}>
-        <Box
-        className="model_card"
-        sx={{ marginTop: isMobile?"20px":"80px",display:"flex",justifyContent:"center"}}
-      >
-        <BrainCard activeLabel={activeLabel} />
-      </Box>
-      </Grid>
+        <Grid item size={{ xs: 12, md: isMobile ? 12 : 4 }}>
+          <Box
+            className="model_card"
+            sx={{
+              marginTop: isMobile ? "20px" : "80px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <BrainCard activeLabel={activeLabel} />
+          </Box>
+        </Grid>
       </Grid>
     </Box>
   );
