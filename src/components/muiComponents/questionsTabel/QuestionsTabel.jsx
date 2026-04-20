@@ -12,34 +12,23 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      {
-        date: '2020-01-05',
-        customerId: '11091700',
-        amount: 3,
-      },
-      {
-        date: '2020-01-02',
-        customerId: 'Anonymous',
-        amount: 1,
-      },
-    ],
-  };
-}
+import { MdArrowForwardIos, MdOutlineEdit } from "react-icons/md";
+import { Switch } from '@mui/material';
 
 function Row(props) {
   const { row } = props;
+  console.log("row ", row);
   const [open, setOpen] = React.useState(false);
+  const [checked, setChecked] = React.useState(row?.isActive);
+  console.log(row?.isActive);
+
+  React.useEffect(() => {
+    setChecked(row?.isActive);
+  }, [row?.isActive]);
+
+  const handleToggle = (id, value) => {
+    setChecked(value);
+  };
 
   return (
     <React.Fragment>
@@ -50,17 +39,116 @@ function Row(props) {
             size="small"
             onClick={() => setOpen(!open)}
           >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            {open ? (
+              <KeyboardArrowDownIcon sx={{ color: "var(--secondary-color)" }} />
+            ) : (
+              <MdArrowForwardIos size={"15"} fill={"var(--secondary-color)"} />
+            )}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
+
+        <TableCell align="left" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
+          #{row?.order}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+
+        <TableCell component="th" scope="row" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
+          {row?.code}
+        </TableCell>
+
+        <TableCell
+          align="left"
+          sx={{
+            maxWidth: 400,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            color: checked ? "#fff" : "var(--secondary-color)",
+            fontWeight: "600",
+            textDecoration: checked ? "none" : "line-through"
+          }}
+        >
+          {row?.text}
+        </TableCell>
+
+        <TableCell align="left" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
+          {row?.type === 1 ? "Free text" : "Multi choice"}
+        </TableCell>
+
+        <TableCell align="left" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
+          {row?.code}
+        </TableCell>
+
+        <TableCell
+          align="left"
+          sx={{
+            color: "var(--secondary-color)",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px"
+          }}
+        >
+          <Switch
+            checked={checked}
+            onChange={(e) => handleToggle(row.id, e.target.checked)}
+            disableRipple
+            sx={{
+              width: 42,
+              height: 24,
+              padding: 0,
+
+              '& .MuiSwitch-switchBase': {
+                padding: '3px',
+                transition: '0.3s',
+
+                '&:hover': {
+                  backgroundColor: 'rgba(81, 81, 81, 0.22) !important',
+                },
+
+                '&.Mui-checked': {
+                  transform: 'translateX(18px)',
+                },
+
+                '&.Mui-checked + .MuiSwitch-track': {
+                  backgroundColor: 'var(--primary-color) !important',
+                  opacity: 1,
+                },
+              },
+
+              '& .MuiSwitch-thumb': {
+                width: 18,
+                height: 18,
+                borderRadius: '50%',
+                backgroundColor: 'var(--navy-color)',
+              },
+
+              '& .MuiSwitch-track': {
+                borderRadius: 12,
+                backgroundColor: '#575656 !important',
+                opacity: 1,
+              },
+            }}
+          />
+
+          <Box
+            sx={{
+              backgroundColor: "var(--navy-color)",
+              height: "30px",
+              width: "30px",
+              borderRadius: "50%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              transition: "all .3s",
+              "&:hover": {
+                backgroundColor: "rgba(229, 226, 226, 0.21)",
+              },
+            }}
+          >
+            <MdOutlineEdit size={19} />
+          </Box>
+        </TableCell>
       </TableRow>
+
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
@@ -68,6 +156,7 @@ function Row(props) {
               <Typography variant="h6" gutterBottom component="div">
                 History
               </Typography>
+
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -77,20 +166,8 @@ function Row(props) {
                     <TableCell align="right">Total price ($)</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+
+                <TableBody></TableBody>
               </Table>
             </Box>
           </Collapse>
@@ -102,38 +179,32 @@ function Row(props) {
 
 Row.propTypes = {
   row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    order: PropTypes.number,
+    code: PropTypes.string,
+    text: PropTypes.string,
+    type: PropTypes.number,
+    isActive: PropTypes.bool,
   }).isRequired,
 };
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
-
 export default function QuestionsTabel(data) {
-    console.log("table ", data?.data);
+  console.log("table ", data?.data);
+
   return (
     <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
+      <Table
+        aria-label="collapsible table"
+        sx={{
+          bgcolor: "var(--navy-color)",
+          "& .MuiTableCell-root": {
+            borderBottomColor: "#1e1d1d",
+          }
+        }}
+      >
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
+          {data?.data?.map((row) => (
+            <Row key={row?.id} row={row} />
           ))}
         </TableBody>
       </Table>
