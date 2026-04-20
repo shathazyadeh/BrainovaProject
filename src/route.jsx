@@ -24,6 +24,7 @@ import SupervisorFeedback from "./pages/supervisorPages/supervisorFeedback/Super
 import StudentReports from "./pages/supervisorPages/studentReports/StudentReports.jsx";
 import MyCases from "./pages/studentPages/myCases/MyCases.jsx";
 import LearningHub from "./pages/studentPages/learningHub/LearningHub.jsx";
+import ReportQuestions from "./pages/supervisorPages/reportQuestions/ReportQuestions.jsx";
 
 
 const router = createBrowserRouter([
@@ -118,6 +119,9 @@ const router = createBrowserRouter([
        },{
         path:"supervisor/student-reports/:studentId",
         element:<StudentReports/>
+       },{
+        path:"supervisor/report-questions",
+        element:<ReportQuestions/>
        }
      
     ]

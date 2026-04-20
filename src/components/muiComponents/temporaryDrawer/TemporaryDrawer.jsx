@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { RiDashboard3Fill } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa6";
 import { CgProfile } from "react-icons/cg";
+import { FaRegQuestionCircle } from "react-icons/fa";
 import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegFile } from "react-icons/fa";
@@ -47,6 +48,7 @@ export default function TemporaryDrawer() {
     Reports: ["/dashboard/supervisor/students-reports"],
     Students: ["/dashboard/supervisor/students"],
     Feedback: ["/dashboard/supervisor/feedback"],
+    Questions: ["/dashboard/supervisor/report-questions"]
   };
 
   const DrawerList = (
@@ -101,6 +103,7 @@ export default function TemporaryDrawer() {
           {[
             "Dashboard",
             "Reports",
+            "Questions",
             "Students",
             "Feedback",
             "Profile",
@@ -134,8 +137,9 @@ export default function TemporaryDrawer() {
                     navigate("/dashboard/supervisor/feedback");
                   } else if (text === "Profile") {
                     navigate("/dashboard/supervisor/profile");
-                  }
-                }}
+                  } else if (text === "Questions") {
+                    navigate("/dashboard/supervisor/report-questions");
+                }}}
               >
                 <ListItemIcon>
                   {text === "Dashboard" ? (
@@ -146,9 +150,10 @@ export default function TemporaryDrawer() {
                     <FaUsers fill="#fff" size={22} />
                   ) : text === "Feedback" ? (
                     <MdOutlineFeedback fill="#fff" size={22} />
-                  ) : (
+                  ) : text === "Profile" ? (
                     <CgProfile color="#fff" size={22} />
-                  )}
+                  ) : (<FaRegQuestionCircle fill="#fff" size={21}/>)
+                  }
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>

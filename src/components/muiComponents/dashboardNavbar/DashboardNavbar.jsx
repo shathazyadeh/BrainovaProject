@@ -142,7 +142,7 @@ export default function DashboardNavbar() {
        
 
   {user?.role === "Supervisor"
-  ? ["Dashboard", "Reports", "Students", "Feedback", "Profile", "Logout"].map((text) => (
+  ? ["Dashboard", "Reports", "Questions", "Students", "Feedback", "Profile", "Logout"].map((text) => (
       <MenuItem
         key={text}
         sx={{
@@ -153,6 +153,7 @@ export default function DashboardNavbar() {
         onClick={() => {
           if (text === "Dashboard") navigate("/dashboard/supervisor");
           else if (text === "Reports") navigate("/dashboard/supervisor/students-reports");
+          else if (text === "Questions") navigate("/dashboard/supervisor/report-questions");
           else if (text === "Students") navigate("/dashboard/supervisor/students");
           else if (text === "Feedback") navigate("/dashboard/supervisor/feedback");
           else if (text === "Profile") navigate("/dashboard/supervisor/profile");

@@ -964,6 +964,7 @@ const brainData = {
                 color: "#9234EA",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": { display: "none" },
               }}
             >
@@ -1825,6 +1826,7 @@ const brainData = {
                 color: "#9234EA",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": { display: "none" },
               }}
             >
@@ -2638,6 +2640,7 @@ const brainData = {
                 color: "#9234EA",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": { display: "none" },
               }}
             >
@@ -3479,6 +3482,7 @@ const brainData = {
                 color: "#9234EA",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": { display: "none" },
               }}
             >
@@ -4267,6 +4271,7 @@ const brainData = {
                 color: "#9234EA",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": { display: "none" },
               }}
             >
@@ -4378,6 +4383,7 @@ const brainData = {
                 color: "#2FC770",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": {display:"none"}
               }}
             >
@@ -4452,6 +4458,7 @@ const brainData = {
                 color: "#F59F0A",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": {display:"none"}
               }}
             >
@@ -4881,6 +4888,7 @@ const brainData = {
                 color: "#9234EA",
                 paddingX: "10px",
                 borderRadius: "15px",
+                whiteSpace:"nowrap",
                 "@media (max-width:415px)": {display:"none"}
               }}
             >
