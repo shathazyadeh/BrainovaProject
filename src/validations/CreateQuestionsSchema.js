@@ -2,10 +2,11 @@ import * as yup from "yup";
 
 export const CreateQuestionSchema = yup.object({
   text: yup
-    .string()
-    .trim()
-    .required("Question text is required")
-    .min(5, "Question must be at least 5 characters"),
+  .string()
+  .trim()
+  .required("Question text is required")
+  .min(5, "Question must be at least 5 characters")
+  .matches(/[a-zA-Z]/, "Question must contain at least one letter"),
 
   code: yup
     .string()

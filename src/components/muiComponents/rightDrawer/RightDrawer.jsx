@@ -61,7 +61,7 @@ function RightDrawer({ open, setOpen }) {
       >
         <Box
           sx={{
-            width: 450,
+            width: { xs: "100%", sm: 400, md: 450 },
             height: "100%",
             backgroundColor: "var(--navy-color)",
             border: '1px solid #66636347',
@@ -89,14 +89,13 @@ function RightDrawer({ open, setOpen }) {
             <Typography sx={{ color: "var(--secondary-color)", fontSize: '15px', fontWeight: '200', marginBottom: '10px', fontFamily: 'var(--secondary-font)' }}>Question text</Typography>
 
             <TextField
-
-              placeholder={
-                " What should students answer?"
-              }
+              placeholder={ " What should students answer?" }
               fullWidth
               multiline
               rows={3}
               {...register("text")}
+              error={!!errors.text}
+              helperText={errors.text?.message}
               sx={{
                 "& input::placeholder, & textarea::placeholder": {
                   color: "var(--secondary-color)",
@@ -147,19 +146,16 @@ function RightDrawer({ open, setOpen }) {
                 },
               }}
             />
-            {errors.text && (
-              <Typography sx={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
-                {errors.text.message}
-              </Typography>
-            )}
+           
             <Box sx={{ display: 'flex', gap: "25px", marginTop: '50px' }}>
 
               <TextField
                 label="CODE"
                 fullWidth
                 multiline
-
                 {...register("code")}
+                error={!!errors.code}
+                helperText={errors.code?.message}
                 InputLabelProps={{ shrink: true }}
                 sx={{
                   "& .MuiInputLabel-root": {
@@ -208,8 +204,9 @@ function RightDrawer({ open, setOpen }) {
                 label="ORDER"
                 fullWidth
                 multiline
-
                 {...register("order")}
+                 error={!!errors.order}
+                helperText={errors.order?.message}
                 InputLabelProps={{ shrink: true }}
                 sx={{
                   "& .MuiInputLabel-root": {
@@ -252,22 +249,6 @@ function RightDrawer({ open, setOpen }) {
                   },
                 }}
               />
-            </Box>
-            <Box sx={{ display: 'flex', gap: "25px" }}>
-              <Box sx={{ flex: 1 }}>
-                {errors.code && (
-                  <Typography sx={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
-                    {errors.code.message}
-                  </Typography>
-                )}
-              </Box>
-              <Box sx={{ flex: 1 }}>
-                {errors.order && (
-                  <Typography sx={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
-                    {errors.order.message}
-                  </Typography>
-                )}
-              </Box>
             </Box>
 
             <Box className='question_type flex_column' sx={{ marginTop: '30px', gap: '10px' }}>
@@ -373,7 +354,7 @@ function RightDrawer({ open, setOpen }) {
               />
             </Box>
 
-            <Box className='buttons' sx={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: questionType === 1 ? "160px" : "60px" }}>
+            <Box className='buttons' sx={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: questionType === 1 ? "140px" : "50px" }}>
               <Button onClick={() => setOpen(false)} sx={{
                 color: "var(--secondary-color)", fontSize: "15px", textTransform: 'capitalize', paddingY: '4px', paddingX: '9px', borderRadius: '15px', textAlign: 'center', transition: "all 0.3s", "&:hover": { color: "#fff" }, transition: "all 0.2s ease-in-out",
                 "&:hover": {

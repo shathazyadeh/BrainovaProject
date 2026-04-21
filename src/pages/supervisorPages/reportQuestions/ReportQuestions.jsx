@@ -97,7 +97,7 @@ function ReportQuestions() {
                         >
                             Report Questions
                         </Typography>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Box  sx={{ display: 'flex', justifyContent:"space-between", alignItems: { xs: "flex-start",  }, "@media (max-width:1142px)": {flexDirection:'column'} ,marginBottom:'20px'}}>
                             <Typography sx={{ color: "var(--secondary-color)" }}>
                                 Managing and organizing the questions used for report evaluation.
                             </Typography>
@@ -107,19 +107,22 @@ function ReportQuestions() {
                                     bgcolor: "#ed2c2c",
                                     color: "#f0f2f5",
                                     display: "flex",
-                                    paddingX: '15px',
-                                    paddingY: '10px',
+                                    paddingX: {xs:'10px',md:'15px'},
+                                    paddingY: {xs:'5px',md:'10px'},
                                     gap: '10px',
                                     justifyContent: "center",
                                     textAlign: "center",
                                     borderRadius: "25px",
                                     whiteSpace: "nowrap",
                                     boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+                                   
+                                     "@media (max-width:1142px)": {marginTop:'20px'} ,
+                                    
                                 }}
                             > <Box sx={{ alignItems: 'center', display: 'flex' }}>
                                     <FiPlus size={20} style={{ flexShrink: 0 }} />
                                 </Box>
-                                <Typography sx={{ fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex', textTransform: "capitalize", fontWeight: "500", fontSize: '17px' }}>Create Question</Typography>
+                                <Typography sx={{ fontSize: { xs: "14px",sm:'15px', md: "17px", }, justifyContent: "flex-start", display: 'flex', textTransform: "capitalize", fontWeight: "500",  }}>Create Question</Typography>
                             </Button>
                         </Box>
                     </Box>
