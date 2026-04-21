@@ -1,7 +1,7 @@
-import * as React from 'react';
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
+import { Fragment, useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -19,28 +19,66 @@ import useActivation from '../../../hooks/supervisorHooks/useActivation';
 function Row(props) {
   const { row } = props;
   console.log("row ", row);
-  const [open, setOpen] = React.useState(false);
-  const [checked, setChecked] = React.useState(row?.isActive);
-  const [openEditForm, setOpenEditForm ] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(row?.isActive);
+  const [openEditForm, setOpenEditForm ] = useState(false);
+  const [qsText, setQsText] = useState(row?.text || ""); // for text qs input
+  const [code, setCode] = useState(row?.code || "");// for code input
+  const [selectedType, setSelectedType] = useState(row?.type); // type input
+  const [orderNumber, setOrderNumber] = useState(row?.order || 1); // order input
+  const [optionInput, setOptionInput] = useState(""); //for option input
+  const [optionsList, setOptionsList] = useState(row?.options || []);;//اريه جواها كل الاوبشين اللي قبل والي هتنضاف
   const { usePatchMutation } = useActivation();
-
-const handleToggle = (id) => {
+ const handleToggle = (id) => {
   usePatchMutation.mutate(`${id}/toggle`, {
     onSuccess: () => {
       setChecked((prev) => !prev); //عشان اعكس حالة السويتش بس تنجح العملية 
     },
   });
 };
- 
+const handleQsTextChange = (e) => {
+  setQsText(e.target.value);
+};
+  const handleCodeChange = (e) => {
+  setCode(e.target.value);
+};
+  const handleTypeChange = (e) => {
+  setSelectedType(e.target.value);
+};
+  const handleOrderChange = (e) => {
+  const value = e.target.value;
+  setOrderNumber(value === "" ? "" : Number(value));
+};
+  const handleAddOption = (e) => { //عشان بس يكبس انتر ينضاف الاوبشين
+  if (e.key === "Enter" && optionInput.trim()) { //تأكدت انه كبس انتر
+    e.preventDefault(); // عشان امنع الفورم يسبميت لما اكبس اينتر 
+    setOptionsList([...optionsList, optionInput.trim()]); // القيمة اللي كتبها ضفتها جوا الاريه وعملت الاوبشين ليست سيباريت عشان نحافظ عالقيمة القديمة ونضيف الجديدة 
+    setOptionInput(""); //فرغت الانبوت 
+  }
+};
+const handleDeleteOption = (index) => { // بتحذف العنصر حسب الانديكس
+  setOptionsList(optionsList.filter((item, i) => i !== index));
+};
+//ريسيت عشان اذا سكر الفورم ترجع القيم الاصلية
+useEffect(() => {
+  if (!openEditForm) {
+    setQsText(row?.text || "");
+    setCode(row?.code || "");
+    setSelectedType(row?.type);
+    setOrderNumber(row?.order || 1);
+    setOptionsList(row?.options || []);
+    setOptionInput("");
+  }
+}, [openEditForm, row]);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <TableRow sx={{ '& > *': { borderBottom: open ? "none" : "1px solid #1e1d1d" } }}>
         <TableCell align="center" sx={{width: "50px",paddingLeft:"0px"}}>
           <IconButton
             aria-label="expand row"
             size="small"
-            onClick={() => setOpen(!open)}
+            onClick={() => {setOpen(!open);setTimeout(() => {setOpenEditForm(false);}, 300);}}
           >
             {open ? (
               <KeyboardArrowDownIcon sx={{ color: "var(--secondary-color)" }} />
@@ -92,7 +130,7 @@ const handleToggle = (id) => {
         >
           <Switch
             checked={checked}
-            onChange={() => handleToggle(row.id)} 
+             onChange={() => handleToggle(row.id)} 
             disableRipple
             sx={{
               width: 42,
@@ -132,7 +170,7 @@ const handleToggle = (id) => {
             }}
           />
 
-          <Box onClick={()=>setOpenEditForm(true)}
+          <Box onClick={()=>{setOpen(true);setOpenEditForm(true);}}
             sx={{
               backgroundColor: "var(--navy-color)",
               height: "30px",
@@ -161,7 +199,7 @@ const handleToggle = (id) => {
             <Box className="options" sx={{display:"flex",gap:"8px",marginBottom:"20px"}}>
                 {row?.type===2 ? 
             row?.options?.map(option=>
-            <Typography sx={{width:"fit-content",bgcolor:"rgba(229, 226, 226, 0.21)",borderRadius: "15px",paddingY:"2px",paddingX:"10px",color:"rgb(209, 206, 206)",fontSize:"12px"}}>
+            <Typography key={option} sx={{width:"fit-content",bgcolor:"rgba(229, 226, 226, 0.21)",borderRadius: "15px",paddingY:"2px",paddingX:"10px",color:"rgb(209, 206, 206)",fontSize:"12px"}}>
                 {option}
             </Typography>
             )
@@ -200,7 +238,8 @@ const handleToggle = (id) => {
       fullWidth
       label="QUESTION TEXT"
       variant="standard"
-      value={row?.text}
+      value={qsText}
+      onChange={handleQsTextChange}
       InputLabelProps={{ sx: { color: "var(--mid-gray-color)","&.Mui-focused": {
         color: "var(--primary-color)",
       }, } }}
@@ -208,7 +247,7 @@ const handleToggle = (id) => {
         sx: {
             color: "#fff",
             "& .MuiInput-input": {
-        paddingBottom: "15px",
+       paddingBottom: "10px",
       },
        "&:before": {
         borderBottom: "1px solid var(--mid-gray-color)",
@@ -228,7 +267,8 @@ const handleToggle = (id) => {
     <TextField
       label="CODE"
       variant="standard"
-      value={row?.code}
+      value={code}
+      onChange={handleCodeChange}
       sx={{flex: 1}}
       InputLabelProps={{ sx: { color: "var(--mid-gray-color)","&.Mui-focused": {
         color: "var(--primary-color)",
@@ -237,7 +277,7 @@ const handleToggle = (id) => {
         sx: {
             color: "#fff",
             "& .MuiInput-input": {
-        paddingBottom: "15px",
+        paddingBottom: "10px",
       },
        "&:before": {
         borderBottom: "1px solid var(--mid-gray-color)",
@@ -265,8 +305,8 @@ const handleToggle = (id) => {
   </InputLabel>
   <Select
   fullWidth
-  value={row?.type}
-  onChange={(e) => console.log(e.target.value)}
+  value={selectedType}
+  onChange={handleTypeChange}
   IconComponent={KeyboardArrowDownIcon}
   MenuProps={{
     PaperProps: {
@@ -322,9 +362,9 @@ const handleToggle = (id) => {
   label="ORDER"
   variant="standard"
   type="number"
-  value={row?.order}
+  value={orderNumber}
   inputProps={{ min: 1 }}
-  onChange={(e) => console.log(e.target.value)}
+  onChange={handleOrderChange}
   InputLabelProps={{
     sx: {
       color: "var(--mid-gray-color)",
@@ -341,10 +381,12 @@ const handleToggle = (id) => {
         MozAppearance: "textfield",
       },
 
-      "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
-        {
-          WebkitAppearance: "inner-spin-button", 
-        },
+      "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
+  WebkitAppearance: "inner-spin-button",
+  opacity: 1,
+  filter: "invert(1) sepia(0) saturate(1) hue-rotate(147deg)",
+  cursor: "pointer",
+},
 
       "&:before": {
         borderBottom: "1px solid var(--mid-gray-color)",
@@ -354,13 +396,7 @@ const handleToggle = (id) => {
       },
       "&:after": {
         borderBottom: "2px solid var(--primary-color)",
-      },
-      "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
-  WebkitAppearance: "inner-spin-button",
-  opacity: 1,
-  filter: "invert(1) sepia(0) saturate(1) hue-rotate(147deg)",
-  cursor: "pointer",
-},
+      }
     },
   }}
 />
@@ -371,13 +407,28 @@ const handleToggle = (id) => {
       OPTIONS
     </Typography>
 
-    <Box sx={{ display: "flex", gap: 1 }}>
-      {row?.options?.map((opt, i) => (
+
+    <Box
+  sx={{
+    display: "flex",
+    alignItems: "flex-end",
+    gap: 1,
+    borderBottom: "1px solid var(--mid-gray-color)",
+    paddingBottom: "10px",
+    "&:hover": {
+      borderBottom: "1px solid var(--dark-gray-color)",
+    },
+    "&:focus-within": {
+      borderBottom: "2px solid var(--primary-color)",
+    },
+  }}
+>
+      {optionsList.map((option, index) => (
         <Chip
-          key={i}
-          label={opt}
+          key={index}
+          label={option}
           size="small" 
-          onDelete={() => {}}
+          onDelete={() => handleDeleteOption(index)}
           sx={{
             bgcolor: "rgba(229, 226, 226, 0.21)",
             color: "#fff",
@@ -391,6 +442,36 @@ const handleToggle = (id) => {
           }}
         />
       ))}
+      <TextField
+  variant="standard"
+  value={optionInput}
+  onChange={(e) => setOptionInput(e.target.value)}
+  onKeyDown={handleAddOption}
+  label="Type and press Enter..."
+  sx={{
+    flex: 1,
+    minWidth: "150px",
+  }}
+  InputLabelProps={{
+    sx: {
+      color: "var(--mid-gray-color)",
+      fontSize:"13px",
+      "&.Mui-focused": {
+       opacity: 0,
+      },
+    },
+  }}
+  InputProps={{
+    disableUnderline: true,
+    sx: {
+      color: "#fff",
+      "& .MuiInput-input": {
+        padding: "0", 
+        margin: 0,
+      },
+    },
+  }}
+/>
     </Box>
   </Box>
 
@@ -404,7 +485,7 @@ const handleToggle = (id) => {
   >
     <Button
     startIcon={<MdClose size={18} />}
-    onClick={()=>setOpenEditForm(false)}
+    onClick={() => {setOpenEditForm(false);}}
   sx={{
     color: "#aaa",
     borderRadius: "20px",
@@ -445,7 +526,7 @@ const handleToggle = (id) => {
           </Collapse>
         </TableCell>
       </TableRow>
-    </React.Fragment>
+    </Fragment>
   );
 }
 
