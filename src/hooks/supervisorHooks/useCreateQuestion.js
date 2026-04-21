@@ -1,11 +1,7 @@
 import usePost from "../generalHooks/usePost";
 
-
-export const useCreateQuestion = (options = {}) => {
-  const { usePostMutation, serverErrors } = usePost( "/Supervisor/ReportQuestions",
-    options
-    
-  );
+export const useCreateQuestion = () => {
+  const { usePostMutation, serverErrors } = usePost( "/Supervisor/ReportQuestions");
 
   return { usePostMutation, serverErrors };
 };

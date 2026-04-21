@@ -1,6 +1,8 @@
-import { useState } from "react";
+////import { useState } from "react";
 import axiosInstance from "../../Api/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function usePost(url, options = {}) {
   const [serverErrors, setServerErrors] = useState("");
@@ -25,12 +27,12 @@ export default function usePost(url, options = {}) {
       setServerErrors("");
       if (options?.onSuccess) {
         options.onSuccess(response);
-        toast.success(response);
+        toast.success(response?.message || "Success");
       }
     },
 
     onError: (err) => {
-      setServerErrors(err.response?.data?.message);
+      setServerErrors(err.response?.data?.message || "Something went wrong");
     },
   });
 

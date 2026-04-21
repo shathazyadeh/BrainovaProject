@@ -14,6 +14,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { MdArrowForwardIos, MdOutlineEdit, MdClose, MdCheck } from "react-icons/md";
 import { Button, Chip, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material';
+import useActivation from '../../../hooks/supervisorHooks/useActivation';
 
 function Row(props) {
   const { row } = props;
@@ -21,10 +22,16 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const [checked, setChecked] = React.useState(row?.isActive);
   const [openEditForm, setOpenEditForm ] = React.useState(false);
+  const { usePatchMutation } = useActivation();
 
-  const handleToggle = (id, value) => {
-    setChecked(value);
-  };
+const handleToggle = (id) => {
+  usePatchMutation.mutate(`${id}/toggle`, {
+    onSuccess: () => {
+      setChecked((prev) => !prev); //عشان اعكس حالة السويتش بس تنجح العملية 
+    },
+  });
+};
+ 
 
   return (
     <React.Fragment>
@@ -85,7 +92,7 @@ function Row(props) {
         >
           <Switch
             checked={checked}
-            onChange={(e) => handleToggle(row.id, e.target.checked)}
+            onChange={() => handleToggle(row.id)} 
             disableRipple
             sx={{
               width: 42,

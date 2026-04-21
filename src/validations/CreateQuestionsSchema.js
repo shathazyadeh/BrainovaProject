@@ -10,8 +10,7 @@ export const CreateQuestionSchema = yup.object({
   code: yup
     .string()
     .trim()
-    .required("Code is required")
-    .min(1, "Code cannot be empty"),
+    .required("Code is required"),
 
   order: yup
     .number()

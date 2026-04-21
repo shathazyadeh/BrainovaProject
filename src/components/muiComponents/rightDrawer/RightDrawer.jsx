@@ -32,11 +32,10 @@ function RightDrawer({ open, setOpen }) {
     resolver: yupResolver(CreateQuestionSchema),
   });
 
-  const { usePostMutation, serverErrors } = useCreateQuestion({
+  const { usePostMutation } = useCreateQuestion({
     onSuccess: () => {
       reset();
       setOpen(false);
-      toast.success("Question created successfully!");
     },
   });
   const onSubmit = (data) => {
@@ -50,11 +49,7 @@ function RightDrawer({ open, setOpen }) {
         isRequired: true,
         options: optionsList.length > 0 ? optionsList : [""],
       },
-      {
-        onError: (err) => {
-          toast.error(err.response?.data?.message); 
-        },
-      }
+      
     );
   };
   return (
@@ -163,7 +158,7 @@ function RightDrawer({ open, setOpen }) {
                 label="CODE"
                 fullWidth
                 multiline
-           
+
                 {...register("code")}
                 InputLabelProps={{ shrink: true }}
                 sx={{
@@ -213,7 +208,7 @@ function RightDrawer({ open, setOpen }) {
                 label="ORDER"
                 fullWidth
                 multiline
-                
+
                 {...register("order")}
                 InputLabelProps={{ shrink: true }}
                 sx={{
@@ -284,51 +279,51 @@ function RightDrawer({ open, setOpen }) {
             </Box>
             {questionType !== 1 && (
               <Box>
-               <Typography sx={{ color: "var(--secondary-color)", fontSize: '14px', fontWeight: '200', marginBottom: '10px', fontFamily: 'var(--secondary-font)' ,marginTop:'20px'}}>Options</Typography>
+                <Typography sx={{ color: "var(--secondary-color)", fontSize: '14px', fontWeight: '200', marginBottom: '10px', fontFamily: 'var(--secondary-font)', marginTop: '20px' }}>Options</Typography>
 
-              <Box sx={{
-                border: "none",
-                borderBottom: "1px solid #5958588b",
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "8px",
-                padding: "8px 0",
-                marginTop: "15px",
-                alignItems: "center",
-              }}>
-                {optionsList.map((option, index) => ( // بنلف ع العنصار الاريه عشان نعرض الاوبشين 
-                 
-                 <Chip // مربوط فيه الانديكس
-                    key={index}
-                    label={option}
-                    onDelete={() => handleDeleteOption(index)}
-                    sx={{
-                      bgcolor: "#242424",
-                      color: "#eee7e7",
-                      "& .MuiChip-deleteIcon": {
-                        fontSize: "20px",
-                        color: '#6c6c6c',
+                <Box sx={{
+                  border: "none",
+                  borderBottom: "1px solid #5958588b",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "8px",
+                  padding: "8px 0",
+                  marginTop: "15px",
+                  alignItems: "center",
+                }}>
+                  {optionsList.map((option, index) => ( // بنلف ع العنصار الاريه عشان نعرض الاوبشين 
 
-                      },
+                    <Chip // مربوط فيه الانديكس
+                      key={index}
+                      label={option}
+                      onDelete={() => handleDeleteOption(index)}
+                      sx={{
+                        bgcolor: "#242424",
+                        color: "#eee7e7",
+                        "& .MuiChip-deleteIcon": {
+                          fontSize: "20px",
+                          color: '#6c6c6c',
+
+                        },
+                      }}
+                    />
+                  ))}
+                  <input
+                    value={optionInput}
+                    onChange={(e) => setOptionInput(e.target.value)} // القيمة اللي بكتبها 
+                    onKeyDown={handleAddOption}
+                    placeholder="Type and press Enter..."
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      outline: "none",
+                      color: "#fff",
+                      fontSize: "14px",
+                      flex: 1,
+                      minWidth: "150px",
                     }}
                   />
-                ))}
-                <input
-                  value={optionInput}
-                  onChange={(e) => setOptionInput(e.target.value)} // القيمة اللي بكتبها 
-                  onKeyDown={handleAddOption}
-                  placeholder="Type and press Enter..."
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    outline: "none",
-                    color: "#fff",
-                    fontSize: "14px",
-                    flex: 1,
-                    minWidth: "150px",
-                  }}
-                />
-              </Box>
+                </Box>
               </Box>
             )}
 
@@ -378,8 +373,13 @@ function RightDrawer({ open, setOpen }) {
               />
             </Box>
 
-            <Box className='buttons' sx={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '70px' }}>
-              <Button onClick={() => setOpen(false)} sx={{ color: "var(--secondary-color)", fontSize: "15px", textTransform: 'capitalize', paddingY: '4px', paddingX: '9px', borderRadius: '15px', textAlign: 'center', transition: "all 0.3s", "&:hover": { color: "#fff" } }}>Cancel</Button>
+            <Box className='buttons' sx={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: questionType === 1 ? "160px" : "60px" }}>
+              <Button onClick={() => setOpen(false)} sx={{
+                color: "var(--secondary-color)", fontSize: "15px", textTransform: 'capitalize', paddingY: '4px', paddingX: '9px', borderRadius: '15px', textAlign: 'center', transition: "all 0.3s", "&:hover": { color: "#fff" }, transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                },
+              }}>Cancel</Button>
               <Button type="submit"
                 disabled={usePostMutation?.isPending}
                 sx={{
@@ -394,6 +394,11 @@ function RightDrawer({ open, setOpen }) {
                   borderRadius: "25px",
                   whiteSpace: "nowrap",
                   boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+                  transition: "all 0.2s ease-in-out",
+                  "&:hover": {
+                    transform: "translateY(-3px)",
+                    boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
+                  },
                 }}
               > <Box sx={{ alignItems: 'center', display: 'flex' }}>
                   <FiPlus size={20} style={{ flexShrink: 0 }} />
