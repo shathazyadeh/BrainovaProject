@@ -12,14 +12,15 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { MdArrowForwardIos, MdOutlineEdit } from "react-icons/md";
-import { Switch } from '@mui/material';
+import { MdArrowForwardIos, MdOutlineEdit, MdClose, MdCheck } from "react-icons/md";
+import { Button, Chip, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material';
 
 function Row(props) {
   const { row } = props;
   console.log("row ", row);
   const [open, setOpen] = React.useState(false);
   const [checked, setChecked] = React.useState(row?.isActive);
+  const [openEditForm, setOpenEditForm ] = React.useState(false);
 
   const handleToggle = (id, value) => {
     setChecked(value);
@@ -124,7 +125,7 @@ function Row(props) {
             }}
           />
 
-          <Box
+          <Box onClick={()=>setOpenEditForm(true)}
             sx={{
               backgroundColor: "var(--navy-color)",
               height: "30px",
@@ -133,6 +134,7 @@ function Row(props) {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              cursor:"pointer",
               transition: "all .3s",
               "&:hover": {
                 bgcolor: "rgba(229, 226, 226, 0.21)",
@@ -147,6 +149,7 @@ function Row(props) {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open} timeout="auto" unmountOnExit>
+          {!openEditForm?
           <Box className="inner_content" sx={{color:"#fff", paddingBottom:"30px",paddingTop:"10px",paddingLeft:"70px"}}>
             <Box className="options" sx={{display:"flex",gap:"8px",marginBottom:"20px"}}>
                 {row?.type===2 ? 
@@ -167,12 +170,271 @@ function Row(props) {
                     <Typography component={'span'} sx={{fontSize:"13px"}}>Inactive</Typography>
                     }
                 </Typography>
-                <Box sx={{color: "var(--primary-color)",display: "flex",alignItems: "center",gap: "2px",cursor:"pointer",transition: "all 0.3s ease",borderBottom: "1px solid transparent",'&:hover': {borderBottom: "1px solid var(--primary-color)"}}}>
+                <Box onClick={()=>setOpenEditForm(true)} sx={{color: "var(--primary-color)",display: "flex",alignItems: "center",gap: "2px",
+                          cursor:"pointer",transition: "all 0.3s ease",borderBottom: "1px solid transparent",
+                          '&:hover': {borderBottom: "1px solid var(--primary-color)"}}}>
                   <MdOutlineEdit size={15} style={{ transform: "translateY(-1px)" }} />
                   <Typography sx={{ fontSize: "13px" ,textShadow: "0 0 6px var(--primary-color)"}}>Edit inline</Typography>
                 </Box>
             </Box>
           </Box>
+          :
+          <Box className="edit_question_form"
+  sx={{
+    paddingBottom:"30px",paddingTop:"10px",paddingLeft:"70px",
+    display: "flex",
+    flexDirection: "column",
+    gap: 3,
+  }}
+>
+  <Box className="question_text">
+
+    <TextField
+      fullWidth
+      label="QUESTION TEXT"
+      variant="standard"
+      value={row?.text}
+      InputLabelProps={{ sx: { color: "var(--mid-gray-color)","&.Mui-focused": {
+        color: "var(--primary-color)",
+      }, } }}
+      InputProps={{
+        sx: {
+            color: "#fff",
+            "& .MuiInput-input": {
+        paddingBottom: "15px",
+      },
+       "&:before": {
+        borderBottom: "1px solid var(--mid-gray-color)",
+      },
+      "&:hover:not(.Mui-disabled):before": {
+        borderBottom: "1px solid var(--dark-gray-color)",
+      },
+      "&:after": {
+        borderBottom: "2px solid var(--primary-color)",
+      },
+        }
+      }}
+    />
+  </Box>
+
+  <Box className="code_type_order" sx={{ display: "flex", justifyContent:"space-between", alignItems: "flex-end", gap: 5, }}>
+    <TextField
+      label="CODE"
+      variant="standard"
+      value={row?.code}
+      sx={{flex: 1}}
+      InputLabelProps={{ sx: { color: "var(--mid-gray-color)","&.Mui-focused": {
+        color: "var(--primary-color)",
+      }, } }}
+      InputProps={{ 
+        sx: {
+            color: "#fff",
+            "& .MuiInput-input": {
+        paddingBottom: "15px",
+      },
+       "&:before": {
+        borderBottom: "1px solid var(--mid-gray-color)",
+      },
+      "&:hover:not(.Mui-disabled):before": {
+        borderBottom: "1px solid var(--dark-gray-color)",
+      },
+      "&:after": {
+        borderBottom: "2px solid var(--primary-color)",
+      },
+        }
+       }}
+    />
+
+    <FormControl variant="standard" sx={{flex: 1, minWidth: 150 }}>
+        <InputLabel
+    sx={{
+      color: "var(--mid-gray-color)",
+      "&.Mui-focused": {
+        color: "var(--primary-color)",
+      },
+    }}
+  >
+    TYPE
+  </InputLabel>
+  <Select
+  fullWidth
+  value={row?.type}
+  onChange={(e) => console.log(e.target.value)}
+  IconComponent={KeyboardArrowDownIcon}
+  MenuProps={{
+    PaperProps: {
+      sx: {
+        bgcolor: "var(--navy-color)",
+        color: "var(--secondary-color)",
+        borderBottomLeftRadius:"25px",
+        borderBottomRightRadius:"25px",
+
+        "& .MuiMenuItem-root": {
+          color: "var(--secondary-color)",
+          transition: "0.2s",
+
+          "&:hover": {
+            backgroundColor: "rgba(229, 226, 226, 0.08)",
+          },
+
+          "&.Mui-selected": {
+            backgroundColor: "rgba(229, 226, 226, 0.15)",
+            color: "var(--primary-color)",
+          },
+
+          "&.Mui-selected:hover": {
+            backgroundColor: "rgba(229, 226, 226, 0.2)",
+          },
+        },
+      },
+    },
+  }}
+  sx={{
+    color: "#fff",
+    "& .MuiSelect-icon": {
+      color: "var(--mid-gray-color)",
+    },
+    "&:before": {
+      borderBottom: "1px solid var(--mid-gray-color)",
+    },
+    "&:hover:not(.Mui-disabled):before": {
+      borderBottom: "1px solid var(--dark-gray-color)",
+    },
+    "&:after": {
+      borderBottom: "2px solid var(--primary-color)",
+    },
+  }}
+>
+  <MenuItem value={1}>Free text</MenuItem>
+  <MenuItem value={2} sx={{borderBottomLeftRadius: "25px",
+        borderBottomRightRadius: "25px",}}>Multi choice</MenuItem>
+</Select>
+</FormControl>
+
+    <TextField
+  label="ORDER"
+  variant="standard"
+  type="number"
+  value={row?.order}
+  inputProps={{ min: 1 }}
+  onChange={(e) => console.log(e.target.value)}
+  InputLabelProps={{
+    sx: {
+      color: "var(--mid-gray-color)",
+      "&.Mui-focused": {
+        color: "var(--primary-color)",
+      },
+    },
+  }}
+  InputProps={{
+    sx: {
+      color: "#fff",
+
+      "& input[type=number]": {
+        MozAppearance: "textfield",
+      },
+
+      "& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button":
+        {
+          WebkitAppearance: "inner-spin-button", 
+        },
+
+      "&:before": {
+        borderBottom: "1px solid var(--mid-gray-color)",
+      },
+      "&:hover:not(.Mui-disabled):before": {
+        borderBottom: "1px solid var(--dark-gray-color)",
+      },
+      "&:after": {
+        borderBottom: "2px solid var(--primary-color)",
+      },
+      "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
+  WebkitAppearance: "inner-spin-button",
+  opacity: 1,
+  filter: "invert(1) sepia(0) saturate(1) hue-rotate(147deg)",
+  cursor: "pointer",
+},
+    },
+  }}
+/>
+  </Box>
+
+  <Box className="options">
+    <Typography sx={{ fontSize: "12px", color: "var(--mid-gray-color)", marginBottom:"8px" }}>
+      OPTIONS
+    </Typography>
+
+    <Box sx={{ display: "flex", gap: 1 }}>
+      {row?.options?.map((opt, i) => (
+        <Chip
+          key={i}
+          label={opt}
+          size="small" 
+          onDelete={() => {}}
+          sx={{
+            bgcolor: "rgba(229, 226, 226, 0.21)",
+            color: "#fff",
+            "& .MuiChip-deleteIcon": {
+  color: "var(--mid-gray-color)",
+  transition: "0.2s",
+  "&:hover": {
+    color: "var(--primary-color)"
+  },
+}
+          }}
+        />
+      ))}
+    </Box>
+  </Box>
+
+  <Box className="action_btns"
+    sx={{
+      display: "flex",
+      justifyContent: "flex-end",
+      gap: 2,
+      marginTop:"16px",
+    }}
+  >
+    <Button
+    startIcon={<MdClose size={18} />}
+    onClick={()=>setOpenEditForm(false)}
+  sx={{
+    color: "#aaa",
+    borderRadius: "20px",
+    paddingX: "8px",
+    transition:"all 0.3s",
+    '&:hover': {
+        color: 'var(--primary-color)',
+    },
+    "& .MuiButton-startIcon": {
+      marginRight: "4px",
+    },
+  }}
+>
+  <Typography sx={{ fontSize: "14px" }}>Cancel</Typography>
+</Button>
+
+    <Button
+  variant="contained"
+  startIcon={<MdCheck size={18} />}
+  sx={{
+    bgcolor: "var(--primary-color)",
+    borderRadius: "20px",
+    px: 3,
+    transition: "all 0.3s",
+    "&:hover": {
+      backgroundColor: "#ae1d1d",
+    },
+    "& .MuiButton-startIcon": {
+      marginRight: "4px",
+    },
+  }}
+>
+  Save
+</Button>
+  </Box>
+</Box>
+          }
           </Collapse>
         </TableCell>
       </TableRow>
