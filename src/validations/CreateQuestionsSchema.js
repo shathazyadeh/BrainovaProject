@@ -21,7 +21,12 @@ export const CreateQuestionSchema = yup.object({
     .integer("Order must be an integer")
     .transform((val, original) => original === "" ? undefined : Number(original)), // 
 
-  options: yup
-    .string()
-    .nullable(),
-});
+   options: yup.array().when("type", {
+     is: 2, 
+     then: (schema) =>
+       schema
+         .of(yup.string().trim().required("Option cannot be empty"))
+         .min(2, "At least 2 options are required"),
+         otherwise: (schema) => schema.notRequired(),
+   }),
+ });

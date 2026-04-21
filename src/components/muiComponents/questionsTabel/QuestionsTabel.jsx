@@ -1,33 +1,47 @@
-import PropTypes from 'prop-types';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import { Fragment, useEffect, useState } from 'react';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { MdArrowForwardIos, MdOutlineEdit, MdClose, MdCheck } from "react-icons/md";
-import { Button, Chip, FormControl, InputLabel, MenuItem, Select, Switch, TextField } from '@mui/material';
+import PropTypes from "prop-types";
+import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
+import { Fragment, useEffect, useState } from "react";
+import IconButton from "@mui/material/IconButton";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import {
+  MdArrowForwardIos,
+  MdOutlineEdit,
+  MdClose,
+  MdCheck,
+} from "react-icons/md";
+import {
+  Button,
+  Chip,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Switch,
+  TextField,
+} from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { UpdateQuestionSchema } from "../../../validations/UpdateQuestionsSchema";
+import useUpdateQuestions from "../../../hooks/supervisorHooks/useUpdateQuestions";
 import useActivation from '../../../hooks/supervisorHooks/useActivation';
 
 function Row(props) {
   const { row } = props;
-  console.log("row ", row);
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(row?.isActive);
-  const [openEditForm, setOpenEditForm ] = useState(false);
-  const [qsText, setQsText] = useState(row?.text || ""); // for text qs input
-  const [code, setCode] = useState(row?.code || "");// for code input
-  const [selectedType, setSelectedType] = useState(row?.type); // type input
-  const [orderNumber, setOrderNumber] = useState(row?.order || 1); // order input
+  const [openEditForm, setOpenEditForm] = useState(false);
   const [optionInput, setOptionInput] = useState(""); //for option input
-  const [optionsList, setOptionsList] = useState(row?.options || []);;//اريه جواها كل الاوبشين اللي قبل والي هتنضاف
+  const [optionsList, setOptionsList] = useState(row?.options || []); //اريه جواها كل الاوبشين اللي قبل والي هتنضاف
   const { usePatchMutation } = useActivation();
  const handleToggle = (id) => {
   usePatchMutation.mutate(`${id}/toggle`, {
@@ -36,49 +50,103 @@ function Row(props) {
     },
   });
 };
-const handleQsTextChange = (e) => {
-  setQsText(e.target.value);
-};
-  const handleCodeChange = (e) => {
-  setCode(e.target.value);
-};
-  const handleTypeChange = (e) => {
-  setSelectedType(e.target.value);
-};
-  const handleOrderChange = (e) => {
-  const value = e.target.value;
-  setOrderNumber(value === "" ? "" : Number(value));
-};
-  const handleAddOption = (e) => { //عشان بس يكبس انتر ينضاف الاوبشين
-  if (e.key === "Enter" && optionInput.trim()) { //تأكدت انه كبس انتر
-    e.preventDefault(); // عشان امنع الفورم يسبميت لما اكبس اينتر 
-    setOptionsList([...optionsList, optionInput.trim()]); // القيمة اللي كتبها ضفتها جوا الاريه وعملت الاوبشين ليست سيباريت عشان نحافظ عالقيمة القديمة ونضيف الجديدة 
-    setOptionInput(""); //فرغت الانبوت 
-  }
-};
-const handleDeleteOption = (index) => { // بتحذف العنصر حسب الانديكس
-  setOptionsList(optionsList.filter((item, i) => i !== index));
-};
-//ريسيت عشان اذا سكر الفورم ترجع القيم الاصلية
-useEffect(() => {
-  if (!openEditForm) {
-    setQsText(row?.text || "");
-    setCode(row?.code || "");
-    setSelectedType(row?.type);
-    setOrderNumber(row?.order || 1);
-    setOptionsList(row?.options || []);
-    setOptionInput("");
-  }
-}, [openEditForm, row]);
+  
+  const handleAddOption = (e) => {
+    //عشان بس يكبس انتر ينضاف الاوبشين
+    if (e.key === "Enter" && optionInput.trim()) {
+      //تأكدت انه كبس انتر
+      e.preventDefault(); // عشان امنع الفورم يسبميت لما اكبس اينتر
+      setOptionsList([...optionsList, optionInput.trim()]); // القيمة اللي كتبها ضفتها جوا الاريه وعملت الاوبشين ليست سيباريت عشان نحافظ عالقيمة القديمة ونضيف الجديدة
+      setOptionInput(""); //فرغت الانبوت
+    }
+  };
+  const handleDeleteOption = (index) => {
+    // بتحذف العنصر حسب الانديكس
+    setOptionsList(optionsList.filter((item, i) => i !== index));
+  };
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(UpdateQuestionSchema),
+    defaultValues: {
+      text: row?.text,
+      code: row?.code,
+      order: row?.order,
+      type: row?.type,
+      options: row?.options || [],
+    },
+  });
+
+  const selectedType = watch("type");
+  useEffect(() => {
+    //عشان اذا غير التايب ل 1 نفضي الاوبشينز
+    if (selectedType === 1) {
+      setOptionsList([]);
+      setValue("options", []);
+    }
+  }, [selectedType, setValue]);
+
+  useEffect(() => {
+    //ريسيت للفورم عشان لما افتحه ما يكون على الكتابة الي عدلتها وما سبمتها
+    if (openEditForm) {
+      reset({
+        text: row?.text,
+        code: row?.code,
+        order: row?.order,
+        type: row?.type,
+        options: row?.options || [],
+      });
+
+      setOptionsList(row?.options || []);
+    }
+  }, [openEditForm, row, reset]);
+
+  const { updateQuestionsMutation } = useUpdateQuestions();
+  const onSubmit = (formData) => {
+    const payload = {
+      text: formData.text,
+      code: formData.code,
+      order: Number(formData.order),
+      type: formData.type,
+      isActive: checked,
+      isRequired: true,
+      options: optionsList.length ? optionsList : [],
+    };
+    updateQuestionsMutation.mutate(
+      {
+        reportId: row.id,
+        data: payload,
+      },
+      {
+        onSuccess: () => {
+          setOpenEditForm(false);
+        },
+      },
+    );
+  };
 
   return (
     <Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: open ? "none" : "1px solid #1e1d1d" } }}>
-        <TableCell align="center" sx={{width: "50px",paddingLeft:"0px"}}>
+      <TableRow
+        sx={{ "& > *": { borderBottom: open ? "none" : "1px solid #1e1d1d" } }}
+      >
+        <TableCell align="center" sx={{ width: "50px", paddingLeft: "0px" }}>
           <IconButton
             aria-label="expand row"
             size="small"
-            onClick={() => {setOpen(!open);setTimeout(() => {setOpenEditForm(false);}, 300);}}
+            onClick={() => {
+              setOpen(!open);
+              setTimeout(() => {
+                setOpenEditForm(false);
+              }, 300);
+            }}
           >
             {open ? (
               <KeyboardArrowDownIcon sx={{ color: "var(--secondary-color)" }} />
@@ -88,11 +156,18 @@ useEffect(() => {
           </IconButton>
         </TableCell>
 
-        <TableCell align="left" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
+        <TableCell
+          align="left"
+          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
+        >
           #{row?.order}
         </TableCell>
 
-        <TableCell component="th" scope="row" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
+        <TableCell
+          component="th"
+          scope="row"
+          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
+        >
           {row?.code}
         </TableCell>
 
@@ -105,17 +180,23 @@ useEffect(() => {
             textOverflow: "ellipsis",
             color: checked ? "#fff" : "var(--secondary-color)",
             fontWeight: "600",
-            textDecoration: checked ? "none" : "line-through"
+            textDecoration: checked ? "none" : "line-through",
           }}
         >
           {row?.text}
         </TableCell>
 
-        <TableCell align="left" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
-          {row?.type === 1 ? "Free text" : "Multi choice"}
+        <TableCell
+          align="left"
+          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
+        >
+          {row?.type === 1 ? "Free text" : "Single choice"}
         </TableCell>
 
-        <TableCell align="left" sx={{ color: "var(--secondary-color)", fontWeight: "600" }}>
+        <TableCell
+          align="left"
+          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
+        >
           {row?.code}
         </TableCell>
 
@@ -125,52 +206,55 @@ useEffect(() => {
             color: "var(--secondary-color)",
             display: "flex",
             alignItems: "center",
-            gap: "10px"
+            gap: "10px",
           }}
         >
           <Switch
             checked={checked}
-             onChange={() => handleToggle(row.id)} 
+             onChange={() => handleToggle(row.id)}
             disableRipple
             sx={{
               width: 42,
               height: 24,
               padding: 0,
+              "& .MuiSwitch-switchBase": {
+                padding: "3px",
+                transition: "0.3s",
 
-              '& .MuiSwitch-switchBase': {
-                padding: '3px',
-                transition: '0.3s',
-
-                '&:hover': {
-                  backgroundColor: 'rgba(81, 81, 81, 0.22) !important',
+                "&:hover": {
+                  backgroundColor: "rgba(81, 81, 81, 0.22) !important",
                 },
 
-                '&.Mui-checked': {
-                  transform: 'translateX(18px)',
+                "&.Mui-checked": {
+                  transform: "translateX(18px)",
                 },
 
-                '&.Mui-checked + .MuiSwitch-track': {
-                  backgroundColor: 'var(--primary-color) !important',
+                "&.Mui-checked + .MuiSwitch-track": {
+                  backgroundColor: "#ff0000 !important",
                   opacity: 1,
                 },
               },
 
-              '& .MuiSwitch-thumb': {
+              "& .MuiSwitch-thumb": {
                 width: 18,
                 height: 18,
-                borderRadius: '50%',
-                backgroundColor: 'var(--navy-color)',
+                borderRadius: "50%",
+                backgroundColor: "var(--navy-color)",
               },
 
-              '& .MuiSwitch-track': {
+              "& .MuiSwitch-track": {
                 borderRadius: 12,
-                backgroundColor: '#575656 !important',
+                backgroundColor: "#575656 !important",
                 opacity: 1,
               },
             }}
           />
 
-          <Box onClick={()=>{setOpen(true);setOpenEditForm(true);}}
+          <Box
+            onClick={() => {
+              setOpen(true);
+              setOpenEditForm(true);
+            }}
             sx={{
               backgroundColor: "var(--navy-color)",
               height: "30px",
@@ -179,7 +263,7 @@ useEffect(() => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              cursor:"pointer",
+              cursor: "pointer",
               transition: "all .3s",
               "&:hover": {
                 bgcolor: "rgba(229, 226, 226, 0.21)",
@@ -194,335 +278,483 @@ useEffect(() => {
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-          {!openEditForm?
-          <Box className="inner_content" sx={{color:"#fff", paddingBottom:"30px",paddingTop:"10px",paddingLeft:"70px"}}>
-            <Box className="options" sx={{display:"flex",gap:"8px",marginBottom:"20px"}}>
-                {row?.type===2 ? 
-            row?.options?.map(option=>
-            <Typography key={option} sx={{width:"fit-content",bgcolor:"rgba(229, 226, 226, 0.21)",borderRadius: "15px",paddingY:"2px",paddingX:"10px",color:"rgb(209, 206, 206)",fontSize:"12px"}}>
-                {option}
-            </Typography>
-            )
-            : 
-            <Typography sx={{color:"var(--secondary-color)",fontSize:"13px"}}>No options defined.</Typography>
-            }
-            </Box>
-            <Box className="footer" sx={{display:"flex",gap:"20px"}}>
-                <Typography sx={{fontSize:"13px",color:"var(--secondary-color)"}}>Status:{" "}
-                    {row?.isActive ? 
-                    <Typography component={'span'} sx={{color:"#38d479",fontSize:"13px",textShadow: "0 0 6px #38d479"}}>Active</Typography>
-                    :
-                    <Typography component={'span'} sx={{fontSize:"13px"}}>Inactive</Typography>
-                    }
-                </Typography>
-                <Box onClick={()=>setOpenEditForm(true)} sx={{color: "var(--primary-color)",display: "flex",alignItems: "center",gap: "2px",
-                          cursor:"pointer",transition: "all 0.3s ease",borderBottom: "1px solid transparent",
-                          '&:hover': {borderBottom: "1px solid var(--primary-color)"}}}>
-                  <MdOutlineEdit size={15} style={{ transform: "translateY(-1px)" }} />
-                  <Typography sx={{ fontSize: "13px" ,textShadow: "0 0 6px var(--primary-color)"}}>Edit inline</Typography>
+            {!openEditForm ? (
+              <Box
+                className="inner_content"
+                sx={{
+                  color: "#fff",
+                  paddingBottom: "30px",
+                  paddingTop: "10px",
+                  paddingLeft: "70px",
+                }}
+              >
+                <Box
+                  className="options"
+                  sx={{ display: "flex", gap: "8px", marginBottom: "20px" }}
+                >
+                  {row?.type === 2 ? (
+                    row?.options?.map((option) => (
+                      <Typography
+                        key={option}
+                        sx={{
+                          width: "fit-content",
+                          bgcolor: "rgba(229, 226, 226, 0.21)",
+                          borderRadius: "15px",
+                          paddingY: "2px",
+                          paddingX: "10px",
+                          color: "rgb(209, 206, 206)",
+                          fontSize: "12px",
+                        }}
+                      >
+                        {option}
+                      </Typography>
+                    ))
+                  ) : (
+                    <Typography
+                      sx={{ color: "var(--secondary-color)", fontSize: "13px" }}
+                    >
+                      No options defined.
+                    </Typography>
+                  )}
                 </Box>
-            </Box>
-          </Box>
-          :
-          <Box className="edit_question_form"
-  sx={{
-    paddingBottom:"30px",paddingTop:"10px",paddingLeft:"70px",
-    display: "flex",
-    flexDirection: "column",
-    gap: 3,
-  }}
->
-  <Box className="question_text">
+                <Box className="footer" sx={{ display: "flex", gap: "20px" }}>
+                  <Typography
+                    sx={{ fontSize: "13px", color: "var(--secondary-color)" }}
+                  >
+                    Status:{" "}
+                    {row?.isActive ? (
+                      <Typography
+                        component={"span"}
+                        sx={{
+                          color: "#38d479",
+                          fontSize: "13px",
+                          textShadow: "0 0 6px #38d479",
+                        }}
+                      >
+                        Active
+                      </Typography>
+                    ) : (
+                      <Typography component={"span"} sx={{ fontSize: "13px" }}>
+                        Inactive
+                      </Typography>
+                    )}
+                  </Typography>
+                  <Box
+                    onClick={() => setOpenEditForm(true)}
+                    sx={{
+                      color: "var(--primary-color)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "2px",
+                      cursor: "pointer",
+                      transition: "all 0.3s ease",
+                      borderBottom: "1px solid transparent",
+                      "&:hover": {
+                        borderBottom: "1px solid var(--primary-color)",
+                      },
+                    }}
+                  >
+                    <MdOutlineEdit
+                      size={15}
+                      style={{ transform: "translateY(-1px)" }}
+                    />
+                    <Typography
+                      sx={{
+                        fontSize: "13px",
+                        textShadow: "0 0 6px var(--primary-color)",
+                      }}
+                    >
+                      Edit inline
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
+            ) : (
+              <Box
+                className="edit_question_form"
+                component={"form"}
+                sx={{
+                  paddingBottom: "30px",
+                  paddingTop: "10px",
+                  paddingLeft: "70px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 3,
+                }}
+              >
+                <Box className="question_text">
+                  <TextField
+                    label="QUESTION TEXT"
+                    fullWidth
+                    variant="standard"
+                    {...register("text")}
+                    error={!!errors.text}
+                    helperText={errors.text?.message}
+                    InputLabelProps={{
+                      sx: {
+                        color: "var(--mid-gray-color)",
+                        "&.Mui-focused": {
+                          color: "var(--primary-color)",
+                        },
+                      },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: "#fff",
+                        "& .MuiInput-input": {
+                          paddingBottom: "10px",
+                        },
+                        "& input:-webkit-autofill": {
+                          WebkitBoxShadow: "0 0 0 100px transparent inset",
+                          WebkitTextFillColor: "#fff",
+                          transition: "background-color 9999s ease-in-out 0s",
+                        },
 
-    <TextField
-      fullWidth
-      label="QUESTION TEXT"
-      variant="standard"
-      value={qsText}
-      onChange={handleQsTextChange}
-      InputLabelProps={{ sx: { color: "var(--mid-gray-color)","&.Mui-focused": {
-        color: "var(--primary-color)",
-      }, } }}
-      InputProps={{
-        sx: {
-            color: "#fff",
-            "& .MuiInput-input": {
-       paddingBottom: "10px",
-      },
-       "&:before": {
-        borderBottom: "1px solid var(--mid-gray-color)",
-      },
-      "&:hover:not(.Mui-disabled):before": {
-        borderBottom: "1px solid var(--dark-gray-color)",
-      },
-      "&:after": {
-        borderBottom: "2px solid var(--primary-color)",
-      },
-        }
-      }}
-    />
-  </Box>
+                        "& input:-webkit-autofill:hover": {
+                          WebkitBoxShadow: "0 0 0 100px transparent inset",
+                        },
 
-  <Box className="code_type_order" sx={{ display: "flex", justifyContent:"space-between", alignItems: "flex-end", gap: 5, }}>
-    <TextField
-      label="CODE"
-      variant="standard"
-      value={code}
-      onChange={handleCodeChange}
-      sx={{flex: 1}}
-      InputLabelProps={{ sx: { color: "var(--mid-gray-color)","&.Mui-focused": {
-        color: "var(--primary-color)",
-      }, } }}
-      InputProps={{ 
-        sx: {
-            color: "#fff",
-            "& .MuiInput-input": {
-        paddingBottom: "10px",
-      },
-       "&:before": {
-        borderBottom: "1px solid var(--mid-gray-color)",
-      },
-      "&:hover:not(.Mui-disabled):before": {
-        borderBottom: "1px solid var(--dark-gray-color)",
-      },
-      "&:after": {
-        borderBottom: "2px solid var(--primary-color)",
-      },
-        }
-       }}
-    />
+                        "& input:-webkit-autofill:focus": {
+                          WebkitBoxShadow: "0 0 0 100px transparent inset",
+                        },
+                        "&:before": {
+                          borderBottom: "1px solid var(--mid-gray-color)",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "1px solid var(--dark-gray-color)",
+                        },
+                        "&:after": {
+                          borderBottom: "2px solid var(--primary-color)",
+                        },
+                      },
+                    }}
+                  />
+                </Box>
 
-    <FormControl variant="standard" sx={{flex: 1, minWidth: 150 }}>
-        <InputLabel
-    sx={{
-      color: "var(--mid-gray-color)",
-      "&.Mui-focused": {
-        color: "var(--primary-color)",
-      },
-    }}
-  >
-    TYPE
-  </InputLabel>
-  <Select
-  fullWidth
-  value={selectedType}
-  onChange={handleTypeChange}
-  IconComponent={KeyboardArrowDownIcon}
-  MenuProps={{
-    PaperProps: {
-      sx: {
-        bgcolor: "var(--navy-color)",
-        color: "var(--secondary-color)",
-        borderBottomLeftRadius:"25px",
-        borderBottomRightRadius:"25px",
+                <Box
+                  className="code_type_order"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-end",
+                    gap: 5,
+                  }}
+                >
+                  <TextField
+                    label="CODE"
+                    variant="standard"
+                    {...register("code")}
+                    error={!!errors.code}
+                    helperText={errors.code?.message}
+                    sx={{ flex: 1 }}
+                    InputLabelProps={{
+                      sx: {
+                        color: "var(--mid-gray-color)",
+                        "&.Mui-focused": {
+                          color: "var(--primary-color)",
+                        },
+                      },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: "#fff",
+                        "& .MuiInput-input": {
+                          paddingBottom: "10px",
+                        },
+                        "& input:-webkit-autofill": {
+                          WebkitBoxShadow: "0 0 0 100px transparent inset",
+                          WebkitTextFillColor: "#fff",
+                          transition: "background-color 9999s ease-in-out 0s",
+                        },
 
-        "& .MuiMenuItem-root": {
-          color: "var(--secondary-color)",
-          transition: "0.2s",
+                        "& input:-webkit-autofill:hover": {
+                          WebkitBoxShadow: "0 0 0 100px transparent inset",
+                        },
 
-          "&:hover": {
-            backgroundColor: "rgba(229, 226, 226, 0.08)",
-          },
+                        "& input:-webkit-autofill:focus": {
+                          WebkitBoxShadow: "0 0 0 100px transparent inset",
+                        },
+                        "&:before": {
+                          borderBottom: "1px solid var(--mid-gray-color)",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "1px solid var(--dark-gray-color)",
+                        },
+                        "&:after": {
+                          borderBottom: "2px solid var(--primary-color)",
+                        },
+                      },
+                    }}
+                  />
 
-          "&.Mui-selected": {
-            backgroundColor: "rgba(229, 226, 226, 0.15)",
-            color: "var(--primary-color)",
-          },
+                  <Controller
+                    name="type"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControl
+                        variant="standard"
+                        sx={{ flex: 1, minWidth: 150 }}
+                        error={!!errors.type}
+                      >
+                        <InputLabel
+                          sx={{
+                            color: "var(--mid-gray-color)",
+                            "&.Mui-focused": {
+                              color: "var(--primary-color)",
+                            },
+                          }}
+                        >
+                          TYPE
+                        </InputLabel>
 
-          "&.Mui-selected:hover": {
-            backgroundColor: "rgba(229, 226, 226, 0.2)",
-          },
-        },
-      },
-    },
-  }}
-  sx={{
-    color: "#fff",
-    "& .MuiSelect-icon": {
-      color: "var(--mid-gray-color)",
-    },
-    "&:before": {
-      borderBottom: "1px solid var(--mid-gray-color)",
-    },
-    "&:hover:not(.Mui-disabled):before": {
-      borderBottom: "1px solid var(--dark-gray-color)",
-    },
-    "&:after": {
-      borderBottom: "2px solid var(--primary-color)",
-    },
-  }}
->
-  <MenuItem value={1}>Free text</MenuItem>
-  <MenuItem value={2} sx={{borderBottomLeftRadius: "25px",
-        borderBottomRightRadius: "25px",}}>Multi choice</MenuItem>
-</Select>
-</FormControl>
+                        <Select
+                          {...field}
+                          IconComponent={KeyboardArrowDownIcon}
+                          MenuProps={{
+                            PaperProps: {
+                              sx: {
+                                bgcolor: "var(--navy-color)",
+                                color: "var(--secondary-color)",
+                                borderBottomLeftRadius: "25px",
+                                borderBottomRightRadius: "25px",
+                                "& .MuiMenuItem-root": {
+                                  color: "var(--secondary-color)",
+                                  transition: "0.2s",
 
-    <TextField
-  label="ORDER"
-  variant="standard"
-  type="number"
-  value={orderNumber}
-  inputProps={{ min: 1 }}
-  onChange={handleOrderChange}
-  InputLabelProps={{
-    sx: {
-      color: "var(--mid-gray-color)",
-      "&.Mui-focused": {
-        color: "var(--primary-color)",
-      },
-    },
-  }}
-  InputProps={{
-    sx: {
-      color: "#fff",
+                                  "&:hover": {
+                                    backgroundColor:
+                                      "rgba(229, 226, 226, 0.08)",
+                                  },
 
-      "& input[type=number]": {
-        MozAppearance: "textfield",
-      },
+                                  "&.Mui-selected": {
+                                    backgroundColor:
+                                      "rgba(229, 226, 226, 0.15)",
+                                    color: "var(--primary-color)",
+                                  },
 
-      "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button": {
-  WebkitAppearance: "inner-spin-button",
-  opacity: 1,
-  filter: "invert(1) sepia(0) saturate(1) hue-rotate(147deg)",
-  cursor: "pointer",
-},
+                                  "&.Mui-selected:hover": {
+                                    backgroundColor: "rgba(229, 226, 226, 0.2)",
+                                  },
+                                },
+                              },
+                            },
+                          }}
+                          sx={{
+                            color: "#fff",
+                            "& .MuiSelect-icon": {
+                              color: "var(--mid-gray-color)",
+                            },
+                            "&:before": {
+                              borderBottom: "1px solid var(--mid-gray-color)",
+                            },
+                            "&:hover:not(.Mui-disabled):before": {
+                              borderBottom: "1px solid var(--dark-gray-color)",
+                            },
+                            "&:after": {
+                              borderBottom: "2px solid var(--primary-color)",
+                            },
+                          }}
+                        >
+                          <MenuItem value={1}>Free text</MenuItem>
+                          <MenuItem value={2}>Single choice</MenuItem>
+                        </Select>
+                        {errors.type && (
+                          <FormHelperText>{errors.type.message}</FormHelperText>
+                        )}
+                      </FormControl>
+                    )}
+                  />
 
-      "&:before": {
-        borderBottom: "1px solid var(--mid-gray-color)",
-      },
-      "&:hover:not(.Mui-disabled):before": {
-        borderBottom: "1px solid var(--dark-gray-color)",
-      },
-      "&:after": {
-        borderBottom: "2px solid var(--primary-color)",
-      }
-    },
-  }}
-/>
-  </Box>
+                  <TextField
+                    label="ORDER"
+                    variant="standard"
+                    type="number"
+                    inputProps={{ min: 1 }}
+                    {...register("order")}
+                    error={!!errors.order}
+                    helperText={errors.order?.message}
+                    InputLabelProps={{
+                      sx: {
+                        color: "var(--mid-gray-color)",
+                        "&.Mui-focused": {
+                          color: "var(--primary-color)",
+                        },
+                      },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: "#fff",
 
-  <Box className="options">
-    <Typography sx={{ fontSize: "12px", color: "var(--mid-gray-color)", marginBottom:"8px" }}>
-      OPTIONS
-    </Typography>
+                        "& input[type=number]": {
+                          MozAppearance: "textfield",
+                        },
 
+                        "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
+                          {
+                            WebkitAppearance: "inner-spin-button",
+                            opacity: 1,
+                            filter:
+                              "invert(1) sepia(0) saturate(1) hue-rotate(147deg)",
+                            cursor: "pointer",
+                          },
 
-    <Box
-  sx={{
-    display: "flex",
-    alignItems: "flex-end",
-    gap: 1,
-    borderBottom: "1px solid var(--mid-gray-color)",
-    paddingBottom: "10px",
-    "&:hover": {
-      borderBottom: "1px solid var(--dark-gray-color)",
-    },
-    "&:focus-within": {
-      borderBottom: "2px solid var(--primary-color)",
-    },
-  }}
->
-      {optionsList.map((option, index) => (
-        <Chip
-          key={index}
-          label={option}
-          size="small" 
-          onDelete={() => handleDeleteOption(index)}
-          sx={{
-            bgcolor: "rgba(229, 226, 226, 0.21)",
-            color: "#fff",
-            "& .MuiChip-deleteIcon": {
-  color: "var(--mid-gray-color)",
-  transition: "0.2s",
-  "&:hover": {
-    color: "var(--primary-color)"
-  },
-}
-          }}
-        />
-      ))}
-      <TextField
-  variant="standard"
-  value={optionInput}
-  onChange={(e) => setOptionInput(e.target.value)}
-  onKeyDown={handleAddOption}
-  label="Type and press Enter..."
-  sx={{
-    flex: 1,
-    minWidth: "150px",
-  }}
-  InputLabelProps={{
-    sx: {
-      color: "var(--mid-gray-color)",
-      fontSize:"13px",
-      "&.Mui-focused": {
-       opacity: 0,
-      },
-    },
-  }}
-  InputProps={{
-    disableUnderline: true,
-    sx: {
-      color: "#fff",
-      "& .MuiInput-input": {
-        padding: "0", 
-        margin: 0,
-      },
-    },
-  }}
-/>
-    </Box>
-  </Box>
+                        "&:before": {
+                          borderBottom: "1px solid var(--mid-gray-color)",
+                        },
+                        "&:hover:not(.Mui-disabled):before": {
+                          borderBottom: "1px solid var(--dark-gray-color)",
+                        },
+                        "&:after": {
+                          borderBottom: "2px solid var(--primary-color)",
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+                {selectedType !== 1 && (
+                  <Box className="options">
+                    <Typography
+                      sx={{ fontSize: "12px", color: "var(--mid-gray-color)" }}
+                    >
+                      OPTIONS
+                    </Typography>
 
-  <Box className="action_btns"
-    sx={{
-      display: "flex",
-      justifyContent: "flex-end",
-      gap: 2,
-      marginTop:"16px",
-    }}
-  >
-    <Button
-    startIcon={<MdClose size={18} />}
-    onClick={() => {setOpenEditForm(false);}}
-  sx={{
-    color: "#aaa",
-    borderRadius: "20px",
-    paddingX: "8px",
-    transition:"all 0.3s",
-    '&:hover': {
-        color: 'var(--primary-color)',
-    },
-    "& .MuiButton-startIcon": {
-      marginRight: "4px",
-    },
-  }}
->
-  <Typography sx={{ fontSize: "14px" }}>Cancel</Typography>
-</Button>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "flex-end",
+                        gap: 1,
+                        borderBottom: "1px solid var(--mid-gray-color)",
+                        paddingBottom: "10px",
+                        "&:hover": {
+                          borderBottom: "1px solid var(--dark-gray-color)",
+                        },
+                        "&:focus-within": {
+                          borderBottom: "2px solid var(--primary-color)",
+                        },
+                      }}
+                    >
+                      {optionsList.map((option, index) => (
+                        <Chip
+                          key={index}
+                          label={option}
+                          size="small"
+                          onDelete={() => handleDeleteOption(index)}
+                          sx={{
+                            bgcolor: "rgba(229, 226, 226, 0.21)",
+                            color: "#fff",
+                            "& .MuiChip-deleteIcon": {
+                              color: "var(--mid-gray-color)",
+                              transition: "0.2s",
+                              "&:hover": {
+                                color: "var(--primary-color)",
+                              },
+                            },
+                          }}
+                        />
+                      ))}
+                      <TextField
+                        variant="standard"
+                        error={!!errors.options}
+                        helperText={errors.options?.message}
+                        value={optionInput}
+                        onChange={(e) => setOptionInput(e.target.value)}
+                        onKeyDown={handleAddOption}
+                        label="Type and press Enter..."
+                        sx={{
+                          flex: 1,
+                          minWidth: "150px",
+                        }}
+                        InputLabelProps={{
+                          sx: {
+                            color: "var(--mid-gray-color)",
+                            fontSize: "13px",
+                            "&.Mui-focused": {
+                              opacity: 0,
+                            },
+                          },
+                        }}
+                        InputProps={{
+                          disableUnderline: true,
+                          sx: {
+                            color: "#fff",
+                            "& input:-webkit-autofill": {
+                              WebkitBoxShadow: "0 0 0 100px transparent inset",
+                              WebkitTextFillColor: "#fff",
+                              transition:
+                                "background-color 9999s ease-in-out 0s",
+                            },
 
-    <Button
-  variant="contained"
-  startIcon={<MdCheck size={18} />}
-  sx={{
-    bgcolor: "var(--primary-color)",
-    borderRadius: "20px",
-    px: 3,
-    transition: "all 0.3s",
-    "&:hover": {
-      backgroundColor: "#ae1d1d",
-    },
-    "& .MuiButton-startIcon": {
-      marginRight: "4px",
-    },
-  }}
->
-  Save
-</Button>
-  </Box>
-</Box>
-          }
+                            "& input:-webkit-autofill:hover": {
+                              WebkitBoxShadow: "0 0 0 100px transparent inset",
+                            },
+
+                            "& input:-webkit-autofill:focus": {
+                              WebkitBoxShadow: "0 0 0 100px transparent inset",
+                            },
+                            "& .MuiInput-input": {
+                              padding: "0",
+                              margin: 0,
+                            },
+                          },
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                )}
+
+                <Box
+                  className="action_btns"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    gap: 2,
+                    marginTop: "16px",
+                  }}
+                >
+                  <Button
+                    startIcon={<MdClose size={18} />}
+                    onClick={() => {
+                      setOpenEditForm(false);
+                    }}
+                    sx={{
+                      color: "#aaa",
+                      borderRadius: "20px",
+                      paddingX: "8px",
+                      transition: "all 0.3s",
+                      "&:hover": {
+                        color: "var(--primary-color)",
+                      },
+                      "& .MuiButton-startIcon": {
+                        marginRight: "4px",
+                      },
+                    }}
+                  >
+                    <Typography sx={{ fontSize: "14px" }}>Cancel</Typography>
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    startIcon={<MdCheck size={18} />}
+                    onClick={handleSubmit(onSubmit)}
+                    sx={{
+                      bgcolor: "var(--primary-color)",
+                      borderRadius: "20px",
+                      px: 3,
+                      transition: "all 0.3s",
+                      "&:hover": {
+                        backgroundColor: "#ae1d1d",
+                      },
+                      "& .MuiButton-startIcon": {
+                        marginRight: "4px",
+                      },
+                    }}
+                  >
+                    Save
+                  </Button>
+                </Box>
+              </Box>
+            )}
           </Collapse>
         </TableCell>
       </TableRow>
@@ -542,8 +774,6 @@ Row.propTypes = {
 };
 
 export default function QuestionsTabel(data) {
-  console.log("table ", data?.data);
-
   return (
     <TableContainer component={Paper}>
       <Table
@@ -552,7 +782,7 @@ export default function QuestionsTabel(data) {
           bgcolor: "var(--navy-color)",
           "& .MuiTableCell-root": {
             borderBottomColor: "#1e1d1d",
-          }
+          },
         }}
       >
         <TableBody>
