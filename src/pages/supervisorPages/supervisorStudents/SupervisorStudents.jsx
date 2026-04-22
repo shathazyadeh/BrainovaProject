@@ -5,7 +5,7 @@ import { TfiEmail } from "react-icons/tfi";
 import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 import useGetMyStudentsInfo from "../../../hooks/supervisorHooks/useGetMyStudentsInfo";
-import UsersSearch from "../../../components/usersSearch/UsersSearch";
+import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearch";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 

@@ -4,7 +4,7 @@ import useGetAllOfMyStudnetsCases from "../../../hooks/supervisorHooks/useGetAll
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
-import UsersSearch from "../../../components/usersSearch/UsersSearch";
+import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearch";
 import ReportsFilters from "../../../components/filterInputs/reportsFilters/ReportsFilters";
 import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
 function SupervisorReports() {
@@ -64,7 +64,7 @@ function SupervisorReports() {
     >
       <DashboardNavbar />
 
-      <Box sx={{ flex: 1, paddingBottom: {xs:"10px", md:"80px" }}}>
+      <Box sx={{ flex: 1, paddingBottom: { xs: "10px", md: "80px" } }}>
         <Container maxWidth="lg">
           {/* server errors */}
           {isError && (
@@ -131,8 +131,8 @@ function SupervisorReports() {
                 fontWeight: "600",
                 display: "inline-block",
                 marginRight: "10px",
-                paddingTop:{xs:"30px",md:"0px"},
-                paddingLeft:{xs:"13px",md:"0px"},
+                paddingTop: { xs: "30px", md: "0px" },
+                paddingLeft: { xs: "13px", md: "0px" },
                 "@media (max-width:700px)": {
                   fontSize: "22px",
                 },
@@ -163,7 +163,10 @@ function SupervisorReports() {
               reports found
             </Typography>
           </Box>
-          <Box className="search_and_filter" sx={{ paddingTop: "23px" , paddingLeft:{xs:"13px",md:"0px"}, }}>
+          <Box
+            className="search_and_filter"
+            sx={{ paddingTop: "23px", paddingLeft: { xs: "13px", md: "0px" } }}
+          >
             <Grid container rowSpacing={0.1} columnSpacing={1}>
               <Grid item>
                 <ReportsFilters

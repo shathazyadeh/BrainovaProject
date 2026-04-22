@@ -5,7 +5,7 @@ import { FaRegEdit } from "react-icons/fa";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import useGetMyallFeedbacks from "../../../hooks/supervisorHooks/useGetMyallFeedbacks";
-import UsersSearch from "../../../components/usersSearch/UsersSearch";
+import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearch";
 import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
 import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
 import { useNavigate } from "react-router-dom";

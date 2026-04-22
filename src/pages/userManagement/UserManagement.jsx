@@ -6,7 +6,7 @@ import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
 import NestedModal from "../../components/muiComponents/nestedModal/NestedModal";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import UsersSearch from "../../components/usersSearch/UsersSearch";
+import UsersSearch from "../../components/filterSearch/usersSearch/UsersSearch";
 import UsersFilters from "../../components/filterInputs/usersFilters/UsersFilters";
 import BasicModal from "../../components/muiComponents/basicModal/BasicModal";
 

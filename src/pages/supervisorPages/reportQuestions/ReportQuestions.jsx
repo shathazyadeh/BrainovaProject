@@ -1,4 +1,3 @@
-
 import { Box, Button, Container, Typography } from '@mui/material'
 import QuestionsTabel from '../../../components/muiComponents/questionsTabel/QuestionsTabel'
 import useGetQuestions from '../../../hooks/supervisorHooks/useGetQuestions';
@@ -7,10 +6,12 @@ import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import { FiPlus } from "react-icons/fi";
 import { useState } from 'react';
 import RightDrawer from '../../../components/muiComponents/rightDrawer/RightDrawer';
+import QuestionSearch from '../../../components/filterSearch/questionSearch/QuestionSearch';
 function ReportQuestions() {
     const { isError, error, isLoading, data } = useGetQuestions();
     console.log("data  ", data);
     const [open, setOpen] = useState(false);
+    const [search, setSearch] = useState("");
 
 
     return (
@@ -97,8 +98,30 @@ function ReportQuestions() {
                         >
                             Report Questions
                         </Typography>
+                        <Typography
+              component={"span"}
+              sx={{
+                color: "#fff",
+                fontFamily: "var(--primary-font)",
+                fontSize: "20px",
+                "@media (max-width:700px)": {
+                  fontSize: "15px",
+                },
+              }}
+            >
+              <Typography
+                component={"span"}
+                sx={{
+                  color: "var(--primary-color)",
+                  fontFamily: "var(--primary-font)",
+                }}
+              >
+                {data?.length}
+              </Typography>{" "}
+              questions found
+            </Typography>
                         <Box  sx={{ display: 'flex', justifyContent:"space-between", alignItems: { xs: "flex-start",  }, "@media (max-width:1142px)": {flexDirection:'column'} ,marginBottom:'20px'}}>
-                            <Typography sx={{ color: "var(--secondary-color)" }}>
+                            <Typography sx={{ color: "var(--secondary-color)",marginTop:"4px" }}>
                                 Managing and organizing the questions used for report evaluation.
                             </Typography>
                             <Button
@@ -115,7 +138,11 @@ function ReportQuestions() {
                                     borderRadius: "25px",
                                     whiteSpace: "nowrap",
                                     boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
-                                   
+                                    transition: "all 0.2s ease-in-out",
+                                    "&:hover": {
+                                    transform: "scale(1.05)",
+                                    boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
+                                    },
                                      "@media (max-width:1142px)": {marginTop:'20px'} ,
                                     
                                 }}
@@ -126,9 +153,13 @@ function ReportQuestions() {
                             </Button>
                         </Box>
                     </Box>
+                    <QuestionSearch
+                    search={search}
+                    setSearch={setSearch}
+                    />
                     <RightDrawer open={open} setOpen={setOpen} />
 
-                    <QuestionsTabel data={data} />
+                    <QuestionsTabel data={data} search={search}/>
                 </Container>
             </Box>
 

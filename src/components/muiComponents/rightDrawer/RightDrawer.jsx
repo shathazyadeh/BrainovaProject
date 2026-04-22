@@ -387,9 +387,6 @@ function RightDrawer({ open, setOpen }) {
                 <Typography sx={{ fontSize: { xs: "14px", md: "11px", lg: "14px" }, justifyContent: "flex-start", display: 'flex', textTransform: "capitalize", fontWeight: "500", fontSize: '17px' }}>Create </Typography>
               </Button>
             </Box>
-
-
-
           </Box>
         </Box>
       </Drawer>
@@ -398,4 +395,3 @@ function RightDrawer({ open, setOpen }) {
 }
 
 export default RightDrawer
-

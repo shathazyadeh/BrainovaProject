@@ -16,11 +16,11 @@ import { IoMdEye } from "react-icons/io";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa6";
 import { FaFileAlt } from "react-icons/fa";
-
 import { BsFileEarmarkArrowDown } from "react-icons/bs";
-import UsersSearch from "../../../components/usersSearch/UsersSearch";
+import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearch";
 import ReportsFilters from "../../../components/filterInputs/reportsFilters/ReportsFilters";
 import useDownloadSupervisorPDF from "../../../hooks/supervisorHooks/useDownloadSupervisorPDF";
+
 function StudentReports() {
   const { studentId } = useParams();
   const navigate = useNavigate();

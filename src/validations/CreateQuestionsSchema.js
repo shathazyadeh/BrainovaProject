@@ -6,7 +6,7 @@ export const CreateQuestionSchema = yup.object({
   .trim()
   .required("Question text is required")
   .min(5, "Question must be at least 5 characters")
-  .matches(/[a-zA-Z]/, "Question must contain at least one letter"),
+  .matches(/.\p{L}./u, "Question must contain letters"),
 
   code: yup
     .string()
@@ -21,12 +21,7 @@ export const CreateQuestionSchema = yup.object({
     .integer("Order must be an integer")
     .transform((val, original) => original === "" ? undefined : Number(original)), // 
 
-   options: yup.array().when("type", {
-     is: 2, 
-     then: (schema) =>
-       schema
-         .of(yup.string().trim().required("Option cannot be empty"))
-         .min(2, "At least 2 options are required"),
-         otherwise: (schema) => schema.notRequired(),
-   }),
- });
+  options: yup
+    .string()
+    .nullable(),
+});

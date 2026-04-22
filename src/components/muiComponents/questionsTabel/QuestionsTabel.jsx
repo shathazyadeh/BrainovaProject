@@ -12,6 +12,8 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { FiPlus } from "react-icons/fi";
+
 import {
   MdArrowForwardIos,
   MdOutlineEdit,
@@ -31,9 +33,10 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { UpdateQuestionSchema } from "../../../validations/UpdateQuestionsSchema";
 import useUpdateQuestions from "../../../hooks/supervisorHooks/useUpdateQuestions";
-import useActivation from '../../../hooks/supervisorHooks/useActivation';
+import useActivation from "../../../hooks/supervisorHooks/useActivation";
+import RightDrawer from "../rightDrawer/RightDrawer";
+import { UpdateQuestionSchema } from "../../../validations/UpdateQuestionSchema";
 
 function Row(props) {
   const { row } = props;
@@ -42,15 +45,17 @@ function Row(props) {
   const [openEditForm, setOpenEditForm] = useState(false);
   const [optionInput, setOptionInput] = useState(""); //for option input
   const [optionsList, setOptionsList] = useState(row?.options || []); //اريه جواها كل الاوبشين اللي قبل والي هتنضاف
+  const [optionsError, setOptionsError] = useState("");
+
   const { usePatchMutation } = useActivation();
- const handleToggle = (id) => {
-  usePatchMutation.mutate(`${id}/toggle`, {
-    onSuccess: () => {
-      setChecked((prev) => !prev); //عشان اعكس حالة السويتش بس تنجح العملية 
-    },
-  });
-};
-  
+  const handleToggle = (id) => {
+    usePatchMutation.mutate(`${id}/toggle`, {
+      onSuccess: () => {
+        setChecked((prev) => !prev); //عشان اعكس حالة السويتش بس تنجح العملية
+      },
+    });
+  };
+
   const handleAddOption = (e) => {
     //عشان بس يكبس انتر ينضاف الاوبشين
     if (e.key === "Enter" && optionInput.trim()) {
@@ -75,6 +80,8 @@ function Row(props) {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(UpdateQuestionSchema),
+    context: { optionsList }, // يب لازم تعمل الفالديشين على الليستة عشان الخيارات بالبداية بتنضاف عاللستة مش عالقيمة بالباك
+    mode: "onChange",
     defaultValues: {
       text: row?.text,
       code: row?.code,
@@ -108,8 +115,18 @@ function Row(props) {
     }
   }, [openEditForm, row, reset]);
 
+  useEffect(() => {
+    if (optionsList.length >= 2) {
+      setOptionsError(""); //  امسح الخطأ لما يصيروا 2 اوبشنز أو أكثر
+    }
+  }, [optionsList]);
+
   const { updateQuestionsMutation } = useUpdateQuestions();
-  const onSubmit = (formData) => {
+  const updateQuestion = (formData) => {
+    if (formData.type === 2 && optionsList.length < 2) {
+      setOptionsError("At least 2 options are required");
+      return;
+    }
     const payload = {
       text: formData.text,
       code: formData.code,
@@ -211,7 +228,7 @@ function Row(props) {
         >
           <Switch
             checked={checked}
-             onChange={() => handleToggle(row.id)}
+            onChange={() => handleToggle(row.id)}
             disableRipple
             sx={{
               width: 42,
@@ -373,6 +390,7 @@ function Row(props) {
               <Box
                 className="edit_question_form"
                 component={"form"}
+                onSubmit={handleSubmit(updateQuestion)}
                 sx={{
                   paddingBottom: "30px",
                   paddingTop: "10px",
@@ -515,12 +533,10 @@ function Row(props) {
                               sx: {
                                 bgcolor: "var(--navy-color)",
                                 color: "var(--secondary-color)",
-                                borderBottomLeftRadius: "25px",
-                                borderBottomRightRadius: "25px",
+                                overflow: "hidden",
                                 "& .MuiMenuItem-root": {
                                   color: "var(--secondary-color)",
                                   transition: "0.2s",
-
                                   "&:hover": {
                                     backgroundColor:
                                       "rgba(229, 226, 226, 0.08)",
@@ -535,6 +551,10 @@ function Row(props) {
                                   "&.Mui-selected:hover": {
                                     backgroundColor: "rgba(229, 226, 226, 0.2)",
                                   },
+                                },
+                                "& .MuiMenuItem-root:last-of-type": {
+                                  borderBottomLeftRadius: "25px",
+                                  borderBottomRightRadius: "25px",
                                 },
                               },
                             },
@@ -624,8 +644,11 @@ function Row(props) {
                         display: "flex",
                         alignItems: "flex-end",
                         gap: 1,
-                        borderBottom: "1px solid var(--mid-gray-color)",
+                        borderBottom: optionsError
+                          ? "1px solid #ca2528"
+                          : "1px solid var(--mid-gray-color)",
                         paddingBottom: "10px",
+                        flexWrap: "wrap", //لمنع السكرول
                         "&:hover": {
                           borderBottom: "1px solid var(--dark-gray-color)",
                         },
@@ -700,6 +723,17 @@ function Row(props) {
                         }}
                       />
                     </Box>
+                    {optionsError && (
+                      <Typography
+                        sx={{
+                          color: "#ca2528",
+                          fontSize: "12px",
+                          marginTop: "5px",
+                        }}
+                      >
+                        {optionsError}
+                      </Typography>
+                    )}
                   </Box>
                 )}
 
@@ -735,8 +769,8 @@ function Row(props) {
 
                   <Button
                     variant="contained"
+                    type="submit"
                     startIcon={<MdCheck size={18} />}
-                    onClick={handleSubmit(onSubmit)}
                     sx={{
                       bgcolor: "var(--primary-color)",
                       borderRadius: "20px",
@@ -773,9 +807,24 @@ Row.propTypes = {
   }).isRequired,
 };
 
-export default function QuestionsTabel(data) {
+export default function QuestionsTabel({ data, search }) {
+  const filteredData = data?.filter(
+    (row) =>
+      row?.text?.toLowerCase().includes(search.toLowerCase()) ||
+      row?.code?.toLowerCase().includes(search.toLowerCase()),
+  );
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const hasResults = filteredData?.length > 0; //اذا في نتائج للبحث
+  const isEmptyData = data?.length === 0; // اذا ما في ولا سؤال اصلا
+
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        borderRadius: 0,
+      }}
+    >
       <Table
         aria-label="collapsible table"
         sx={{
@@ -786,9 +835,159 @@ export default function QuestionsTabel(data) {
         }}
       >
         <TableBody>
-          {data?.data?.map((row) => (
-            <Row key={row?.id} row={row} />
-          ))}
+          {isEmptyData ? (
+            <TableRow>
+              <TableCell
+                colSpan={7}
+                align="center"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "20px",
+                  alignItems: "center",
+                  paddingBottom: "55px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "var(--mid-gray-color)",
+                    fontSize: "15px",
+                    letterSpacing: "3px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  No questions yet
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#ffffffda",
+                    fontSize: "15px",
+                    maxWidth: "340px",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  Start organizing the questions that your students will answer
+                  when submitting MRI cases.
+                </Typography>
+                <Button
+                  onClick={() => setOpenDrawer(true)}
+                  sx={{
+                    bgcolor: "#ed2c2c",
+                    color: "#f0f2f5",
+                    display: "flex",
+                    paddingX: { xs: "10px", md: "15px" },
+                    paddingY: { xs: "5px", md: "10px" },
+                    gap: "10px",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    borderRadius: "25px",
+                    whiteSpace: "nowrap",
+                    boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
+                    },
+                    "@media (max-width:1142px)": { marginTop: "20px" },
+                  }}
+                >
+                  {" "}
+                  <Box sx={{ alignItems: "center", display: "flex" }}>
+                    <FiPlus size={20} style={{ flexShrink: 0 }} />
+                  </Box>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "14px", sm: "15px", md: "17px" },
+                      justifyContent: "flex-start",
+                      display: "flex",
+                      textTransform: "capitalize",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Create the first question
+                  </Typography>
+                </Button>
+                <RightDrawer open={openDrawer} setOpen={setOpenDrawer} />
+              </TableCell>
+            </TableRow>
+          ) : hasResults ? (
+            filteredData.map((row) => <Row key={row?.id} row={row} />)
+          ) : (
+            <TableRow>
+              <TableCell
+                colSpan={7}
+                align="center"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "20px",
+                  alignItems: "center",
+                  paddingBottom: "55px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "var(--mid-gray-color)",
+                    fontSize: "15px",
+                    letterSpacing: "3px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  No matching questions
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#ffffffda",
+                    fontSize: "15px",
+                    maxWidth: "340px",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  No questions match your search for "{search}". Please try
+                  different keywords.
+                </Typography>
+                <Button
+                  onClick={() => setOpenDrawer(true)}
+                  sx={{
+                    bgcolor: "#ed2c2c",
+                    color: "#f0f2f5",
+                    display: "flex",
+                    paddingX: { xs: "10px", md: "15px" },
+                    paddingY: { xs: "5px", md: "10px" },
+                    gap: "10px",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    borderRadius: "25px",
+                    whiteSpace: "nowrap",
+                    boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                      boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
+                    },
+                    "@media (max-width:1142px)": { marginTop: "20px" },
+                  }}
+                >
+                  {" "}
+                  <Box sx={{ alignItems: "center", display: "flex" }}>
+                    <FiPlus size={20} style={{ flexShrink: 0 }} />
+                  </Box>
+                  <Typography
+                    sx={{
+                      fontSize: { xs: "14px", sm: "15px", md: "17px" },
+                      justifyContent: "flex-start",
+                      display: "flex",
+                      textTransform: "capitalize",
+                      fontWeight: "500",
+                    }}
+                  >
+                    Create it now
+                  </Typography>
+                </Button>
+                <RightDrawer open={openDrawer} setOpen={setOpenDrawer} />
+              </TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
