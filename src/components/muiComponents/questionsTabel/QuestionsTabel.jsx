@@ -36,7 +36,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import useUpdateQuestions from "../../../hooks/supervisorHooks/useUpdateQuestions";
 import useActivation from "../../../hooks/supervisorHooks/useActivation";
 import RightDrawer from "../rightDrawer/RightDrawer";
-import { UpdateQuestionSchema } from "../../../validations/UpdateQuestionSchema";
+import { CreateQuestionSchema } from "../../../validations/CreateQuestionsSchema";
 
 function Row(props) {
   const { row } = props;
@@ -79,7 +79,7 @@ function Row(props) {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(UpdateQuestionSchema),
+    resolver: yupResolver(CreateQuestionSchema),
     context: { optionsList }, // يب لازم تعمل الفالديشين على الليستة عشان الخيارات بالبداية بتنضاف عاللستة مش عالقيمة بالباك
     mode: "onChange",
     defaultValues: {
@@ -123,9 +123,23 @@ function Row(props) {
 
   const { updateQuestionsMutation } = useUpdateQuestions();
   const updateQuestion = (formData) => {
-    if (formData.type === 2 && optionsList.length < 2) {
-      setOptionsError("At least 2 options are required");
-      return;
+    if (formData.type === 2) {
+      if (optionsList.length < 2) {
+        setOptionsError("At least 2 options are required");
+        return;
+      }
+
+      const hasDuplicate = optionsList.some(
+        (item, index) =>
+          optionsList.findIndex(
+            (opt) => opt.toLowerCase() === item.toLowerCase(),
+          ) !== index,
+      );
+
+      if (hasDuplicate) {
+        setOptionsError("Options must be unique");
+        return;
+      }
     }
     const payload = {
       text: formData.text,
@@ -183,7 +197,14 @@ function Row(props) {
         <TableCell
           component="th"
           scope="row"
-          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
+          sx={{
+            maxWidth: 200,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            color: "var(--secondary-color)",
+            fontWeight: "600",
+          }}
         >
           {row?.code}
         </TableCell>
@@ -208,13 +229,6 @@ function Row(props) {
           sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
         >
           {row?.type === 1 ? "Free text" : "Single choice"}
-        </TableCell>
-
-        <TableCell
-          align="left"
-          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
-        >
-          {row?.code}
         </TableCell>
 
         <TableCell
@@ -307,7 +321,24 @@ function Row(props) {
               >
                 <Box
                   className="options"
-                  sx={{ display: "flex", gap: "8px", marginBottom: "20px" }}
+                  sx={{
+                    display: "flex",
+                    gap: "8px",
+                    marginBottom: "20px",
+                    flexWrap: "wrap",
+                    maxHeight: "80px",
+                    overflowY: "auto",
+                    overflowX: "hidden",
+
+                    "&::-webkit-scrollbar": {
+                      width: "6px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "var(--secondary-color)",
+                      borderRadius: "10px",
+                      cursor: "grab",
+                    },
+                  }}
                 >
                   {row?.type === 2 ? (
                     row?.options?.map((option) => (
@@ -333,6 +364,44 @@ function Row(props) {
                       No options defined.
                     </Typography>
                   )}
+                </Box>
+                <Box className="question_text"
+                sx={{flexWrap: "wrap",
+                    maxHeight: "80px",
+                    overflowY: "auto",
+                    overflowX: "hidden",
+
+                    "&::-webkit-scrollbar": {
+                      width: "6px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "var(--secondary-color)",
+                      borderRadius: "10px",
+                      cursor: "grab",
+                    },}}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: "13px",
+                      color: "var(--secondary-color)",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    <Typography component={'span'} sx={{fontSize: "13px",color: "var(--primary-color)"}}>Question: </Typography>
+                    {row?.text}
+                  </Typography>
+                </Box>
+                <Box className="code">
+                  <Typography
+                    sx={{
+                      fontSize: "13px",
+                      color: "var(--secondary-color)",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    <Typography component={'span'} sx={{fontSize: "13px",color: "var(--primary-color)"}}>Code: </Typography>
+                    {row?.code}
+                  </Typography>
                 </Box>
                 <Box className="footer" sx={{ display: "flex", gap: "20px" }}>
                   <Typography
@@ -404,6 +473,7 @@ function Row(props) {
                   <TextField
                     label="QUESTION TEXT"
                     fullWidth
+                    multiline
                     variant="standard"
                     {...register("text")}
                     error={!!errors.text}
@@ -444,6 +514,22 @@ function Row(props) {
                         "&:after": {
                           borderBottom: "2px solid var(--primary-color)",
                         },
+                        "& textarea": {
+        overflowY: "auto !important",
+        maxHeight: "100px",
+      },
+
+      "& textarea::-webkit-scrollbar": {
+        width: "6px",
+      },
+      "& textarea::-webkit-scrollbar-thumb": {
+        backgroundColor: "var(--secondary-color)",
+        borderRadius: "10px",
+        cursor:"grab"
+      },
+      "& textarea::-webkit-scrollbar-track": {
+        backgroundColor: "var(--navy-color)",
+      },
                       },
                     }}
                   />
@@ -460,6 +546,7 @@ function Row(props) {
                 >
                   <TextField
                     label="CODE"
+                    multiline
                     variant="standard"
                     {...register("code")}
                     error={!!errors.code}
@@ -648,12 +735,25 @@ function Row(props) {
                           ? "1px solid #ca2528"
                           : "1px solid var(--mid-gray-color)",
                         paddingBottom: "10px",
-                        flexWrap: "wrap", //لمنع السكرول
+                        flexWrap: "wrap",
+
+                        maxHeight: "80px",
+                        overflowY: "auto",
+
                         "&:hover": {
                           borderBottom: "1px solid var(--dark-gray-color)",
                         },
                         "&:focus-within": {
                           borderBottom: "2px solid var(--primary-color)",
+                        },
+
+                        "&::-webkit-scrollbar": {
+                          width: "6px",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                          backgroundColor: "var(--secondary-color)",
+                          borderRadius: "10px",
+                          cursor: "grab",
                         },
                       }}
                     >
@@ -707,7 +807,6 @@ function Row(props) {
                               transition:
                                 "background-color 9999s ease-in-out 0s",
                             },
-
                             "& input:-webkit-autofill:hover": {
                               WebkitBoxShadow: "0 0 0 100px transparent inset",
                             },
@@ -823,6 +922,21 @@ export default function QuestionsTabel({ data, search }) {
       component={Paper}
       sx={{
         borderRadius: 0,
+        overflowY: "auto",
+        "&::-webkit-scrollbar": {
+          height: "6px",
+        },
+        "&::-webkit-scrollbar-track": {
+          background: "var(--dark-gray-color)",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "var(--primary-color)",
+          borderRadius: "10px",
+        },
+        "&::-webkit-scrollbar-thumb:hover": {
+          backgroundColor: "#ac2222",
+          cursor: "grab",
+        },
       }}
     >
       <Table

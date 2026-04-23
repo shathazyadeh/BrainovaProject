@@ -26,7 +26,7 @@ function ReportQuestions() {
             <Box
                 component={"section"}
                 sx={{
-                    paddingBottom: "50px",
+                    paddingBottom: "100px",
                     flexGrow: 1,
                     alignItems: "flex-start",
                     display: "block",

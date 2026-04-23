@@ -11,7 +11,8 @@ export const CreateQuestionSchema = yup.object({
   code: yup
     .string()
     .trim()
-    .required("Code is required"),
+    .required("Code is required")
+    .max(100, "Code must not exceed 100 characters"),
 
   order: yup
     .number()
@@ -20,8 +21,4 @@ export const CreateQuestionSchema = yup.object({
     .positive("Order must be positive")
     .integer("Order must be an integer")
     .transform((val, original) => original === "" ? undefined : Number(original)), // 
-
-  options: yup
-    .string()
-    .nullable(),
 });

@@ -31,9 +31,11 @@ export default function usePost(url, options = {}) {
       }
     },
 
-    onError: (err) => {
-      setServerErrors(err.response?.data?.message || "Something went wrong");
-    },
+   onError: (err) => {
+  const message = err.response?.data?.message || "Something went wrong";
+  setServerErrors(message);
+  toast.error(message);
+},
   });
 
   return { serverErrors, usePostMutation };
