@@ -1,4 +1,3 @@
-////import { useState } from "react";
 import axiosInstance from "../../Api/axiosInstance";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
@@ -31,11 +30,10 @@ export default function usePost(url, options = {}) {
       }
     },
 
-   onError: (err) => {
+  onError: (err) => {
   const message = err.response?.data?.message || "Something went wrong";
   setServerErrors(message);
-  toast.error(message);
-},
+  },
   });
 
   return { serverErrors, usePostMutation };

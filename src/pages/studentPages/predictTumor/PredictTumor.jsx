@@ -19,7 +19,7 @@ import { FaFolderOpen } from "react-icons/fa6";
 import { GiCycle } from "react-icons/gi";
 import { FaCircle } from "react-icons/fa";
 import { LuBrain } from "react-icons/lu";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import style from "./PredictTumor.module.css";
 import useUploadMRI from "../../../hooks/mriHooks/useUploadMRI";
 import usePreviewMRI from "../../../hooks/mriHooks/usePreviewMRI";
@@ -38,6 +38,12 @@ import { SlEnergy } from "react-icons/sl";
 function PredictTumor() {
   const { isError, error, isLoading, data } = useGetQuestions();
 
+    //لتعطيل باقي الاسئلة اا جاوب نو تيومر
+  const preliminaryQuestion = data?.find(
+    (q) => q.code === "preliminary assesment",
+  );
+
+
   const {
     register,
     handleSubmit,
@@ -46,10 +52,16 @@ function PredictTumor() {
     watch,
     formState: { errors },
   } = useForm({
-    resolver: data ? yupResolver(SubmitReportSchema(data)) : undefined,
     mode: "onBlur",
-    defaultValues: {},
   });
+
+  const preliminaryAnswer = watch(preliminaryQuestion?.id);
+  const isNoTumor = preliminaryAnswer === "no tumor";
+
+  const resolver = useMemo(() => {
+  if (!data) return undefined;
+  return yupResolver(SubmitReportSchema(data, isNoTumor));
+}, [data, isNoTumor]);
 
   const fileRegister = register("file"); // ربط input تبع الملف مع react-hook-form عشان يخزن قيمة الفايل (FileList) ويتحكم فيه
   const [fileValue, setFileValue] = useState(null);
@@ -67,9 +79,11 @@ function PredictTumor() {
     isLoading: isLoadingBtn,
   } = useSubmitReport();
   const [showGradCam, setShowGradCam] = useState(false); //عشان اخفي او اظهر الجراد كام من خلال البوتون
-  const [showResult, setShowResult] = useState(false);
   const [analysisTime, setAnalysisTime] = useState(null); //لحساب وقت التحليل
-  const isLocked = showResult; //عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
+
+  const [showResult, setShowResult] = useState(false); // البوكس الي بتظهر فيه اجابات المودل
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const isLocked =  isSubmitted; //عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
 
   console.log("data ", data);
 
@@ -80,6 +94,7 @@ function PredictTumor() {
     setShowGradCam(null);
     setShowResult(false);
     setFileError("");
+    setIsSubmitted(false);
 
     const emptyValues = data?.reduce((acc, q) => {
       acc[q.id] = "";
@@ -112,10 +127,10 @@ function PredictTumor() {
     }
 
     setFileError("");
+    setIsSubmitted(true); 
 
     try {
       const newCaseId = await uploadMRI();
-
       const answersArray = data.map((q) => ({
         questionId: q.id,
         answerValue: formValues[q.id] || "",
@@ -139,38 +154,47 @@ function PredictTumor() {
       setPreviewGradCam(null);
       setFileValue(null);
     } catch (err) {
+      setIsSubmitted(false);
       setTimeout(() => {
         setIsSubmittedSuccessfully(false);
       }, 3000);
     }
   };
 
-  //لتعطيل باقي الاسئلة اا جاوب نو تيومر
-  const preliminaryQuestion = data?.find(
-    (q) => q.code === "preliminary assesment",
-  );
-
-  const preliminaryAnswer = watch(preliminaryQuestion?.id);
-
-  const isNoTumor = preliminaryAnswer === "no tumor";
 
   useEffect(() => {
-    if (isNoTumor) {
-      // فرغ كل الأسئلة اللي مش preliminary
-      const emptyValues = data?.reduce((acc, q) => {
-        acc[q.id] = q.code === "preliminary assesment" ? preliminaryAnswer : "";
-        return acc;
-      }, {});
+  if (isNoTumor) {
+    const updatedValues = data?.reduce((acc, q) => {
+      // نخلي السؤال الأساسي زي ما هو
+      if (q.code === "preliminary assesment") {
+        acc[q.id] = preliminaryAnswer;
+      } 
+      // فقط اللي skipWhenNoTumor = true بنفضيه
+      else if (q.skipWhenNoTumor === true) {
+        acc[q.id] = "";
+      } 
+      // الباقي بنحافظ عليه
+      else {
+        acc[q.id] = watch(q.id);
+      }
 
-      reset(emptyValues);
-    }
-  }, [isNoTumor, data]); // رح يشتغل بس لما isNoTumor يتغير
+      return acc;
+    }, {});
+
+    reset(updatedValues);
+  }
+}, [isNoTumor, data, preliminaryAnswer]);
+
 
   const isDisabled = (q) => {
-    if (isLocked) return true; //لقفل الفورم بعد النتيجة
-    if (q.code === "preliminary assesment") return false;
-    return isNoTumor;
-  };
+  if (isLocked) return true; //لقفل الفورم بعد النتيجة
+  if (q.code === "preliminary assesment") return false;
+  if (isNoTumor) {
+    return q.skipWhenNoTumor;
+  }
+  return false;
+};
+  
   //////////////////////////////////////
 
   return (
@@ -303,8 +327,7 @@ function PredictTumor() {
                     handelImagePreview(e);
                     const file = e.target.files[0];
                     setFileValue(file);
-
-                    if (file) setFileError("");
+                    if (file) {setFileError("")};
                   }}
                 />
                 <FaCloudUploadAlt
@@ -432,7 +455,7 @@ function PredictTumor() {
                     >
                       Click the button below to
                       <br />
-                      upload a different X-ray
+                      upload a different MRI
                       <br />
                       image.
                     </Typography>

@@ -1,7 +1,7 @@
-import * as Yup from "yup";
+import * as yup from "yup";
 
-export const SubmitFeedbackSchema = Yup.object().shape({
-  comment: Yup.string()
+export const SubmitFeedbackSchema = yup.object().shape({
+  comment: yup.string()
     .required("Feedback is required")
     .min(3, "Feedback must be at least 3 characters"),
 });

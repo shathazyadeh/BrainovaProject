@@ -5,7 +5,8 @@ export default function useCreateQuestion(options = {}) {
   const queryClient = useQueryClient();
 
   const { usePostMutation, serverErrors } = usePost(
-    "/Supervisor/RportQuestions",
+       "/Supervisor/ReportQuestions",
+
     {
       onSuccess: (data) => {
         // أول إشي نفذ onSuccess اللي جاي من برّا (اذا موجود)

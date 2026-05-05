@@ -57,7 +57,7 @@ const brainData = {
               </Typography>
             </Box>
             <Typography
-              sx={{
+              sx={{ 
                 fontSize: "12px",
                 bgcolor: "#bcd7c6",
                 color: "#2FC770",

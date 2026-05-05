@@ -12,6 +12,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { FiPlus } from "react-icons/fi";
 
 import {
@@ -22,8 +23,10 @@ import {
 } from "react-icons/md";
 import {
   Button,
+  Checkbox,
   Chip,
   FormControl,
+  FormControlLabel,
   FormHelperText,
   InputLabel,
   MenuItem,
@@ -88,6 +91,8 @@ function Row(props) {
       order: row?.order,
       type: row?.type,
       options: row?.options || [],
+      isRequired: row?.isRequired ?? false,
+      skipWhenNoTumor: row?.skipWhenNoTumor ?? false,
     },
   });
 
@@ -108,6 +113,8 @@ function Row(props) {
         code: row?.code,
         order: row?.order,
         type: row?.type,
+        isRequired: row?.isRequired ?? false,
+        skipWhenNoTumor: row?.skipWhenNoTumor ?? false,
         options: row?.options || [],
       });
 
@@ -147,7 +154,8 @@ function Row(props) {
       order: Number(formData.order),
       type: formData.type,
       isActive: checked,
-      isRequired: true,
+      isRequired: formData.isRequired,
+      skipWhenNoTumor: formData.skipWhenNoTumor,
       options: optionsList.length ? optionsList : [],
     };
     updateQuestionsMutation.mutate(
@@ -835,6 +843,114 @@ function Row(props) {
                     )}
                   </Box>
                 )}
+
+<Box className="check_boxes flex_column">
+
+  <Controller
+    name="isRequired"
+    control={control}
+    render={({ field }) => (
+      <FormControlLabel
+        label="Required"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "var(--secondary-color)",
+            fontSize: "13px",
+            fontWeight: "600",
+          },
+        }}
+        control={
+          <Checkbox
+            checked={field.value}
+            onChange={(e) => field.onChange(e.target.checked)}
+            icon={
+              <span style={{
+                width: 17,
+                height: 17,
+                borderRadius: 4,
+                border: "2px solid var(--secondary-color)",
+                display: "inline-block",
+              }} />
+            }
+            checkedIcon={
+              <span style={{
+                width: 17,
+                height: 17,
+                borderRadius: 4,
+                backgroundColor: "red",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                <svg width="14" height="14">
+                  <path
+                    d="M2 7L5.5 10.5L12 3.5"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    fill="none"
+                  />
+                </svg>
+              </span>
+            }
+          />
+        }
+      />
+    )}
+  />
+
+  <Controller
+    name="skipWhenNoTumor"
+    control={control}
+    render={({ field }) => (
+      <FormControlLabel
+        label="Skip when no tumor"
+        sx={{
+          "& .MuiFormControlLabel-label": {
+            color: "var(--secondary-color)",
+            fontSize: "13px",
+            fontWeight: "600",
+          },
+        }}
+        control={
+          <Checkbox
+            checked={field.value}
+            onChange={(e) => field.onChange(e.target.checked)}
+            icon={
+              <span style={{
+                width: 17,
+                height: 17,
+                borderRadius: 4,
+                border: "2px solid var(--secondary-color)",
+                display: "inline-block",
+              }} />
+            }
+            checkedIcon={
+              <span style={{
+                width: 17,
+                height: 17,
+                borderRadius: 4,
+                backgroundColor: "red",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
+                <svg width="14" height="14">
+                  <path
+                    d="M2 7L5.5 10.5L12 3.5"
+                    stroke="white"
+                    strokeWidth="2.5"
+                    fill="none"
+                  />
+                </svg>
+              </span>
+            }
+          />
+        }
+      />
+    )}
+  />
+
+</Box>
 
                 <Box
                   className="action_btns"

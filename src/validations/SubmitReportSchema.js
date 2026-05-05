@@ -1,26 +1,30 @@
 import * as yup from "yup";
 
-export const SubmitReportSchema = (data = []) => {
-  const preliminaryId = data.find(
-    (q) => q.code === "preliminary assesment"
-  )?.id;
+export const SubmitReportSchema = (questions, isNoTumor) => {
+  // object رح نخزن فيه الـ validation rules لكل سؤال حسب id تبعه
+  const shape = {};
 
-  return yup.object().shape(
-    data.reduce((acc, q) => {
-     
-      let fieldSchema = q.isRequired
-        ? yup.string().required("This field is required")
-        : yup.string().notRequired();
+  // نمشي على كل سؤال جاي من الباك
+  questions.forEach((q) => {
+    // البداية: نفترض أن الإجابة نص (string)
+    let validator = yup.string();
 
-      if (q.id !== preliminaryId) {
-        fieldSchema = fieldSchema.when(preliminaryId, {
-          is: "no tumor",
-          then: () => yup.string().notRequired(),
-        });
-      }
+    // إذا السؤال مطلوب (required من الباك)
+    if (q.isRequired) {
+      // نخليه إجباري ويعطي رسالة خطأ إذا فاضي
+      validator = validator.required("This field is required");
+    }
 
-      acc[q.id] = fieldSchema;
-      return acc;
-    }, {})
-  );
+    // إذا السؤال مربوط بحالة "no tumor"
+    // ومعناه: إذا الحالة فعلاً No Tumor → تجاهل التحقق لهذا السؤال
+    if (q.skipWhenNoTumor && isNoTumor) {
+      validator = validator.notRequired();
+    }
+
+    // نخزن الـ validator حسب id السؤال
+    shape[q.id] = validator;
+  });
+
+  // نحول الشكل النهائي إلى yup schema جاهز للاستخدام في react-hook-form
+  return yup.object().shape(shape);
 };

@@ -518,7 +518,7 @@ export default function BrainModel() {
           >
             <BrainCard activeLabel={activeLabel} />
           </Box>
-        </Grid>
+        </Grid> 
       </Grid>
     </Box>
   );
