@@ -4,6 +4,7 @@ import Collapse from "@mui/material/Collapse";
 import { Fragment, useEffect, useState } from "react";
 import IconButton from "@mui/material/IconButton";
 import Table from "@mui/material/Table";
+import { useTheme, useMediaQuery } from "@mui/material";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -43,6 +44,11 @@ import { CreateQuestionSchema } from "../../../validations/CreateQuestionsSchema
 
 function Row(props) {
   const { row } = props;
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isXSmall = useMediaQuery("(max-width:600px)");
+
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState(row?.isActive);
   const [openEditForm, setOpenEditForm] = useState(false);
@@ -86,6 +92,7 @@ function Row(props) {
     context: { optionsList }, // يب لازم تعمل الفالديشين على الليستة عشان الخيارات بالبداية بتنضاف عاللستة مش عالقيمة بالباك
     mode: "onChange",
     defaultValues: {
+      //  عشان نعمل ريسيت بلزم نعرف ديفولت فاليوز
       text: row?.text,
       code: row?.code,
       order: row?.order,
@@ -128,7 +135,7 @@ function Row(props) {
     }
   }, [optionsList]);
 
-  const { updateQuestionsMutation } = useUpdateQuestions();
+  const { updateQuestionsMutation, serverErrors } = useUpdateQuestions();
   const updateQuestion = (formData) => {
     if (formData.type === 2) {
       if (optionsList.length < 2) {
@@ -178,13 +185,10 @@ function Row(props) {
       >
         <TableCell align="center" sx={{ width: "50px", paddingLeft: "0px" }}>
           <IconButton
-            aria-label="expand row"
             size="small"
             onClick={() => {
               setOpen(!open);
-              setTimeout(() => {
-                setOpenEditForm(false);
-              }, 300);
+              setTimeout(() => setOpenEditForm(false), 300);
             }}
           >
             {open ? (
@@ -195,123 +199,240 @@ function Row(props) {
           </IconButton>
         </TableCell>
 
-        <TableCell
-          align="left"
-          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
-        >
-          #{row?.order}
-        </TableCell>
+        {isMobile ? (
+          <TableCell colSpan={5}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    color: "var(--primary-color)",
+                    fontSize: "11px",
+                    mb: "2px",
+                  }}
+                >
+                  #{row?.order} ·{" "}
+                  {row?.type === 1 ? "Free text" : "Single choice"}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "var(--secondary-color)",
+                    fontWeight: "600",
+                    fontSize: "13px",
+                    maxWidth: "180px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    "@media (max-width:365px)": { maxWidth: "100px" },
+                  }}
+                >
+                  {row?.code}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: checked ? "#fff" : "var(--secondary-color)",
+                    fontSize: "12px",
+                    textDecoration: checked ? "none" : "line-through",
+                    maxWidth: "380px",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    "@media (max-width:644px)": { maxWidth: "280px" },
+                    "@media (max-width:516px)": { maxWidth: "180px" },
+                    "@media (max-width:365px)": { maxWidth: "120px" },
+                  }}
+                >
+                  {row?.text}
+                </Typography>
+              </Box>
 
-        <TableCell
-          component="th"
-          scope="row"
-          sx={{
-            maxWidth: 200,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            color: "var(--secondary-color)",
-            fontWeight: "600",
-          }}
-        >
-          {row?.code}
-        </TableCell>
+              <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <Switch
+                  disabled={row?.code === "preliminary assesment"}
+                  checked={checked}
+                  onChange={() => handleToggle(row.id)}
+                  disableRipple
+                  sx={{
+                    width: 42,
+                    height: 24,
+                    padding: 0,
+                    "& .MuiSwitch-switchBase": {
+                      padding: "3px",
+                      "&.Mui-checked": { transform: "translateX(18px)" },
+                      "&.Mui-checked + .MuiSwitch-track": {
+                        backgroundColor: "#ff0000 !important",
+                        opacity: 1,
+                      },
+                    },
+                    "& .MuiSwitch-thumb": {
+                      width: 18,
+                      height: 18,
+                      borderRadius: "50%",
+                      backgroundColor: "var(--navy-color)",
+                    },
+                    "& .MuiSwitch-track": {
+                      borderRadius: 12,
+                      backgroundColor: "#575656 !important",
+                      opacity: 1,
+                    },
+                  }}
+                />
+                <Box
+                  onClick={() => {
+                    if (row?.code === "preliminary assesment") return;
+                    setOpen(true);
+                    setOpenEditForm(true);
+                  }}
+                  sx={{
+                    backgroundColor: "var(--navy-color)",
+                    height: "30px",
+                    width: "30px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    cursor:
+                      row?.code === "preliminary assesment"
+                        ? "not-allowed"
+                        : "pointer",
+                    transition: "all .3s",
+                    "&:hover": { bgcolor: "rgba(229, 226, 226, 0.21)" },
+                    "@media (max-width:418px)": { display: "none" },
+                  }}
+                >
+                  <MdOutlineEdit size={19} fill={"var(--secondary-color)"} />
+                </Box>
+              </Box>
+            </Box>
+          </TableCell>
+        ) : (
+          <>
+            <TableCell
+              align="left"
+              sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
+            >
+              #{row?.order}
+            </TableCell>
 
-        <TableCell
-          align="left"
-          sx={{
-            maxWidth: 400,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            color: checked ? "#fff" : "var(--secondary-color)",
-            fontWeight: "600",
-            textDecoration: checked ? "none" : "line-through",
-          }}
-        >
-          {row?.text}
-        </TableCell>
+            <TableCell
+              component="th"
+              scope="row"
+              sx={{
+                maxWidth: 200,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                color: "var(--secondary-color)",
+                fontWeight: "600",
+                "@media (max-width:1060px)": { maxWidth: 100 },
+              }}
+            >
+              {row?.code}
+            </TableCell>
 
-        <TableCell
-          align="left"
-          sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
-        >
-          {row?.type === 1 ? "Free text" : "Single choice"}
-        </TableCell>
+            <TableCell
+              align="left"
+              sx={{
+                maxWidth: 400,
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                color: checked ? "#fff" : "var(--secondary-color)",
+                fontWeight: "600",
+                textDecoration: checked ? "none" : "line-through",
+                "@media (max-width:1060px)": { maxWidth: 300 },
+              }}
+            >
+              {row?.text}
+            </TableCell>
 
-        <TableCell
-          align="left"
-          sx={{
-            color: "var(--secondary-color)",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
-        >
-          <Switch
-            checked={checked}
-            onChange={() => handleToggle(row.id)}
-            disableRipple
-            sx={{
-              width: 42,
-              height: 24,
-              padding: 0,
-              "& .MuiSwitch-switchBase": {
-                padding: "3px",
-                transition: "0.3s",
+            <TableCell
+              align="left"
+              sx={{ color: "var(--secondary-color)", fontWeight: "600" }}
+            >
+              {row?.type === 1 ? "Free text" : "Single choice"}
+            </TableCell>
 
-                "&:hover": {
-                  backgroundColor: "rgba(81, 81, 81, 0.22) !important",
-                },
-
-                "&.Mui-checked": {
-                  transform: "translateX(18px)",
-                },
-
-                "&.Mui-checked + .MuiSwitch-track": {
-                  backgroundColor: "#ff0000 !important",
-                  opacity: 1,
-                },
-              },
-
-              "& .MuiSwitch-thumb": {
-                width: 18,
-                height: 18,
-                borderRadius: "50%",
-                backgroundColor: "var(--navy-color)",
-              },
-
-              "& .MuiSwitch-track": {
-                borderRadius: 12,
-                backgroundColor: "#575656 !important",
-                opacity: 1,
-              },
-            }}
-          />
-
-          <Box
-            onClick={() => {
-              setOpen(true);
-              setOpenEditForm(true);
-            }}
-            sx={{
-              backgroundColor: "var(--navy-color)",
-              height: "30px",
-              width: "30px",
-              borderRadius: "50%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              cursor: "pointer",
-              transition: "all .3s",
-              "&:hover": {
-                bgcolor: "rgba(229, 226, 226, 0.21)",
-              },
-            }}
-          >
-            <MdOutlineEdit size={19} />
-          </Box>
-        </TableCell>
+            <TableCell
+              align="left"
+              sx={{
+                color: "var(--secondary-color)",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                "@media (max-width:1178px)": { display: "none" },
+              }}
+            >
+              <Switch
+                disabled={row?.code === "preliminary assesment"}
+                checked={checked}
+                onChange={() => handleToggle(row.id)}
+                disableRipple
+                sx={{
+                  width: 42,
+                  height: 24,
+                  padding: 0,
+                  "& .MuiSwitch-switchBase": {
+                    padding: "3px",
+                    transition: "0.3s",
+                    "&:hover": {
+                      backgroundColor: "rgba(81, 81, 81, 0.22) !important",
+                    },
+                    "&.Mui-checked": { transform: "translateX(18px)" },
+                    "&.Mui-disabled": {
+                      cursor: "not-allowed",
+                      pointerEvents: "auto",
+                    },
+                    "&.Mui-checked + .MuiSwitch-track": {
+                      backgroundColor: "#ff0000 !important",
+                      opacity: 1,
+                    },
+                  },
+                  "& .MuiSwitch-thumb": {
+                    width: 18,
+                    height: 18,
+                    borderRadius: "50%",
+                    backgroundColor: "var(--navy-color)",
+                  },
+                  "& .MuiSwitch-track": {
+                    borderRadius: 12,
+                    backgroundColor: "#575656 !important",
+                    opacity: 1,
+                  },
+                }}
+              />
+              <Box
+                onClick={() => {
+                  if (row?.code === "preliminary assesment") return;
+                  setOpen(true);
+                  setOpenEditForm(true);
+                }}
+                sx={{
+                  backgroundColor: "var(--navy-color)",
+                  height: "30px",
+                  width: "30px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor:
+                    row?.code === "preliminary assesment"
+                      ? "not-allowed"
+                      : "pointer",
+                  transition: "all .3s",
+                  "&:hover": { bgcolor: "rgba(229, 226, 226, 0.21)" },
+                }}
+              >
+                <MdOutlineEdit size={19} />
+              </Box>
+            </TableCell>
+          </>
+        )}
       </TableRow>
 
       <TableRow>
@@ -325,6 +446,7 @@ function Row(props) {
                   paddingBottom: "30px",
                   paddingTop: "10px",
                   paddingLeft: "70px",
+                  "@media (max-width:360px)": { paddingLeft: "58px" },
                 }}
               >
                 <Box
@@ -373,8 +495,10 @@ function Row(props) {
                     </Typography>
                   )}
                 </Box>
-                <Box className="question_text"
-                sx={{flexWrap: "wrap",
+                <Box
+                  className="question_text"
+                  sx={{
+                    flexWrap: "wrap",
                     maxHeight: "80px",
                     overflowY: "auto",
                     overflowX: "hidden",
@@ -386,7 +510,8 @@ function Row(props) {
                       backgroundColor: "var(--secondary-color)",
                       borderRadius: "10px",
                       cursor: "grab",
-                    },}}
+                    },
+                  }}
                 >
                   <Typography
                     sx={{
@@ -395,7 +520,12 @@ function Row(props) {
                       marginBottom: "4px",
                     }}
                   >
-                    <Typography component={'span'} sx={{fontSize: "13px",color: "var(--primary-color)"}}>Question: </Typography>
+                    <Typography
+                      component={"span"}
+                      sx={{ fontSize: "13px", color: "var(--primary-color)" }}
+                    >
+                      Question:{" "}
+                    </Typography>
                     {row?.text}
                   </Typography>
                 </Box>
@@ -407,7 +537,12 @@ function Row(props) {
                       marginBottom: "20px",
                     }}
                   >
-                    <Typography component={'span'} sx={{fontSize: "13px",color: "var(--primary-color)"}}>Code: </Typography>
+                    <Typography
+                      component={"span"}
+                      sx={{ fontSize: "13px", color: "var(--primary-color)" }}
+                    >
+                      Code:{" "}
+                    </Typography>
                     {row?.code}
                   </Typography>
                 </Box>
@@ -433,34 +568,42 @@ function Row(props) {
                       </Typography>
                     )}
                   </Typography>
-                  <Box
-                    onClick={() => setOpenEditForm(true)}
-                    sx={{
-                      color: "var(--primary-color)",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "2px",
-                      cursor: "pointer",
-                      transition: "all 0.3s ease",
-                      borderBottom: "1px solid transparent",
-                      "&:hover": {
-                        borderBottom: "1px solid var(--primary-color)",
-                      },
-                    }}
-                  >
-                    <MdOutlineEdit
-                      size={15}
-                      style={{ transform: "translateY(-1px)" }}
-                    />
+                  {row?.code === "preliminary assesment" ? (
                     <Typography
+                      sx={{ color: "var(--primary-color)", fontSize: "13px" }}
+                    >
+                      This question is not editable
+                    </Typography>
+                  ) : (
+                    <Box
+                      onClick={() => setOpenEditForm(true)}
                       sx={{
-                        fontSize: "13px",
-                        textShadow: "0 0 6px var(--primary-color)",
+                        color: "var(--primary-color)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "2px",
+                        cursor: "pointer",
+                        transition: "all 0.3s ease",
+                        borderBottom: "1px solid transparent",
+                        "&:hover": {
+                          borderBottom: "1px solid var(--primary-color)",
+                        },
                       }}
                     >
-                      Edit inline
-                    </Typography>
-                  </Box>
+                      <MdOutlineEdit
+                        size={15}
+                        style={{ transform: "translateY(-1px)" }}
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: "13px",
+                          textShadow: "0 0 6px var(--primary-color)",
+                        }}
+                      >
+                        Edit inline
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
               </Box>
             ) : (
@@ -475,6 +618,7 @@ function Row(props) {
                   display: "flex",
                   flexDirection: "column",
                   gap: 3,
+                  "@media (max-width:360px)": { paddingLeft: "58px" },
                 }}
               >
                 <Box className="question_text">
@@ -497,6 +641,9 @@ function Row(props) {
                     InputProps={{
                       sx: {
                         color: "#fff",
+                        "@media (max-width:635px)": {
+                          fontSize: "14px",
+                        },
                         "& .MuiInput-input": {
                           paddingBottom: "10px",
                         },
@@ -523,21 +670,21 @@ function Row(props) {
                           borderBottom: "2px solid var(--primary-color)",
                         },
                         "& textarea": {
-        overflowY: "auto !important",
-        maxHeight: "100px",
-      },
+                          overflowY: "auto !important",
+                          maxHeight: "100px",
+                        },
 
-      "& textarea::-webkit-scrollbar": {
-        width: "6px",
-      },
-      "& textarea::-webkit-scrollbar-thumb": {
-        backgroundColor: "var(--secondary-color)",
-        borderRadius: "10px",
-        cursor:"grab"
-      },
-      "& textarea::-webkit-scrollbar-track": {
-        backgroundColor: "var(--navy-color)",
-      },
+                        "& textarea::-webkit-scrollbar": {
+                          width: "6px",
+                        },
+                        "& textarea::-webkit-scrollbar-thumb": {
+                          backgroundColor: "var(--secondary-color)",
+                          borderRadius: "10px",
+                          cursor: "grab",
+                        },
+                        "& textarea::-webkit-scrollbar-track": {
+                          backgroundColor: "var(--navy-color)",
+                        },
                       },
                     }}
                   />
@@ -550,6 +697,10 @@ function Row(props) {
                     justifyContent: "space-between",
                     alignItems: "flex-end",
                     gap: 5,
+                    "@media (max-width:611px)": {
+                      flexDirection: "column",
+                      alignItems: "stretch",
+                    },
                   }}
                 >
                   <TextField
@@ -571,6 +722,9 @@ function Row(props) {
                     InputProps={{
                       sx: {
                         color: "#fff",
+                        "@media (max-width:635px)": {
+                          fontSize: "14px",
+                        },
                         "& .MuiInput-input": {
                           paddingBottom: "10px",
                         },
@@ -656,6 +810,12 @@ function Row(props) {
                           }}
                           sx={{
                             color: "#fff",
+                            "@media (max-width:635px)": {
+                              fontSize: "14px",
+                            },
+                            "& .MuiInput-input": {
+                              paddingBottom: "15px",
+                            },
                             "& .MuiSelect-icon": {
                               color: "var(--mid-gray-color)",
                             },
@@ -699,20 +859,23 @@ function Row(props) {
                     InputProps={{
                       sx: {
                         color: "#fff",
-
+                        "@media (max-width:635px)": {
+                          fontSize: "14px",
+                        },
+                        "& .MuiInput-input": {
+                          paddingBottom: "15px",
+                        },
                         "& input[type=number]": {
                           MozAppearance: "textfield",
                         },
-
                         "& input[type=number]::-webkit-outer-spin-button, & input[type=number]::-webkit-inner-spin-button":
                           {
                             WebkitAppearance: "inner-spin-button",
                             opacity: 1,
                             filter:
-                              "invert(1) sepia(0) saturate(1) hue-rotate(147deg)",
+                              "invert(1) sepia(0) saturate(1) hue-rotate(147deg) !important",
                             cursor: "pointer",
                           },
-
                         "&:before": {
                           borderBottom: "1px solid var(--mid-gray-color)",
                         },
@@ -781,6 +944,9 @@ function Row(props) {
                                 color: "var(--primary-color)",
                               },
                             },
+                            "@media (max-width:635px)": {
+                              fontSize: "12px",
+                            },
                           }}
                         />
                       ))}
@@ -844,113 +1010,141 @@ function Row(props) {
                   </Box>
                 )}
 
-<Box className="check_boxes flex_column">
-
-  <Controller
-    name="isRequired"
-    control={control}
-    render={({ field }) => (
-      <FormControlLabel
-        label="Required"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "var(--secondary-color)",
-            fontSize: "13px",
-            fontWeight: "600",
-          },
-        }}
-        control={
-          <Checkbox
-            checked={field.value}
-            onChange={(e) => field.onChange(e.target.checked)}
-            icon={
-              <span style={{
-                width: 17,
-                height: 17,
-                borderRadius: 4,
-                border: "2px solid var(--secondary-color)",
-                display: "inline-block",
-              }} />
-            }
-            checkedIcon={
-              <span style={{
-                width: 17,
-                height: 17,
-                borderRadius: 4,
-                backgroundColor: "red",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-                <svg width="14" height="14">
-                  <path
-                    d="M2 7L5.5 10.5L12 3.5"
-                    stroke="white"
-                    strokeWidth="2.5"
-                    fill="none"
+                <Box className="check_boxes flex_column">
+                  <Controller
+                    name="isRequired"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControlLabel
+                        label="Required"
+                        sx={{
+                          "& .MuiFormControlLabel-label": {
+                            color: "var(--secondary-color)",
+                            fontSize: { xs: "11px", md: "13px" },
+                            fontWeight: "600",
+                          },
+                        }}
+                        control={
+                          <Checkbox
+                            checked={field.value}
+                            onChange={(e) => field.onChange(e.target.checked)}
+                            sx={{
+                              "& .MuiTouchRipple-root span": {
+                                backgroundColor: "#ee060656",
+                              },
+                            }}
+                            icon={
+                              <Box
+                                component="span"
+                                sx={{
+                                  width: { xs: 14, sm: 17 },
+                                  height: { xs: 14, sm: 17 },
+                                  borderRadius: "4px",
+                                  border: "2px solid var(--secondary-color)",
+                                  display: "inline-block",
+                                }}
+                              />
+                            }
+                            checkedIcon={
+                              <span
+                                style={{
+                                  width: isXSmall ? 14 : 17,
+                                  height: isXSmall ? 14 : 17,
+                                  borderRadius: 4,
+                                  backgroundColor: "red",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <svg width="14" height="14">
+                                  <path
+                                    d="M2 7L5.5 10.5L12 3.5"
+                                    stroke="white"
+                                    strokeWidth={isXSmall ? "1.5" : "2.5"}
+                                    fill="none"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                          />
+                        }
+                      />
+                    )}
                   />
-                </svg>
-              </span>
-            }
-          />
-        }
-      />
-    )}
-  />
 
-  <Controller
-    name="skipWhenNoTumor"
-    control={control}
-    render={({ field }) => (
-      <FormControlLabel
-        label="Skip when no tumor"
-        sx={{
-          "& .MuiFormControlLabel-label": {
-            color: "var(--secondary-color)",
-            fontSize: "13px",
-            fontWeight: "600",
-          },
-        }}
-        control={
-          <Checkbox
-            checked={field.value}
-            onChange={(e) => field.onChange(e.target.checked)}
-            icon={
-              <span style={{
-                width: 17,
-                height: 17,
-                borderRadius: 4,
-                border: "2px solid var(--secondary-color)",
-                display: "inline-block",
-              }} />
-            }
-            checkedIcon={
-              <span style={{
-                width: 17,
-                height: 17,
-                borderRadius: 4,
-                backgroundColor: "red",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-                <svg width="14" height="14">
-                  <path
-                    d="M2 7L5.5 10.5L12 3.5"
-                    stroke="white"
-                    strokeWidth="2.5"
-                    fill="none"
+                  <Controller
+                    name="skipWhenNoTumor"
+                    control={control}
+                    render={({ field }) => (
+                      <FormControlLabel
+                        label="Skip when no tumor"
+                        sx={{
+                          "& .MuiFormControlLabel-label": {
+                            color: "var(--secondary-color)",
+                            fontSize: { xs: "11px", md: "13px" },
+                            fontWeight: "600",
+                          },
+                        }}
+                        control={
+                          <Checkbox
+                            checked={field.value}
+                            onChange={(e) => field.onChange(e.target.checked)}
+                            sx={{
+                              "& .MuiTouchRipple-root span": {
+                                backgroundColor: "#ee060656",
+                              },
+                            }}
+                            icon={
+                              <Box
+                                component="span"
+                                sx={{
+                                  width: { xs: 14, sm: 17 },
+                                  height: { xs: 14, sm: 17 },
+                                  borderRadius: "4px",
+                                  border: "2px solid var(--secondary-color)",
+                                  display: "inline-block",
+                                }}
+                              />
+                            }
+                            checkedIcon={
+                              <span
+                                style={{
+                                  width: isXSmall ? 14 : 17,
+                                  height: isXSmall ? 14 : 17,
+                                  borderRadius: 4,
+                                  backgroundColor: "red",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                <svg width="14" height="14">
+                                  <path
+                                    d="M2 7L5.5 10.5L12 3.5"
+                                    stroke="white"
+                                    strokeWidth={isXSmall ? "1.5" : "2.5"}
+                                    fill="none"
+                                  />
+                                </svg>
+                              </span>
+                            }
+                          />
+                        }
+                      />
+                    )}
                   />
-                </svg>
-              </span>
-            }
-          />
-        }
-      />
-    )}
-  />
+                </Box>
 
-</Box>
+                {serverErrors?.length > 0 ? (
+                  <Typography
+                    sx={{ color: "var(--primary-color)", marginBottom: "20px" }}
+                  >
+                    {serverErrors}
+                  </Typography>
+                ) : (
+                  ""
+                )}
 
                 <Box
                   className="action_btns"
@@ -969,7 +1163,7 @@ function Row(props) {
                     sx={{
                       color: "#aaa",
                       borderRadius: "20px",
-                      paddingX: "8px",
+                      paddingX: { sm: "4px", md: "8px" },
                       transition: "all 0.3s",
                       "&:hover": {
                         color: "var(--primary-color)",
@@ -979,7 +1173,11 @@ function Row(props) {
                       },
                     }}
                   >
-                    <Typography sx={{ fontSize: "14px" }}>Cancel</Typography>
+                    <Typography
+                      sx={{ fontSize: { xs: "10px", sm: "13px", md: "14px" } }}
+                    >
+                      Cancel
+                    </Typography>
                   </Button>
 
                   <Button
@@ -989,8 +1187,9 @@ function Row(props) {
                     sx={{
                       bgcolor: "var(--primary-color)",
                       borderRadius: "20px",
-                      px: 3,
+                      paddingX: { sm: "12px", md: "24px" },
                       transition: "all 0.3s",
+                      fontSize: { xs: "10px", sm: "13px", md: "14px" },
                       "&:hover": {
                         backgroundColor: "#ae1d1d",
                       },

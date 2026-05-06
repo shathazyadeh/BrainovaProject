@@ -1,16 +1,29 @@
-import { Box, Button, Drawer, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Drawer,
+  FormControlLabel,
+  TextField,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { Switch } from "@mui/material";
 import { FiPlus } from "react-icons/fi";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { CreateQuestionSchema } from "../../../validations/CreateQuestionsSchema";
-import useCreateQuestion  from "../../../hooks/supervisorHooks/useCreateQuestion";
+import useCreateQuestion from "../../../hooks/supervisorHooks/useCreateQuestion";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { Chip } from "@mui/material";
 
 function RightDrawer({ open, setOpen }) {
+  const theme = useTheme();
+  const isXSmall = useMediaQuery("(max-width:400px)");
+
   const [questionType, setQuestionType] = useState(1); //لانهم مش فيلد عادي استعملت اليوزستيت
   const [isActive, setIsActive] = useState(true); //
   const [optionInput, setOptionInput] = useState(""); //القيمة اللي بكتبها في الانبوت
@@ -35,6 +48,7 @@ function RightDrawer({ open, setOpen }) {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(CreateQuestionSchema),
@@ -45,14 +59,16 @@ function RightDrawer({ open, setOpen }) {
       setOptionsError(""); //  امسح الخطأ لما يصيروا 2 اوبشنز أو أكثر
     }
   }, [optionsList]);
-useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخترنا التايب 1
-  if (questionType === 1) {
-    setOptionsList([]);
-    setOptionInput("");
-    setOptionsError("");
-  }
-}, [questionType]);
-  const resetDrawer = () => { // عشان افضيه بس يتسكر
+  useEffect(() => {
+    // نفضي الاوبشين اللي كتبناها لو اخترنا التايب 1
+    if (questionType === 1) {
+      setOptionsList([]);
+      setOptionInput("");
+      setOptionsError("");
+    }
+  }, [questionType]);
+  const resetDrawer = () => {
+    // عشان افضيه بس يتسكر
     setOptionsList([]);
     setOptionInput("");
     setQuestionType(1);
@@ -60,13 +76,13 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
     reset();
   };
 
-  const { usePostMutation, } = useCreateQuestion({
+  const { usePostMutation, serverErrors } = useCreateQuestion({
     onSuccess: () => {
       reset();
       setOpen(false);
     },
   });
- 
+
   const onSubmit = (data) => {
     if (questionType === 2) {
       if (optionsList.length < 2) {
@@ -87,22 +103,26 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
       }
     }
     usePostMutation.mutate({
-      code: data.code,
-      text: data.text,
+      code: data?.code,
+      text: data?.text,
       type: questionType,
       order: Number(data.order),
       isActive: isActive,
-      isRequired: true,
+      isRequired: data?.isRequired ?? false,
+      skipWhenNoTumor: data?.skipWhenNoTumor ?? false,
       options: optionsList.length > 0 ? optionsList : [""],
     });
   };
-  
+
   return (
     <>
       <Drawer
         anchor="right"
         open={open}
-        onClose={() => {resetDrawer();setOpen(false);}}
+        onClose={() => {
+          resetDrawer();
+          setOpen(false);
+        }}
         PaperProps={{
           sx: {
             bgcolor: "var(--navy-color)",
@@ -124,6 +144,7 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
             },
             "&::-webkit-scrollbar-thumb:hover": {
               backgroundColor: "var(--primary-color)",
+              cursor: "grab",
             },
           },
         }}
@@ -141,13 +162,28 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                   fontSize: "30px",
                   fontWeight: "600",
                   fontFamily: "var(--primary-font)",
+                  "@media (max-width:700px)": {
+                    fontSize: "22px",
+                  },
                 }}
               >
                 New Question
               </Typography>
-              <Box sx={{ alignItems: "center", display: "flex" }}>
+              <Box
+                sx={{
+                  alignItems: "center",
+                  display: "flex",
+                  transition: "0.3s",
+                  "&:hover": {
+                    transform: "translateY(-2px)",
+                  },
+                }}
+              >
                 <IoMdClose
-                   onClick={() => {resetDrawer();setOpen(false);}}
+                  onClick={() => {
+                    resetDrawer();
+                    setOpen(false);
+                  }}
                   size={22}
                   color="var(--secondary-color)"
                   style={{ cursor: "pointer", flexShrink: 0 }}
@@ -158,7 +194,14 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
               sx={{
                 color: "var(--secondary-color)",
                 fontSize: "15px",
+                width: "fit-content",
                 fontWeight: "200",
+                "@media (max-width:700px)": {
+                  fontSize: "13px",
+                },
+                "@media (max-width:390px)": {
+                  paddingRight: "40px",
+                },
               }}
             >
               Add a question to the supervisor review form.
@@ -177,7 +220,6 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
             >
               Question text
             </Typography>
-
             <TextField
               placeholder={" What should students answer?"}
               fullWidth
@@ -223,6 +265,9 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                   "&::-webkit-scrollbar-track": {
                     backgroundColor: "var(--navy-color)",
                   },
+                  "@media (max-width:435px)": {
+                    fontSize: "14px",
+                  },
                 },
               }}
             />
@@ -255,16 +300,16 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                     color: "#fff",
                     backgroundColor: "var(--navy-color)",
                     "&:hover fieldset": {
-                    borderBottom: "1px solid var(--dark-gray-color)",
-                  },
-                  "& fieldset": {
-                    border: "none",
-                    borderBottom: "1px solid #5958588b",
-                    borderRadius: 0,
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderBottom: "1px solid var(--primary-color)",
-                  },
+                      borderBottom: "1px solid var(--dark-gray-color)",
+                    },
+                    "& fieldset": {
+                      border: "none",
+                      borderBottom: "1px solid #5958588b",
+                      borderRadius: 0,
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderBottom: "1px solid var(--primary-color)",
+                    },
                     "& textarea": {
                       overflowY: "auto",
                       "&::-webkit-scrollbar": {
@@ -277,6 +322,9 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                       },
                       "&::-webkit-scrollbar-track": {
                         backgroundColor: "var(--navy-color)",
+                      },
+                      "@media (max-width:435px)": {
+                        fontSize: "14px",
                       },
                     },
                   },
@@ -309,17 +357,17 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                   "& .MuiOutlinedInput-root": {
                     color: "#fff",
                     backgroundColor: "var(--navy-color)",
-                   "&:hover fieldset": {
-                    borderBottom: "1px solid var(--dark-gray-color)",
-                  },
-                  "& fieldset": {
-                    border: "none",
-                    borderBottom: "1px solid #5958588b",
-                    borderRadius: 0,
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderBottom: "1px solid var(--primary-color)",
-                  },
+                    "&:hover fieldset": {
+                      borderBottom: "1px solid var(--dark-gray-color)",
+                    },
+                    "& fieldset": {
+                      border: "none",
+                      borderBottom: "1px solid #5958588b",
+                      borderRadius: 0,
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderBottom: "1px solid var(--primary-color)",
+                    },
                     "& textarea": {
                       overflowY: "auto",
                       "&::-webkit-scrollbar": {
@@ -332,6 +380,9 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                       },
                       "&::-webkit-scrollbar-track": {
                         backgroundColor: "var(--navy-color)",
+                      },
+                      "@media (max-width:435px)": {
+                        fontSize: "14px",
                       },
                     },
                   },
@@ -362,6 +413,11 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                     paddingX: "9px",
                     borderRadius: "15px",
                     textAlign: "center",
+                    "@media (max-width:435px)": {
+                      fontSize: "11px",
+                      paddingX: "7px",
+                      paddingY: "2px",
+                    },
                   }}
                 >
                   Free Text
@@ -379,6 +435,11 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                     paddingX: "9px",
                     borderRadius: "15px",
                     textAlign: "center",
+                    "@media (max-width:435px)": {
+                      fontSize: "11px",
+                      paddingX: "7px",
+                      paddingY: "2px",
+                    },
                   }}
                 >
                   Single Choice
@@ -432,6 +493,7 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                     },
                     "&::-webkit-scrollbar-thumb:hover": {
                       backgroundColor: "#ff4d4d",
+                      cursor: "grab",
                     },
                   }}
                 >
@@ -447,12 +509,15 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                         sx={{
                           bgcolor: "#242424",
                           color: "#eee7e7",
-                           "& .MuiChip-deleteIcon:hover": {
-      color: "var(praimary-color)",
-    },
+                          "& .MuiChip-deleteIcon:hover": {
+                            color: "var(praimary-color)",
+                          },
                           "& .MuiChip-deleteIcon": {
                             fontSize: "20px",
                             color: "#6c6c6c",
+                          },
+                          "@media (max-width:435px)": {
+                            fontSize: "11px",
                           },
                         }}
                       />
@@ -546,31 +611,169 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
               />
             </Box>
 
+            <Box className="check_boxes flex_column" sx={{ marginTop: "20px" }}>
+              <Controller
+                name="isRequired"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    label="Required"
+                    sx={{
+                      "& .MuiFormControlLabel-label": {
+                        color: "var(--secondary-color)",
+                        fontSize: "13px",
+                        fontWeight: "600",
+                      },
+                    }}
+                    control={
+                      <Checkbox
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        sx={{
+                          "& .MuiTouchRipple-root span": {
+                            backgroundColor: "#ee060656",
+                          },
+                        }}
+                        icon={
+                          <Box
+                            component="span"
+                            sx={{
+                              width: { xs: 14, sm: 17 },
+                              height: { xs: 14, sm: 17 },
+                              borderRadius: "4px",
+                              border: "2px solid var(--secondary-color)",
+                              display: "inline-block",
+                            }}
+                          />
+                        }
+                        checkedIcon={
+                          <span
+                            style={{
+                              width: isXSmall ? 14 : 17,
+                              height: isXSmall ? 14 : 17,
+                              borderRadius: 4,
+                              backgroundColor: "red",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <svg width="14" height="14">
+                              <path
+                                d="M2 7L5.5 10.5L12 3.5"
+                                stroke="white"
+                                strokeWidth={isXSmall ? "1.5" : "2.5"}
+                                fill="none"
+                              />
+                            </svg>
+                          </span>
+                        }
+                      />
+                    }
+                  />
+                )}
+              />
+
+              <Controller
+                name="skipWhenNoTumor"
+                control={control}
+                render={({ field }) => (
+                  <FormControlLabel
+                    label="Skip when no tumor"
+                    sx={{
+                      "& .MuiFormControlLabel-label": {
+                        color: "var(--secondary-color)",
+                        fontSize: "13px",
+                        fontWeight: "600",
+                      },
+                    }}
+                    control={
+                      <Checkbox
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        sx={{
+                          "& .MuiTouchRipple-root span": {
+                            backgroundColor: "#ee060656",
+                          },
+                        }}
+                        icon={
+                          <Box
+                            component="span"
+                            sx={{
+                              width: { xs: 14, sm: 17 },
+                              height: { xs: 14, sm: 17 },
+                              borderRadius: "4px",
+                              border: "2px solid var(--secondary-color)",
+                              display: "inline-block",
+                            }}
+                          />
+                        }
+                        checkedIcon={
+                          <span
+                            style={{
+                              width: isXSmall ? 14 : 17,
+                              height: isXSmall ? 14 : 17,
+                              borderRadius: 4,
+                              backgroundColor: "red",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <svg width="14" height="14">
+                              <path
+                                d="M2 7L5.5 10.5L12 3.5"
+                                stroke="white"
+                                strokeWidth={isXSmall ? "1.5" : "2.5"}
+                                fill="none"
+                              />
+                            </svg>
+                          </span>
+                        }
+                      />
+                    }
+                  />
+                )}
+              />
+            </Box>
+
+            {serverErrors?.length > 0 ? (
+              <Typography
+                sx={{ color: "var(--primary-color)", marginTop: "20px" }}
+              >
+                {serverErrors}
+              </Typography>
+            ) : (
+              ""
+            )}
+
             <Box
               className="buttons"
               sx={{
                 display: "flex",
                 justifyContent: "flex-end",
                 gap: "10px",
-                marginTop: questionType === 1 ? "140px" : "50px",
+                marginTop: "80px",
               }}
             >
               <Button
-                onClick={() => {resetDrawer();setOpen(false);}}
+                onClick={() => {
+                  resetDrawer();
+                  setOpen(false);
+                }}
                 sx={{
                   color: "var(--secondary-color)",
-                  fontSize: "15px",
+                  fontSize: "14px",
                   textTransform: "capitalize",
                   paddingY: "4px",
-                  paddingX: "9px",
                   borderRadius: "15px",
                   textAlign: "center",
-                  transition: "all 0.3s",
-                  "&:hover": { color: "#fff" },
-                  transition: "all 0.2s ease-in-out",
+                  transition: "all 0.2s ease-in-out", 
                   "&:hover": {
+                    color: "#fff",
                     transform: "translateY(-3px)",
                   },
+                  "@media (max-width:350px)": { fontSize: "12px" },
                 }}
               >
                 Cancel
@@ -582,11 +785,9 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                   bgcolor: "#ed2c2c",
                   color: "#f0f2f5",
                   display: "flex",
-                  paddingX: "11px",
-                  paddingY: "5px",
-                  gap: "3px",
                   justifyContent: "center",
-                  textAlign: "center",
+                  alignItems: "center",
+                  gap: "3px",
                   borderRadius: "25px",
                   whiteSpace: "nowrap",
                   boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
@@ -597,18 +798,20 @@ useEffect(() => { // نفضي الاوبشين اللي كتبناها لو اخ
                   },
                 }}
               >
-                {" "}
-                <Box sx={{ alignItems: "center", display: "flex" }}>
-                  <FiPlus size={20} style={{ flexShrink: 0 }} />
-                </Box>
+                <FiPlus
+                  style={{
+                    flexShrink: 0,
+                    fontSize: isXSmall ? "14px" : "20px",
+                  }}
+                />
                 <Typography
                   sx={{
-                    fontSize: { xs: "14px", md: "11px", lg: "14px" },
+                    fontSize: "14px",
                     justifyContent: "flex-start",
                     display: "flex",
                     textTransform: "capitalize",
                     fontWeight: "500",
-                    fontSize: "17px",
+                    "@media (max-width:350px)": { fontSize: "12px" },
                   }}
                 >
                   Create{" "}

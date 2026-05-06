@@ -401,6 +401,7 @@ const filteredData = data?.items?.filter((item) => {   //للفلترة
                                         >
                                           {item?.predictionResult}
                    </Typography>
+                                     <Typography sx={{color:"var(--secondary-color)",fontSize:'12px',fontWeight:'500',paddingRight:"18px", marginLeft:'10px'}}>{item.reportSubmittedAt.split("T")[0]}</Typography>
 
 
   </Box>

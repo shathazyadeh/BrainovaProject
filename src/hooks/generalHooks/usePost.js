@@ -12,7 +12,7 @@ export default function usePost(url, options = {}) {
       if (payload?.url) {
         const response = await axiosInstance.post(
           payload.url,
-          payload.data || {}
+          payload.data || {},
         );
         return response.data;
       }
@@ -30,10 +30,20 @@ export default function usePost(url, options = {}) {
       }
     },
 
-  onError: (err) => {
-  const message = err.response?.data?.message || "Something went wrong";
-  setServerErrors(message);
-  },
+    onError: (err) => {
+      const data = err.response?.data;
+
+      let message = "Something went wrong";
+
+      if (data?.errors) {
+        const firstError = Object.values(data.errors)[0]?.[0];
+        message = firstError || message;
+      } else if (data?.message) {
+        message = data.message;
+      }
+
+      setServerErrors(message);
+    },
   });
 
   return { serverErrors, usePostMutation };

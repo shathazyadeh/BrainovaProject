@@ -81,7 +81,7 @@ function ReportQuestions() {
                             </Box>
                         </Box>
                     )}
-                    <Box className="section_titel" sx={{ marginBottom: "23px" }}>
+                    <Box className="section_titel" sx={{ marginBottom: "23px", paddingTop:{xs:"30px",md:"0px"}}}>
                         <Typography
                             component={"h1"}
                             variant="h4"
@@ -106,6 +106,9 @@ function ReportQuestions() {
                 fontSize: "20px",
                 "@media (max-width:700px)": {
                   fontSize: "15px",
+                },
+                "@media (max-width:379px)": {
+                  display:"block",
                 },
               }}
             >
@@ -143,13 +146,23 @@ function ReportQuestions() {
                                     transform: "scale(1.05)",
                                     boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
                                     },
-                                     "@media (max-width:1142px)": {marginTop:'20px'} ,
+                                     "@media (max-width:1142px)": {marginY:'20px'} ,
                                     
                                 }}
                             > <Box sx={{ alignItems: 'center', display: 'flex' }}>
                                     <FiPlus size={20} style={{ flexShrink: 0 }} />
                                 </Box>
-                                <Typography sx={{ fontSize: { xs: "14px",sm:'15px', md: "17px", }, justifyContent: "flex-start", display: 'flex', textTransform: "capitalize", fontWeight: "500",  }}>Create Question</Typography>
+                                <Typography sx={{ fontSize: "17px", 
+                                                  justifyContent: "flex-start", 
+                                                  display: 'flex', 
+                                                  textTransform: "capitalize", 
+                                                  fontWeight: "500", 
+                                                  "@media (max-width:1140px)": {
+                                                   fontSize: "15px",
+                                                   }
+                                                  }}>
+                                Create Question
+                                </Typography>
                             </Button>
                         </Box>
                     </Box>

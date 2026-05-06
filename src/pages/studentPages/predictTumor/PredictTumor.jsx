@@ -38,11 +38,10 @@ import { SlEnergy } from "react-icons/sl";
 function PredictTumor() {
   const { isError, error, isLoading, data } = useGetQuestions();
 
-    //لتعطيل باقي الاسئلة اا جاوب نو تيومر
+  //لتعطيل باقي الاسئلة اا جاوب نو تيومر
   const preliminaryQuestion = data?.find(
     (q) => q.code === "preliminary assesment",
   );
-
 
   const {
     register,
@@ -59,9 +58,9 @@ function PredictTumor() {
   const isNoTumor = preliminaryAnswer === "no tumor";
 
   const resolver = useMemo(() => {
-  if (!data) return undefined;
-  return yupResolver(SubmitReportSchema(data, isNoTumor));
-}, [data, isNoTumor]);
+    if (!data) return undefined;
+    return yupResolver(SubmitReportSchema(data, isNoTumor));
+  }, [data, isNoTumor]);
 
   const fileRegister = register("file"); // ربط input تبع الملف مع react-hook-form عشان يخزن قيمة الفايل (FileList) ويتحكم فيه
   const [fileValue, setFileValue] = useState(null);
@@ -83,7 +82,7 @@ function PredictTumor() {
 
   const [showResult, setShowResult] = useState(false); // البوكس الي بتظهر فيه اجابات المودل
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const isLocked =  isSubmitted; //عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
+  const isLocked = isSubmitted; //عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
 
   console.log("data ", data);
 
@@ -127,7 +126,7 @@ function PredictTumor() {
     }
 
     setFileError("");
-    setIsSubmitted(true); 
+    setIsSubmitted(true);
 
     try {
       const newCaseId = await uploadMRI();
@@ -161,40 +160,38 @@ function PredictTumor() {
     }
   };
 
-
   useEffect(() => {
-  if (isNoTumor) {
-    const updatedValues = data?.reduce((acc, q) => {
-      // نخلي السؤال الأساسي زي ما هو
-      if (q.code === "preliminary assesment") {
-        acc[q.id] = preliminaryAnswer;
-      } 
-      // فقط اللي skipWhenNoTumor = true بنفضيه
-      else if (q.skipWhenNoTumor === true) {
-        acc[q.id] = "";
-      } 
-      // الباقي بنحافظ عليه
-      else {
-        acc[q.id] = watch(q.id);
-      }
+    if (isNoTumor) {
+      const updatedValues = data?.reduce((acc, q) => {
+        // نخلي السؤال الأساسي زي ما هو
+        if (q.code === "preliminary assesment") {
+          acc[q.id] = preliminaryAnswer;
+        }
+        // فقط اللي skipWhenNoTumor = true بنفضيه
+        else if (q.skipWhenNoTumor === true) {
+          acc[q.id] = "";
+        }
+        // الباقي بنحافظ عليه
+        else {
+          acc[q.id] = watch(q.id);
+        }
 
-      return acc;
-    }, {});
+        return acc;
+      }, {});
 
-    reset(updatedValues);
-  }
-}, [isNoTumor, data, preliminaryAnswer]);
-
+      reset(updatedValues);
+    }
+  }, [isNoTumor, data, preliminaryAnswer]);
 
   const isDisabled = (q) => {
-  if (isLocked) return true; //لقفل الفورم بعد النتيجة
-  if (q.code === "preliminary assesment") return false;
-  if (isNoTumor) {
-    return q.skipWhenNoTumor;
-  }
-  return false;
-};
-  
+    if (isLocked) return true; //لقفل الفورم بعد النتيجة
+    if (q.code === "preliminary assesment") return false;
+    if (isNoTumor) {
+      return q.skipWhenNoTumor;
+    }
+    return false;
+  };
+
   //////////////////////////////////////
 
   return (
@@ -327,7 +324,9 @@ function PredictTumor() {
                     handelImagePreview(e);
                     const file = e.target.files[0];
                     setFileValue(file);
-                    if (file) {setFileError("")};
+                    if (file) {
+                      setFileError("");
+                    }
                   }}
                 />
                 <FaCloudUploadAlt
@@ -592,6 +591,18 @@ function PredictTumor() {
                       {index + 1}
                     </Typography>
                     {q.text}
+                    {q.isRequired === false && (
+                      <Typography
+                        component="span"
+                        sx={{
+                          marginLeft: "10px",
+                          fontSize: "12px",
+                          color: "#9c9898",
+                        }}
+                      >
+                        (Optional)
+                      </Typography>
+                    )}
                   </FormLabel>
 
                   {q.type === 2 && (
