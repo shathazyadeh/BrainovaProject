@@ -10,7 +10,7 @@ function MainLayout() {
   let footerBg = "#171717";
   let navbarBg = "#171717";
   let linkColor = "#fff";
-  if (location.pathname === "/home" || location.pathname === "/my-cases" ) {footerBg = "#000"; navbarBg="var(--navy-color)"}
+  if (location.pathname === "/home" || location.pathname === "/my-cases" || location.pathname === "/profile" ) {footerBg = "#000"; navbarBg="var(--navy-color)"}
   else if( location.pathname === "/learning-hub") {footerBg = "#E8E0E4"; navbarBg="#E8E0E4";linkColor="var(--navy-color)"}
 
   return (

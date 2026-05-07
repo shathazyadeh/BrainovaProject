@@ -20,7 +20,7 @@ function Digit({ value }) {
     <Box
       ref={ref}
       sx={{
-        paddingX:"10px",
+        paddingX:"20px",
         bgcolor: "#222",
         borderRadius: "10px",
         display: "flex",
@@ -33,7 +33,7 @@ function Digit({ value }) {
       <Typography
         sx={{
           fontFamily: "'Oswald', sans-serif",
-          fontSize: "20px",
+          fontSize: "25px",
           fontWeight: "600",
           color: "#ff0000",
           lineHeight: 1,

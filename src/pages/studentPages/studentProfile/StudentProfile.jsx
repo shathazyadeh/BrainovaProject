@@ -1,19 +1,24 @@
-import { Box, Container, Grid, Typography, Link } from '@mui/material'
+import { Box, Container, Grid, Typography, Link, Button } from '@mui/material'
 import { LineChart } from "@mui/x-charts/LineChart";
-import FlipClock from '../../../components/flipClock/FlipClock';
-import useGetUserById from '../../../hooks/getUsersHooks/useGetUserById';
 import { Link as RouterLink } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import FlipClock from '../../../components/flipClock/FlipClock';
+import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import RegisterForm from '../../../components/registerForm/RegisterForm'
+import useGetUserById from '../../../hooks/getUsersHooks/useGetUserById';
+import useGetSummary from '../../../hooks/studentHooks/useGetSummary';
 import useUpdateUserInfo from '../../../hooks/userManagementHooks/useUpdateUserInfo';
+import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
+import useGetStudentPdf from '../../../hooks/studentHooks/useGetStudentPdf';
 import { UpdateUserInfoSchema } from '../../../validations/UpdateUserInfoSchema';
 import useAuthStore from '../../../store/useAuthStore';
 import studentImg from './../../../assets/images/profile/studentImg.webp'
-import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
+import sparklesNotebookImg from './../../../assets/images/profile/sparklesNotebookImg.webp'
+import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
 import { FiFileText , FiUsers } from "react-icons/fi";
-import useGetStudentPdf from '../../../hooks/studentHooks/useGetStudentPdf';
-import { useEffect, useState } from 'react';
-import useGetSummary from '../../../hooks/studentHooks/useGetSummary';
-import Loader from '../../../components/uiVerseComponents/loader/Loader';
+import { FaPlus } from "react-icons/fa";
+import { LuSparkles } from "react-icons/lu";
+
 
 
 function StudentProfile() {
@@ -26,7 +31,7 @@ function StudentProfile() {
 
   const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
   const { refetch, isFetching } = useGetStudentPdf(selectedId);
-  console.log(allMyCasesData);
+  console.log(data);
 
   function timeAgo(dateString) {
     const now = new Date();
@@ -132,410 +137,18 @@ function StudentProfile() {
     );
   }
   return (
-    <Box component={"section"} className="profile" sx={{ paddingTop: "50px" }}>
-      <Container maxWidth="lg">
-        <Box
-          className="user_info"
-          sx={{
-            color: "#fff",
-            bgcolor: "var(--navy-color)",
-            borderRadius: "20px",
-            paddingY: "30px",
-            paddingX: "10px",
-            boxShadow: "0 0 10px 0 rgb(249, 10, 10)",
-          }}
-        >
-          <Grid container spacing={5} sx={{ flexGrow: 1 }}>
-            <Grid
-              item
-              size={{ xs: 12, md: 3 }}
-              sx={{ "@media (max-width:900px)": { display: "none" } }}
-            >
-              <Box
-                className="image"
+    <Box component={"section"} className="profile" sx={{ paddingY: "100px" , bgcolor:"var(--navy-color)" }}>
+        <Box sx={{display:"flex",paddingX:"30px",gap:"30px"}}>
+          <Box className="recently_submitted"
                 sx={{
-                  width: "300px",
-                  position: "relative",
-                  filter: "drop-shadow(0 0 15px rgba(255,0,0,0.6))",
-                }}
-              >
-                <Box
-                  component="img"
-                  src={studentImg}
-                  sx={{
-                    width: "160px",
-                    position: "absolute",
-                    top: "-85px",
-                    left: "50px",
-                    "@media (max-width:1124px)": { top: "-24px" },
-                    "@media (max-width:1000px)": { left: "30px" },
-                  }}
-                />
-              </Box>
-            </Grid>
-
-            <Grid
-              item
-              size={{ xs: 12, md: 6 }}
-              sx={{
-                "@media (max-width:900px)": {
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  textAlign: "center",
-                  width: "100%",
-                },
-              }}
-            >
-              <Typography
-                variant="h5"
-                sx={{
-                  fontFamily: "var(--secondary-font)",
-                  marginBottom: "14px",
-                }}
-              >
-                Hello, {user?.fullName}
-              </Typography>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "32px",
-                  "@media (max-width:560px)": { justifyContent: "center" },
-                }}
-              >
-                <Box>
-                  <Typography
-                    component={"span"}
-                    sx={{ color: "var(--secondary-color)" }}
-                  >
-                    User Name
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: "var(--secondary-font)",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {user?.userName}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography
-                    component={"span"}
-                    sx={{ color: "var(--secondary-color)" }}
-                  >
-                    Supervisor
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: "var(--secondary-font)",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {data?.supervisorName}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography
-                    component={"span"}
-                    sx={{ color: "var(--secondary-color)" }}
-                  >
-                    Phone Number
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: "var(--secondary-font)",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {user?.phoneNumber}
-                  </Typography>
-                </Box>
-                <Box>
-                  <Typography
-                    component={"span"}
-                    sx={{ color: "var(--secondary-color)" }}
-                  >
-                    Account Status
-                  </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: "var(--secondary-font)",
-                      fontSize: "20px",
-                    }}
-                  >
-                    {data?.isBlocked ? "Inactive" : "Active"}
-                  </Typography>
-                </Box>
-              </Box>
-            </Grid>
-
-            <Grid
-              item
-              size={{ xs: 12, md: 3 }}
-              sx={{
-                display: "flex",
-                alignItems: "flex-start",
-                justifyContent: "center",
-                "@media (max-width:900px)": {
-                  width: "100%",
-                },
-              }}
-            >
-              <FlipClock />
-            </Grid>
-          </Grid>
-        </Box>
-        <Box className="chart_and_summary">
-          <Grid container spacing={2}>
-            <Grid item size={{ md: 8 }}>
-              <Box
-                className="line_chart"
-                sx={{
-                  bgcolor: "var(--navy-color)",
-                  borderRadius: "12px",
-                  marginTop: "23px",
-                  paddingRight: "15px",
-                }}
-              >
-                <Typography
-                  sx={{
-                    color: "#fff",
-                    fontWeight: "600",
-                    fontSize: { xs: "15px", sm: "17px" },
-                    fontFamily: "var(--primary-font)",
-                    paddingLeft: "30px",
-                    paddingTop: "10px",
-                  }}
-                >
-                  Reports per Day
-                </Typography>
-
-                <LineChart
-                  dataset={chartData}
-                  xAxis={[{ scaleType: "point", dataKey: "date" }]}
-                  series={[
-                    {
-                      dataKey: "count",
-                      label: "Reports",
-                      color: "var(--primary-color)",
-                      curve: "monotoneX",
-                    },
-                  ]}
-                  height={154}
-                  margin={{ left: 0 }}
-                  sx={{
-                    "& .MuiChartsAxis-tickLabel tspan": {
-                      fill: "#fff !important",
-                      stroke: "none !important",
-                    },
-                    "& .MuiChartsAxis-line": { stroke: "#fff !important" },
-                    "& .MuiChartsAxis-tick": { stroke: "#fff !important" },
-                    "& .MuiChartsLegend-label": {
-                      color: "#fff !important",
-                      fontFamily: "var(--primary-font) !important",
-                      fontWeight: "600 !important",
-                    },
-                    "& .MuiChartsAxisHighlight-root line": {
-                      stroke: "#ff0000 !important",
-                    },
-                    "& .MuiChartsAxisHighlight-root": {
-                      stroke: "#fff !important",
-                    },
-                  }}
-                  slotProps={{
-                    legend: {
-                      position: {
-                        vertical: "top",
-                        horizontal: "end",
-                      },
-                    },
-                  }}
-                />
-              </Box>
-            </Grid>
-            <Grid item size={{ md: 4 }}>
-              <Box className="summary" sx={{ marginTop: "23px" }}>
-                <Grid container spacing={1}>
-                  <Grid item size={{ xs: 12 }}>
-                    <Box
-                      className="reports_submitted"
-                      sx={{
-                        bgcolor: "var(--navy-color)",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                      }}
-                    >
-                      <Box className="details flex_column" sx={{ gap: "10px" }}>
-                        <Typography
-                          sx={{
-                            color: "var(--secondary-color)",
-                            textTransform: "uppercase",
-                            fontSize: "13px",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:700px)": {
-                              fontSize: "11px",
-                            },
-                          }}
-                        >
-                          Total Cases
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "#fff",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "600",
-                            fontFamily: "var(--primary-font)",
-                          }}
-                        >
-                          {summaryData?.reportsSubmitted}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--primary-color)",
-                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <FiUsers size={28} color="#fff" />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item size={{ xs: 12 }}>
-                    <Box
-                      className="feedback_received"
-                      sx={{
-                        bgcolor: "var(--navy-color)",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                      }}
-                    >
-                      <Box
-                        className="details flex_column"
-                        sx={{ gap: "10px", position: "relative" }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "var(--secondary-color)",
-                            textTransform: "uppercase",
-                            fontSize: "13px",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:700px)": {
-                              fontSize: "11px",
-                            },
-                          }}
-                        >
-                          Feedbacks
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "#fff",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "600",
-                            fontFamily: "var(--primary-font)",
-                          }}
-                        >
-                          {summaryData?.feedbackReceived}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--primary-color)",
-                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <FiFileText size={28} color="#fff" />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </Box>
-            </Grid>
-          </Grid>
-        </Box>
-        <Box className="form_and_recent" sx={{ paddingY: "40px" }}>
-          <Grid container spacing={3}>
-            <Grid item size={{ md: 8 }}>
-              <Box
-                className="edit_user_info_form flex_column"
-                sx={{
-                  borderTopRightRadius: "40px",
-                  borderBottomRightRadius: "40px",
-                  gap: "40px",
-                  padding: "60px",
-                  bgcolor: "var(--navy-color)",
-                }}
-              >
-                {console.log("sup id :", data?.supervisorId)}
-                <RegisterForm
-                  useHook={useUpdateUserInfo}
-                  userId={userId}
-                  schema={UpdateUserInfoSchema}
-                  showPassword={false}
-                  showSupervisors={false}
-                  btnLabel="Update Profile"
-                  fullWidthInput={true}
-                  textfieldColor={"textfield_black"}
-                  defaultValues={{
-                    fullName: user?.fullName,
-                    userName: user?.userName,
-                    email: user?.email,
-                    phoneNumber: user?.phoneNumber,
-                    supervisorUserId: data?.supervisorId,
-                  }}
-                />
-                <Link
-                  component={RouterLink}
-                  to={"/auth/security-verification"}
-                  sx={{
-                    color: "var(--primary-color)",
-                    fontFamily: "sans-serif",
-                    fontSize: "15px",
-                    fontWeight: "600",
-                    width: "fit-content",
-                  }}
-                  className="auth_link"
-                >
-                  Reset Password?
-                </Link>
-              </Box>
-            </Grid>
-
-            <Grid item size={{ md: 4 }}>
-              <Box
-                className="recently_submitted"
-                sx={{
-                  bgcolor: "var(--navy-color)",
-                  borderTopLeftRadius: "20px",
-                  borderBottomLeftRadius: "20px",
+                  bgcolor: "#8986862b",
+                  direction: "rtl", // لجعل السكرولر عاليسار بدي الديفولت الي هو يمين
+                  borderTopRightRadius: "20px",
+                  borderBottomRightRadius: "20px",
                   paddingX: "14px",
                   paddingTop: "20px",
                   position: "relative",
-                  height: "91%",
+                  height: "937px",
                   overflowY: "auto",
                   "&::-webkit-scrollbar": {
                     width: "6px",
@@ -549,6 +162,7 @@ function StudentProfile() {
                   },
                 }}
               >
+               <Box sx={{ direction: "ltr" }}>  {/* wrapper برجع المحتوى الداخلي لليمين */}
                 <Typography
                   sx={{
                     fontFamily: "var(--primary-font)",
@@ -573,22 +187,45 @@ function StudentProfile() {
                 >
                   {recentSubmitted?.length} new notifications
                 </Typography>
-                {recentSubmitted?.length === 0 ? (
-                  <Typography
-                    sx={{
-                      fontSize: "13px",
-                      color: "var(--primary-color)",
-                      textAlign: "center",
-                      margin: "auto",
-                      marginTop: "140px",
-                      bgcolor: "#291A1F",
-                      width: "fit-content",
-                      padding: "10px",
-                      borderRadius: "16px",
-                    }}
-                  >
+                {recentSubmitted?.length !== 0 ? (
+                  <Box className="no_recent_submissions flex_column" sx={{gap:"20px",alignItems:"center",paddingTop:"200px"}}>
+                  <Box component={"img"} src={sparklesNotebookImg} alt="" width={260} sx={{
+                    border:"1px solid #cccccc2b",
+                    borderRadius:"20px",
+                    padding:"20px",
+                      "@media (max-width:700px)": { width:"160px" }
+                  }} />
+                  <Typography sx={{color:"#fff",fontFamily: "var(--primary-font)",fontWeight: "500",fontSize:"17px"}}>
                     No recent submissions
                   </Typography>
+                  <Typography sx={{color:"var(--secondary-color)"}}>
+                    You haven’t submitted any cases recently.<br/>
+                    Your recent submissions will appear here.
+                  </Typography>
+                  <Button
+          className="upper_case"
+          component={RouterLink}
+          to="/predict-tumor"
+          sx={{
+            bgcolor: "var(--primary-color)",
+            color: "white",
+            fontSize:"14px",
+            fontWeight:"600",
+            borderRadius: "6px",
+            paddingX: "25px",
+            paddingY: "7px",
+            display:"flex",
+            alignItems:"center",
+            gap:"5px",
+            width:"fit-content",
+            transition: "all 0.3s ease",
+            "&:hover": { bgcolor: "#fff", color: "var(--navy-color)" },
+          }}
+        >
+          <FaPlus sx={{fontWeight:"800"}}/>
+          Submit New Case
+        </Button>
+                  </Box>
                 ) : (
                   recentSubmitted?.map((report) => (
                     <Box
@@ -657,10 +294,415 @@ function StudentProfile() {
                   ))
                 )}
               </Box>
-            </Grid>
-          </Grid>
+              </Box>
+              <Box className="right_side" sx={{flexGrow:"1"}}>
+                <Box className="header"
+                    sx={{
+                      display:"flex",
+                      justifyContent:"space-between",
+                      paddingBottom: "45px",
+                      paddingTop:{xs:"30px",md:"0px"},
+                    }}
+                  >
+                    <Box className="left_side" sx={{display:"flex", gap:"30px"}}>
+                      <Box className="image"
+                      sx={{ filter: "drop-shadow(0 0 15px rgba(255,0,0,0.6))",
+                            bgcolor:"var(--primary-color)",width:"170px",
+                            display:"flex",
+                            justifyContent:"center",
+                            alignItems:"flex-end",
+                            overflow:"hidden",
+                            height:"170px",borderRadius:"50%" }}
+                    >
+                      <Box component={"img"} src={studentImg} alt="" width={120} sx={{
+                      "@media (max-width:700px)": { width:"160px" }
+                    }} />
+                    </Box>
+                    <Box className="user_info">
+                      <Typography sx={{color:"#07D06C",
+                                       fontFamily: "var(--primary-font)",
+                                       fontSize:"12px",
+                                       display:"flex",alignItems:"center",
+                                       gap:"4px",border:"1px solid #07D06C",
+                                       borderRadius:"15px",width:"fit-content",
+                                       paddingX:"5px"}}>
+                        <LuSparkles fill={"#07D06C"} size={12}/>
+                        {user?.role}
+                      </Typography>
+                      <Typography className='user_full_name'
+                        component={"h1"}
+                        sx={{
+                          color: "#fff",
+                          fontFamily: "var(--primary-font)",
+                          fontWeight: "600",
+                          fontSize: "34px",
+                          "@media (max-width:700px)": { fontSize: "26px" },
+                        }}
+                      >
+                         Hello, {user?.fullName}
+                      </Typography>
+                      <Typography className='email' 
+                      sx={{ color: "var(--secondary-color)",
+                            fontFamily: "var(--primary-font)",
+                      }}>
+                        {user?.email}
+                      </Typography>
+                      <Typography className='user_name' 
+                      sx={{ color: "var(--secondary-color)",
+                            fontFamily: "var(--primary-font)",
+                      }}>
+                        <Typography component={'span'} sx={{color: "#c7c7c7",
+                            fontFamily: "var(--primary-font)"}}>
+                          User Name:{" "}
+                        </Typography>
+                        {user?.userName}
+                      </Typography>
+                      <Typography className='phone_number' 
+                      sx={{ color: "var(--secondary-color)",
+                            fontFamily: "var(--primary-font)",
+                      }}>
+                        <Typography component={'span'} sx={{color: "#c7c7c7",
+                            fontFamily: "var(--primary-font)"}}>
+                          Phone:{" "}
+                        </Typography>
+                        {user?.phoneNumber}
+                      </Typography>
+                      <Typography className='supervisor_name' 
+                      sx={{ color: "var(--secondary-color)",
+                            fontFamily: "var(--primary-font)",
+                      }}>
+                        <Typography component={'span'} sx={{color: "#c7c7c7",
+                            fontFamily: "var(--primary-font)"}}>
+                          Supervisor:{" "}
+                        </Typography>
+                        Dr. {data?.supervisorName}
+                      </Typography>
+                      <Box className='status'>
+                        {data?.isBlocked ? 
+                        <Typography sx={{color:"var(--primary-color)",fontFamily: "var(--primary-font)",display:"flex",alignItems:"center",gap:"4px"}}>
+                          <IoIosCloseCircle fill={"var(--primary-color)"} size={17}/>
+                          Inactive
+                        </Typography>
+                         : 
+                         <Typography sx={{color:"#07D06C",fontFamily: "var(--primary-font)",display:"flex",alignItems:"center",gap:"4px"}}>
+                          <IoIosCheckmarkCircle fill={"#07D06C"} size={17}/>
+                          Active
+                        </Typography>
+                        }
+                      </Box>
+                    </Box>
+                    </Box>
+                    <Box className="clock">
+                      <FlipClock/>
+                    </Box>
         </Box>
-      </Container>
+        <Box className="summary" sx={{ marginTop: "23px" }}>
+                <Grid container spacing={1}>
+                  <Grid item size={{ xs: 12,sm:4 }}>
+                    <Box
+                      className="reports_submitted"
+                      sx={{
+                        bgcolor: "var(--primary-color)",
+                        height: "100%",
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        gap: "15px",
+                        paddingX: "15px",
+                        paddingTop: "18px",
+                        paddingBottom: "27px",
+                        transition: "all 0.3s ease",
+                        "&:hover": { bgcolor: "#fff",transform: "translateY(-3px)" },
+                      }}
+                    >
+                      <Box className="details flex_column" sx={{ gap: "10px" }}>
+                        <Typography
+                          sx={{
+                            color: "var(--dark-gray-color)",
+                            textTransform: "uppercase",
+                            fontSize: "18px",
+                            fontWeight:"600",
+                            fontFamily: "var(--primary-font)",
+                            "@media (max-width:700px)": {
+                              fontSize: "11px",
+                            },
+                          }}
+                        >
+                          Total Cases
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "var(--dark-gray-color)",
+                            textTransform: "uppercase",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            fontFamily: "var(--primary-font)",
+                          }}
+                        >
+                          {summaryData?.reportsSubmitted}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          bgcolor: "var(--dark-gray-color)",
+                          boxShadow: "0 0 15px rgba(16, 16, 16, 0.51)",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                        }}
+                      >
+                        <FiUsers size={34} color="#fff" />
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item size={{ xs: 12,sm:4 }}>
+                    <Box
+                      className="feedback_received"
+                      sx={{
+                        bgcolor: "var(--primary-color)",
+                        height: "100%",
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        gap: "15px",
+                        paddingX: "15px",
+                        paddingTop: "18px",
+                        paddingBottom: "27px",
+                        transition: "all 0.3s ease",
+                        "&:hover": { bgcolor: "#fff",transform: "translateY(-3px)" },
+                      }}
+                    >
+                      <Box
+                        className="details flex_column"
+                        sx={{ gap: "10px", position: "relative" }}
+                      >
+                        <Typography
+                          sx={{
+                            color: "var(--dark-gray-color)",
+                            textTransform: "uppercase",
+                            fontSize: "18px",
+                            fontWeight:"600",
+                            fontFamily: "var(--primary-font)",
+                            "@media (max-width:700px)": {
+                              fontSize: "11px",
+                            },
+                          }}
+                        >
+                          Feedbacks
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "var(--dark-gray-color)",
+                            textTransform: "uppercase",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            fontFamily: "var(--primary-font)",
+                          }}
+                        >
+                          {summaryData?.feedbackReceived}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          bgcolor: "var(--dark-gray-color)",
+                          boxShadow: "0 0 15px rgba(16, 16, 16, 0.51)",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                        }}
+                      >
+                        <FiFileText size={34} color="#fff" />
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item size={{ xs: 12,sm:4 }}>
+                    <Box
+                      className="this_week"
+                      sx={{
+                        bgcolor: "var(--primary-color)",
+                        height: "100%",
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        gap: "15px",
+                        paddingX: "15px",
+                        paddingTop: "18px",
+                        paddingBottom: "27px",
+                        transition: "all 0.3s ease",
+                        "&:hover": { bgcolor: "#fff",transform: "translateY(-3px)" },
+                      }}
+                    >
+                      <Box className="details flex_column" sx={{ gap: "10px" }}>
+                        <Typography
+                          sx={{
+                            color: "var(--dark-gray-color)",
+                            textTransform: "uppercase",
+                            fontSize: "18px",
+                            fontWeight:"600",
+                            fontFamily: "var(--primary-font)",
+                            "@media (max-width:700px)": {
+                              fontSize: "11px",
+                            },
+                          }}
+                        >
+                          
+                        This Week
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "var(--dark-gray-color)",
+                            textTransform: "uppercase",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            fontFamily: "var(--primary-font)",
+                          }}
+                        >
+                          {recentSubmitted?.length}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          bgcolor: "var(--dark-gray-color)",
+                          boxShadow: "0 0 15px rgba(16, 16, 16, 0.51)",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                        }}
+                      >
+                        <FiUsers size={34} color="#fff" />
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Box>
+                <Box className="line_chart"
+                sx={{
+                  bgcolor: "#8986862b",
+                  borderRadius: "12px",
+                  marginTop: "23px",
+                  paddingRight: "15px",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontWeight: "600",
+                    fontSize: { xs: "15px", sm: "17px" },
+                    fontFamily: "var(--primary-font)",
+                    paddingLeft: "30px",
+                    paddingTop: "10px",
+                  }}
+                >
+                  Reports per Day
+                </Typography>
+
+                <LineChart
+                  dataset={chartData}
+                  xAxis={[{ scaleType: "point", dataKey: "date" }]}
+                  series={[
+                    {
+                      dataKey: "count",
+                      label: "Reports",
+                      color: "var(--primary-color)",
+                      curve: "monotoneX",
+                    },
+                  ]}
+                  height={154}
+                  margin={{ left: 0 }}
+                  sx={{
+                    "& .MuiChartsAxis-tickLabel tspan": {
+                      fill: "#fff !important",
+                      stroke: "none !important",
+                    },
+                    "& .MuiChartsAxis-line": { stroke: "#fff !important" },
+                    "& .MuiChartsAxis-tick": { stroke: "#fff !important" },
+                    "& .MuiChartsLegend-label": {
+                      color: "#fff !important",
+                      fontFamily: "var(--primary-font) !important",
+                      fontWeight: "600 !important",
+                    },
+                    "& .MuiChartsAxisHighlight-root line": {
+                      stroke: "#ff0000 !important",
+                    },
+                    "& .MuiChartsAxisHighlight-root": {
+                      stroke: "#fff !important",
+                    },
+                  }}
+                  slotProps={{
+                    legend: {
+                      position: {
+                        vertical: "top",
+                        horizontal: "end",
+                      },
+                    },
+                  }}
+                />
+              </Box>
+              <Box className="edit_user_info_form"
+              sx={{
+                borderRadius: "12px",
+                marginTop: "23px",
+                paddingX: "60px",
+                paddingTop: "68px",
+                paddingBottom: "40px",
+                bgcolor: "#8986862b",
+                position: "relative",
+                "@media (max-width:700px)": { paddingX: "10px" },
+              }}
+            >
+              <RegisterForm
+                useHook={useUpdateUserInfo}
+                userId={userId}
+                schema={UpdateUserInfoSchema}
+                showPassword={false}
+                showSupervisors={false}
+                fullWidthButton={false}
+                btnLabel="Update Profile"
+                textfieldColor={"textfield_black"}
+                defaultValues={{
+                  fullName: user.fullName,
+                  userName: user.userName,
+                  email: user.email,
+                  phoneNumber: user.phoneNumber,
+                }}
+              />
+              <Typography
+                  sx={{
+                    fontFamily: "var(--primary-font)",
+                    fontWeight: "600",
+                    color: "#fff",
+                    fontSize: { xs: "15px", sm: "17px" },
+                    marginBottom: "10px",
+                    position:"absolute",
+                    top:"12px",
+                    left:"33px"
+                  }}
+                >
+                  Profile Settings
+                </Typography>
+              <Link
+                component={RouterLink}
+                to={"/auth/security-verification"}
+                sx={{
+                  color: "var(--primary-color)",
+                  fontFamily: "sans-serif",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  width: "fit-content",
+                  position: "absolute",
+                  bottom: "40px",
+                  "@media (max-width:440px)": { bottom: "-34px", left: "13px" },
+                }}
+                className="auth_link"
+              >
+                Reset Password?
+              </Link>
+            </Box>
+              </Box>
+        </Box>
     </Box>
   );
 }

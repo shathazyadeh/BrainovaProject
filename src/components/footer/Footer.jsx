@@ -143,7 +143,7 @@ function Footer() {
                 <Link
                   className={style.footer_link}
                   component={RouterLink}
-                  to=""
+                  to="/learning-hub"
                   sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
                   onClick={() =>
                     window.scrollTo({ top: 0, behavior: "smooth" })
