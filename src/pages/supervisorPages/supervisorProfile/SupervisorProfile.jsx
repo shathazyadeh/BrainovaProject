@@ -43,18 +43,6 @@ function SupervisorProfile() {
               "@media (max-width:700px)": { width:"160px" }
             }} />
             </Box>
-            {user.role === "Admin" ? (
-              <Typography
-                component={"h1"}
-                sx={{
-                  color: "#fff",
-                  fontSize: "38px",
-                  textAlign: "center",
-                }}
-              >
-                Administrator
-              </Typography>
-            ) : (
               <Typography
                 component={"h1"}
                 sx={{
@@ -81,8 +69,6 @@ function SupervisorProfile() {
                   {user?.role}
                 </Typography>
               </Typography>
-            )}
-
             <Typography
               component={"p"}
               sx={{

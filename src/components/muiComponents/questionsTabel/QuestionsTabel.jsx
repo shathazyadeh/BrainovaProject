@@ -135,7 +135,10 @@ function Row(props) {
     }
   }, [optionsList]);
 
-  const { updateQuestionsMutation, serverErrors } = useUpdateQuestions();
+  const { updateQuestionsMutation, serverErrors, setServerErrors } = useUpdateQuestions();
+
+  const resetServerErrors = () => setServerErrors("");
+
   const updateQuestion = (formData) => {
     if (formData.type === 2) {
       if (optionsList.length < 2) {
@@ -189,6 +192,7 @@ function Row(props) {
             onClick={() => {
               setOpen(!open);
               setTimeout(() => setOpenEditForm(false), 300);
+              resetServerErrors();
             }}
           >
             {open ? (
@@ -1159,6 +1163,7 @@ function Row(props) {
                     startIcon={<MdClose size={18} />}
                     onClick={() => {
                       setOpenEditForm(false);
+                      resetServerErrors();
                     }}
                     sx={{
                       color: "#aaa",

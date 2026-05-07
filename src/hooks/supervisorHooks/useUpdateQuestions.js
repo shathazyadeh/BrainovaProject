@@ -20,18 +20,21 @@ export default function useUpdateQuestions(options = {}) {
       toast.success("Question updated successfully.");
       queryClient.invalidateQueries({ queryKey: ["reportQuestions"] });
     },
-    onError: (err) => {
-      const errors = err.response?.data?.errors;
+ onError: (err) => {
+      const data = err.response?.data;
 
-      if (errors) {
-        // جمع كل الرسائل (لأنه ممكن يكون في أكثر من field)
-        const firstError = Object.values(errors)[0][0];
-        setServerErrors(firstError);
-      } else {
-        setServerErrors("Operation failed. Please try again.");
+      let message = "Operation failed. Please try again.";
+
+      if (data?.errors) {
+        const firstError = Object.values(data.errors)[0]?.[0];
+        message = firstError || message;
+      } else if (data?.message) {
+        message = data.message;
       }
+
+      setServerErrors(message);
     },
   });
 
-  return { updateQuestionsMutation, serverErrors };
+  return { updateQuestionsMutation, serverErrors, setServerErrors };
 }
