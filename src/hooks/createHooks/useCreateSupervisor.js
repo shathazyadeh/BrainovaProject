@@ -13,7 +13,6 @@ export default function useCreateSupervisor() {
     if (authMutation.isSuccess) {
       //  مسحنا الأخطاء
       setServerErrors("");
-      toast.success("Supervisor created successfully");
     }
   }, [authMutation.isSuccess]);
 

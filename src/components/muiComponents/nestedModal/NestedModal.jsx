@@ -17,6 +17,7 @@ import useCreateAdmin from "../../../hooks/createHooks/useCreateAdmin";
 import { CreateAdminSchema } from "../../../validations/CreateAdminSchema";
 import useAuthStore from "../../../store/useAuthStore";
 import { useMediaQuery } from "@mui/material";
+import { toast } from "react-toastify";
 
 const style = {
   position: "absolute",
@@ -32,7 +33,7 @@ const style = {
   pb: 3,
 };
 
-function ChildModal({ role }) {
+function ChildModal({ role ,onCloseParent}) {
   //  استقبلنا قيمة الاختيار من متعدد عشان نحدد الي بده ينعرض بناءا عليها
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -40,7 +41,23 @@ function ChildModal({ role }) {
   };
   const handleClose = () => {
     setOpen(false);
+     if (onCloseParent) onCloseParent();
   };
+  const handleSuccess = () => { //بتنادلى بس لما الفورم ينجح وحطيته هون عشان يظهر قبل ما المودل يتسكر 
+  toast.success(
+    role === "student"
+      ? "Student created successfully"
+      : role === "supervisor"
+      ? "Supervisor created successfully"
+      : "Admin created successfully"
+  );
+   //ننتظر 150ms عشان التوست يلحق يظهر قبل إغلاق المودل
+  setTimeout(() => {
+    setOpen(false);
+    if (onCloseParent) onCloseParent();
+  }, 150);
+};
+
   const isCustomScreen = useMediaQuery("(max-width:500px)");
 
   return (
@@ -100,6 +117,7 @@ function ChildModal({ role }) {
                 showPassword={false}
                 textfieldColor={"textfield_black"}
                 fullWidthInput ={isCustomScreen? true : false}
+                 onSuccess={handleSuccess}
               />
             </>
           ) : role === "supervisor" ?(
@@ -111,6 +129,7 @@ function ChildModal({ role }) {
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
+                 onSuccess={handleSuccess} 
                 fullWidthInput ={isCustomScreen? true : false}
               />
             </>
@@ -123,6 +142,7 @@ function ChildModal({ role }) {
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
+                 onSuccess={handleSuccess}
                 fullWidthInput ={isCustomScreen? true : false}
           />
           </> 
@@ -258,7 +278,7 @@ export default function NestedModal() {
               } 
             </RadioGroup>
           </FormControl>
-          <ChildModal role={value} />{" "}
+          <ChildModal role={value}  onCloseParent={handleClose} />{" "}
           {/*مررنا قيمة الكنترول فورم - الاختيار من متعدد - للمودل الصغير */}
         </Box>
       </Modal>

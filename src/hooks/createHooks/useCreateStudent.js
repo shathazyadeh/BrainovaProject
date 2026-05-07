@@ -17,7 +17,6 @@ export default function useCreateStudent() {
     if (authMutation.isSuccess) {
       //  امسح الأخطاء
       setServerErrors("");
-      toast.success("Student created successfully");
     }
   }, [authMutation.isSuccess]);
 

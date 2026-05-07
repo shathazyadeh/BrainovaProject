@@ -86,6 +86,7 @@ function RegisterForm({
         userId: userId,
         userInfo: values,
       });
+        onSuccess?.();
     } else if (!rowUser && hookData.updateUserInfoMutation) {
       //user update his profile
       await hookData.updateUserInfoMutation.mutateAsync({
