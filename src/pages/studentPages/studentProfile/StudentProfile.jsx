@@ -737,6 +737,7 @@ function StudentProfile() {
                 userName: user.userName,
                 email: user.email,
                 phoneNumber: user.phoneNumber,
+                supervisorUserId: data?.supervisorId
               }}
             />
             <Typography

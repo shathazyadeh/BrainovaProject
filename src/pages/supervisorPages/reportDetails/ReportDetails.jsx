@@ -55,6 +55,7 @@ function ReportDetails() {
   };
   const handleClose = () => {
     setOpenModal(false);
+    setSelectedFeedback(null);
   };
 
   const handleDeleteFeedback = async (feedbackId) => {
@@ -749,7 +750,7 @@ function ReportDetails() {
                   >
                     <Box
                       sx={{
-                        maxHeight: "77px",
+                        height: "53px",
                         overflowY: "auto",
                         paddingLeft: "9px",
                         paddingRight: "5px",

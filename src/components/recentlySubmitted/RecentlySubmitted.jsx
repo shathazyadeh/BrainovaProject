@@ -229,7 +229,7 @@ function RecentlySubmitted({
                       fontFamily: "var(--primary-font)",
                       fontWeight: "600",
                       fontSize: "13px",
-                      "@media (max-width:1050px)": {
+                      "@media (max-width:1070px)": {
                         display: "block",
                         paddingRight: "90px",
                       },

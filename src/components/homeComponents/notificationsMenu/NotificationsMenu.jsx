@@ -10,7 +10,6 @@ import { IoMdNotificationsOutline, IoMdClose } from "react-icons/io";
 import useGetAllFeedbacks from "../../../hooks/studentHooks/useGetAllFeedbacks";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import style from "./NotificationsMenu.module.css";
 import useMarksAsSeen from "../../../hooks/studentHooks/useMarksAsSeen";
 import useMarkAllAsSeen from "../../../hooks/studentHooks/useMarkAllAsSeen";
 import { Badge, Grid, Modal, useMediaQuery } from "@mui/material";

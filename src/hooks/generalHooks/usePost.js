@@ -26,14 +26,14 @@ export default function usePost(url, options = {}) {
       setServerErrors("");
       if (options?.onSuccess) {
         options.onSuccess(response);
-        toast.success(response?.message || "Success");
+        toast.success(response?.message || response || "Operation done successfully.");
       }
     },
 
     onError: (err) => {
       const data = err.response?.data;
 
-      let message = "Something went wrong";
+      let message = "Something went wrong.";
 
       if (data?.errors) {
         const firstError = Object.values(data.errors)[0]?.[0];
