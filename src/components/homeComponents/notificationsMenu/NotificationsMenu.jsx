@@ -318,7 +318,6 @@ export default function NotificationsMenu() {
                     ) : (
                       <Box
                         component={"span"}
-                        className={style.pulse_wrapper}
                         sx={{
                           width: "6px",
                           height: "6px",

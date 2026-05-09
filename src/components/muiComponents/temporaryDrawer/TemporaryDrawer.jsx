@@ -81,9 +81,7 @@ export default function TemporaryDrawer() {
             overflowWrap: "break-word",
           }}
         >
-          Welcome
-          <br />
-          back,{" "}
+          Welcome back,<br/>
           <Typography
             component={"span"}
             sx={{
@@ -141,7 +139,7 @@ export default function TemporaryDrawer() {
                     navigate("/dashboard/supervisor/report-questions");
                 }}}
               >
-                <ListItemIcon>
+                <ListItemIcon sx={{ minWidth: "35px" }}>
                   {text === "Dashboard" ? (
                     <RiDashboard3Fill fill="#fff" size={22} />
                   ) : text === "Reports" ? (

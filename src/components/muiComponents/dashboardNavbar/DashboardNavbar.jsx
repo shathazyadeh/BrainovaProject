@@ -89,9 +89,8 @@ export default function DashboardNavbar() {
                 <Avatar
                   sx={{
                     bgcolor: "var(--secondary-color)",
-                    fontSize: "30px",
-                    width: 50,
-                    height: 50,
+                    fontSize: {xs:"25px",md:"30px"},
+                    width: {xs:40,sm:49}, height: {xs:40,sm:49}
                   }}
                 >
                   {user?.userName?.charAt(0).toUpperCase()}
@@ -100,21 +99,19 @@ export default function DashboardNavbar() {
               <Typography
                 component={"span"}
                 sx={{
-                  fontSize: "18px",
+                  fontSize: {xs:"15px",md:"18px"},
                   fontWeight: "300",
                   paddingLeft: "5px",
                   letterSpacing: "2px",
                   display: { md: "none" },
                 }}
               >
-                Welcome
-                <br />
-                back,
+                Welcome back,<br/>
                 <Typography
                   component={"span"}
                   sx={{
                     color: "var( --primary-color)",
-                    fontSize: "18px",
+                    fontSize: {xs:"15px",md:"18px"},
                     fontWeight: "300",
                     letterSpacing: "2px",
                   }}
@@ -212,14 +209,14 @@ export default function DashboardNavbar() {
             component={"span"}
             sx={{
               bgcolor: "rgba(43, 25, 25)",
-              padding: "10px",
+              padding: {xs:"6px",sm:"10px"},
               borderRadius: "15px",
               display: "inline-flex",
               justifyContent: "center",
               alignItems: "center",
             }}
           >
-            <LuBrain size={"30"} color="var(--light-red-color)" />
+            <LuBrain size={"30"} color="var(--primary-color)" />
           </Typography>
           <Typography
             component={"h2"}
