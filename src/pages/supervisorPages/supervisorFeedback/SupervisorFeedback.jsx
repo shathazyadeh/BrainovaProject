@@ -9,6 +9,7 @@ import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearc
 import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
 import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
 import { useNavigate } from "react-router-dom";
+import { BsFillExclamationOctagonFill } from "react-icons/bs";
 
 function SupervisorFeedback() {
   const { isError, error, isLoading, data } = useGetMyallFeedbacks();
@@ -41,7 +42,7 @@ function SupervisorFeedback() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        position:"relative"
+        position: "relative"
       }}
     >
       <DashboardNavbar />
@@ -72,7 +73,7 @@ function SupervisorFeedback() {
                 component={"h1"}
                 variant="h5"
                 sx={{
-                  marginTop:"290px",
+                  marginTop: "290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -97,8 +98,8 @@ function SupervisorFeedback() {
                 zIndex: 1,
               }}
             >
-              <Box sx={{marginTop:"290px"}}>
-              <Loader />
+              <Box sx={{ marginTop: "290px" }}>
+                <Loader />
               </Box>
             </Box>
           )}
@@ -113,7 +114,7 @@ function SupervisorFeedback() {
                 fontWeight: "600",
                 display: "inline-block",
                 marginRight: "10px",
-                paddingTop:{xs:"30px",md:"0px"},
+                paddingTop: { xs: "30px", md: "0px" },
                 "@media (max-width:700px)": { fontSize: "22px" },
               }}
             >
@@ -160,20 +161,44 @@ function SupervisorFeedback() {
             >
               <Box
                 sx={{
-                  marginTop: '200px',
+                  marginTop: "100px",
                   textAlign: "center",
-                  bgcolor: "#1a1d25",
+                  bgcolor: "#1a1d257c",
                   paddingY: "50px",
-                  paddingX: '90px',
+                  paddingX: { xs: "30px", sm: "90px" },
                   borderRadius: "15px",
-                  boxShadow: "0 0 15px rgba(255, 255, 255, 0.34)",
-                  marginRight:"20px",
-                  marginLeft:'20px'
+                  boxShadow: "0 0 15px rgba(255, 255, 255, 0.17)",
+                  fontFamily: "var(--primary-font)",
+                  fontWeight: '500'
                 }}
               >
-                <Typography sx={{ color: "#fff", fontSize: "20px", fontFamily: "var(--primary-font)", fontWeight: '500' }}>
+                <Box component={BsFillExclamationOctagonFill} 
+                sx={{color:"red",fontSize:"50px",
+                    "@media (max-width:600px)": { fontSize: "40px" }
+                }}/>
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: { xs: "18px", sm: "22px", md: '28' },
+                    fontWeight: "700",
+                    marginBottom: "10px",
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
+                  No Feedbacks Found
+                </Typography>
+
+                <Typography
+                  sx={{
+                    color: "#7e8a9a",
+                    fontSize: { xs: "12px", sm: "14px", lg: "16" },
+                    lineHeight: 1.8,
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
                   You haven’t added any feedback for your students yet.
                 </Typography>
+
               </Box>
             </Box>
           ) : (
@@ -213,8 +238,9 @@ function SupervisorFeedback() {
                           }}
                         >
                           <Box className='student_info' onClick={() => navigate(`/dashboard/supervisor/report-details/${feedback.reportId}`)}
-                          sx={{cursor:"pointer",display: "flex", "@media (max-width:718px)": { flexDirection: 'column' },
-                          }}>
+                            sx={{
+                              cursor: "pointer", display: "flex", "@media (max-width:718px)": { flexDirection: 'column' },
+                            }}>
                             <Typography
                               sx={{
                                 color: "#758492",
@@ -290,7 +316,7 @@ function SupervisorFeedback() {
                           display: 'flex',
                           "@media (max-width:418px)": {
                             flexDirection: 'column',
-                             alignItems:'flex-end',
+                            alignItems: 'flex-end',
 
 
                           },

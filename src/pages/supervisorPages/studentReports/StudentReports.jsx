@@ -20,6 +20,7 @@ import { BsFileEarmarkArrowDown } from "react-icons/bs";
 import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearch";
 import ReportsFilters from "../../../components/filterInputs/reportsFilters/ReportsFilters";
 import useDownloadSupervisorPDF from "../../../hooks/supervisorHooks/useDownloadSupervisorPDF";
+import { BsFillExclamationOctagonFill } from "react-icons/bs";
 
 function StudentReports() {
   const { studentId } = useParams();
@@ -27,7 +28,7 @@ function StudentReports() {
   const { isError, error, isLoading, data } =
     useGetAllOfMyStudentsCases(studentId);
   console.log("useGetAllOfMyStudentsCases:", data);
- const downloadMutation = useDownloadSupervisorPDF();
+  const downloadMutation = useDownloadSupervisorPDF();
   const reviewedCount =
     data?.items?.filter((report) => report.isReviewed)?.length || 0; // لعرض عدد الريفيود
   const totalReports = data?.items.length || 0;
@@ -37,12 +38,12 @@ function StudentReports() {
   const [feedbackFilter, setFeedbackFilter] = useState("all"); // "all" | "reviewed" | "noFeedback"
 
   let filteredReports = data?.items?.filter((report) => {
-  if (!search) return true;
+    if (!search) return true;
 
-  return (
-    report.reportCode?.toLowerCase().includes(search.toLowerCase())
-  );
-});
+    return (
+      report.reportCode?.toLowerCase().includes(search.toLowerCase())
+    );
+  });
 
   // نفلتر حسب feedback
   if (feedbackFilter !== "all") {
@@ -58,7 +59,7 @@ function StudentReports() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        position:"relative"
+        position: "relative"
       }}
     >
       <DashboardNavbar />
@@ -75,7 +76,7 @@ function StudentReports() {
       >
         <Container maxWidth="lg">
           {/* server errors */}
-        {isError && (
+          {isError && (
             <Box
               component={"section"}
               className="server_error_section flex_column"
@@ -91,7 +92,7 @@ function StudentReports() {
                 component={"h1"}
                 variant="h5"
                 sx={{
-                  marginTop:"290px",
+                  marginTop: "290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -116,8 +117,8 @@ function StudentReports() {
                 zIndex: 1,
               }}
             >
-              <Box sx={{marginTop:"290px"}}>
-              <Loader />
+              <Box sx={{ marginTop: "290px" }}>
+                <Loader />
               </Box>
             </Box>
           )}
@@ -324,30 +325,53 @@ function StudentReports() {
                 justifyContent: "center",
                 alignItems: "center",
                 minHeight: "60vh",
-                position:"relative"
+                position: "relative"
               }}
             >
               <FaArrowLeft
-                      color="#fff"
-                      size={25}
-                      style={{ cursor: "pointer" , position:"absolute", left:"0",top:"34px"}}
-                      onClick={() => navigate("/dashboard/supervisor/students")}
+                color="#fff"
+                size={25}
+                style={{ cursor: "pointer", position: "absolute", left: "0", top: "34px" }}
+                onClick={() => navigate("/dashboard/supervisor/students")}
               />
               <Box
                 sx={{
                   marginTop: "200px",
                   textAlign: "center",
-                  bgcolor: "#1a1d25",
+                  bgcolor: "#1a1d257c",
                   paddingY: "50px",
-                  paddingX: {xs:"30px",sm:"90px"},
+                  paddingX: { xs: "30px", sm: "90px" },
                   borderRadius: "15px",
-                  boxShadow: "0 0 15px rgba(255, 255, 255, 0.34)",
-                  fontFamily: "var(--primary-font)",  
+                  boxShadow: "0 0 15px rgba(255, 255, 255, 0.17)",
+                  fontFamily: "var(--primary-font)",
                   fontWeight: '500'
                 }}
               >
-                <Typography sx={{ color: "#fff", fontSize: {xs:"15px",sm:"20px"} }}>
-                  No reports found for this student.
+                <Box component={BsFillExclamationOctagonFill} 
+                sx={{color:"red",fontSize:"50px",
+                    "@media (max-width:600px)": { fontSize: "40px" }
+                }}/>
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: { xs: "18px", sm: "22px", md: '28' },
+                    fontWeight: "700",
+                    marginBottom: "10px",
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
+                  No Reports Found
+                </Typography>
+
+                <Typography
+                  sx={{
+                    color: "#7e8a9a",
+                    fontSize: { xs: "12px", sm: "14px", lg: "16" },
+                    lineHeight: 1.8,
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
+                  This student hasn’t submitted any reports yet.
                 </Typography>
               </Box>
             </Box>
