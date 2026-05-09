@@ -20,26 +20,23 @@ export default function DashboardNavbar() {
     navigate("/auth/login");
   };
   const handleDashboard = () => {
-    if(user.role === "Admin")
-    navigate("/dashboard/admin");
+    if (user.role === "Admin") navigate("/dashboard/admin");
     else navigate("/dashboard/super-admin");
     handleClose();
   };
 
   const handleUserManagement = () => {
-    if(user.role === "Admin")
-    navigate("/dashboard/admin/user-management");
+    if (user.role === "Admin") navigate("/dashboard/admin/user-management");
     else navigate("/dashboard/super-admin/user-management");
     handleClose();
   };
 
   const handleProfile = () => {
-    if(user.role === "Admin")
-    navigate("/dashboard/admin/profile");
-    else  navigate("/dashboard/super-admin/profile");
+    if (user.role === "Admin") navigate("/dashboard/admin/profile");
+    else navigate("/dashboard/super-admin/profile");
     handleClose();
   };
-  
+
   const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -54,7 +51,21 @@ export default function DashboardNavbar() {
   const handleClose = () => {
     setAnchorEl(null);
   };
- if (!user) return null; //عشان بس نكبس لوج اوت بصير ريريندر وبكون قيمة اليوزر نل لو ما فحصنا هيك رح ينزل كمان مرة تحت ويعرض الايلس وتنعرض قائمة الادمن للحظة صغيرة قبل مانطلع للوج ان 
+
+  React.useEffect(() => {
+    //عشان المنيو تسكر تلقائي عند السكرول
+    const handleScroll = () => {
+      if (anchorEl) setAnchorEl(null);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [anchorEl]);
+
+  if (!user) return null; //عشان بس نكبس لوج اوت بصير ريريندر وبكون قيمة اليوزر نل لو ما فحصنا هيك رح ينزل كمان مرة تحت ويعرض الايلس وتنعرض قائمة الادمن للحظة صغيرة قبل مانطلع للوج ان
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
@@ -112,6 +123,8 @@ export default function DashboardNavbar() {
                 </Typography>
               </Typography>
               <Menu
+                disableScrollLock
+                transitionDuration={0}
                 PaperProps={{
                   sx: {
                     marginTop: "60px",
@@ -139,42 +152,60 @@ export default function DashboardNavbar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-       
-
-  {user?.role === "Supervisor"
-  ? ["Dashboard", "Reports", "Questions", "Students", "Feedback", "Profile", "Logout"].map((text) => (
-      <MenuItem
-        key={text}
-        sx={{
-          color: "#fff",
-          paddingY: "10px",
-          "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
-        }}
-        onClick={() => {
-          if (text === "Dashboard") navigate("/dashboard/supervisor");
-          else if (text === "Reports") navigate("/dashboard/supervisor/students-reports");
-          else if (text === "Questions") navigate("/dashboard/supervisor/report-questions");
-          else if (text === "Students") navigate("/dashboard/supervisor/students");
-          else if (text === "Feedback") navigate("/dashboard/supervisor/feedback");
-          else if (text === "Profile") navigate("/dashboard/supervisor/profile");
-          else if (text === "Logout") handleLogout();
-          handleClose();
-        }}
-      >
-        {text}
-      </MenuItem>
-    ))
-  : [
-      <MenuItem key="dashboard" onClick={handleDashboard}>Dashboard</MenuItem>,
-      <MenuItem key="users" onClick={handleUserManagement}>User Management</MenuItem>,
-      <MenuItem key="profile" onClick={handleProfile}>Profile</MenuItem>,
-      <MenuItem key="logout" onClick={handleLogout}>Logout</MenuItem>,
-    ]}
-  
-</Menu>
-                
-              
-           
+                {user?.role === "Supervisor"
+                  ? [
+                      "Dashboard",
+                      "Reports",
+                      "Questions",
+                      "Students",
+                      "Feedback",
+                      "Profile",
+                      "Logout",
+                    ].map((text) => (
+                      <MenuItem
+                        key={text}
+                        sx={{
+                          color: "#fff",
+                          paddingY: "10px",
+                          "&:hover": {
+                            backgroundColor: "rgba(255,255,255,0.1)",
+                          },
+                        }}
+                        onClick={() => {
+                          if (text === "Dashboard")
+                            navigate("/dashboard/supervisor");
+                          else if (text === "Reports")
+                            navigate("/dashboard/supervisor/students-reports");
+                          else if (text === "Questions")
+                            navigate("/dashboard/supervisor/report-questions");
+                          else if (text === "Students")
+                            navigate("/dashboard/supervisor/students");
+                          else if (text === "Feedback")
+                            navigate("/dashboard/supervisor/feedback");
+                          else if (text === "Profile")
+                            navigate("/dashboard/supervisor/profile");
+                          else if (text === "Logout") handleLogout();
+                          handleClose();
+                        }}
+                      >
+                        {text}
+                      </MenuItem>
+                    ))
+                  : [
+                      <MenuItem key="dashboard" onClick={handleDashboard}>
+                        Dashboard
+                      </MenuItem>,
+                      <MenuItem key="users" onClick={handleUserManagement}>
+                        User Management
+                      </MenuItem>,
+                      <MenuItem key="profile" onClick={handleProfile}>
+                        Profile
+                      </MenuItem>,
+                      <MenuItem key="logout" onClick={handleLogout}>
+                        Logout
+                      </MenuItem>,
+                    ]}
+              </Menu>
             </div>
           )}
           <Typography

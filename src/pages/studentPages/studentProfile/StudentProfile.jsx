@@ -162,8 +162,8 @@ function StudentProfile() {
       component={"section"}
       className="profile"
       sx={{
-        paddingBottom: "100px",
-        paddingTop: { xs: "50px", md: "80px" },
+        paddingBottom: "140px",
+        paddingTop: { xs: "50px", md: "90px" },
         bgcolor: "var(--navy-color)",
       }}
     >

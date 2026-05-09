@@ -28,7 +28,7 @@ function RecentlySubmitted({
         position: "relative",
         overflowY: "auto",
         ...(isSidePanel
-          ? { maxHeight: "937px" }
+          ? { maxHeight: "925px" }
           : { paddingY: "20px", marginTop: "23px", height: "337px" }),
         "&::-webkit-scrollbar": { width: "6px" },
         "&::-webkit-scrollbar-thumb": {

@@ -76,7 +76,7 @@ export default function NotificationsMenu() {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
+  useEffect(() => { //عشان المنيو تسكر تلقائي عند السكرول
     const handleScroll = () => {
       if (open) {
         handleClose();
@@ -145,6 +145,7 @@ export default function NotificationsMenu() {
         onClose={handleClose}
         disableScrollLock
         hideBackdrop={false}
+        transitionDuration={0}
         PaperProps={{
           sx: {
             border: "1px solid rgba(207, 25, 25, 0.44)",
@@ -429,15 +430,15 @@ export default function NotificationsMenu() {
                 ) : (
                   <Box
                     component={"span"}
-                    className={style.pulse_wrapper}
                     sx={{
-                      width: "6px",
-                      height: "6px",
+                      width: "7px",
+                      height: "7px",
                       borderRadius: "50%",
                       bgcolor: "var(--primary-color)",
                       marginTop: "5px",
                     }}
-                  ></Box>
+                  > 
+                  </Box>
                 )}
                 <Box className="content flex_column">
                   <Typography
@@ -503,6 +504,8 @@ export default function NotificationsMenu() {
               transform: "translate(-50%, -50%)",
               width: "90%",
               maxWidth: "600px",
+              maxHeight: "300px",
+              overflowY: "auto",
               bgcolor: "#0a0a0a",
               color: "#fff",
               borderRadius: "15px",
@@ -516,6 +519,18 @@ export default function NotificationsMenu() {
               "&:focus-visible": {
                 outline: "none",
               },
+              "&::-webkit-scrollbar": {
+              width: "6px",
+            },
+            "&::-webkit-scrollbar-track": {
+              background: "transparent",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              background: "var(--primary-color)",
+              borderRadius: "10px",
+              transition: "0.3s",
+              cursor: "grab",
+            },
             }}
           >
             <Box
@@ -550,7 +565,7 @@ export default function NotificationsMenu() {
                 style={{ cursor: "pointer" }}
               />
             </Box>
-            <Typography sx={{ color: "var(--secondary-color)" , fontSize: { xs: "13px", sm: "17px"} }}>
+            <Typography sx={{ color: "var(--secondary-color)" , fontSize: { xs: "13px", sm: "17px"}, wordBreak: "break-word"}}>
               {selectedFeedback?.comment}
             </Typography>
             <Typography
