@@ -23,14 +23,19 @@ function Home() {
         </Container>
       </Box>
 
+
       <Box sx={{ bgcolor: "var(--navy-color)" }}>
         <Box
           className={style.rotate_gray_layer}
-          sx={{ position: "absolute", bgcolor: "#2a2a2a" }}
+          sx={{ position: "absolute", bgcolor: "#2a2a2a",
+                "@media (max-width:1520px)": { display:"none" },
+             }}
         ></Box>
         <Box
           className={style.rotate_red_layer}
-          sx={{ position: "absolute", bgcolor: "var(--primary-color)" }}
+          sx={{ position: "absolute", bgcolor: "var(--primary-color)",
+                "@media (max-width:1520px)": { display:"none" },
+            }}
         ></Box>
 
         <Container maxWidth="lg">

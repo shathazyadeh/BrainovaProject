@@ -12,7 +12,8 @@ function CoreFeature() {
       className="Core_Features"
       sx={{
         paddingBottom: { xs: "80px", md: "150px" },
-        paddingTop: { xs: "80px", md: "190px" },
+        paddingTop: "190px",
+        "@media (max-width:1520px)": { paddingTop:"100px" },
       }}
     >
       <Typography
