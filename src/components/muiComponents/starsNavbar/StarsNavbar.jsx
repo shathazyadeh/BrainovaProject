@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { NavLink, useNavigate } from "react-router-dom";
 import StarsBackground from "../../reactBitsComponents/starsBackground/StarsBackground";
 import useAuthStore from "../../../store/useAuthStore";
-import { LuBrain , LuBrainCog } from "react-icons/lu";
+import { LuBrain } from "react-icons/lu";
 import { IoBookOutline } from "react-icons/io5";
 import { FiUpload } from "react-icons/fi";
 import style from "./StarsNavbar.module.css";
@@ -22,10 +22,54 @@ import { TbReportSearch } from "react-icons/tb";
 import NotificationsMenu from "../../homeComponents/notificationsMenu/NotificationsMenu";
 
 const pages = [
-  { name: "Home", icon: <Box component={LuBrain} sx={{fontSize:"20px","@media (max-width:970px)": { fontSize:"16px" },}}/> },
-  { name: "Analysis", icon: <Box component={FiUpload} sx={{fontSize:"20px","@media (max-width:970px)": { fontSize:"16px" },}}/> },
-  { name: "Learning Hub", icon: <Box component={IoBookOutline} sx={{fontSize:"20px","@media (max-width:970px)": { fontSize:"16px" },}}/> },
-  { name: "My Cases", icon: <Box component={TbReportSearch} sx={{fontSize:"20px","@media (max-width:970px)": { fontSize:"16px" },}}/>  },
+  {
+    name: "Home",
+    icon: (
+      <Box
+        component={LuBrain}
+        sx={{
+          fontSize: "20px",
+          "@media (max-width:970px)": { fontSize: "16px" },
+        }}
+      />
+    ),
+  },
+  {
+    name: "Analysis",
+    icon: (
+      <Box
+        component={FiUpload}
+        sx={{
+          fontSize: "20px",
+          "@media (max-width:970px)": { fontSize: "16px" },
+        }}
+      />
+    ),
+  },
+  {
+    name: "Learning Hub",
+    icon: (
+      <Box
+        component={IoBookOutline}
+        sx={{
+          fontSize: "20px",
+          "@media (max-width:970px)": { fontSize: "16px" },
+        }}
+      />
+    ),
+  },
+  {
+    name: "My Cases",
+    icon: (
+      <Box
+        component={TbReportSearch}
+        sx={{
+          fontSize: "20px",
+          "@media (max-width:970px)": { fontSize: "16px" },
+        }}
+      />
+    ),
+  },
 ];
 const settings = ["Profile", "Logout"];
 
@@ -61,7 +105,8 @@ function StarsNavbar({ linkColor }) {
     navigate("/profile");
   };
 
-  React.useEffect(() => { //عشان المنيو تسكر تلقائي عند السكرول
+  React.useEffect(() => {
+    //عشان المنيو تسكر تلقائي عند السكرول
     const handleScroll = () => {
       if (anchorElNav) setAnchorElNav(null);
       if (anchorElUser) setAnchorElUser(null);
@@ -94,32 +139,34 @@ function StarsNavbar({ linkColor }) {
           <StarsBackground></StarsBackground>
 
           <Typography
-  variant="h6"
-  className="logo"
-  noWrap
-  component="a"
-  href="#app-bar-with-responsive-menu"
-  sx={{
-    display: { xs: "none", md: "flex" },
-    alignItems: "center",
-    fontFamily: "monospace",
-    fontWeight: 800,
-    fontSize: 28,
-    letterSpacing: ".3rem",
-    color: linkColor,
-    textDecoration: "none",
-    "@media (max-width:1000px)": { fontSize:"23px" },
-  }}
->
-  BRAIN
-  <Box sx={{ marginRight:"3px", lineHeight:"0" }}>
-    <Box component={LuBrainCog} 
-      sx={{fontSize:"24px",
-      "@media (max-width:1000px)": { fontSize:"20px" },
-    }}/>
-  </Box>
-  VA
-</Typography>
+            variant="h6"
+            className="logo"
+            noWrap
+            component="a"
+            href="#app-bar-with-responsive-menu"
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              fontFamily: "monospace",
+              fontWeight: 800,
+              fontSize: 28,
+              letterSpacing: ".3rem",
+              color: linkColor,
+              textDecoration: "none",
+              "@media (max-width:1000px)": { fontSize: "23px" },
+            }}
+          >
+            <Box sx={{ marginRight: "5px", lineHeight: "0" }}>
+              <Box
+                component={LuBrain}
+                sx={{
+                  fontSize: "23px",
+                  "@media (max-width:1000px)": { fontSize: "20px" },
+                }}
+              />
+            </Box>
+            BRAINOVA
+          </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -236,7 +283,7 @@ function StarsNavbar({ linkColor }) {
                     color: "var(--primary-color)",
                     borderBottom: "2px solid var(--primary-color)",
                   },
-                  "@media (max-width:1100px)": { fontSize:"16px" },
+                  "@media (max-width:1100px)": { fontSize: "16px" },
                 }}
               >
                 {page.icon}
