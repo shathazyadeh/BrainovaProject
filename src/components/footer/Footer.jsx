@@ -14,7 +14,7 @@ import style from "./Footer.module.css";
 function Footer() {
   const location = useLocation();
   let footerBodyColor = "#000";
-  if (location.pathname === "/home" || location.pathname === "/profile") footerBodyColor = "#171717";
+  if (location.pathname === "/home" || location.pathname === "/profile" ||location.pathname === "/my-cases") footerBodyColor = "#171717";
 
   return (
     <Box
