@@ -79,6 +79,7 @@ export default function NotificationsMenu() {
     const handleScroll = () => {
       if (open) {
         handleClose();
+        setOpenModal(false)
       }
     };
 

@@ -20,7 +20,7 @@ function Digit({ value }) {
     <Box
       ref={ref}
       sx={{
-        paddingX:"20px",
+        paddingX:"5px",
         bgcolor: "#222",
         borderRadius: "10px",
         display: "flex",
@@ -28,9 +28,8 @@ function Digit({ value }) {
         justifyContent: "center",
         border: "1px solid #333",
         overflow: "hidden",
-        "@media (max-width:1470px)": { paddingX:"15px" },
-        "@media (max-width:1268px)": { paddingX:"10px" },
-        "@media (max-width:1120px)": { paddingX:"7px" }
+        "@media (max-width:1150px)": { paddingX:"20px", },
+        "@media (max-width:899.6px)": { paddingX:"5px", },
       }}
     >
       <Typography
@@ -74,7 +73,10 @@ export default function FlipClock() {
       `}</style>
 
       
-        <Box sx={{ display: "flex", gap: "5px",width:"100%",justifyContent:"center"}}>
+        <Box sx={{ display: "flex", gap: "5px",width:"100%",justifyContent:"center",
+              "@media (max-width:1150px)": { flexDirection:"column",alignItems:"center" },
+              "@media (max-width:899.6px)": { flexDirection:"row",alignItems:"normal" },
+        }}>
           <Digit value={h[0]} />
           <Digit value={h[1]} />
 

@@ -33,6 +33,7 @@ function StudentProfile() {
   const user = useAuthStore((state) => state.user);
   const userId = user?.id;
   const isCustomScreen = useMediaQuery("(max-width:500px)");
+  const isBelow1000px = useMediaQuery("(max-width:1000px)");
 
   const { isError, isLoading, error, data } = useGetUserById();
   const {
@@ -169,11 +170,11 @@ function StudentProfile() {
     >
       <Box
         sx={{
-          display: { xs: "block", md: "flex" },
           paddingX: "30px",
-          gap: { xs: "0px", md: "30px" },
         }}
       >
+        <Grid container spacing={4}>
+          <Grid item size={{xs:0,md:isBelow1000px?3.5:3.3}}>
         <RecentlySubmitted
           recentSubmitted={recentSubmitted}
           isFetching={isFetching}
@@ -183,7 +184,9 @@ function StudentProfile() {
           sparklesNotebookImg={sparklesNotebookImg}
           timeAgo={timeAgo}
         />
-        <Box className="right_side" sx={{ flexGrow: "1" }}>
+        </Grid>
+        <Grid item size={{xs:12,md:isBelow1000px?8.5:8.7}}>
+        <Box className="right_side flex_column" sx={{ flexGrow: "1",  height: "100%"}}>
           <Box
             className="header"
             sx={{
@@ -191,7 +194,7 @@ function StudentProfile() {
               justifyContent: "space-between",
               paddingBottom: "45px",
               paddingTop: { xs: "30px", md: "0px" },
-              "@media (max-width:630px)": {
+              "@media (max-width:780px)": {
                 flexDirection: "column",
                 gap: "50px",
                 alignItems: "center",
@@ -281,10 +284,9 @@ function StudentProfile() {
                     fontFamily: "var(--primary-font)",
                     fontWeight: "600",
                     fontSize: "34px",
-                    paddingRight: "30px",
+                    whiteSpace:"nowrap",
                     "@media (max-width:1360px)": { fontSize: "26px" },
-                    "@media (max-width:1198px)": { fontSize: "20px" },
-                    "@media (max-width:450px)": { paddingRight: "0px" },
+                    "@media (max-width:1000px)": { fontSize: "22px" },
                   }}
                 >
                   Hello, {user?.fullName}
@@ -718,6 +720,7 @@ function StudentProfile() {
               paddingTop: "68px",
               paddingBottom: "40px",
               bgcolor: "#8986862b",
+              flexGrow: "1",
               position: "relative",
               "@media (max-width:700px)": { paddingX: "10px" },
             }}
@@ -773,6 +776,8 @@ function StudentProfile() {
             </Link>
           </Box>
         </Box>
+        </Grid>
+        </Grid>
       </Box>
     </Box>
   );

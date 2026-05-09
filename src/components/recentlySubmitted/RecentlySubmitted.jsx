@@ -62,7 +62,7 @@ function RecentlySubmitted({
             top: "25px",
             right: "14px",
             ...(isSidePanel
-              ? { "@media (max-width:1198px)": { top: "5px", left: "12px" } }
+              ? { "@media (max-width:1320px)": { top: "5px", left: "12px" } }
               : { "@media (max-width:400px)": { top: "5px", left: "12px" } }),
           }}
         >
@@ -229,7 +229,7 @@ function RecentlySubmitted({
                       fontFamily: "var(--primary-font)",
                       fontWeight: "600",
                       fontSize: "13px",
-                      "@media (max-width:1070px)": {
+                      "@media (max-width:1398px)": {
                         display: "block",
                         paddingRight: "90px",
                       },
