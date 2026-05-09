@@ -135,7 +135,8 @@ function Row(props) {
     }
   }, [optionsList]);
 
-  const { updateQuestionsMutation, serverErrors, setServerErrors } = useUpdateQuestions();
+  const { updateQuestionsMutation, serverErrors, setServerErrors } =
+    useUpdateQuestions();
 
   const resetServerErrors = () => setServerErrors("");
 
@@ -699,7 +700,7 @@ function Row(props) {
                   sx={{
                     display: "flex",
                     justifyContent: "space-between",
-                    alignItems: "flex-end",
+                    alignItems: "flex-start",
                     gap: 5,
                     "@media (max-width:611px)": {
                       flexDirection: "column",
@@ -731,6 +732,19 @@ function Row(props) {
                         },
                         "& .MuiInput-input": {
                           paddingBottom: "10px",
+                        },
+                        "& textarea": {
+                          maxHeight: "50px",
+                          overflowY: "auto !important",
+                          overflowX: "hidden",
+                          "&::-webkit-scrollbar": {
+                            width: "6px",
+                          },
+                          "&::-webkit-scrollbar-thumb": {
+                            backgroundColor: "var(--secondary-color)",
+                            borderRadius: "10px",
+                            cursor: "grab",
+                          },
                         },
                         "& input:-webkit-autofill": {
                           WebkitBoxShadow: "0 0 0 100px transparent inset",
