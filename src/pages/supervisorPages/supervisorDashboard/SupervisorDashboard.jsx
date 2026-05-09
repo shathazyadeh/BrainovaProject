@@ -1,74 +1,96 @@
-import { Box, Container, Grid, Typography, Link } from '@mui/material'
-import DashboardNavbar from '../../../components/muiComponents/dashboardNavbar/DashboardNavbar'
+import { Box, Container, Grid, Typography, Link } from "@mui/material";
+import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 import SupervisorTable from "../../../components/muiComponents/supervisorTable/SupervisorTable";
-import useGetAllOfMyStudnetsCases from '../../../hooks/supervisorHooks/useGetAllOfMyStudnetsCases';
-import useGetNewReports from '../../../hooks/supervisorHooks/useGetNewReports';
-import useGetDashboardSummary from '../../../hooks/supervisorHooks/useGetDashboardSummary';
-import Loader from '../../../components/uiVerseComponents/loader/Loader';
-import { FiFileText, FiFilePlus, FiMessageSquare, FiUsers } from "react-icons/fi";
+import useGetAllOfMyStudnetsCases from "../../../hooks/supervisorHooks/useGetAllOfMyStudnetsCases";
+import useGetNewReports from "../../../hooks/supervisorHooks/useGetNewReports";
+import useGetDashboardSummary from "../../../hooks/supervisorHooks/useGetDashboardSummary";
+import Loader from "../../../components/uiVerseComponents/loader/Loader";
+import {
+  FiFileText,
+  FiFilePlus,
+  FiMessageSquare,
+  FiUsers,
+} from "react-icons/fi";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { Link as RouterLink } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 
-
-
 function SupervisorDashboard() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
-  const { isError: isNewReportsError, error: newReportsError, isLoading: isNewReportsLoading, data: newReportsData } = useGetNewReports();
-  const { isError: isDashboardSummaryError, error: newDashboardSummaryError, isLoading: isDashboardSummaryLoading, data: dashboardSummaryData } = useGetDashboardSummary();
+  const {
+    isError: isNewReportsError,
+    error: newReportsError,
+    isLoading: isNewReportsLoading,
+    data: newReportsData,
+  } = useGetNewReports();
+  const {
+    isError: isDashboardSummaryError,
+    error: newDashboardSummaryError,
+    isLoading: isDashboardSummaryLoading,
+    data: dashboardSummaryData,
+  } = useGetDashboardSummary();
 
   const isCustomScreen = useMediaQuery("(max-width:1281px)");
-  const isPageLoading = isLoading || isNewReportsLoading || isDashboardSummaryLoading;
+  const isPageLoading =
+    isLoading || isNewReportsLoading || isDashboardSummaryLoading;
   const pageError = error || newReportsError || newDashboardSummaryError;
 
   function timeAgo(dateString) {
-  const now = new Date();
-  const past = new Date(dateString);
-  const diffInSeconds = Math.floor((now - past) / 1000);
+    const now = new Date();
+    const past = new Date(dateString);
+    const diffInSeconds = Math.floor((now - past) / 1000);
 
-  const minutes = Math.floor(diffInSeconds / 60);
-  const hours = Math.floor(diffInSeconds / 3600);
-  const days = Math.floor(diffInSeconds / 86400);
+    const minutes = Math.floor(diffInSeconds / 60);
+    const hours = Math.floor(diffInSeconds / 3600);
+    const days = Math.floor(diffInSeconds / 86400);
 
-  if (diffInSeconds < 60) return "just now";
-  if (minutes < 60) return `${minutes} min ago`;
-  if (hours < 24) return `${hours} hours ago`;
-  return `${days} days ago`;
-}
+    if (diffInSeconds < 60) return "just now";
+    if (minutes < 60) return `${minutes} min ago`;
+    if (hours < 24) return `${hours} hours ago`;
+    return `${days} days ago`;
+  }
 
-const recentFeedbacks = data?.items?.filter(item => item.feedbackId) // صار عنا بس اللي فيها فيدباك
-  .filter(item => {
+  const recentFeedbacks = data?.items
+    ?.filter((item) => item.feedbackId) // صار عنا بس اللي فيها فيدباك
+    .filter((item) => {
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // تاريخ قبل أسبوع
+      return new Date(item.feedbackSubmittedAt) >= oneWeekAgo;
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.feedbackSubmittedAt) - new Date(a.feedbackSubmittedAt),
+    );
+
+  const thisWeekCount = newReportsData?.items?.filter((report) => {
+    const now = new Date();
+    const reportDate = new Date(report.submittedAt);
+
     const oneWeekAgo = new Date();
-    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // تاريخ قبل أسبوع
-    return new Date(item.feedbackSubmittedAt) >= oneWeekAgo;
-  }).sort((a, b) => 
-    new Date(b.feedbackSubmittedAt) - new Date(a.feedbackSubmittedAt));
+    oneWeekAgo.setDate(now.getDate() - 7);
 
-  const thisWeekCount = newReportsData?.items?.filter(report => {
-  const now = new Date();
-  const reportDate = new Date(report.submittedAt);
+    return reportDate >= oneWeekAgo;
+  }).length;
 
-  const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(now.getDate() - 7);
+  // للبار تشارت
+  const reportsPerDay =
+    data?.items?.reduce((acc, report) => {
+      const date = new Date(report.reportSubmittedAt).toLocaleDateString(
+        "en-GB",
+        {
+          day: "2-digit",
+          month: "short",
+        },
+      );
 
-  return reportDate >= oneWeekAgo;
-}).length;
-
-// للبار تشارت
-const reportsPerDay = data?.items?.reduce((acc, report) => {
-  const date = new Date(report.reportSubmittedAt).toLocaleDateString("en-GB", {
-    day: "2-digit",
-    month: "short",
-  });
-
-  acc[date] = (acc[date] || 0) + 1;
-  return acc;
-}, {}) || {};
-const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
-  date,
-  count,
-}));
+      acc[date] = (acc[date] || 0) + 1;
+      return acc;
+    }, {}) || {};
+  const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
+    date,
+    count,
+  }));
 
   return (
     <Box
@@ -77,7 +99,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        position:"relative"
+        position: "relative",
       }}
     >
       <DashboardNavbar />
@@ -110,7 +132,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 component={"h1"}
                 variant="h5"
                 sx={{
-                  marginTop:"290px",
+                  marginTop: "290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -135,14 +157,18 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 zIndex: 1,
               }}
             >
-              <Box sx={{marginTop:"290px"}}>
-              <Loader />
+              <Box sx={{ marginTop: "290px" }}>
+                <Loader />
               </Box>
             </Box>
           )}
 
           <Grid container columnSpacing={3}>
-            <Grid item size={isCustomScreen ? 12 : {  md: 8 }} sx={{paddingTop:{xs:"30px",md:"0px"}}}>
+            <Grid
+              item
+              size={isCustomScreen ? 12 : { md: 8 }}
+              sx={{ paddingTop: { xs: "30px", md: "0px" } }}
+            >
               <Box className="section_titel" sx={{ marginBottom: "23px" }}>
                 <Typography
                   component={"h1"}
@@ -164,249 +190,251 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   Here's your activity summary.
                 </Typography>
               </Box>
-              <Box className="dashboard_summary"
+              <Box
+                className="dashboard_summary"
                 sx={{ display: "flex", gap: "10px", marginBottom: "23px" }}
               >
-                <Grid container spacing={1} sx={{width:"100%"}}>
-                  <Grid item size={{xs:6,sm:3}}>
+                <Grid container spacing={1} sx={{ width: "100%" }}>
+                  <Grid item size={{ xs: 6, sm: 3 }}>
                     <Box
-                  className="total_students"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height:"100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent:"space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                  }}
-                >
-                  <Box className="details flex_column" sx={{ gap: "10px" }}>
-                    <Typography
+                      className="total_students"
                       sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "13px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                         fontSize: "11px",
-                        },
+                        bgcolor: "#232121b8",
+                        height: "100%",
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        gap: "15px",
+                        paddingX: "15px",
+                        paddingTop: "18px",
+                        paddingBottom: "27px",
                       }}
                     >
-                      Total Students
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {dashboardSummaryData?.totalStudents}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "12px",
-                      padding: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiUsers size={20} color="#fff" />
-                  </Typography>
-                </Box>
+                      <Box className="details flex_column" sx={{ gap: "10px" }}>
+                        <Typography
+                          sx={{
+                            color: "var(--secondary-color)",
+                            textTransform: "uppercase",
+                            fontSize: "13px",
+                            fontFamily: "var(--primary-font)",
+                            "@media (max-width:700px)": {
+                              fontSize: "11px",
+                            },
+                          }}
+                        >
+                          Total Students
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "#fff",
+                            textTransform: "uppercase",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            fontFamily: "var(--primary-font)",
+                          }}
+                        >
+                          {dashboardSummaryData?.totalStudents}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          bgcolor: "var(--primary-color)",
+                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                        }}
+                      >
+                        <FiUsers size={20} color="#fff" />
+                      </Typography>
+                    </Box>
                   </Grid>
-                  <Grid item size={{xs:6,sm:3}}>
+                  <Grid item size={{ xs: 6, sm: 3 }}>
                     <Box
-                  className="total_reports"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height:"100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent:"space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                  }}
-                >
-                  <Box
-                    className="details flex_column"
-                    sx={{ gap: "10px", position: "relative" }}
-                  >
-                    <Typography
+                      className="total_reports"
                       sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "13px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                         fontSize: "11px",
-                        },
+                        bgcolor: "#232121b8",
+                        height: "100%",
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        gap: "15px",
+                        paddingX: "15px",
+                        paddingTop: "18px",
+                        paddingBottom: "27px",
                       }}
                     >
-                      Total Reports
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {dashboardSummaryData?.totalReports}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#00ff88",
-                        fontSize: "10px",
-                        position: "absolute",
-                        bottom: "-20px",
-                        whiteSpace: "nowrap"
-                      }}
-                    >
-                      +{thisWeekCount} this week
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "12px",
-                      padding: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiFileText size={20} color="#fff" />
-                  </Typography>
-                </Box>
+                      <Box
+                        className="details flex_column"
+                        sx={{ gap: "10px", position: "relative" }}
+                      >
+                        <Typography
+                          sx={{
+                            color: "var(--secondary-color)",
+                            textTransform: "uppercase",
+                            fontSize: "13px",
+                            fontFamily: "var(--primary-font)",
+                            "@media (max-width:700px)": {
+                              fontSize: "11px",
+                            },
+                          }}
+                        >
+                          Total Reports
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "#fff",
+                            textTransform: "uppercase",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            fontFamily: "var(--primary-font)",
+                          }}
+                        >
+                          {dashboardSummaryData?.totalReports}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "#00ff88",
+                            fontSize: "10px",
+                            position: "absolute",
+                            bottom: "-20px",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          +{thisWeekCount} this week
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          bgcolor: "var(--primary-color)",
+                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                        }}
+                      >
+                        <FiFileText size={20} color="#fff" />
+                      </Typography>
+                    </Box>
                   </Grid>
-                  <Grid item size={{xs:6,sm:3}}>
+                  <Grid item size={{ xs: 6, sm: 3 }}>
                     <Box
-                  className="new_reports"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height:"100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent:"space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                  }}
-                >
-                  <Box className="details flex_column" sx={{ gap: "10px" }}>
-                    <Typography
+                      className="new_reports"
                       sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "13px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                         fontSize: "11px",
-                        },
+                        bgcolor: "#232121b8",
+                        height: "100%",
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        gap: "15px",
+                        paddingX: "15px",
+                        paddingTop: "18px",
+                        paddingBottom: "27px",
                       }}
                     >
-                      New Reports
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {dashboardSummaryData?.newReports}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "12px",
-                      padding: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiFilePlus size={20} color="#fff" />
-                  </Typography>
-                </Box>
+                      <Box className="details flex_column" sx={{ gap: "10px" }}>
+                        <Typography
+                          sx={{
+                            color: "var(--secondary-color)",
+                            textTransform: "uppercase",
+                            fontSize: "13px",
+                            fontFamily: "var(--primary-font)",
+                            "@media (max-width:700px)": {
+                              fontSize: "11px",
+                            },
+                          }}
+                        >
+                          New Reports
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "#fff",
+                            textTransform: "uppercase",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            fontFamily: "var(--primary-font)",
+                          }}
+                        >
+                          {dashboardSummaryData?.newReports}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          bgcolor: "var(--primary-color)",
+                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                        }}
+                      >
+                        <FiFilePlus size={20} color="#fff" />
+                      </Typography>
+                    </Box>
                   </Grid>
-                  <Grid item size={{xs:6,sm:3}}>
+                  <Grid item size={{ xs: 6, sm: 3 }}>
                     <Box
-                  className="feedback_given"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height:"100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent:"space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                  }}
-                >
-                  <Box className="details flex_column" sx={{ gap: "10px" }}>
-                    <Typography
+                      className="feedback_given"
                       sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "13px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                         fontSize: "11px",
-                        },
+                        bgcolor: "#232121b8",
+                        height: "100%",
+                        borderRadius: "12px",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center",
+                        gap: "15px",
+                        paddingX: "15px",
+                        paddingTop: "18px",
+                        paddingBottom: "27px",
                       }}
                     >
-                      Feedback Given
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {dashboardSummaryData?.feedbackGiven}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "12px",
-                      padding: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiMessageSquare size={20} color="#fff" />
-                  </Typography>
-                </Box>
+                      <Box className="details flex_column" sx={{ gap: "10px" }}>
+                        <Typography
+                          sx={{
+                            color: "var(--secondary-color)",
+                            textTransform: "uppercase",
+                            fontSize: "13px",
+                            fontFamily: "var(--primary-font)",
+                            "@media (max-width:700px)": {
+                              fontSize: "11px",
+                            },
+                          }}
+                        >
+                          Feedback Given
+                        </Typography>
+                        <Typography
+                          sx={{
+                            color: "#fff",
+                            textTransform: "uppercase",
+                            fontSize: "20px",
+                            fontWeight: "600",
+                            fontFamily: "var(--primary-font)",
+                          }}
+                        >
+                          {dashboardSummaryData?.feedbackGiven}
+                        </Typography>
+                      </Box>
+                      <Typography
+                        sx={{
+                          bgcolor: "var(--primary-color)",
+                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                        }}
+                      >
+                        <FiMessageSquare size={20} color="#fff" />
+                      </Typography>
+                    </Box>
                   </Grid>
                 </Grid>
               </Box>
-              <Box className="line_chart"
+              <Box
+                className="line_chart"
                 sx={{
-                  bgcolor: "#232121b8",
+                  bgcolor: "#8986862b",
                   borderRadius: "12px",
                   marginY: "23px",
                   paddingRight: "15px",
@@ -416,7 +444,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   sx={{
                     color: "#fff",
                     fontWeight: "600",
-                    fontSize: {xs:"15px",sm:"17px"},
+                    fontSize: { xs: "15px", sm: "17px" },
                     fontFamily: "var(--primary-font)",
                     paddingLeft: "30px",
                     paddingTop: "10px",
@@ -437,6 +465,9 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     },
                   ]}
                   height={154}
+                  localeText={{
+                    noData: "Start submitting reports to see stats",
+                  }}
                   margin={{ left: 0 }}
                   sx={{
                     "& .MuiChartsAxis-tickLabel tspan": {
@@ -456,12 +487,21 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     "& .MuiChartsAxisHighlight-root": {
                       stroke: "#fff !important",
                     },
+                    "& .MuiChartsNoDataOverlay-root text": {
+                      display: "none !important",
+                    },
                   }}
                   slotProps={{
                     legend: {
                       position: {
                         vertical: "top",
                         horizontal: "end",
+                      },
+                    },
+                    noDataOverlay: {
+                      sx: {
+                        fill: "#fff !important",
+                        "@media (max-width:500px)": { fontSize: "10px" },
                       },
                     },
                   }}
@@ -473,21 +513,30 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                 showActions={false}
                 hidePagination={true}
               />
-              <Box className="link" sx={{display:"flex", justifyContent:"flex-end",paddingY:"10px",paddingRight:"10px","@media (max-width:768px)": {
-              paddingTop: "0px",
-            }}}>
-              <Link
-                component={RouterLink}
-                to={"/dashboard/supervisor/students-reports"}
+              <Box
+                className="link"
                 sx={{
-                  color: "var(--primary-color)",
-                  fontSize: "13px",
-                  fontWeight: "600",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  paddingY: "10px",
+                  paddingRight: "10px",
+                  "@media (max-width:768px)": {
+                    paddingTop: "0px",
+                  },
                 }}
-                className="auth_link"
               >
-                View All <HiOutlineArrowNarrowRight />
-              </Link>
+                <Link
+                  component={RouterLink}
+                  to={"/dashboard/supervisor/students-reports"}
+                  sx={{
+                    color: "var(--primary-color)",
+                    fontSize: "13px",
+                    fontWeight: "600",
+                  }}
+                  className="auth_link"
+                >
+                  View All <HiOutlineArrowNarrowRight />
+                </Link>
               </Box>
             </Grid>
             <Grid item size={isCustomScreen ? 12 : { md: 4 }}>
@@ -501,7 +550,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   paddingTop: "20px",
                   position: "relative",
                   marginBottom: "23px",
-                  marginTop: isCustomScreen ? "0px" :"90px",
+                  marginTop: isCustomScreen ? "0px" : "90px",
                   height: "364px",
                   overflowY: "auto",
                   "&::-webkit-scrollbar": {
@@ -521,12 +570,12 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     fontFamily: "var(--primary-font)",
                     fontWeight: "600",
                     color: "#fff",
-                    fontSize: {xs:"15px",sm:"17px"},
+                    fontSize: { xs: "15px", sm: "17px" },
                     marginBottom: "10px",
                   }}
                 >
                   Recently Submitted
-                </Typography>                
+                </Typography>
                 <Typography
                   className="no_of_notifications"
                   sx={{
@@ -541,80 +590,82 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   {newReportsData?.totalCount} new notifications
                 </Typography>
                 {newReportsData?.items?.length === 0 ? (
-  <Typography
-    sx={{
-      color:"var(--primary-color)",
-      fontSize: "13px",
-      textAlign: "center",
-      margin:"auto",
-      marginTop: "140px",
-      bgcolor: "#291A1F",
-      width : "fit-content",
-      padding:"10px",
-      borderRadius:"16px"
-    }}
-  >
-    No recent submissions
-  </Typography>
-) : (
-  newReportsData?.items?.map((report) => (
-    <Box component={RouterLink} to={`/dashboard/supervisor/report-details/${report.reportId}`}
-                    key={report.reportId}
+                  <Typography
                     sx={{
-                      marginBottom: "10px",
-                      padding: "5px",
-                      borderRadius: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1.5,
+                      color: "var(--primary-color)",
+                      fontSize: "13px",
+                      textAlign: "center",
+                      margin: "auto",
+                      marginTop: "140px",
+                      bgcolor: "#291A1F",
+                      width: "fit-content",
+                      padding: "10px",
+                      borderRadius: "16px",
                     }}
                   >
-                    <Typography
+                    No recent submissions
+                  </Typography>
+                ) : (
+                  newReportsData?.items?.map((report) => (
+                    <Box
+                      component={RouterLink}
+                      to={`/dashboard/supervisor/report-details/${report.reportId}`}
+                      key={report.reportId}
                       sx={{
-                        bgcolor: "#291A1F",
-                        borderRadius: "12px",
-                        padding: "8px",
+                        marginBottom: "10px",
+                        padding: "5px",
+                        borderRadius: "8px",
                         display: "flex",
+                        alignItems: "center",
+                        gap: 1.5,
                       }}
                     >
-                      <FiFileText color="var(--primary-color)" />
-                    </Typography>
-
-                    <Box>
                       <Typography
                         sx={{
-                          color: "#fff",
-                          fontFamily: "var(--primary-font)",
-                          fontWeight: "600",
-                          fontSize: "13px",
-                          wordBreak: "break-all",
+                          bgcolor: "#291A1F",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
                         }}
                       >
-                        {report.studentName}{" "}
+                        <FiFileText color="var(--primary-color)" />
+                      </Typography>
+
+                      <Box>
                         <Typography
-                          component={"span"}
                           sx={{
-                            color: "var(--secondary-color)",
-                            fontWeight: "400",
+                            color: "#fff",
+                            fontFamily: "var(--primary-font)",
+                            fontWeight: "600",
                             fontSize: "13px",
+                            wordBreak: "break-all",
                           }}
                         >
-                          submitted a new report
+                          {report.studentName}{" "}
+                          <Typography
+                            component={"span"}
+                            sx={{
+                              color: "var(--secondary-color)",
+                              fontWeight: "400",
+                              fontSize: "13px",
+                            }}
+                          >
+                            submitted a new report
+                          </Typography>
                         </Typography>
-                      </Typography>
 
-                      <Typography
-                        sx={{
-                          color: "var(--secondary-color)",
-                          fontSize: "12px",
-                        }}
-                      >
-                        {timeAgo(report.submittedAt)}
-                      </Typography>
+                        <Typography
+                          sx={{
+                            color: "var(--secondary-color)",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {timeAgo(report.submittedAt)}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-  ))
-)}
+                  ))
+                )}
               </Box>
               <Box
                 className="recently_reviewed"
@@ -644,7 +695,7 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                     fontFamily: "var(--primary-font)",
                     fontWeight: "600",
                     color: "#fff",
-                    fontSize: {xs:"15px",sm:"17px"},
+                    fontSize: { xs: "15px", sm: "17px" },
                     marginBottom: "10px",
                   }}
                 >
@@ -664,83 +715,85 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
                   {recentFeedbacks?.length} new notifications
                 </Typography>
                 {recentFeedbacks?.length === 0 ? (
-  <Typography
-    sx={{
-      fontSize: "13px",
-      color:"#1E86EE",
-      textAlign: "center",
-      margin:"auto",
-      marginTop: "140px",
-      bgcolor: "#162435",
-      width : "fit-content",
-      padding:"10px",
-      borderRadius:"16px"
-    }}
-  >
-    No recent feedback
-  </Typography>
-) : (
-  recentFeedbacks?.map((report) => (
-    <Box component={RouterLink} to={`/dashboard/supervisor/report-details/${report.reportId}`}
-                    key={report.reportId}
+                  <Typography
                     sx={{
-                      marginBottom: "10px",
-                      padding: "5px",
-                      borderRadius: "8px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 1.5,
+                      fontSize: "13px",
+                      color: "#1E86EE",
+                      textAlign: "center",
+                      margin: "auto",
+                      marginTop: "140px",
+                      bgcolor: "#162435",
+                      width: "fit-content",
+                      padding: "10px",
+                      borderRadius: "16px",
                     }}
                   >
-                    <Typography
+                    No recent feedback
+                  </Typography>
+                ) : (
+                  recentFeedbacks?.map((report) => (
+                    <Box
+                      component={RouterLink}
+                      to={`/dashboard/supervisor/report-details/${report.reportId}`}
+                      key={report.reportId}
                       sx={{
-                        bgcolor: "#162435",
-                        borderRadius: "12px",
-                        padding: "8px",
+                        marginBottom: "10px",
+                        padding: "5px",
+                        borderRadius: "8px",
                         display: "flex",
-                        width: "fit-content",
+                        alignItems: "center",
+                        gap: 1.5,
                       }}
                     >
-                      <FiMessageSquare color="#1E86EE" />
-                    </Typography>
-
-                    <Box>
                       <Typography
-                        component={"span"}
                         sx={{
-                          color: "var(--secondary-color)",
-                          fontWeight: "400",
-                          fontSize: "13px",
-                          wordBreak: "break-word",
+                          bgcolor: "#162435",
+                          borderRadius: "12px",
+                          padding: "8px",
+                          display: "flex",
+                          width: "fit-content",
                         }}
                       >
+                        <FiMessageSquare color="#1E86EE" />
+                      </Typography>
+
+                      <Box>
                         <Typography
                           component={"span"}
                           sx={{
-                            color: "#fff",
-                            fontFamily: "var(--primary-font)",
-                            fontWeight: "600",
+                            color: "var(--secondary-color)",
+                            fontWeight: "400",
                             fontSize: "13px",
+                            wordBreak: "break-word",
                           }}
                         >
-                          {report.reportCode}{" "}
+                          <Typography
+                            component={"span"}
+                            sx={{
+                              color: "#fff",
+                              fontFamily: "var(--primary-font)",
+                              fontWeight: "600",
+                              fontSize: "13px",
+                            }}
+                          >
+                            {report.reportCode}{" "}
+                          </Typography>
+                          feedback was added to {report.studentName}
                         </Typography>
-                        feedback was added to {report.studentName}
-                      </Typography>
-                      <Typography
-                        component={"span"}
-                        sx={{
-                          color: "var(--secondary-color)",
-                          fontSize: "12px",
-                        }}
-                      >
-                        {" "}
-                        {timeAgo(report.feedbackSubmittedAt)}{" "}
-                      </Typography>
+                        <Typography
+                          component={"span"}
+                          sx={{
+                            color: "var(--secondary-color)",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {" "}
+                          {timeAgo(report.feedbackSubmittedAt)}{" "}
+                        </Typography>
+                      </Box>
                     </Box>
-                  </Box>
-  ))
-)}
+                  ))
+                )}
               </Box>
             </Grid>
           </Grid>
@@ -789,4 +842,4 @@ const chartData = Object.entries(reportsPerDay).map(([date, count]) => ({
   );
 }
 
-export default SupervisorDashboard
+export default SupervisorDashboard;

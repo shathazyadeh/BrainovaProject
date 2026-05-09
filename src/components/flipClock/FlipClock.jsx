@@ -28,6 +28,9 @@ function Digit({ value }) {
         justifyContent: "center",
         border: "1px solid #333",
         overflow: "hidden",
+        "@media (max-width:1470px)": { paddingX:"15px" },
+        "@media (max-width:1268px)": { paddingX:"10px" },
+        "@media (max-width:1120px)": { paddingX:"7px" }
       }}
     >
       <Typography
@@ -37,6 +40,7 @@ function Digit({ value }) {
           fontWeight: "600",
           color: "#ff0000",
           lineHeight: 1,
+          "@media (max-width:1470px)": { fontSize: "15px" },
         }}
       >
         {value}

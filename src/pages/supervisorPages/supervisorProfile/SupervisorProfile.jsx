@@ -1,4 +1,4 @@
-import { Box, Container, Link, Typography } from "@mui/material";
+import { Box, Container, Link, Typography, useMediaQuery } from "@mui/material";
 import RegisterForm from "../../../components/registerForm/RegisterForm";
 import { UpdateUserInfoSchema } from "../../../validations/UpdateUserInfoSchema";
 import { Link as RouterLink } from "react-router-dom";
@@ -10,6 +10,7 @@ import useAuthStore from "../../../store/useAuthStore";
 function SupervisorProfile() {
   const user = useAuthStore((state) => state.user);
   const userId = user.id;
+  const isCustomScreen = useMediaQuery("(max-width:500px)");
   return (
     <>
       <DashboardNavbar />
@@ -32,43 +33,49 @@ function SupervisorProfile() {
               justifyContent: "center",
               alignItems: "center",
               paddingBottom: "45px",
-              paddingTop:{xs:"30px",md:"0px"},
+              paddingTop: { xs: "30px", md: "0px" },
             }}
           >
             <Box
               className="image"
               sx={{ filter: "drop-shadow(0 0 15px rgba(255,0,0,0.6))" }}
             >
-              <Box component={"img"} src={supervisorImg} alt="" width={200} sx={{
-              "@media (max-width:700px)": { width:"160px" }
-            }} />
-            </Box>
-              <Typography
-                component={"h1"}
+              <Box
+                component={"img"}
+                src={supervisorImg}
+                alt=""
+                width={200}
                 sx={{
-                  color: "#fff",
+                  "@media (max-width:700px)": { width: "160px" },
+                }}
+              />
+            </Box>
+            <Typography
+              component={"h1"}
+              sx={{
+                color: "#fff",
+                fontFamily: "var(--primary-font)",
+                fontWeight: "600",
+                fontSize: "34px",
+                textAlign: "center",
+                "@media (max-width:700px)": { fontSize: "26px" },
+              }}
+            >
+              Dr. {user?.fullName} -
+              <Typography
+                component={"span"}
+                sx={{
+                  color: "var(--primary-color)",
                   fontFamily: "var(--primary-font)",
                   fontWeight: "600",
                   fontSize: "34px",
-                  textAlign: "center",
                   "@media (max-width:700px)": { fontSize: "26px" },
                 }}
               >
-                Dr. {user?.fullName} -
-                <Typography
-                  component={"span"}
-                  sx={{
-                    color: "var(--primary-color)",
-                    fontFamily: "var(--primary-font)",
-                    fontWeight: "600",
-                    fontSize: "34px",
-                    "@media (max-width:700px)": { fontSize: "26px" },
-                  }}
-                >
-                  {" "}
-                  {user?.role}
-                </Typography>
+                {" "}
+                {user?.role}
               </Typography>
+            </Typography>
             <Typography
               component={"p"}
               sx={{
@@ -102,6 +109,7 @@ function SupervisorProfile() {
                 showPassword={false}
                 showSupervisors={false}
                 fullWidthButton={false}
+                fullWidthInput={isCustomScreen ? true : false}
                 btnLabel="Update Profile"
                 textfieldColor={"textfield_black"}
                 defaultValues={{
