@@ -12,9 +12,9 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import { HiOutlineArrowNarrowRight } from "react-icons/hi";
-import { LineChart } from "@mui/x-charts/LineChart";
 import { Link as RouterLink } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
+import ReportsLineChart from "../../../components/xChartComponents/lineChart/ReportsLineChart";
 
 function SupervisorDashboard() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
@@ -209,6 +209,11 @@ function SupervisorDashboard() {
                         paddingX: "15px",
                         paddingTop: "18px",
                         paddingBottom: "27px",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          bgcolor: "#4e4e4e7f",
+                          transform: "translateY(-3px)",
+                        },
                       }}
                     >
                       <Box className="details flex_column" sx={{ gap: "10px" }}>
@@ -264,6 +269,11 @@ function SupervisorDashboard() {
                         paddingX: "15px",
                         paddingTop: "18px",
                         paddingBottom: "27px",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          bgcolor: "#4e4e4e7f",
+                          transform: "translateY(-3px)",
+                        },
                       }}
                     >
                       <Box
@@ -333,6 +343,11 @@ function SupervisorDashboard() {
                         paddingX: "15px",
                         paddingTop: "18px",
                         paddingBottom: "27px",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          bgcolor: "#4e4e4e7f",
+                          transform: "translateY(-3px)",
+                        },
                       }}
                     >
                       <Box className="details flex_column" sx={{ gap: "10px" }}>
@@ -388,6 +403,11 @@ function SupervisorDashboard() {
                         paddingX: "15px",
                         paddingTop: "18px",
                         paddingBottom: "27px",
+                        transition: "all 0.3s ease",
+                        "&:hover": {
+                          bgcolor: "#4e4e4e7f",
+                          transform: "translateY(-3px)",
+                        },
                       }}
                     >
                       <Box className="details flex_column" sx={{ gap: "10px" }}>
@@ -453,59 +473,7 @@ function SupervisorDashboard() {
                   Reports per Day
                 </Typography>
 
-                <LineChart
-                  dataset={chartData}
-                  xAxis={[{ scaleType: "point", dataKey: "date" }]}
-                  series={[
-                    {
-                      dataKey: "count",
-                      label: "Reports",
-                      color: "var(--primary-color)",
-                      curve: "monotoneX",
-                    },
-                  ]}
-                  height={154}
-                  localeText={{
-                    noData: "Start submitting reports to see stats",
-                  }}
-                  margin={{ left: 0 }}
-                  sx={{
-                    "& .MuiChartsAxis-tickLabel tspan": {
-                      fill: "#fff !important",
-                      stroke: "none !important",
-                    },
-                    "& .MuiChartsAxis-line": { stroke: "#fff !important" },
-                    "& .MuiChartsAxis-tick": { stroke: "#fff !important" },
-                    "& .MuiChartsLegend-label": {
-                      color: "#fff !important",
-                      fontFamily: "var(--primary-font) !important",
-                      fontWeight: "600 !important",
-                    },
-                    "& .MuiChartsAxisHighlight-root line": {
-                      stroke: "#ff0000 !important",
-                    },
-                    "& .MuiChartsAxisHighlight-root": {
-                      stroke: "#fff !important",
-                    },
-                    "& .MuiChartsNoDataOverlay-root text": {
-                      display: "none !important",
-                    },
-                  }}
-                  slotProps={{
-                    legend: {
-                      position: {
-                        vertical: "top",
-                        horizontal: "end",
-                      },
-                    },
-                    noDataOverlay: {
-                      sx: {
-                        fill: "#fff !important",
-                        "@media (max-width:500px)": { fontSize: "10px" },
-                      },
-                    },
-                  }}
-                />
+                <ReportsLineChart chartData={chartData} />
               </Box>
               <SupervisorTable
                 rows={data?.items?.slice(0, 5)} //  أول 5 صفوف

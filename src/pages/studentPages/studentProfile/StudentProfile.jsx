@@ -7,7 +7,6 @@ import {
   Button,
   useMediaQuery,
 } from "@mui/material";
-import { LineChart } from "@mui/x-charts/LineChart";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import FlipClock from "../../../components/flipClock/FlipClock";
@@ -28,6 +27,7 @@ import { FaPlus } from "react-icons/fa";
 import { LuSparkles } from "react-icons/lu";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import RecentlySubmitted from "../../../components/recentlySubmitted/RecentlySubmitted";
+import ReportsLineChart from "../../../components/xChartComponents/lineChart/ReportsLineChart";
 
 function StudentProfile() {
   const user = useAuthStore((state) => state.user);
@@ -668,59 +668,7 @@ function StudentProfile() {
                   Reports per Day
                 </Typography>
 
-                <LineChart
-                  dataset={chartData}
-                  xAxis={[{ scaleType: "point", dataKey: "date" }]}
-                  series={[
-                    {
-                      dataKey: "count",
-                      label: "Reports",
-                      color: "var(--primary-color)",
-                      curve: "monotoneX",
-                    },
-                  ]}
-                  height={154}
-                  localeText={{
-                    noData: "Start submitting reports to see stats",
-                  }}
-                  margin={{ left: 0 }}
-                  sx={{
-                    "& .MuiChartsAxis-tickLabel tspan": {
-                      fill: "#fff !important",
-                      stroke: "none !important",
-                    },
-                    "& .MuiChartsAxis-line": { stroke: "#fff !important" },
-                    "& .MuiChartsAxis-tick": { stroke: "#fff !important" },
-                    "& .MuiChartsLegend-label": {
-                      color: "#fff !important",
-                      fontFamily: "var(--primary-font) !important",
-                      fontWeight: "600 !important",
-                    },
-                    "& .MuiChartsAxisHighlight-root line": {
-                      stroke: "#ff0000 !important",
-                    },
-                    "& .MuiChartsAxisHighlight-root": {
-                      stroke: "#fff !important",
-                    },
-                    "& .MuiChartsNoDataOverlay-root text": {
-                      display: "none !important",
-                    },
-                  }}
-                  slotProps={{
-                    legend: {
-                      position: {
-                        vertical: "top",
-                        horizontal: "end",
-                      },
-                    },
-                    noDataOverlay: {
-                      sx: {
-                        fill: "#fff !important",
-                        "@media (max-width:500px)": { fontSize: "10px" },
-                      },
-                    },
-                  }}
-                />
+                <ReportsLineChart chartData={chartData} />
               </Box>
               <Box
                 className="edit_user_info_form"
