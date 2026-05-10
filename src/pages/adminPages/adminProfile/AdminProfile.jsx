@@ -42,8 +42,7 @@ function AdminProfile() {
                     }}
                   >
                     <Box className="image">
-                      <Box component={"img"} src={boyImg} alt="Default user profile avatar" width={200} />
-                    </Box>
+                  <Box component={"img"} src={boyImg} alt="User Avatar" width={'100%'} />                    </Box>
 
                     {user.role === "Admin" ? (
                       <Typography

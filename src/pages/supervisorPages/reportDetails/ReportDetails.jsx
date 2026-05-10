@@ -138,7 +138,7 @@ function ReportDetails() {
                   flex: 1,
                   border: "1px solid #57565662",
                   borderRadius: "15px",
-                  bgcolor: "#15181e",
+                  bgcolor: "#65656547",
                   padding: "20px",
                   height: "160px",
                 }}
@@ -208,7 +208,7 @@ function ReportDetails() {
                   flex: 1,
                   border: "1px solid #57565662",
                   borderRadius: "15px",
-                  bgcolor: "#15181e",
+                  bgcolor: "#65656547",
                   paddingX: "20px",
                   paddingTop: "20px",
                   paddingBottom: "24px",
@@ -316,7 +316,7 @@ function ReportDetails() {
               sx={{
                 border: "1px solid #57565662",
                 borderRadius: "15px",
-                bgcolor: "#15181e",
+                bgcolor: "#65656547",
                 paddingX: "30px",
                 paddingY: "25px",
               }}
@@ -343,7 +343,7 @@ function ReportDetails() {
                 className="mri"
                 sx={{
                   borderRadius: "20px",
-                  bgcolor: "#15181e",
+                  bgcolor: "#040202",
                   height: "400px",
                   alignItems: "center",
                   justifyContent: "center",
@@ -369,7 +369,7 @@ function ReportDetails() {
             <Box
               className="questions"
               sx={{
-                bgcolor: "#181b21",
+                bgcolor: "#65656547",
                 border: "1px solid #57565662",
                 borderRadius: "8px",
                 p: 2,
@@ -422,7 +422,7 @@ function ReportDetails() {
                     <Box key={question.questionId}
                       className="questions_and_answers"
                       sx={{
-                        bgcolor: "#24272d6a",
+                       bgcolor: "#49494957",
                         borderRadius: "20px",
                         marginBottom: "10px",
                         padding: "20px",
@@ -467,7 +467,7 @@ function ReportDetails() {
                     gap: "10px",
                     border: "1px solid #57565662",
                     borderRadius: "15px",
-                    bgcolor: "#15181e",
+                    bgcolor: "#65656547",
                     paddingX: "7px",
                     paddingY: "25px",
                     marginBottom: "10px",
@@ -502,8 +502,7 @@ function ReportDetails() {
                       }
                     }}
                     sx={{
-
-                      bgcolor: "#0e1115",
+bgcolor: "#65656547",
                       color: "#f0f2f5",
                       display: "flex",
                       gap: '10px',
@@ -537,7 +536,7 @@ function ReportDetails() {
                     }}
                     sx={{
 
-                      bgcolor: "#0e1115",
+                     bgcolor: "#65656547",
                       color: "#f0f2f5",
                       display: "flex",
                       gap: '10px',
@@ -561,7 +560,7 @@ function ReportDetails() {
                   <Button
                     sx={{
 
-                      bgcolor: "#0e1115",
+                      bgcolor: "#65656547",
                       color: "#f0f2f5",
                       display: "flex",
                       gap: '10px',
@@ -589,7 +588,7 @@ function ReportDetails() {
                     }
                     sx={{
 
-                      bgcolor: "#0e1115",
+                      bgcolor: "#65656547",
                       color: "#f0f2f5",
                       display: "flex",
                       gap: '10px',
@@ -618,7 +617,7 @@ function ReportDetails() {
                   sx={{
                     border: "1px solid #57565662",
                     borderRadius: "15px",
-                    bgcolor: "#15181e",
+                    bgcolor: "#65656547",
                     paddingX: "18px",
                     paddingTop: "25px",
                     paddingBottom: { xs: '30px', sm: '40px', md: '25px' },
@@ -697,7 +696,7 @@ function ReportDetails() {
                 sx={{
                   border: "1px solid #57565662",
                   borderRadius: "15px",
-                  bgcolor: "#15181e",
+                  bgcolor: "#65656547",
                   paddingX: "10px",
                   paddingY: "25px",
                   marginTop: "10px",

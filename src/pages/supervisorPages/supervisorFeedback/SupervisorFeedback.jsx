@@ -163,11 +163,11 @@ function SupervisorFeedback() {
                 sx={{
                   marginTop: "100px",
                   textAlign: "center",
-                  bgcolor: "#1a1d257c",
+                   bgcolor: "#5959594e",
                   paddingY: "50px",
                   paddingX: { xs: "30px", sm: "90px" },
                   borderRadius: "15px",
-                  boxShadow: "0 0 15px rgba(255, 255, 255, 0.17)",
+                  boxShadow: "0 0 15px rgba(228, 1, 1, 0.22)",
                   fontFamily: "var(--primary-font)",
                   fontWeight: '500'
                 }}

@@ -211,7 +211,7 @@ function StudentReports() {
                     sx={{
                       border: "1px solid #57565662",
                       borderRadius: "15px",
-                      bgcolor: "#181b21",
+                      bgcolor: "#6565655b",
                       padding: "15px",
                       height: { sm: "100px", md: "fit-content" },
                       width: { xs: "50%", md: "fit-content" },
@@ -227,7 +227,7 @@ function StudentReports() {
                       <FaFileAlt size={17} color="#fa0202" />
                       <Typography
                         sx={{
-                          color: "#7e8a9a",
+                          color: "#ffffff",
                           fontFamily: "var(--primary-font)",
                           overflowWrap: "break-word",
                           "@media (max-width:418px)": {
@@ -253,7 +253,7 @@ function StudentReports() {
                     sx={{
                       border: "1px solid #57565662",
                       borderRadius: "15px",
-                      bgcolor: "#181b21",
+                      bgcolor: "#6565655b",
                       padding: "15px",
                       height: { sm: "100px", md: "fit-content" },
                       width: { xs: "50%", md: "fit-content" },
@@ -271,7 +271,7 @@ function StudentReports() {
                       <FaArrowTrendUp size={20} color="#02fa13" />
                       <Typography
                         sx={{
-                          color: "#7e8a9a",
+                          color: "#ffffff",
                           fontFamily: "var(--primary-font)",
                           overflowWrap: "break-word",
                           "@media (max-width:418px)": {
@@ -338,19 +338,20 @@ function StudentReports() {
                 sx={{
                   marginTop: "200px",
                   textAlign: "center",
-                  bgcolor: "#1a1d257c",
+                  bgcolor: "#5959594e",
                   paddingY: "50px",
                   paddingX: { xs: "30px", sm: "90px" },
                   borderRadius: "15px",
-                  boxShadow: "0 0 15px rgba(255, 255, 255, 0.17)",
+                  boxShadow: "0 0 15px rgba(228, 1, 1, 0.22)",
                   fontFamily: "var(--primary-font)",
                   fontWeight: '500'
                 }}
               >
-                <Box component={BsFillExclamationOctagonFill} 
-                sx={{color:"red",fontSize:"50px",
+                <Box component={BsFillExclamationOctagonFill}
+                  sx={{
+                    color: "red", fontSize: "50px",
                     "@media (max-width:600px)": { fontSize: "40px" }
-                }}/>
+                  }} />
                 <Typography
                   sx={{
                     color: "#fff",
@@ -382,10 +383,16 @@ function StudentReports() {
                   <Box
                     className="report"
                     sx={{
-                      bgcolor: "#15181e",
+                      bgcolor: "#3636365b",
                       padding: "25px",
-                      border: "1px solid #ff01013b",
+                      border: "1px solid #e4dfdf3b",
                       borderRadius: "15px",
+
+                      "&:hover": {
+                        transform: "translateY(-5px)",
+                        transition: "0.5s ease",
+                        border: '1px solid var(--primary-color)'
+                      },
                     }}
                   >
                     <Box className="report_details">
@@ -425,7 +432,7 @@ function StudentReports() {
                       sx={{
                         border: "1px solid #57565662",
                         borderRadius: "15px",
-                        bgcolor: "#181b21",
+                        bgcolor: "#3636365b",
                         paddingX: "10px",
                         marginTop: "15px",
                         paddingY: "13px",
@@ -433,7 +440,7 @@ function StudentReports() {
                     >
                       <Typography
                         sx={{
-                          color: "#7e8a9a",
+                          color: "#ffffff",
                           fontWeight: "500",
                           fontSize: "13px",
                           fontFamily: "var(--primary-font)",
@@ -518,7 +525,7 @@ function StudentReports() {
                             paddingX: "10px",
                             paddingY: "5px",
                             borderRadius: "20px",
-                            backgroundColor: "#23272f",
+                            backgroundColor: "#2b313c",
                             color: "#718296",
                             fontSize: "13px",
                             display: "flex",
@@ -542,7 +549,7 @@ function StudentReports() {
                         to={`/dashboard/supervisor/report-details/${report.reportId}`}
                         sx={{
                           borderRadius: "15px",
-                          bgcolor: "#6f6e6e3b",
+                          bgcolor: "#3636365b",
                           color: "#ffffff",
                           paddingX: "30px",
                           textAlign: "center",
