@@ -224,7 +224,7 @@ function RegisterForm({
             />
           </Box>
         )}
-        {fullWidthInput  ? (
+        {fullWidthInput ? (
           <>
             <TextField
               {...register("email")}
@@ -413,9 +413,17 @@ function RegisterForm({
           className="auth_btn"
           variant="contained"
           disabled={isSubmitting || (showSupervisors && supervisorsLoading)} // نعطل الزر لو لسا البيانات بتيجي
-          sx={{ bgcolor: "var(--primary-color)", fontWeight: "600",
-                alignSelf: fullWidthButton ? "stretch" : "flex-end",
-           }}
+          sx={{
+            bgcolor: "var(--primary-color)",
+            fontWeight: "600",
+            alignSelf: fullWidthButton ? "stretch" : "flex-end",
+            "&.Mui-disabled": {
+              backgroundColor: "#2f2e2ea2",
+              color: "#aaa",
+              opacity: 1,
+              cursor: "not-allowed",
+            },
+          }}
         >
           {isSubmitting ? (
             <CircularProgress

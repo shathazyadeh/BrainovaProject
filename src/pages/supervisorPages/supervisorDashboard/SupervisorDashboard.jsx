@@ -15,7 +15,7 @@ import { HiOutlineArrowNarrowRight } from "react-icons/hi";
 import { Link as RouterLink } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import ReportsLineChart from "../../../components/xChartComponents/lineChart/ReportsLineChart";
-
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 function SupervisorDashboard() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
   const {
@@ -107,7 +107,6 @@ function SupervisorDashboard() {
       <Box
         component={"section"}
         sx={{
-          paddingBottom: "50px",
           flexGrow: 1,
           alignItems: "flex-start",
           display: "block",
@@ -486,7 +485,7 @@ function SupervisorDashboard() {
                 sx={{
                   display: "flex",
                   justifyContent: "flex-end",
-                  paddingY: "10px",
+                  paddingTop: "10px",
                   paddingRight: "10px",
                   "@media (max-width:768px)": {
                     paddingTop: "0px",
@@ -768,44 +767,7 @@ function SupervisorDashboard() {
         </Container>
       </Box>
 
-      {/*footer */}
-      <Box
-        className="lower_footer"
-        sx={{
-          borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-          width: "fit-content",
-          margin: "auto",
-          paddingX: { xs: "0px", md: "200px" },
-          textAlign: "center",
-          marginTop: { xs: "1px", md: "0px" },
-        }}
-      >
-        <Typography
-          component={"p"}
-          sx={{
-            color: "var(--mid-gray-color)",
-            paddingY: "30px",
-            "@media (max-width:430px)": {
-              fontSize: "12px",
-            },
-          }}
-        >
-          © 2026{" "}
-          <Typography
-            component={"span"}
-            sx={{
-              color: "var(--dark-red-color)",
-              "@media (max-width:430px)": {
-                fontSize: "12px",
-              },
-            }}
-          >
-            Brainova
-          </Typography>
-          . All rights reserved. | Built for medical education and research
-          purposes.
-        </Typography>
-      </Box>
+      <DashboardFooter/>
     </Box>
   );
 }

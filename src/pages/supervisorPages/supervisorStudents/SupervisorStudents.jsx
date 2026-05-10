@@ -8,7 +8,7 @@ import useGetMyStudentsInfo from "../../../hooks/supervisorHooks/useGetMyStudent
 import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearch";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
-
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 function SupervisorStudents() {
   const { isError, error, isLoading, data } = useGetMyStudentsInfo();
   console.log("students info:", data);
@@ -30,7 +30,7 @@ function SupervisorStudents() {
       <Box
         component={"section"}
         sx={{
-          paddingBottom: "50px",
+          paddingBottom:'20px',
           flexGrow: 1,
           alignItems: "flex-start",
           display: "block",
@@ -236,32 +236,9 @@ function SupervisorStudents() {
           </Grid>
         </Container>
       </Box>
-      <Box
-        className="lower_footer"
-        sx={{
-          borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-          width: "fit-content",
-          margin: "auto",
-          paddingX: { xs: "0px", md: "200px" },
-          textAlign: "center",
-          marginTop: { xs: "30px", md: "0px" },
-        }}
-      >
-        <Typography
-          component={"p"}
-          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
-        >
-          © 2026{" "}
-          <Typography
-            component={"span"}
-            sx={{ color: "var(--dark-red-color)" }}
-          >
-            Brainova
-          </Typography>
-          . All rights reserved. | Built for medical education and research
-          purposes.
-        </Typography>
-      </Box>
+      
+          
+      <DashboardFooter/>
     </Box>
   );
 }

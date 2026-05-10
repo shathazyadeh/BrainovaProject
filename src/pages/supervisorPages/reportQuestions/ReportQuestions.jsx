@@ -7,6 +7,7 @@ import { FiPlus } from "react-icons/fi";
 import { useState } from 'react';
 import RightDrawer from '../../../components/muiComponents/rightDrawer/RightDrawer';
 import QuestionSearch from '../../../components/filterSearch/questionSearch/QuestionSearch';
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 function ReportQuestions() {
     const { isError, error, isLoading, data } = useGetQuestions();
     console.log("data  ", data);
@@ -26,13 +27,13 @@ function ReportQuestions() {
             <Box
                 component={"section"}
                 sx={{
-                    paddingBottom: "100px",
+                    paddingBottom: "40px",
                     flexGrow: 1,
                     alignItems: "flex-start",
                     display: "block",
                     minHeight: "100vh",
                 }}
-            >
+                 >
                 <Container maxWidth="lg">
                     {/* server errors */}
                     {isError && (
@@ -99,30 +100,30 @@ function ReportQuestions() {
                             Report Questions
                         </Typography>
                         <Typography
-              component={"span"}
-              sx={{
-                color: "#fff",
-                fontFamily: "var(--primary-font)",
+                           component={"span"}
+                           sx={{
+                             color: "#fff",
+                             fontFamily: "var(--primary-font)",
                 fontSize: "20px",
                 "@media (max-width:700px)": {
-                  fontSize: "15px",
-                },
-                "@media (max-width:379px)": {
-                  display:"block",
-                },
-              }}
-            >
-              <Typography
-                component={"span"}
-                sx={{
-                  color: "var(--primary-color)",
-                  fontFamily: "var(--primary-font)",
-                }}
-              >
-                {data?.length}
-              </Typography>{" "}
-              questions found
-            </Typography>
+                               fontSize: "15px",
+                             },
+                             "@media (max-width:379px)": {
+                               display:"block",
+                             },
+                               }}
+                             >
+                             <Typography
+                               component={"span"}
+                               sx={{
+                                 color: "var(--primary-color)",
+                                 fontFamily: "var(--primary-font)",
+                               }}
+                             >
+                               {data?.length}
+                             </Typography>{" "}
+                             questions found
+                         </Typography>
                         <Box  sx={{ display: 'flex', justifyContent:"space-between", alignItems: { xs: "flex-start",  }, "@media (max-width:1142px)": {flexDirection:'column'} ,marginBottom:'20px'}}>
                             <Typography sx={{ color: "var(--secondary-color)",marginTop:"4px" }}>
                                 Managing and organizing the questions used for report evaluation.
@@ -177,44 +178,7 @@ function ReportQuestions() {
             </Box>
 
             
-            {/*footer */}
-            <Box
-                className="lower_footer"
-                sx={{
-                    borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-                    width: "fit-content",
-                    margin: "auto",
-                    paddingX: { xs: "0px", md: "200px" },
-                    textAlign: "center",
-                    marginTop: { xs: "1px", md: "0px" },
-                }}
-            >
-                <Typography
-                    component={"p"}
-                    sx={{
-                        color: "var(--mid-gray-color)",
-                        paddingY: "30px",
-                        "@media (max-width:430px)": {
-                            fontSize: "12px",
-                        },
-                    }}
-                >
-                    © 2026{" "}
-                    <Typography
-                        component={"span"}
-                        sx={{
-                            color: "var(--dark-red-color)",
-                            "@media (max-width:430px)": {
-                                fontSize: "12px",
-                            },
-                        }}
-                    >
-                        Brainova
-                    </Typography>
-                    . All rights reserved. | Built for medical education and research
-                    purposes.
-                </Typography>
-            </Box>
+           <DashboardFooter/>                                       
         </Box>
     )
 }

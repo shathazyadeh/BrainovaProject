@@ -10,6 +10,7 @@ import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback"
 import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
 import { useNavigate } from "react-router-dom";
 import { BsFillExclamationOctagonFill } from "react-icons/bs";
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 
 function SupervisorFeedback() {
   const { isError, error, isLoading, data } = useGetMyallFeedbacks();
@@ -49,7 +50,6 @@ function SupervisorFeedback() {
       <Box
         component={"section"}
         sx={{
-          paddingBottom: "50px",
           flexGrow: 1,
           alignItems: "flex-start",
           display: "block",
@@ -410,33 +410,8 @@ function SupervisorFeedback() {
         </Container>
       </Box>
 
-      {/*footer */}
-      <Box
-        className="lower_footer"
-        sx={{
-          borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-          width: "fit-content",
-          margin: "auto",
-          paddingX: { xs: "0px", md: "200px" },
-          textAlign: "center",
-          marginTop: { xs: "1px", md: "0px" },
-        }}
-      >
-        <Typography
-          component={"p"}
-          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
-        >
-          © 2026{" "}
-          <Typography
-            component={"span"}
-            sx={{ color: "var(--dark-red-color)" }}
-          >
-            Brainova
-          </Typography>
-          . All rights reserved. | Built for medical education and research
-          purposes.
-        </Typography>
-      </Box>
+      
+      <DashboardFooter/>
 
     </Box>
   );
