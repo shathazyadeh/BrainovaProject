@@ -37,44 +37,20 @@ axiosInstance.interceptors.request.use((config) => {
 
 // إضافة interceptor جديد للردود (responses)
 axiosInstance.interceptors.response.use(
-  (response) => {
-    // إذا كان الرد ناجح (status 2xx)
-    return response;
-  },
+  (response) => { return response; },
   (error) => {
-    // إذا كان هناك خطأ في الرد
-    if (error.response?.status === 403 || error.response?.status === 401) {
-      // تحقق من صلاحية التوكن
-      const token = localStorage.getItem("accessToken");
-      
-      if (token) {
-        try {
-          // فك تشفير التوكن للتحقق من صلاحيته
-          const decoded = jwtDecode(token);
-          const currentTime = Date.now() / 1000;
-          
-          // إذا انتهى التوكن
-          if (decoded.exp < currentTime) {
-            console.log("Token expired - logging out");
-            useAuthStore.getState().logout();
-          } else {
-            // التوكن صالح لكنه لا يملك صلاحية الوصول
-            console.log("Access forbidden - insufficient permissions");
-            // يمكنك هنا إظهار رسالة للمستخدم إذا أردت
-          }
-        } catch (e) {
-          // التوكن غير صالح (مشوه أو غير قابل للفك)
-          console.log("Invalid token - logging out");
-          useAuthStore.getState().logout();
-        }
-      } else {
-        // لا يوجد توكن أساساً
-        console.log("No token found - redirecting to login");
-        useAuthStore.getState().logout();
-      }
+    const status = error.response?.status;
+
+    if (status === 401) {
+      console.log("Unauthorized - logging out");
+      useAuthStore.getState().logout();
     }
-    
-    // إرجاع الخطأ حتى تتم معالجته في المكان الذي استدعي الطلب منه
+
+    if (status === 403) {
+      console.log("Forbidden - maybe blocked user");
+      return Promise.reject(error);
+    }
+
     return Promise.reject(error);
   }
 );
