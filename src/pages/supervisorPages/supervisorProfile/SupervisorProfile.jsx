@@ -43,7 +43,7 @@ function SupervisorProfile() {
               <Box
                 component={"img"}
                 src={supervisorImg}
-                alt=""
+                alt="Doctor avatar with stethoscope"
                 width={200}
                 sx={{
                   "@media (max-width:700px)": { width: "160px" },

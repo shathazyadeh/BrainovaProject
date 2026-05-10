@@ -24,13 +24,12 @@ function AdminProfile() {
           display: "flex",
           justifyContent: "center",
           paddingTop: "30px",
-          marginLeft: { md: '10px' }
         }}
       >
         <Container maxWidth="lg">
           <Box className="profile-info">
             <GlowCard enableTilt={false} glowIntensity="soft">
-              <Grid container sx={{ alignItems: 'center' }}>
+              <Grid container>
                 <Grid item size={{ xs: 12, md: 4 }}>
                   <Box
                     className="avatar flex_column"
@@ -39,11 +38,11 @@ function AdminProfile() {
                       borderBottomLeftRadius: "40px",
                       justifyContent: "center",
                       alignItems: "center",
-                      paddingLeft: { sm: "40px", md: "40px" },
+                      padding: "10px",
                     }}
                   >
-                    <Box className="image" sx={{ width: { xs: "120px", sm: "150px", md: "150px", lg: "200px" }, }}>
-                      <img src={boyImg} alt="User Avatar" width={'100%'} />
+                    <Box className="image">
+                      <Box component={"img"} src={boyImg} alt="Default user profile avatar" width={200} />
                     </Box>
 
                     {user.role === "Admin" ? (
@@ -51,9 +50,8 @@ function AdminProfile() {
                         component={"h1"}
                         sx={{
                           color: "#fff",
-                          fontSize: { xs: '20px', sm: '32px', md: "25px", lg: "32px" },
+                          fontSize: "38px",
                           textAlign: "center",
-                          fontWeight: '500'
                         }}
                       >
                         Administrator
@@ -63,9 +61,8 @@ function AdminProfile() {
                         component={"h1"}
                         sx={{
                           color: "#fff",
-                          fontSize: { xs: '20px', sm: '32px', md: "25px", lg: "32px" },
+                          fontSize: "34px",
                           textAlign: "center",
-                          fontWeight: '500'
                         }}
                       >
                         Super Administrator
@@ -76,7 +73,7 @@ function AdminProfile() {
                       component={"p"}
                       sx={{
                         color: "var(--secondary-color)",
-                        fontSize: { xs: '13px', sm: '15px', md: '13px', lg: '20px' },
+                        fontSize: "20px",
                         letterSpacing: "1px",
                         textAlign: "center",
                         fontWeight: "500",
@@ -85,10 +82,11 @@ function AdminProfile() {
                     >
                       Manage your profile and keep your information up to date.
                     </Typography>
-
-
-                    <Box component={BsArrowRightCircleFill}
-                      sx={{ color: "var(--secondary-color)", marginTop: { xs: '0px', md: "20px" }, marginBottom: { xs: '16px', md: '0px' }, fontSize: { xs: '30px', sm: '33px', md: '36px', lg: '40px' } }} />
+                    <BsArrowRightCircleFill
+                      fill={"var(--secondary-color)"}
+                      size={40}
+                      style={{ marginTop: "20px" }}
+                    />
                   </Box>
                 </Grid>
                 <Grid item size={{ xs: 12, md: 8 }}>
@@ -97,8 +95,7 @@ function AdminProfile() {
                     sx={{
                       borderTopRightRadius: "40px",
                       borderBottomRightRadius: "40px",
-                      padding: { sm: "40px", md: "40px" },
-                      paddingY: { sm: "30px", md: "40px" },
+                      padding: "60px",
                       paddingBottom: "0px",
                       gap: "40px",
                     }}

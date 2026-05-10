@@ -107,6 +107,7 @@ function AIinMedicine() {
           <Box
             component="img"
             src={doctorsPic}
+            alt="Male and female healthcare professionals wearing face masks"
             className={style.drop_shadow}
             sx={{
               width: "100%",

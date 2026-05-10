@@ -80,12 +80,11 @@ function RecentlySubmitted({
             <Box
               component={"img"}
               src={sparklesNotebookImg}
-              alt=""
+              alt="Add new clipboard item icon"
               sx={{
                 border: "1px solid #cccccc2b",
                 borderRadius: "20px",
                 padding: "20px",
-                // فروق الحجم
                 ...(isSidePanel
                   ? {
                       width: "260px",

@@ -194,7 +194,7 @@ export default function TemporaryDrawer() {
                   }
                 }}
               >
-                <ListItemIcon>
+                <ListItemIcon sx={{ minWidth: "35px" }}>
                   {text === "Dashboard" ? (
                     <RiDashboard3Fill fill="#fff" size={22} />
                   ) : text === "User Management" ? (

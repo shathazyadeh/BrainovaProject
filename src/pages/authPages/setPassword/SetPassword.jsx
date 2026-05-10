@@ -64,7 +64,7 @@ function SetPassword() {
           sx={{ paddingBottom: "60px", paddingTop: "30px" }}
         >
           <Box className="img" sx={{ textAlign: "center" }}>
-            <img src={setPasswordImg} width="80px" alt="" />
+            <Box component={"img"} src={setPasswordImg} width="80px" alt="Shield with padlock" />
           </Box>
           <Typography
             component={"h1"}

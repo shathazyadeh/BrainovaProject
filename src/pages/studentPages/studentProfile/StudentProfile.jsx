@@ -241,7 +241,7 @@ function StudentProfile() {
                     <Box
                       component={"img"}
                       src={studentImg}
-                      alt=""
+                      alt="Doctor holding a clipboard and checklist"
                       width={140}
                       sx={{
                         "@media (max-width:1360px)": { width: "127px" },

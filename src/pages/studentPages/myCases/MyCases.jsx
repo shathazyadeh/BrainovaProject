@@ -483,7 +483,7 @@ function MyCases() {
                       height: '250px', width: 'auto', bgcolor: 'var(--navy-color)', borderRadius: '15px', padding: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '5px'
                     }
                   }}> {/*بوكس الصورة */}
-                    <img src={item.imageUrl} style={{ height: '100%', width: '100%', objectFit: 'contain' }} />
+                    <Box component={"img"} src={item.imageUrl} alt="Brain MRI scan" sx={{ height: '100%', width: '100%', objectFit: 'contain' }} />
                   </Box>
 
                   <Box className='card_details' sx={{ display: 'flex', justifyContent: 'space-between' }}>

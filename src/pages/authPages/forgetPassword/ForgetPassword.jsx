@@ -45,7 +45,7 @@ function ForgetPassword() {
           sx={{ paddingBottom: "60px", paddingTop: "30px" }}
         >
           <Box className="img" sx={{ textAlign: "center" }}>
-            <img src={forgetPasswordPic} width="150px" alt="" />
+            <Box component={"img"} src={forgetPasswordPic} alt="Password help lock icon" width="150px" />
           </Box>
           <Typography
             component={"h1"}

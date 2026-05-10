@@ -182,7 +182,7 @@ function Hero() {
           <Box
             component="img"
             src={heroPic}
-            alt="Hero Brain"
+            alt="Half human brain and half mechanical AI brain"
             className={`${style.animatedImage} ${style.drop_shadow}`}
             sx={{
               width: "100%",

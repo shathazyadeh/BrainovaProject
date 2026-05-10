@@ -403,9 +403,10 @@ function PredictTumor() {
                       alignItems: "center",
                     }}
                   >
-                    <img
+                    <Box component={"img"}
                       src={preview}
-                      style={{ height: "100%", width: "100%" }}
+                      alt="Brain MRI scan"
+                      sx={{ height: "100%", width: "100%" }}
                     />
                   </Box>
                 </Grid>
@@ -955,9 +956,10 @@ function PredictTumor() {
                         },
                       }}
                     >
-                      <img
+                      <Box component={"img"}
                         src={preview}
-                        style={{ height: "auto", width: "100%" }}
+                        alt="Brain MRI scan"
+                        sx={{ height: "auto", width: "100%" }}
                       />
                       <Box
                         className="gradcam_container"
@@ -970,10 +972,10 @@ function PredictTumor() {
                         }}
                       >
                         {showGradCam && (
-                          <img
+                          <Box component={"img"}
                             src={predictMRIMutation.data?.gradCamUrl}
-                            style={{ height: "100%", width: "100%" }}
-                            alt=""
+                            sx={{ height: "100%", width: "100%" }}
+                            alt="Grad-CAM brain scan heatmap explaining why the AI model classified the MRI as this tumor type"
                           />
                         )}
                       </Box>

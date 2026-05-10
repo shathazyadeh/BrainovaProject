@@ -356,9 +356,10 @@ function ReportDetails() {
                   },
                 }}
               >
-                <img
+                <Box
+                  component={"img"}
                   src={data?.mriImageUrl}
-                  alt="MRI Image"
+                  alt="Brain MRI scan"
                   style={{ borderRadius: "20px", height: "100%" }}
                 />
               </Box>

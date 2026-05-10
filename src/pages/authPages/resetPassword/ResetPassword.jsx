@@ -66,7 +66,7 @@ function ResetPassword() {
           }}
         >
           <Box className="img" sx={{ textAlign: "center" }}>
-            <img src={resetPasswordPic} width="150px" alt="" />
+            <Box component={"img"} src={resetPasswordPic} width="150px" alt="Red padlock with check mark" />
           </Box>
           <Typography
             component={"h1"}

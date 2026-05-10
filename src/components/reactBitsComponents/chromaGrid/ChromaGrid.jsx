@@ -7,6 +7,7 @@ import gradImg3 from "./../../../assets/images/home/gradCam/gradcam3.webp";
 import gradImg4 from "./../../../assets/images/home/gradCam/gradcam4.webp";
 import gradImg5 from "./../../../assets/images/home/gradCam/gradcam5.webp";
 import gradImg6 from "./../../../assets/images/home/gradCam/gradcam6.webp";
+import { Box } from '@mui/material';
 
 const CARD_W = 320 + 12;
 const COPIES = 5;
@@ -167,14 +168,14 @@ export const ChromaGrid = ({
   };
 
   return (
-    <div
+    <Box
       ref={rootRef}
       className={`chroma-grid ${className}`}
       style={{ '--r': `${radius}px` }}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}
     >
-      <div ref={trackRef} className="chroma-track">
+      <Box ref={trackRef} className="chroma-track">
         {data.map((c, i) => (
           <article
             key={i}
@@ -187,15 +188,17 @@ export const ChromaGrid = ({
               cursor: c.url ? 'pointer' : 'default'
             }}
           >
-            <div className="chroma-img-wrapper">
-              <img src={c.image} alt={c.title} loading="lazy" />
-            </div>
+            <Box className="chroma-img-wrapper">
+              <Box
+            component="img"
+            src={c.image} alt="Brain scan heatmap showing brain tumor" loading="lazy" />
+            </Box>
           </article>
         ))}
-      </div>
-      <div className="chroma-overlay" />
-      <div ref={fadeRef} className="chroma-fade" />
-    </div>
+      </Box>
+      <Box className="chroma-overlay" />
+      <Box ref={fadeRef} className="chroma-fade" />
+    </Box>
   );
 };
 
