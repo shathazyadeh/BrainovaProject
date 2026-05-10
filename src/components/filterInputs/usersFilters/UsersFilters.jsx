@@ -150,7 +150,7 @@ export default function UsersFilters({
           }}
         >
           <MenuItem value="">All</MenuItem>
-          {supervisorsList.map((sup) => (
+          {supervisorsList?.map((sup) => (
             <MenuItem key={sup.id} value={sup.id}>
               {sup.fullName}
             </MenuItem>

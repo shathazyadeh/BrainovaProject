@@ -22,17 +22,7 @@ export default function useDeleteUser(){
             const failedCount = data.failed?.length || 0;
 
             if(deletedCount && !failedCount){ // all users deleted
-            toast.success(`Deleted ${deletedCount} users successfully`, {
-                position: "top-center",
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-                autoClose: 2500,
-            });}
+            toast.success(`Deleted ${deletedCount} users successfully`);}
             else if(deletedCount && failedCount){ //some of them deleted
                  toast.warning(
                     <Box>
@@ -73,18 +63,7 @@ export default function useDeleteUser(){
 
         },
         onError: (error) => {
-
-            toast.error('Operation failed. Please try again.', {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            })
+            toast.error('Operation failed. Please try again.')
         }
     })
 

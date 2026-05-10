@@ -19,17 +19,7 @@ export default function useUpdateUserInfo(){
                 updateUser(variables.userInfo);   // يحدث Zustand + localStorage
             },
             onError: (error)=>{
-                toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            })
+                toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`)
             } 
         });
 
@@ -44,17 +34,7 @@ export default function useUpdateUserInfo(){
             );
           },
           onError: (error) => {
-            toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            })
+            toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`)
           },
         });
 
@@ -67,17 +47,7 @@ export default function useUpdateUserInfo(){
             });
           },
           onError: (error) => {
-             toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-                transition: Bounce,
-            })
+             toast.error(`Operation failed, ${ error.response?.data?.message }. Please try again.`)
           },
         });
 

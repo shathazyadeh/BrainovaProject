@@ -9,6 +9,7 @@ import { Link as RouterLink } from "react-router-dom";
 import UsersSearch from "../../components/filterSearch/usersSearch/UsersSearch";
 import UsersFilters from "../../components/filterInputs/usersFilters/UsersFilters";
 import BasicModal from "../../components/muiComponents/basicModal/BasicModal";
+import Loader from "../../components/uiVerseComponents/loader/Loader";
 
 function UserManagement() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
@@ -137,7 +138,7 @@ function UserManagement() {
               setRoleFilter={setRoleFilter}
               supervisorFilter={supervisorFilter}
               setSupervisorFilter={setSupervisorFilter}
-              supervisorsList={data.filter((u) => u.roleName === "Supervisor")}
+              supervisorsList={data?.filter((u) => u.roleName === "Supervisor")}
             />
           </Grid>
           <Grid item sx={{ flexGrow: "1" }}>
