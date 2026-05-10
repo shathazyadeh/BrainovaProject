@@ -2,7 +2,7 @@ import DashboardNavbar from "../../components/muiComponents/dashboardNavbar/Dash
 import EnhancedTable from "../../components/muiComponents/enhancedTabel/EnhancedTable";
 import useFilteredArray from "../../hooks/getUsersHooks/useFilteredArray";
 import useGetUsers from "../../hooks/getUsersHooks/useGetUsers";
-import { Box, Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Container, Grid, Typography } from "@mui/material";
 import NestedModal from "../../components/muiComponents/nestedModal/NestedModal";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -46,68 +46,11 @@ function UserManagement() {
     );
   }
 
-  if (isLoading)
-    return (
-      <Box
-        sx={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 9999,
-          bgcolor: "var(--navy-color)",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CircularProgress sx={{ color: "#fff" }}></CircularProgress>
-      </Box>
-    );
-  if (isError) {
-    //server errors
-    return (
-      <Box
-        component={"section"}
-        className="server_error_section flex_column"
-        sx={{
-          bgcolor: "var(--navy-color)",
-          position: "fixed",
-          inset: 0,
-          zIndex: 9999,
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "20px",
-        }}
-      >
-        <Typography
-          component={"h1"}
-          variant="h5"
-          sx={{ color: "white", fontWeight: "700", textAlign: "center" }}
-        >
-          {error?.message}
-        </Typography>
-        <Button
-          className="auth_btn"
-          component={RouterLink}
-          to="/auth/login"
-          sx={{
-            bgcolor: "var(--primary-color)",
-            color: "white",
-            borderRadius: "6px",
-            fontWeight: "600",
-            paddingX: "25px",
-            paddingY: "10px",
-          }}
-        >
-          Back to Login
-        </Button>
-      </Box>
-    );
-  }
 
   return (
     <Box
       sx={{
-        bgcolor: "rgb(36, 35, 35)", // تأكد أن الخلفية الداكنة تغطي كامل الشاشة
+        bgcolor: "var(--navy-color)",
       }}
     >
       <DashboardNavbar />
@@ -115,8 +58,77 @@ function UserManagement() {
       <Box
         component={"section"}
         className="manage_user_table"
-        sx={{ padding: "40px", minHeight: "100vh" }}
+        sx={{ minHeight: "100vh", paddingBottom: "50px", }}
       >
+        <Container maxWidth="lg">
+          {/* server errors */}
+          {isError && (
+            <Box
+              component={"section"}
+              className="server_error_section flex_column"
+              sx={{
+                bgcolor: "var(--navy-color)",
+                position: "absolute",
+                inset: 0,
+                top: "90px",
+                zIndex: 1,
+              }}
+            >
+              <Typography
+                component={"h1"}
+                variant="h5"
+                sx={{
+                  marginTop: "290px",
+                  color: "white",
+                  fontWeight: "700",
+                  textAlign: "center",
+                  "@media (max-width:456px)": {
+                    fontSize: "20px",
+                  },
+                }}
+              >
+                {error?.message || "Something went wrong"}
+              </Typography>
+            </Box>
+          )}
+          {isLoading && (
+            <Box
+              sx={{
+                bgcolor: "var(--navy-color)",
+                position: "absolute",
+                inset: 0,
+                top: "90px",
+                display: "flex",
+                justifyContent: "center",
+                zIndex: 1,
+              }}
+            >
+              <Box sx={{ marginTop: "290px" }}>
+                <Loader />
+              </Box>
+            </Box>
+          )}
+        <Box className="section_titel" sx={{ marginBottom: "40px" }}>
+  <Typography
+    component={"h1"}
+    variant="h4"
+    sx={{
+      color: "#fff",
+      fontFamily: "var(--primary-font)",
+      fontWeight: "600",
+      display: "inline",
+      marginRight: "10px",
+      "@media (max-width:700px)": {
+        fontSize: "22px",
+      },
+    }}
+  >
+    User Management
+  </Typography>
+  <Typography sx={{ color: "var(--secondary-color)" }}>
+    Manage users, control access, and keep everything organized.
+  </Typography>
+</Box>
         <Grid container rowSpacing={0.1} columnSpacing={1}>
           <Grid item>
             <UsersFilters
@@ -154,6 +166,7 @@ function UserManagement() {
           user={selectedUser} // بيانات المستخدم المختار
           type="editUser"
         />
+        </Container>
       </Box>
 
       <Box

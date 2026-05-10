@@ -9,7 +9,7 @@ export default function UsersSearch({ search, setSearch, label="Search users..."
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       sx={{
-        bgcolor: "#141414",
+        bgcolor: "#232121b8",
         borderRadius: "15px",
         border: "none",
         input: { color: "#fff" },

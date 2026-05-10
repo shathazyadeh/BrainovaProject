@@ -117,7 +117,7 @@ function ChildModal({ role ,onCloseParent}) {
                 showPassword={false}
                 textfieldColor={"textfield_black"}
                 fullWidthInput ={isCustomScreen? true : false}
-                 onSuccess={handleSuccess}
+                onSuccess={handleSuccess}
               />
             </>
           ) : role === "supervisor" ?(
@@ -129,7 +129,7 @@ function ChildModal({ role ,onCloseParent}) {
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
-                 onSuccess={handleSuccess} 
+                onSuccess={handleSuccess} 
                 fullWidthInput ={isCustomScreen? true : false}
               />
             </>
@@ -171,15 +171,15 @@ export default function NestedModal() {
   };
 
   return (
-    <div>
+    <Box>
       <Button
         onClick={handleOpen}
         className="create_user_btn upper_case auth_btn"
         sx={{
-          border: "1px solid #ef4444",
-          backgroundColor: "rgba(27, 7, 7, 0.47)",
+          backgroundColor: "var(--primary-color)",
+          boxShadow: "0 0 15px rgba(255, 1, 1, 0.76)",
           color: "#fff",
-          borderRadius: "15px",
+          borderRadius: "30px",
           height: "55px",
           paddingX: "40px",
           fontSize: "18px",
@@ -188,8 +188,8 @@ export default function NestedModal() {
           }
         }}
       >
-        Create new User
-        <FaPlus size={18} style={{ paddingLeft: "5PX" }} />
+        <FaPlus size={18} style={{ paddingRight: "5PX" }} />
+        Add User
       </Button>
       <Modal
         open={open}
@@ -282,6 +282,6 @@ export default function NestedModal() {
           {/*مررنا قيمة الكنترول فورم - الاختيار من متعدد - للمودل الصغير */}
         </Box>
       </Modal>
-    </div>
+    </Box>
   );
 }

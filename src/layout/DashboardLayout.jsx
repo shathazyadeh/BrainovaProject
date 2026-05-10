@@ -6,11 +6,11 @@ function DashboardLayout() {
     const location = useLocation();
 
   // تحديد لون الفوتر حسب الصفحة
-  let DashboardLayoutBg = "rgb(36, 35, 35)";
-  if (location.pathname.includes("supervisor")) {DashboardLayoutBg="var(--navy-color)"}
+  //let DashboardLayoutBg = "rgb(36, 35, 35)";
+  //if (location.pathname.includes("supervisor")) {DashboardLayoutBg="var(--navy-color)"}
 
   return (
-    <Box sx={{bgcolor: DashboardLayoutBg}}>
+    <Box sx={{bgcolor: "var(--navy-color)"}}>
       <Box sx={{ display: { xs: "none", md: "block"  } }}> {/*لانه تيمب ما بتوخذ sx لفيناها ببوكس */}
         <TemporaryDrawer />
       </Box>

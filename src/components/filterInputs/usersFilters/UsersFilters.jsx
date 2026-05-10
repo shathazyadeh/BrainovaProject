@@ -11,20 +11,22 @@ export default function UsersFilters({
   const currentUser = useAuthStore((state) => state.user);
 
   return (
-    <Box sx={{ display: { xs: "block", md: "flex" }, gap: 2, mb: 2 }}>
+    <Box sx={{ display: { xs: "block", md: "flex" }, gap: 1, mb: 2 }}>
       <FormControl
         size="small"
         sx={{
           minWidth: 150,
           marginRight: { xs: "10px", md: "0" },
-          marginBottom: { xs: "16px", sm: "0px" },
+          "@media (max-width:440.98px)" :{
+              marginBottom: "17px",
+          }
         }}
       >
         <InputLabel
           sx={{
             color: "#fff",
             "&.Mui-focused": {
-              color: "red", // لون الليبل عند التركيز
+              color: "var(--primary-color)", // لون الليبل عند التركيز
             },
           }}
         >
@@ -42,7 +44,7 @@ export default function UsersFilters({
                 borderRadius: "10px",
                 "& .MuiMenuItem-root": {
                   "&:hover": {
-                    bgcolor: "red",
+                    bgcolor: "var(--primary-color)",
                   },
                 },
               },
@@ -50,15 +52,15 @@ export default function UsersFilters({
           }}
           sx={{
             color: "#fff",
-            bgcolor: "#141414",
+            bgcolor: "#232121b8",
             height: "55px",
             borderRadius: "15px",
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "red", // عند hover
+              borderColor: "var(--primary-color)", // عند hover
             },
 
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "red", // عند focus
+              borderColor: "var(--primary-color)", // عند focus
             },
 
             "& .MuiSelect-icon": {
@@ -87,7 +89,7 @@ export default function UsersFilters({
               : "translate(14px, -6px) scale(0.75)", // فوق لو فيه قيمة
             "&.Mui-focused": {
               transform: "translate(14px, -6px) scale(0.75)", // عند التركيز يبقى فوق
-              color: "red",
+              color: "var(--primary-color)",
             },
           }}
         >
@@ -107,7 +109,7 @@ export default function UsersFilters({
 
                 "& .MuiMenuItem-root": {
                   "&:hover": {
-                    bgcolor: "red",
+                    bgcolor: "var(--primary-color)",
                   },
                 },
 
@@ -119,7 +121,7 @@ export default function UsersFilters({
                   borderRadius: "10px",
                 },
                 "&::-webkit-scrollbar-thumb": {
-                  background: "red",
+                  background: "var(--primary-color)",
                   borderRadius: "10px",
                 },
                 "&::-webkit-scrollbar-thumb:hover": {
@@ -133,14 +135,14 @@ export default function UsersFilters({
           }}
           sx={{
             color: "#fff",
-            bgcolor: "#141414",
+            bgcolor: "#232121b8",
             height: "55px",
             borderRadius: "15px",
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "red",
+              borderColor: "var(--primary-color)",
             },
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "red",
+              borderColor: "var(--primary-color)",
             },
             "& .MuiSelect-icon": {
               color: "#fff",

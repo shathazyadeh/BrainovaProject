@@ -1,0 +1,66 @@
+/*كود النقطة المضيئة*/
+.pulse_wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.pulse_wrapper::after {
+    content: "";
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--pulse-color); /* عشان السوبرفايزر يوخد لون غير عن الثانيات */
+    animation: pulse 1.5s infinite;
+    left: 11px;
+    top:9px;
+    opacity: 0.6;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    70% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(2.5);
+        opacity: 0;
+    }
+}
+
+.card_hover_effect {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card_hover_effect:hover {
+  box-shadow: 0 8px 20px rgba(207, 25, 25, 0.15);
+}
+
+.card_hover_effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    var(--shine-color),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: all 0.7s ease;
+}
+
+.card_hover_effect:hover::before {
+  left: 120%;
+}

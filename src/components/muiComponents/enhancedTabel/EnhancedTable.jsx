@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import { FaRegEdit } from "react-icons/fa";
+import { MdOutlineEdit } from "react-icons/md";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -57,12 +57,6 @@ const headCells = [
     label: "User Name",
   },
   {
-    id: "email",
-    numeric: true,
-    disablePadding: false,
-    label: "Email",
-  },
-  {
     id: "phoneNumber",
     numeric: true,
     disablePadding: false,
@@ -108,6 +102,8 @@ function EnhancedTableHead(props) {
     numSelected,
     rowCount,
     onRequestSort,
+    showActions,
+    hideCheckbox,
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -116,6 +112,7 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
+        {!hideCheckbox &&
         <TableCell padding="checkbox">
           <Checkbox
             sx={{
@@ -125,7 +122,11 @@ function EnhancedTableHead(props) {
               },
               "&.MuiCheckbox-indeterminate": {
                 color: "red", // لون المربع لما يكون نصف محدد (اللون الأزرق اللي تقصده)
-              },
+              }, 
+              transition:"all 0.3s",
+              "&:hover": {
+      backgroundColor: "#ffffff0e",
+    },
             }}
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -135,40 +136,41 @@ function EnhancedTableHead(props) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            sx={{ color: "#fff", textAlign: "left" }}
-            key={headCell.id}
-            align={"left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-              sx={{
-                color: "#fff !important",
-                "&:hover": {
-                  color: "#fff",
-                },
-                "&.Mui-active": {
-                  color: "#fff",
-                },
-                "& .MuiTableSortLabel-icon": {
-                  color: "#fff !important",
-                },
-              }}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
+}
+        {headCells.map((headCell) => {
+  if (!showActions && headCell.id === "Block") return null;
+
+  return (
+    <TableCell
+      sx={{ color: "#fff", textAlign: "left" , paddingLeft:showActions?"20px":headCell.id === "fullName"?"40px":"" }}
+      key={headCell.id}
+      align="left"
+      padding={headCell.disablePadding ? "none" : "normal"}
+      sortDirection={orderBy === headCell.id ? order : false}
+    >
+      <TableSortLabel
+        active={orderBy === headCell.id}
+        direction={orderBy === headCell.id ? order : "asc"}
+        onClick={createSortHandler(headCell.id)}
+        sx={{
+          color: "#fff !important",
+          "&:hover": { color: "#fff" },
+          "&.Mui-active": { color: "#fff" },
+          "& .MuiTableSortLabel-icon": {
+            color: "#fff !important",
+          },
+        }}
+      >
+        {headCell.label}
+        {orderBy === headCell.id ? (
+          <Box component="span" sx={visuallyHidden}>
+            {order === "desc" ? "sorted descending" : "sorted ascending"}
+          </Box>
+        ) : null}
+      </TableSortLabel>
+    </TableCell>
+  );
+})}
       </TableRow>
     </TableHead>
   );
@@ -191,7 +193,7 @@ function EnhancedTableToolbar(props) {
         {
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
-          bgcolor: "var(--table-color)",
+          bgcolor: "#23212184",
           color: "#fff",
         },
         numSelected > 0 && {
@@ -210,12 +212,11 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: "1 1 auto", marginTop: "20px", fontSize: "25px" }}
-          variant="h6"
+          sx={{ flex: "1 1 auto", marginTop: "20px", fontSize: "20px", fontFamily: "var(--primary-font)" }}
           id="tableTitle"
           component="div"
         >
-          All users
+          Users Management
         </Typography>
       )}
       {numSelected > 0 ? (
@@ -246,6 +247,9 @@ export default function EnhancedTable({
   handleOpen,
   defaultRowsPerPage = 5,
   search = "",
+  showActions = true,
+  hidePagination = false,
+  hideCheckbox = false,
 }) {
   const { usePatchMutation: blockMutation } = useBlockUser(); //عملنالها اعادة تسمية
   const { usePatchMutation: unBlockMutation } = useUnBlockUser();
@@ -341,7 +345,7 @@ export default function EnhancedTable({
           mb: 2,
           borderRadius: "25px",
           overflow: "hidden",
-          bgcolor: "rgba(2, 1, 1, 0.7)",
+          bgcolor: "#232121b8",
         }}
       >
         <EnhancedTableToolbar
@@ -371,7 +375,7 @@ export default function EnhancedTable({
               minWidth: 750,
               bgcolor: "var(--table-color)",
               "& .MuiTableCell-root": {
-                borderBottom: "1px solid rgba(97, 89, 89, 0.6)",
+                borderBottom: "1px solid rgba(97, 89, 89, 0.29)",
               },
             }}
             aria-labelledby="tableTitle"
@@ -384,6 +388,8 @@ export default function EnhancedTable({
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={filteredRows.length}
+              showActions={showActions}
+              hideCheckbox={hideCheckbox}
             />
             <TableBody>
               {visibleRows.map((row, index) => {
@@ -412,6 +418,7 @@ export default function EnhancedTable({
                       },
                     }}
                   >
+                    {!hideCheckbox &&
                     <TableCell padding="checkbox">
                       <Checkbox
                         sx={{
@@ -419,6 +426,10 @@ export default function EnhancedTable({
                           "&.Mui-checked": {
                             color: "var(--primary-color)", // لون المربع بعد التحديد
                           },
+                          transition:"all 0.3s",
+              "&:hover": {
+      backgroundColor: "#ffffff0e",
+    },
                         }}
                         checked={isItemSelected}
                         inputProps={{
@@ -426,15 +437,51 @@ export default function EnhancedTable({
                         }}
                       />
                     </TableCell>
-                    <TableCell
-                      sx={{ color: "#fff", textAlign: "left" }}
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.fullName}
-                    </TableCell>
+              }
+                    <TableCell 
+  sx={{ color: "#fff", textAlign: "left", paddingLeft:showActions?"20px":"40px" }}
+  component="th"
+  id={labelId}
+  scope="row"
+  padding="none"
+>
+  <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    {/* الأفاتار */}
+    <Box
+      sx={{
+        width: 38,
+        height: 38,
+        borderRadius: "50%",
+        bgcolor: "var(--primary-color)",
+        boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "14px",
+        fontWeight: "bold",
+        color: "#fff",
+        flexShrink: 0,
+      }}
+    >
+      {row.fullName
+        ?.split(" ")
+        .map((n) => n[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase()}
+    </Box>
+
+    {/* الاسم والإيميل */}
+    <Box>
+      <Typography sx={{ color: "#fff", fontSize: "14px", fontWeight: 500 }}>
+        {row.fullName}
+      </Typography>
+      <Typography sx={{ color: "var(--secondary-color)", fontSize: "12px" }}>
+        {row.email}
+      </Typography>
+    </Box>
+  </Box>
+</TableCell>
                     <TableCell
                       align="right"
                       sx={{ color: "#fff", textAlign: "left" }}
@@ -443,16 +490,7 @@ export default function EnhancedTable({
                     </TableCell>
                     <TableCell
                       align="right"
-                      sx={{
-                        color: "var(--secondary-color)",
-                        textAlign: "left",
-                      }}
-                    >
-                      {row.email}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      sx={{ color: "#fff", textAlign: "left" }}
+                      sx={{ color: "var(--secondary-color)", textAlign: "left" }}
                     >
                       {row.phoneNumber}
                     </TableCell>
@@ -475,13 +513,13 @@ export default function EnhancedTable({
                       {row.emailConfirmed ? (
                         <Typography
                           sx={{
-                            border: "1px solid #ef4444",
                             width: "fit-content",
-                            paddingX: "20px",
+                            paddingX: "15px",
                             paddingY: "5px",
                             borderRadius: "20px",
-                            backgroundColor: "rgba(246, 56, 56, 0.12)",
-                            fontSize: "12px",
+                            backgroundColor: "rgb(23, 49, 40)",
+                            color:"#40e148",
+                            fontSize: "13px",
                           }}
                         >
                           Verified
@@ -489,13 +527,14 @@ export default function EnhancedTable({
                       ) : (
                         <Typography
                           sx={{
-                            border: "1px solid  #ef4444",
                             width: "fit-content",
-                            paddingX: "20px",
+                            paddingX: "15px",
                             paddingY: "5px",
                             borderRadius: "20px",
-                            backgroundColor: "rgba(239, 68, 68)",
-                            fontSize: "12px",
+                            backgroundColor: "rgb(51, 26, 32)",
+                            color:"#ef4444",
+                            fontSize: "13px",
+                            whiteSpace:"nowrap"
                           }}
                         >
                           Not Verified
@@ -505,21 +544,23 @@ export default function EnhancedTable({
                     {/*لو كانت true أو false أحيانًا تظهر كأنها فارغة في الجدول. */}
                     <TableCell
                       align="right"
-                      sx={{ color: "#fff", textAlign: "left" }}
+                      sx={{ color: "#fff", paddingRight:"80px"}}
                     >
                       {row.isBlocked ? (
                         <RxCrossCircled
                           size={24}
-                          style={{ marginLeft: "5px", color: "#ef4444" }}
+                          style={{ marginLeft: "5px", color: "#d91313" }}
                         />
                       ) : (
                         <IoCheckmarkCircleOutline
-                          style={{ marginLeft: "5px", color: "#898a89" }}
+                          style={{ marginLeft: "5px", color: "#40e148" }}
                           size={25}
                         />
                       )}
                     </TableCell>
+                    {showActions && (
                     <TableCell sx={{ color: "#fff", textAlign: "left" }}>
+  <Box sx={{ display: "flex", alignItems: "center" }}>
                       <IconButton size="small">
                         {row.isBlocked ? (
                           <TbLockFilled
@@ -527,7 +568,7 @@ export default function EnhancedTable({
                               handelUnBlock(row.id);
                               e.stopPropagation();
                             }} //الثانية عشان لما يضغط الايقونة ما يتحدد كل السطر
-                            fill="#ef2e2e"
+                            fill="#d91313"
                             size={24}
                           />
                         ) : (
@@ -542,8 +583,20 @@ export default function EnhancedTable({
                           />
                         )}
                       </IconButton>
-                      <IconButton size="small">
-                        <FaRegEdit
+                      <IconButton size="small" sx={{backgroundColor: "#141414b4",
+                  height: "30px",
+                  width: "30px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  cursor:
+                    row?.code === "preliminary assesment"
+                      ? "not-allowed"
+                      : "pointer",
+                  transition: "all .3s",
+                  "&:hover": { bgcolor: "rgba(229, 226, 226, 0.21)" },}}>
+                        <MdOutlineEdit
                           size={20}
                           color={"#5d5f5e"}
                           onClick={(e) => {
@@ -552,7 +605,9 @@ export default function EnhancedTable({
                           }}
                         />
                       </IconButton>
+                      </Box>
                     </TableCell>
+                    )}
                   </TableRow>
                 );
               })}
@@ -568,6 +623,7 @@ export default function EnhancedTable({
             </TableBody>
           </Table>
         </TableContainer>
+        {!hidePagination &&
         <TablePagination
           sx={{ bgcolor: "var(--table-color)", color: "#fff","& .MuiSelect-icon": {color: "#fff"} }}
           rowsPerPageOptions={[5, 10, 25]}
@@ -600,6 +656,7 @@ export default function EnhancedTable({
             },
           }}
         />
+        }
       </Paper>
     </Box>
   );

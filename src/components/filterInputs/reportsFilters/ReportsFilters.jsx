@@ -39,7 +39,7 @@ export default function ReportsFilters({
           }}
           sx={{
             color: "#fff",
-            bgcolor: "#141414",
+            bgcolor: "#232121b8",
             height: "55px",
             borderRadius: "15px",
             "&:hover .MuiOutlinedInput-notchedOutline": {
@@ -101,7 +101,7 @@ export default function ReportsFilters({
           }}
           sx={{
             color: "#fff",
-            bgcolor: "#141414",
+            bgcolor: "#232121b8",
             height: "55px",
             borderRadius: "15px",
             "&:hover .MuiOutlinedInput-notchedOutline": {

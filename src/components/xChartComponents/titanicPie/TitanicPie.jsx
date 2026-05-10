@@ -4,14 +4,14 @@ import Typography from "@mui/material/Typography";
 
 export default function TitanicPie({ students, supervisors, admins }) {
   const data = [
-    { id: 0, value: students, label: "Students", color: "#524e4e" },
+    { id: 0, value: students, label: "Students", color: "var(--primary-color)" },
     {
       id: 1,
       value: supervisors,
       label: "Supervisors",
-      color: "rgb(129, 15, 15)",
+      color: "rgb(78, 78, 77)",
     },
-    { id: 3, value: admins, label: "Admins", color: "#eedbbfb1" },
+    { id: 3, value: admins, label: "Admins", color: "#fdffffae" },
   ];
 
   return (
@@ -24,9 +24,6 @@ export default function TitanicPie({ students, supervisors, admins }) {
         paddingBottom: "10px",
       }}
     >
-      <Typography variant="h6" sx={{ color: "#fff", pt: 2 }} gutterBottom>
-        Users Distribution
-      </Typography>
 
       <PieChart
         series={[
