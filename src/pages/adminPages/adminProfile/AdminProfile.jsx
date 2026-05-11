@@ -3,7 +3,6 @@ import useUpdateUserInfo from "../../../hooks/userManagementHooks/useUpdateUserI
 import RegisterForm from "../../../components/registerForm/RegisterForm";
 import { UpdateUserInfoSchema } from "../../../validations/UpdateUserInfoSchema";
 import { BsArrowRightCircleFill } from "react-icons/bs";
-import boyImg from "./../../../assets/images/profile/userAvatart.png";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 import GlowCard from "../../../components/reactBitsComponents/glowCard/GlowCard";
 import { Link as RouterLink } from "react-router-dom";
@@ -43,7 +42,7 @@ function AdminProfile() {
                     }}
                   >
                     <Box className="image" sx={{ width: { xs: "120px", sm: "150px", md: "150px", lg: "200px" }, }}>
-                      <Box component={"img"} src={boyImg} alt="Default user profile avatar" width={'100%'} />
+                      <Box component={"img"}  alt="Default user profile avatar" width={'100%'} />
                     </Box>
 
                     {user.role === "Admin" ? (

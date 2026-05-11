@@ -27,6 +27,7 @@ import useGetFeedbackByReportId from "../../../hooks/supervisorHooks/useGetFeedb
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { toast } from "react-toastify";
 import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
+import DashboardFooter from "../../../components/dashboardFooter/dashboardFooter";
 
 function ReportDetails() {
   const { id } = useParams();
@@ -376,7 +377,6 @@ function ReportDetails() {
                 mb: 2,
                 cursor: "pointer",
                 marginTop: "15px",
-                marginBottom: { xs: '10px', md: '50px' },
               }}
               onClick={() => setOpen(!open)}
             >
@@ -502,7 +502,7 @@ function ReportDetails() {
                       }
                     }}
                     sx={{
-bgcolor: "#65656547",
+                      bgcolor: "#65656547",
                       color: "#f0f2f5",
                       display: "flex",
                       gap: '10px',
@@ -700,7 +700,6 @@ bgcolor: "#65656547",
                   paddingX: "10px",
                   paddingY: "25px",
                   marginTop: "10px",
-                  marginBottom: { xs: '50px', md: '0px' },
                   boxShadow: highlight
                     ? "0 0 10px var(--primary-color)"
                     : "none",
@@ -818,34 +817,7 @@ bgcolor: "#65656547",
           </Grid>
         </Grid>
 
-        {/*footer */}
-
-        <Box
-          className="lower_footer"
-          sx={{
-            borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-            width: "fit-content",
-            margin: "auto",
-            paddingX: { xs: "0px", md: "200px" },
-            textAlign: "center",
-            marginTop: { xs: "60px", md: "0px" },
-          }}
-        >
-          <Typography
-            component={"p"}
-            sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
-          >
-            © 2026{" "}
-            <Typography
-              component={"span"}
-              sx={{ color: "var(--dark-red-color)" }}
-            >
-              Brainova
-            </Typography>
-            . All rights reserved. | Built for medical education and research
-            purposes.
-          </Typography>
-        </Box>
+     <DashboardFooter/>
       </Container>
     </Box>
   );

@@ -67,7 +67,7 @@ function StudentReports() {
       <Box
         component={"section"}
         sx={{
-          paddingBottom: "50px",
+          
           flexGrow: 1,
           alignItems: "flex-start",
           display: "block",
@@ -593,7 +593,7 @@ function StudentReports() {
           margin: "auto",
           paddingX: { xs: "0px", md: "200px" },
           textAlign: "center",
-          marginTop: { xs: "10px", md: "0px" },
+          marginTop: { xs: "0px", md: "0px" },
         }}
       >
         <Typography
