@@ -2,7 +2,14 @@ import DashboardNavbar from "../../components/muiComponents/dashboardNavbar/Dash
 import EnhancedTable from "../../components/muiComponents/enhancedTabel/EnhancedTable";
 import useFilteredArray from "../../hooks/getUsersHooks/useFilteredArray";
 import useGetUsers from "../../hooks/getUsersHooks/useGetUsers";
-import { Box, Button, CircularProgress, Container, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Typography,
+} from "@mui/material";
 import NestedModal from "../../components/muiComponents/nestedModal/NestedModal";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -47,7 +54,6 @@ function UserManagement() {
     );
   }
 
-
   return (
     <Box
       sx={{
@@ -59,7 +65,7 @@ function UserManagement() {
       <Box
         component={"section"}
         className="manage_user_table"
-        sx={{ minHeight: "100vh", paddingBottom: "50px", }}
+        sx={{ minHeight: "100vh", paddingBottom: "50px" }}
       >
         <Container maxWidth="lg">
           {/* server errors */}
@@ -72,7 +78,7 @@ function UserManagement() {
                 position: "absolute",
                 inset: 0,
                 top: "90px",
-                zIndex: 1,
+                zIndex: 2,
               }}
             >
               <Typography
@@ -101,7 +107,7 @@ function UserManagement() {
                 top: "90px",
                 display: "flex",
                 justifyContent: "center",
-                zIndex: 1,
+                zIndex: 2,
               }}
             >
               <Box sx={{ marginTop: "290px" }}>
@@ -109,64 +115,66 @@ function UserManagement() {
               </Box>
             </Box>
           )}
-        <Box className="section_titel" sx={{ marginBottom: "40px" }}>
-  <Typography
-    component={"h1"}
-    variant="h4"
-    sx={{
-      color: "#fff",
-      fontFamily: "var(--primary-font)",
-      fontWeight: "600",
-      display: "inline",
-      marginRight: "10px",
-      "@media (max-width:700px)": {
-        fontSize: "22px",
-      },
-    }}
-  >
-    User Management
-  </Typography>
-  <Typography sx={{ color: "var(--secondary-color)" }}>
-    Manage users, control access, and keep everything organized.
-  </Typography>
-</Box>
-        <Grid container rowSpacing={0.1} columnSpacing={1}>
-          <Grid item>
-            <UsersFilters
-              sx={{ bgcolor: "white" }}
-              roleFilter={roleFilter}
-              setRoleFilter={setRoleFilter}
-              supervisorFilter={supervisorFilter}
-              setSupervisorFilter={setSupervisorFilter}
-              supervisorsList={data?.filter((u) => u.roleName === "Supervisor")}
-            />
+          <Box className="section_titel" sx={{ marginBottom: "40px" }}>
+            <Typography
+              component={"h1"}
+              variant="h4"
+              sx={{
+                color: "#fff",
+                fontFamily: "var(--primary-font)",
+                fontWeight: "600",
+                display: "inline",
+                marginRight: "10px",
+                "@media (max-width:700px)": {
+                  fontSize: "22px",
+                },
+              }}
+            >
+              User Management
+            </Typography>
+            <Typography sx={{ color: "var(--secondary-color)" }}>
+              Manage users, control access, and keep everything organized.
+            </Typography>
+          </Box>
+          <Grid container rowSpacing={0.1} columnSpacing={1}>
+            <Grid item>
+              <UsersFilters
+                sx={{ bgcolor: "white" }}
+                roleFilter={roleFilter}
+                setRoleFilter={setRoleFilter}
+                supervisorFilter={supervisorFilter}
+                setSupervisorFilter={setSupervisorFilter}
+                supervisorsList={data?.filter(
+                  (u) => u.roleName === "Supervisor",
+                )}
+              />
+            </Grid>
+            <Grid item sx={{ flexGrow: "1" }}>
+              <UsersSearch search={search} setSearch={setSearch} />
+            </Grid>
+            <Grid item>
+              <NestedModal
+                open={open} // حالة فتح المودال
+                handleClose={handleClose} // فنكشن الاغلاق
+              />
+            </Grid>
           </Grid>
-          <Grid item sx={{ flexGrow: "1" }}>
-            <UsersSearch search={search} setSearch={setSearch} />
-          </Grid>
-          <Grid item>
-            <NestedModal
-              open={open} // حالة فتح المودال
-              handleClose={handleClose} // فنكشن الاغلاق
-            />
-          </Grid>
-        </Grid>
 
-        <Box className="users_table" sx={{ marginTop: "20px" }}>
-          <EnhancedTable
-            rows={finalFiltered}
-            handleOpen={handleOpen} // نرسل فنكشن فتح المودال للجدول
-            defaultRowsPerPage={10}
-            search={search}
+          <Box className="users_table" sx={{ marginTop: "20px" }}>
+            <EnhancedTable
+              rows={finalFiltered}
+              handleOpen={handleOpen} // نرسل فنكشن فتح المودال للجدول
+              defaultRowsPerPage={10}
+              search={search}
+            />
+          </Box>
+
+          <BasicModal //for update users info
+            open={open} // حالة فتح المودال
+            handleClose={handleClose} // فنكشن الاغلاق
+            user={selectedUser} // بيانات المستخدم المختار
+            type="editUser"
           />
-        </Box>
-
-        <BasicModal //for update users info
-          open={open} // حالة فتح المودال
-          handleClose={handleClose} // فنكشن الاغلاق
-          user={selectedUser} // بيانات المستخدم المختار
-          type="editUser"
-        />
         </Container>
       </Box>
 

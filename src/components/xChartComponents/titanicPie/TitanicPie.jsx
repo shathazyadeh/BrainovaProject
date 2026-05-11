@@ -4,14 +4,19 @@ import Typography from "@mui/material/Typography";
 
 export default function TitanicPie({ students, supervisors, admins }) {
   const data = [
-    { id: 0, value: students, label: "Students", color: "var(--primary-color)" },
+    {
+      id: 0,
+      value: students,
+      label: "Students",
+      color: "var(--primary-color)",
+    },
     {
       id: 1,
       value: supervisors,
       label: "Supervisors",
-      color: "rgb(78, 78, 77)",
+      color: "rgb(2, 188, 45)",
     },
-    { id: 3, value: admins, label: "Admins", color: "#fdffffae" },
+    { id: 3, value: admins, label: "Admins", color: "#464646" },
   ];
 
   return (
@@ -24,7 +29,6 @@ export default function TitanicPie({ students, supervisors, admins }) {
         paddingBottom: "10px",
       }}
     >
-
       <PieChart
         series={[
           {
@@ -35,8 +39,8 @@ export default function TitanicPie({ students, supervisors, admins }) {
             cornerRadius: 4,
           },
         ]}
-        width={300}
-        height={200}
+        width={318}
+        height={218}
         hideLegend
         sx={{
           "& .MuiPieArcLabel-root": {

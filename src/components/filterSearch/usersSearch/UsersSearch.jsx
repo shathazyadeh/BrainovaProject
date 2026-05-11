@@ -1,7 +1,11 @@
 import { TextField, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function UsersSearch({ search, setSearch, label="Search users..." }) {
+export default function UsersSearch({
+  search,
+  setSearch,
+  label = "Search users...",
+}) {
   return (
     <TextField
       size="small"
@@ -15,6 +19,11 @@ export default function UsersSearch({ search, setSearch, label="Search users..."
         input: { color: "#fff" },
         mb: 2,
         width: { xs: "200px", sm: "300px" },
+        "& input": {
+          "&::placeholder": {
+            color: "var(--secondary-color)",
+          },
+        },
         "& .MuiOutlinedInput-root": {
           height: 55, // ارتفاع الـ box الخارجي
           "& fieldset": {
@@ -31,7 +40,7 @@ export default function UsersSearch({ search, setSearch, label="Search users..."
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <SearchIcon style={{ color: "#aaa" }} />
+            <SearchIcon style={{ color: "var(--secondary-color)" }} />
           </InputAdornment>
         ),
       }}

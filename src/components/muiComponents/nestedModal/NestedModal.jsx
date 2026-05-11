@@ -33,7 +33,7 @@ const style = {
   pb: 3,
 };
 
-function ChildModal({ role ,onCloseParent}) {
+function ChildModal({ role, onCloseParent }) {
   //  استقبلنا قيمة الاختيار من متعدد عشان نحدد الي بده ينعرض بناءا عليها
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -41,22 +41,23 @@ function ChildModal({ role ,onCloseParent}) {
   };
   const handleClose = () => {
     setOpen(false);
-     if (onCloseParent) onCloseParent();
-  };
-  const handleSuccess = () => { //بتنادلى بس لما الفورم ينجح وحطيته هون عشان يظهر قبل ما المودل يتسكر 
-  toast.success(
-    role === "student"
-      ? "Student created successfully"
-      : role === "supervisor"
-      ? "Supervisor created successfully"
-      : "Admin created successfully"
-  );
-   //ننتظر 150ms عشان التوست يلحق يظهر قبل إغلاق المودل
-  setTimeout(() => {
-    setOpen(false);
     if (onCloseParent) onCloseParent();
-  }, 150);
-};
+  };
+  const handleSuccess = () => {
+    //بتنادلى بس لما الفورم ينجح وحطيته هون عشان يظهر قبل ما المودل يتسكر
+    toast.success(
+      role === "student"
+        ? "Student created successfully"
+        : role === "supervisor"
+          ? "Supervisor created successfully"
+          : "Admin created successfully",
+    );
+    //ننتظر 150ms عشان التوست يلحق يظهر قبل إغلاق المودل
+    setTimeout(() => {
+      setOpen(false);
+      if (onCloseParent) onCloseParent();
+    }, 150);
+  };
 
   const isCustomScreen = useMediaQuery("(max-width:500px)");
 
@@ -116,11 +117,11 @@ function ChildModal({ role ,onCloseParent}) {
                 useHook={useCreateStudent}
                 showPassword={false}
                 textfieldColor={"textfield_black"}
-                fullWidthInput ={isCustomScreen? true : false}
+                fullWidthInput={isCustomScreen ? true : false}
                 onSuccess={handleSuccess}
               />
             </>
-          ) : role === "supervisor" ?(
+          ) : role === "supervisor" ? (
             // else role is supervisor
             <>
               <RegisterForm
@@ -129,24 +130,26 @@ function ChildModal({ role ,onCloseParent}) {
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
-                onSuccess={handleSuccess} 
-                fullWidthInput ={isCustomScreen? true : false}
+                onSuccess={handleSuccess}
+                fullWidthInput={isCustomScreen ? true : false}
               />
             </>
-             // else role is admin
-          ): role === "admin" ? (
-          <> 
-          <RegisterForm
-               schema={CreateAdminSchema}
+          ) : // else role is admin
+          role === "admin" ? (
+            <>
+              <RegisterForm
+                schema={CreateAdminSchema}
                 useHook={useCreateAdmin}
                 showPassword={false}
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
-                 onSuccess={handleSuccess}
-                fullWidthInput ={isCustomScreen? true : false}
-          />
-          </> 
-          ): ""}
+                onSuccess={handleSuccess}
+                fullWidthInput={isCustomScreen ? true : false}
+              />
+            </>
+          ) : (
+            ""
+          )}
         </Box>
       </Modal>
     </React.Fragment>
@@ -183,12 +186,12 @@ export default function NestedModal() {
           height: "55px",
           paddingX: "40px",
           fontSize: "18px",
-          "@media (max-width:540px)" :{
-              fontSize: "17px",
-          }
+          "@media (max-width:540px)": {
+            fontSize: "17px",
+          },
         }}
       >
-        <FaPlus size={18} style={{ paddingRight: "5PX" }} />
+        <FaPlus size={19} style={{ paddingRight: "6px" }} />
         Add User
       </Button>
       <Modal
@@ -220,7 +223,13 @@ export default function NestedModal() {
             boxShadow: "0 0 80px rgba(76, 77, 91, 0.7)",
           }}
         >
-          <Box component={'h2'} id="parent-modal-title" sx={{ fontSize: { xs: "19px", sm: "22px" } }}>Select the role for the new user</Box>
+          <Box
+            component={"h2"}
+            id="parent-modal-title"
+            sx={{ fontSize: { xs: "19px", sm: "22px" } }}
+          >
+            Select the role for the new user
+          </Box>
           <FormControl>
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"
@@ -258,27 +267,28 @@ export default function NestedModal() {
                 }
                 label="Supervisor"
               />
-              { currentUser.role==="SuperAdmin" ? 
+              {currentUser.role === "SuperAdmin" ? (
                 <FormControlLabel
-                value="admin"
-                sx={{ width: "fit-content" }}
-                control={
-                  <Radio
-                    sx={{
-                      color: "#b71c1c",
-                      "&.Mui-checked": {
-                        color: "#d32f2f",
-                      },
-                    }}
-                  />
-                }
-                label="Admin"
-              />
-              : ""
-              } 
+                  value="admin"
+                  sx={{ width: "fit-content" }}
+                  control={
+                    <Radio
+                      sx={{
+                        color: "#b71c1c",
+                        "&.Mui-checked": {
+                          color: "#d32f2f",
+                        },
+                      }}
+                    />
+                  }
+                  label="Admin"
+                />
+              ) : (
+                ""
+              )}
             </RadioGroup>
           </FormControl>
-          <ChildModal role={value}  onCloseParent={handleClose} />{" "}
+          <ChildModal role={value} onCloseParent={handleClose} />{" "}
           {/*مررنا قيمة الكنترول فورم - الاختيار من متعدد - للمودل الصغير */}
         </Box>
       </Modal>

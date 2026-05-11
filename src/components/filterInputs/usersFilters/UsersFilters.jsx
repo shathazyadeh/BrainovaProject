@@ -17,9 +17,9 @@ export default function UsersFilters({
         sx={{
           minWidth: 150,
           marginRight: { xs: "10px", md: "0" },
-          "@media (max-width:440.98px)" :{
-              marginBottom: "17px",
-          }
+          "@media (max-width:440.98px)": {
+            marginBottom: "17px",
+          },
         }}
       >
         <InputLabel
@@ -39,12 +39,19 @@ export default function UsersFilters({
           MenuProps={{
             PaperProps: {
               sx: {
-                bgcolor: "#373535",
+                bgcolor: "#232121",
                 color: "#fff",
                 borderRadius: "10px",
                 "& .MuiMenuItem-root": {
                   "&:hover": {
                     bgcolor: "var(--primary-color)",
+                  },
+                  "&.Mui-selected": {
+                    bgcolor: "#0000002d !important",
+                    color: "#fff",
+                  },
+                  "& .MuiTouchRipple-root": {
+                    color: "var(--secondary-color) !important",
                   },
                 },
               },
@@ -56,15 +63,13 @@ export default function UsersFilters({
             height: "55px",
             borderRadius: "15px",
             "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: "var(--primary-color)", // عند hover
+              borderColor: "var(--primary-color)",
             },
-
             "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: "var(--primary-color)", // عند focus
+              borderColor: "var(--primary-color)",
             },
-
             "& .MuiSelect-icon": {
-              color: "#fff", // لون السهم
+              color: "#fff",
             },
           }}
         >
@@ -81,14 +86,14 @@ export default function UsersFilters({
 
       <FormControl size="small" sx={{ minWidth: 200 }}>
         <InputLabel
-          shrink={Boolean(supervisorFilter)} // يبقى فوق لو فيه قيمة
+          shrink={Boolean(supervisorFilter)}
           sx={{
             color: "#fff",
             transform: !supervisorFilter
-              ? "translate(14px, 15px) scale(1)" // افتراضي أسفل قليلاً
-              : "translate(14px, -6px) scale(0.75)", // فوق لو فيه قيمة
+              ? "translate(14px, 15px) scale(1)"
+              : "translate(14px, -6px) scale(0.75)",
             "&.Mui-focused": {
-              transform: "translate(14px, -6px) scale(0.75)", // عند التركيز يبقى فوق
+              transform: "translate(14px, -6px) scale(0.75)",
               color: "var(--primary-color)",
             },
           }}
@@ -103,16 +108,21 @@ export default function UsersFilters({
             PaperProps: {
               sx: {
                 maxHeight: 48 * 3 + 8,
-                bgcolor: "#373535",
+                bgcolor: "#232121",
                 color: "#fff",
                 borderRadius: "10px",
-
                 "& .MuiMenuItem-root": {
                   "&:hover": {
                     bgcolor: "var(--primary-color)",
                   },
+                  "&.Mui-selected": {
+                    bgcolor: "#0000002d !important",
+                    color: "#fff",
+                  },
+                  "& .MuiTouchRipple-root": {
+                    color: "var(--secondary-color) !important",
+                  },
                 },
-
                 "&::-webkit-scrollbar": {
                   width: "8px",
                 },
@@ -127,7 +137,6 @@ export default function UsersFilters({
                 "&::-webkit-scrollbar-thumb:hover": {
                   background: "#ff4d4d",
                 },
-
                 scrollbarWidth: "thin",
                 scrollbarColor: "var(--secondary-color) #2a2a2a",
               },

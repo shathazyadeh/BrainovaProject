@@ -112,65 +112,75 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        {!hideCheckbox &&
-        <TableCell padding="checkbox">
-          <Checkbox
-            sx={{
-              color: "#fff", // لون البوردر قبل التحديد
-              "&.Mui-checked": {
-                color: "var(--primary-color)", // لون المربع بعد التحديد
-              },
-              "&.MuiCheckbox-indeterminate": {
-                color: "red", // لون المربع لما يكون نصف محدد (اللون الأزرق اللي تقصده)
-              }, 
-              transition:"all 0.3s",
-              "&:hover": {
-      backgroundColor: "#ffffff0e",
-    },
-            }}
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
-}
+        {!hideCheckbox && (
+          <TableCell padding="checkbox">
+            <Checkbox
+              sx={{
+                color: "#fff", // لون البوردر قبل التحديد
+                "&.Mui-checked": {
+                  color: "var(--primary-color)", // لون المربع بعد التحديد
+                },
+                "&.MuiCheckbox-indeterminate": {
+                  color: "red", // لون المربع لما يكون نصف محدد (اللون الأزرق اللي تقصده)
+                },
+                transition: "all 0.3s",
+                "&:hover": {
+                  backgroundColor: "#ffffff0e",
+                },
+              }}
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={rowCount > 0 && numSelected === rowCount}
+              onChange={onSelectAllClick}
+              inputProps={{
+                "aria-label": "select all desserts",
+              }}
+            />
+          </TableCell>
+        )}
         {headCells.map((headCell) => {
-  if (!showActions && headCell.id === "Block") return null;
+          if (!showActions && headCell.id === "Block") return null;
 
-  return (
-    <TableCell
-      sx={{ color: "#fff", textAlign: "left" , paddingLeft:showActions?"20px":headCell.id === "fullName"?"40px":"" }}
-      key={headCell.id}
-      align="left"
-      padding={headCell.disablePadding ? "none" : "normal"}
-      sortDirection={orderBy === headCell.id ? order : false}
-    >
-      <TableSortLabel
-        active={orderBy === headCell.id}
-        direction={orderBy === headCell.id ? order : "asc"}
-        onClick={createSortHandler(headCell.id)}
-        sx={{
-          color: "#fff !important",
-          "&:hover": { color: "#fff" },
-          "&.Mui-active": { color: "#fff" },
-          "& .MuiTableSortLabel-icon": {
-            color: "#fff !important",
-          },
-        }}
-      >
-        {headCell.label}
-        {orderBy === headCell.id ? (
-          <Box component="span" sx={visuallyHidden}>
-            {order === "desc" ? "sorted descending" : "sorted ascending"}
-          </Box>
-        ) : null}
-      </TableSortLabel>
-    </TableCell>
-  );
-})}
+          return (
+            <TableCell
+              sx={{
+                color: "#fff",
+                textAlign: "left",
+                paddingLeft: showActions
+                  ? "20px"
+                  : headCell.id === "fullName"
+                    ? "40px"
+                    : "",
+              }}
+              key={headCell.id}
+              align="left"
+              padding={headCell.disablePadding ? "none" : "normal"}
+              sortDirection={orderBy === headCell.id ? order : false}
+            >
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+                sx={{
+                  color: "#fff !important",
+                  "&:hover": { color: "#fff" },
+                  "&.Mui-active": { color: "#fff" },
+                  "& .MuiTableSortLabel-icon": {
+                    color: "#fff !important",
+                  },
+                }}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc"
+                      ? "sorted descending"
+                      : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            </TableCell>
+          );
+        })}
       </TableRow>
     </TableHead>
   );
@@ -193,7 +203,7 @@ function EnhancedTableToolbar(props) {
         {
           pl: { sm: 2 },
           pr: { xs: 1, sm: 1 },
-          bgcolor: "#23212184",
+          bgcolor: "#1f1e1eaa",
           color: "#fff",
         },
         numSelected > 0 && {
@@ -212,7 +222,13 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: "1 1 auto", marginTop: "20px", fontSize: "20px", fontFamily: "var(--primary-font)" }}
+          sx={{
+            flex: "1 1 auto",
+            marginTop: "20px",
+            fontSize: "20px",
+            fontFamily: "var(--primary-font)",
+            fontWeight: "600",
+          }}
           id="tableTitle"
           component="div"
         >
@@ -265,6 +281,7 @@ export default function EnhancedTable({
   const handleDeleteUser = async () => {
     //الفنكشن الي بنادي عالباك للحذف
     await deleteUserMutation.mutateAsync(selected); //هاي الاريه هو معرفها هون بتحوي اي ديز المستخدمين الي انعملهم سيليكت
+    setSelected([]);
   };
 
   const filteredRows = React.useMemo(
@@ -399,12 +416,16 @@ export default function EnhancedTable({
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => {
+                      if (!hidePagination) {
+                        handleClick(event, row.id);
+                      }
+                    }}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
                     key={row.id}
-                    selected={isItemSelected}
+                    selected={!hidePagination && isItemSelected}
                     sx={{
                       cursor: "pointer",
                       "&:hover": {
@@ -418,70 +439,91 @@ export default function EnhancedTable({
                       },
                     }}
                   >
-                    {!hideCheckbox &&
-                    <TableCell padding="checkbox">
-                      <Checkbox
+                    {!hideCheckbox && (
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          sx={{
+                            color: "var(--secondary-color)", // لون البوردر قبل التحديد
+                            "&.Mui-checked": {
+                              color: "var(--primary-color)", // لون المربع بعد التحديد
+                            },
+                            transition: "all 0.3s",
+                            "&:hover": {
+                              backgroundColor: "#ffffff0e",
+                            },
+                          }}
+                          checked={isItemSelected}
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+                    )}
+                    <TableCell
+                      sx={{
+                        color: "#fff",
+                        textAlign: "left",
+                        paddingLeft: showActions ? "20px" : "40px",
+                      }}
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                    >
+                      <Box
                         sx={{
-                          color: "var(--secondary-color)", // لون البوردر قبل التحديد
-                          "&.Mui-checked": {
-                            color: "var(--primary-color)", // لون المربع بعد التحديد
-                          },
-                          transition:"all 0.3s",
-              "&:hover": {
-      backgroundColor: "#ffffff0e",
-    },
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
                         }}
-                        checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
-                      />
-                    </TableCell>
-              }
-                    <TableCell 
-  sx={{ color: "#fff", textAlign: "left", paddingLeft:showActions?"20px":"40px" }}
-  component="th"
-  id={labelId}
-  scope="row"
-  padding="none"
->
-  <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-    {/* الأفاتار */}
-    <Box
-      sx={{
-        width: 38,
-        height: 38,
-        borderRadius: "50%",
-        bgcolor: "var(--primary-color)",
-        boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "14px",
-        fontWeight: "bold",
-        color: "#fff",
-        flexShrink: 0,
-      }}
-    >
-      {row.fullName
-        ?.split(" ")
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join("")
-        .toUpperCase()}
-    </Box>
+                      >
+                        {/* الأفاتار */}
+                        <Box
+                          sx={{
+                            width: 38,
+                            height: 38,
+                            borderRadius: "50%",
+                            bgcolor: "var(--primary-color)",
+                            boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            color: "#fff",
+                            flexShrink: 0,
+                          }}
+                        >
+                          {row.fullName
+                            ?.split(" ")
+                            .map((n) => n[0])
+                            .slice(0, 2)
+                            .join("")
+                            .toUpperCase()}
+                        </Box>
 
-    {/* الاسم والإيميل */}
-    <Box>
-      <Typography sx={{ color: "#fff", fontSize: "14px", fontWeight: 500 }}>
-        {row.fullName}
-      </Typography>
-      <Typography sx={{ color: "var(--secondary-color)", fontSize: "12px" }}>
-        {row.email}
-      </Typography>
-    </Box>
-  </Box>
-</TableCell>
+                        {/* الاسم والإيميل */}
+                        <Box>
+                          <Typography
+                            sx={{
+                              color: "#fff",
+                              fontSize: "14px",
+                              fontWeight: 500,
+                            }}
+                          >
+                            {row.fullName}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              color: "var(--secondary-color)",
+                              fontSize: "12px",
+                            }}
+                          >
+                            {row.email}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </TableCell>
                     <TableCell
                       align="right"
                       sx={{ color: "#fff", textAlign: "left" }}
@@ -490,7 +532,10 @@ export default function EnhancedTable({
                     </TableCell>
                     <TableCell
                       align="right"
-                      sx={{ color: "var(--secondary-color)", textAlign: "left" }}
+                      sx={{
+                        color: "var(--secondary-color)",
+                        textAlign: "left",
+                      }}
                     >
                       {row.phoneNumber}
                     </TableCell>
@@ -518,7 +563,7 @@ export default function EnhancedTable({
                             paddingY: "5px",
                             borderRadius: "20px",
                             backgroundColor: "rgb(23, 49, 40)",
-                            color:"#40e148",
+                            color: "#40e148",
                             fontSize: "13px",
                           }}
                         >
@@ -532,9 +577,9 @@ export default function EnhancedTable({
                             paddingY: "5px",
                             borderRadius: "20px",
                             backgroundColor: "rgb(51, 26, 32)",
-                            color:"#ef4444",
+                            color: "#ef4444",
                             fontSize: "13px",
-                            whiteSpace:"nowrap"
+                            whiteSpace: "nowrap",
                           }}
                         >
                           Not Verified
@@ -544,7 +589,7 @@ export default function EnhancedTable({
                     {/*لو كانت true أو false أحيانًا تظهر كأنها فارغة في الجدول. */}
                     <TableCell
                       align="right"
-                      sx={{ color: "#fff", paddingRight:"80px"}}
+                      sx={{ color: "#fff", paddingRight: "80px" }}
                     >
                       {row.isBlocked ? (
                         <RxCrossCircled
@@ -559,54 +604,61 @@ export default function EnhancedTable({
                       )}
                     </TableCell>
                     {showActions && (
-                    <TableCell sx={{ color: "#fff", textAlign: "left" }}>
-  <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <IconButton size="small">
-                        {row.isBlocked ? (
-                          <TbLockFilled
-                            onClick={(e) => {
-                              handelUnBlock(row.id);
-                              e.stopPropagation();
-                            }} //الثانية عشان لما يضغط الايقونة ما يتحدد كل السطر
-                            fill="#d91313"
-                            size={24}
-                          />
-                        ) : (
-                          <FaUnlockAlt
-                            onClick={(e) => {
-                              handelBlock(row.id);
-                              e.stopPropagation();
+                      <TableCell sx={{ color: "#fff", textAlign: "left" }}>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <IconButton size="small">
+                            {row.isBlocked ? (
+                              <TbLockFilled
+                                onClick={(e) => {
+                                  handelUnBlock(row.id);
+                                  e.stopPropagation();
+                                }} //الثانية عشان لما يضغط الايقونة ما يتحدد كل السطر
+                                fill="#d91313"
+                                size={24}
+                              />
+                            ) : (
+                              <FaUnlockAlt
+                                onClick={(e) => {
+                                  handelBlock(row.id);
+                                  e.stopPropagation();
+                                }}
+                                fill="#5d5f5e"
+                                size={19}
+                                style={{ width: "25" }}
+                              />
+                            )}
+                          </IconButton>
+                          <IconButton
+                            size="small"
+                            sx={{
+                              backgroundColor: "#141414b4",
+                              height: "30px",
+                              width: "30px",
+                              borderRadius: "50%",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              cursor:
+                                row?.code === "preliminary assesment"
+                                  ? "not-allowed"
+                                  : "pointer",
+                              transition: "all .3s",
+                              "&:hover": {
+                                bgcolor: "rgba(229, 226, 226, 0.21)",
+                              },
                             }}
-                            fill="#5d5f5e"
-                            size={19}
-                            style={{ width: "25" }}
-                          />
-                        )}
-                      </IconButton>
-                      <IconButton size="small" sx={{backgroundColor: "#141414b4",
-                  height: "30px",
-                  width: "30px",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  cursor:
-                    row?.code === "preliminary assesment"
-                      ? "not-allowed"
-                      : "pointer",
-                  transition: "all .3s",
-                  "&:hover": { bgcolor: "rgba(229, 226, 226, 0.21)" },}}>
-                        <MdOutlineEdit
-                          size={20}
-                          color={"#5d5f5e"}
-                          onClick={(e) => {
-                            e.stopPropagation(); // يمنع الضغط على الصف
-                            handleOpen(row); // فتح المودال وارسال بيانات المستخدم
-                          }}
-                        />
-                      </IconButton>
-                      </Box>
-                    </TableCell>
+                          >
+                            <MdOutlineEdit
+                              size={20}
+                              color={"#5d5f5e"}
+                              onClick={(e) => {
+                                e.stopPropagation(); // يمنع الضغط على الصف
+                                handleOpen(row); // فتح المودال وارسال بيانات المستخدم
+                              }}
+                            />
+                          </IconButton>
+                        </Box>
+                      </TableCell>
                     )}
                   </TableRow>
                 );
@@ -623,40 +675,44 @@ export default function EnhancedTable({
             </TableBody>
           </Table>
         </TableContainer>
-        {!hidePagination &&
-        <TablePagination
-          sx={{ bgcolor: "var(--table-color)", color: "#fff","& .MuiSelect-icon": {color: "#fff"} }}
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={filteredRows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          SelectProps={{
-            MenuProps: {
-              PaperProps: {
-                sx: {
-                  bgcolor: "var(--table-color)",
-                  color: "#fff",
-
-                  // hover على العناصر
-                  "& .MuiMenuItem-root:hover": {
-                    bgcolor: "var(--dark-gray-color)",
+        {!hidePagination && (
+          <TablePagination
+            sx={{
+              bgcolor: "var(--table-color)",
+              color: "#fff",
+              "& .MuiSelect-icon": { color: "#fff" },
+            }}
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={filteredRows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            SelectProps={{
+              MenuProps: {
+                PaperProps: {
+                  sx: {
+                    bgcolor: "var(--table-color)",
                     color: "#fff",
-                  },
 
-                  // العنصر المختار
-                  "& .Mui-selected": {
-                    bgcolor: "var(--dark-gray-color) !important",
-                    color: "#fff",
+                    // hover على العناصر
+                    "& .MuiMenuItem-root:hover": {
+                      bgcolor: "var(--dark-gray-color)",
+                      color: "#fff",
+                    },
+
+                    // العنصر المختار
+                    "& .Mui-selected": {
+                      bgcolor: "var(--dark-gray-color) !important",
+                      color: "#fff",
+                    },
                   },
                 },
               },
-            },
-          }}
-        />
-        }
+            }}
+          />
+        )}
       </Paper>
     </Box>
   );
