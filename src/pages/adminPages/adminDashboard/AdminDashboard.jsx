@@ -97,30 +97,35 @@ function AdminDashboard() {
     },
   ];
 
-  return (
-    <>
-      <DashboardNavbar />
-      <Box
-        component={"section"}
-        className="admin_dashboard"
-        sx={{
-          paddingX: "30px",
-          paddingTop: "10px",
-        }}
-      >
-        <Container maxWidth="lg">
-          {/* server errors */}
-          {isError && (
-            <Box
+  if (isLoading) {
+    return (
+      <>
+        <DashboardNavbar />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            height:"100vh",
+          }}
+        >
+          <Box sx={{ marginTop: "290px" }}>
+                <Loader />
+              </Box>
+        </Box>
+      </>
+    );
+  }
+
+  if (isError) {
+    return (
+      <>
+        <DashboardNavbar />
+        <Box
               component={"section"}
               className="server_error_section flex_column"
               sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                zIndex: 1,
-              }}
+            height:"100vh"
+          }}
             >
               <Typography
                 component={"h1"}
@@ -138,24 +143,22 @@ function AdminDashboard() {
                 {error?.message || "Something went wrong"}
               </Typography>
             </Box>
-          )}
-          {isLoading && (
-            <Box
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 1,
-              }}
-            >
-              <Box sx={{ marginTop: "290px" }}>
-                <Loader />
-              </Box>
-            </Box>
-          )}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <DashboardNavbar />
+      <Box
+        component={"section"}
+        className="admin_dashboard"
+        sx={{
+          paddingX: "30px",
+          paddingTop: "10px",
+        }}
+      >
+        <Container maxWidth="lg">
           <Box className="section_titel" sx={{ marginBottom: "23px" }}>
             <Typography
               component={"h1"}
@@ -178,12 +181,11 @@ function AdminDashboard() {
               behind clear, auditable scopes.
             </Typography>
           </Box>
-          <Box
-            className="dashboard_summary"
+          <Box className="dashboard_summary"
             sx={{ display: "flex", gap: "10px", marginBottom: "23px" }}
           >
             <Grid container spacing={1} sx={{ width: "100%" }}>
-              <Grid item size={{ xs: 6, sm: 3 }}>
+              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
                 <Box
                   className="total_members"
                   sx={{
@@ -239,7 +241,7 @@ function AdminDashboard() {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item size={{ xs: 6, sm: 3 }}>
+              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
                 <Box
                   className="active_roles"
                   sx={{
@@ -295,7 +297,7 @@ function AdminDashboard() {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item size={{ xs: 6, sm: 3 }}>
+              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
                 <Box
                   className="blocked_users"
                   sx={{
@@ -351,7 +353,7 @@ function AdminDashboard() {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item size={{ xs: 6, sm: 3 }}>
+              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
                 <Box
                   className="unverified_members"
                   sx={{
@@ -410,8 +412,7 @@ function AdminDashboard() {
             </Grid>
           </Box>
 
-          <Box
-            className="charts"
+          <Box className="charts"
             sx={{
               marginY: "50px",
             }}
@@ -600,8 +601,7 @@ function AdminDashboard() {
           </Box>
 
           <Box className="system_roles" sx={{ color: "#fff", marginY: "40px" }}>
-            <Box
-              className="title"
+            <Box className="title"
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -645,28 +645,17 @@ function AdminDashboard() {
                 <Grid key={index} item size={{ xs: 12, md: 6 }}>
                   <Box
                     sx={{
-                      ...(role.title === "Student" && {
-                        bgcolor: "#464646",
-                      }),
-                      ...(role.title === "Supervisor" && {
-                        bgcolor: "var(--primary-color)",
-                      }),
+                      bgcolor: "#464646",
                       height: "100%",
                       borderRadius: "25px",
                       display: "flex",
                       alignItems: "center",
                       gap: "30px",
                       paddingY: "10px",
-                      color:
-                        role.title === "Supervisor"
-                          ? "var(--navy-color)"
-                          : "#fff",
+                      color: "#fff",
                       transition: "0.2s",
                       "&:hover": {
-                        background:
-                          role.title === "Supervisor"
-                            ? "rgba(255, 0, 0, 0.63)"
-                            : "rgba(255,255,255,0.15)",
+                        background: "rgba(255,255,255,0.15)",
                         transform: "translateY(-1px)",
                       },
                     }}
@@ -739,18 +728,14 @@ function AdminDashboard() {
                         alignItems: "center",
                         gap: "6px",
                         fontSize: "13px",
-                        color:
-                          role.title === "Supervisor"
-                            ? "var(--navy-color)"
-                            : "rgba(255,255,255,0.6)",
+                        color: "rgba(255,255,255,0.6)",
                       }}
                     >
                       <Typography
                         sx={{
                           marginRight: "4px",
                           opacity: 0.7,
-                          fontWeight:
-                            role.title === "Supervisor" ? "800" : "500",
+                          fontWeight: "500",
                         }}
                       >
                         Can:
@@ -769,18 +754,12 @@ function AdminDashboard() {
                               paddingX: "10px",
                               paddingY: "4px",
                               borderRadius: "8px",
-                              background:
-                                role.title === "Supervisor"
-                                  ? "rgba(0,0,0,0.25)"
-                                  : "rgba(255,255,255,0.08)",
+                              background: "rgba(255,255,255,0.08)",
                               fontSize: "12px",
                               fontWeight: "500",
                               transition: "0.2s",
                               "&:hover": {
-                                background:
-                                  role.title === "Supervisor"
-                                    ? "var(--primary-color)"
-                                    : "rgba(255,255,255,0.15)",
+                                background: "rgba(255,255,255,0.15)",
                                 transform: "translateY(-1px)",
                               },
                             }}

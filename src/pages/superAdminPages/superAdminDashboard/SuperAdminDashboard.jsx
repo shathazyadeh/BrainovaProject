@@ -95,6 +95,56 @@ function SuperAdminDashboard() {
     },
   ];
 
+    if (isLoading) {
+      return (
+        <>
+          <DashboardNavbar />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              height:"100vh",
+            }}
+          >
+            <Box sx={{ marginTop: "290px" }}>
+                  <Loader />
+                </Box>
+          </Box>
+        </>
+      );
+    }
+  
+    if (isError) {
+      return (
+        <>
+          <DashboardNavbar />
+          <Box
+                component={"section"}
+                className="server_error_section flex_column"
+                sx={{
+              height:"100vh"
+            }}
+              >
+                <Typography
+                  component={"h1"}
+                  variant="h5"
+                  sx={{
+                    marginTop: "290px",
+                    color: "white",
+                    fontWeight: "700",
+                    textAlign: "center",
+                    "@media (max-width:456px)": {
+                      fontSize: "20px",
+                    },
+                  }}
+                >
+                  {error?.message || "Something went wrong"}
+                </Typography>
+              </Box>
+        </>
+      );
+    }
+    
   return (
     <>
       <DashboardNavbar />
@@ -106,53 +156,6 @@ function SuperAdminDashboard() {
         }}
       >
         <Container maxWidth="lg">
-          {/* server errors */}
-          {isError && (
-            <Box
-              component={"section"}
-              className="server_error_section flex_column"
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                zIndex: 1,
-              }}
-            >
-              <Typography
-                component={"h1"}
-                variant="h5"
-                sx={{
-                  marginTop: "290px",
-                  color: "white",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  "@media (max-width:456px)": {
-                    fontSize: "20px",
-                  },
-                }}
-              >
-                {error?.message || "Something went wrong"}
-              </Typography>
-            </Box>
-          )}
-          {isLoading && (
-            <Box
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 1,
-              }}
-            >
-              <Box sx={{ marginTop: "290px" }}>
-                <Loader />
-              </Box>
-            </Box>
-          )}
           <Box className="section_titel" sx={{ marginBottom: "23px" }}>
             <Typography
               component={"h1"}

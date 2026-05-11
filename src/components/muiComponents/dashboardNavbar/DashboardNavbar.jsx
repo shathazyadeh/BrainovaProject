@@ -189,16 +189,16 @@ export default function DashboardNavbar() {
                       </MenuItem>
                     ))
                   : [
-                      <MenuItem key="dashboard" onClick={handleDashboard}>
+                      <MenuItem key="dashboard" sx={{color: "#fff"}} onClick={handleDashboard}>
                         Dashboard
                       </MenuItem>,
-                      <MenuItem key="users" onClick={handleUserManagement}>
+                      <MenuItem key="users" sx={{color: "#fff"}} onClick={handleUserManagement}>
                         User Management
                       </MenuItem>,
-                      <MenuItem key="profile" onClick={handleProfile}>
+                      <MenuItem key="profile" sx={{color: "#fff"}} onClick={handleProfile}>
                         Profile
                       </MenuItem>,
-                      <MenuItem key="logout" onClick={handleLogout}>
+                      <MenuItem key="logout" sx={{color: "#fff"}} onClick={handleLogout}>
                         Logout
                       </MenuItem>,
                     ]}

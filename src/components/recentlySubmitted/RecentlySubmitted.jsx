@@ -74,7 +74,7 @@ function RecentlySubmitted({
             sx={{
               gap: "20px",
               alignItems: "center",
-              ...(isSidePanel ? { paddingTop: "200px" } : {}),
+              ...(isSidePanel ? { paddingTop: "200px", height: "868px" } : {}),
             }}
           >
             <Box
@@ -125,7 +125,9 @@ function RecentlySubmitted({
                 color: "var(--secondary-color)",
                 whiteSpace: "nowrap",
                 ...(isSidePanel
-                  ? { "@media (max-width:1198px)": { fontSize: "12px" } }
+                  ? { "@media (max-width:1240px)": { fontSize: "12px" },
+                      "@media (max-width:970px)": { fontSize: "10px" }
+                    }
                   : {
                       "@media (max-width:800px)": { fontSize: "12px" },
                       "@media (max-width:400px)": { fontSize: "10px" },

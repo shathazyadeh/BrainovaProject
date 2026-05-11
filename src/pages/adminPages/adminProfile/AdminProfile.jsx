@@ -42,7 +42,7 @@ function AdminProfile() {
                     }}
                   >
                     <Box className="image" sx={{ width: { xs: "120px", sm: "150px", md: "150px", lg: "200px" }, }}>
-                      <Box component={"img"}  alt="Default user profile avatar" width={'100%'} />
+                      <Box component={"img"} alt="Default user profile avatar" width={'100%'} />
                     </Box>
 
                     {user.role === "Admin" ? (
