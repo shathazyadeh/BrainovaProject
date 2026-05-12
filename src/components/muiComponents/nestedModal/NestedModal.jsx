@@ -186,12 +186,32 @@ export default function NestedModal() {
           height: "55px",
           paddingX: "40px",
           fontSize: "18px",
-          "@media (max-width:540px)": {
-            fontSize: "17px",
+          "@media (max-width:1280px)": {
+            fontSize: "14px",
+            paddingX: "20px",
+          },
+          "@media (max-width:600px)": {
+            fontSize: "0px",
+            borderRadius: "50%",
+            minWidth: "55px",
+            height: "55px",
+            padding: 0,
           },
         }}
       >
-        <FaPlus size={19} style={{ paddingRight: "6px" }} />
+        <Box
+          component={FaPlus}
+          sx={{
+            fontSize: "19px",
+            paddingRight: "6px",
+            "@media (max-width:1280px)": {
+              fontSize: "16px",
+            },
+            "@media (max-width:600px)": {
+              fontSize: "19px",
+            },
+          }}
+        />
         Add User
       </Button>
       <Modal

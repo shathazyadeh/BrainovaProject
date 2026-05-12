@@ -649,7 +649,7 @@ function PredictTumor() {
                                         transform: "scale(1.02)",
                                       },
                                       "&.Mui-disabled .MuiTypography-root": {
-                                        color: "#9c9898",
+                                        color: "#4e4c4c",
                                       },
                                       "&:has(input:checked)": {
                                         backgroundColor: "#ff2d2d",

@@ -32,39 +32,32 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useDownloadSupervisorPDF from "../../../hooks/supervisorHooks/useDownloadSupervisorPDF";
 
-
 function TablePaginationActions(props) {
   const theme = useTheme();
-  const { count, page, rowsPerPage, onPageChange } = props;
+  const { count, page, rowsPerPage, onPageChange, isMobile } = props;
 
   const lastPage = Math.max(0, Math.ceil(count / rowsPerPage) - 1);
+
+  const btnSx = {
+    color: "#fff",
+    "&.Mui-disabled": { color: "#555", opacity: 0.5 },
+    padding: isMobile ? "2px" : "8px",
+    "& svg": { fontSize: isMobile ? "16px" : "24px" },
+  };
 
   return (
     <Box sx={{ flexShrink: 0, ml: 2.5 }}>
       <IconButton
         onClick={(e) => onPageChange(e, 0)}
         disabled={page === 0}
-        sx={{
-          color: "#fff",
-          "&.Mui-disabled": {
-            color: "#555",
-            opacity: 0.5,
-          },
-        }}
+        sx={btnSx}
       >
         {theme.direction === "rtl" ? <LastPageIcon /> : <FirstPageIcon />}
       </IconButton>
-
       <IconButton
         onClick={(e) => onPageChange(e, page - 1)}
         disabled={page === 0}
-        sx={{
-          color: "#fff",
-          "&.Mui-disabled": {
-            color: "#555",
-            opacity: 0.5,
-          },
-        }}
+        sx={btnSx}
       >
         {theme.direction === "rtl" ? (
           <KeyboardArrowRight />
@@ -72,17 +65,10 @@ function TablePaginationActions(props) {
           <KeyboardArrowLeft />
         )}
       </IconButton>
-
       <IconButton
         onClick={(e) => onPageChange(e, page + 1)}
         disabled={page >= lastPage}
-        sx={{
-          color: "#fff",
-          "&.Mui-disabled": {
-            color: "#555",
-            opacity: 0.5,
-          },
-        }}
+        sx={btnSx}
       >
         {theme.direction === "rtl" ? (
           <KeyboardArrowLeft />
@@ -90,17 +76,10 @@ function TablePaginationActions(props) {
           <KeyboardArrowRight />
         )}
       </IconButton>
-
       <IconButton
         onClick={(e) => onPageChange(e, lastPage)}
         disabled={page >= lastPage}
-        sx={{
-          color: "#fff",
-          "&.Mui-disabled": {
-            color: "#555",
-            opacity: 0.5,
-          },
-        }}
+        sx={btnSx}
       >
         {theme.direction === "rtl" ? <FirstPageIcon /> : <LastPageIcon />}
       </IconButton>
@@ -238,7 +217,7 @@ function MobileCard({
   handleOpenModal,
   navigate,
   downloadMutation,
-  showActions ,
+  showActions,
 }) {
   const [open, setOpen] = useState(false);
 
@@ -274,7 +253,7 @@ function MobileCard({
               color: "#fff",
               fontSize: "14px",
               fontWeight: 500,
-              wordBreak:"break-all",
+              wordBreak: "break-all",
               "@media (max-width:353px)": { fontSize: "12px" },
             }}
           >
@@ -342,39 +321,41 @@ function MobileCard({
             <FeedbackBadge isReviewed={row.isReviewed} />
           </Box>
           {showActions && (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ color: "#718296", fontSize: "12px" }}>
-              ACTIONS
-            </Typography>
             <Box
-              className="actions_icons"
-              sx={{ display: "flex", gap: "5px", color: "#718296" }}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
             >
-              <MdOutlineRemoveRedEye
-                size={18}
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                  navigate(`/dashboard/supervisor/report-details/${row.reportId}`)
-                }
-              />
-              <BsFileEarmarkArrowDown
-                size={18}
-                style={{ cursor: "pointer" }}
-                onClick={() => downloadMutation.mutate(row.reportId)}
-              />
-              <FiPlus
-                size={18}
-                style={{ cursor: "pointer" }}
-                onClick={() => handleOpenModal(row)}
-              />
+              <Typography sx={{ color: "#718296", fontSize: "12px" }}>
+                ACTIONS
+              </Typography>
+              <Box
+                className="actions_icons"
+                sx={{ display: "flex", gap: "5px", color: "#718296" }}
+              >
+                <MdOutlineRemoveRedEye
+                  size={18}
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    navigate(
+                      `/dashboard/supervisor/report-details/${row.reportId}`,
+                    )
+                  }
+                />
+                <BsFileEarmarkArrowDown
+                  size={18}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => downloadMutation.mutate(row.reportId)}
+                />
+                <FiPlus
+                  size={18}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleOpenModal(row)}
+                />
+              </Box>
             </Box>
-          </Box>
           )}
         </Box>
       </Collapse>
@@ -387,11 +368,11 @@ export default function CustomPaginationActionsTable({
   count = 0,
   handleOpenModal,
   showActions = true,
-  hidePagination = false
+  hidePagination = false,
 }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("studentName");
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useMediaQuery("(max-width: 955px)");
   const navigate = useNavigate();
   const sortedRows = useMemo(() => {
     if (!rows) return [];
@@ -414,7 +395,7 @@ export default function CustomPaginationActionsTable({
     page * rowsPerPage + rowsPerPage,
   );
 
-const downloadMutation = useDownloadSupervisorPDF();
+  const downloadMutation = useDownloadSupervisorPDF();
   return (
     <TableContainer
       component={Paper}
@@ -458,35 +439,84 @@ const downloadMutation = useDownloadSupervisorPDF();
                 handleOpenModal={handleOpenModal}
                 navigate={navigate}
                 downloadMutation={downloadMutation}
-                showActions = {showActions}
+                showActions={showActions}
               />
             ))
           )}
 
-{!hidePagination && (
-          <Table>
-            <TableFooter sx={{ bgcolor: "#232121b8" }}>
-              <TableRow>
-                <TablePagination
-                  sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
-                  rowsPerPageOptions={[5, 10, 25]}
-                  count={count}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={(e, newPage) => setPage(newPage)}
-                  onRowsPerPageChange={(e) => {
-                    setRowsPerPage(parseInt(e.target.value, 10));
-                    setPage(0);
-                  }}
-                  ActionsComponent={TablePaginationActions}
-                  SelectProps={{
-                    sx: { "& .MuiSelect-icon": { color: "#fff" } },
-                  }}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-)}
+          {!hidePagination && (
+            <Table>
+              <TableFooter sx={{ bgcolor: "#232121b8" }}>
+                <TableRow>
+                  <TablePagination
+                    sx={{
+                      color: "#fff",
+                      borderBottom: "1px solid #3b3a3a89",
+                      "& .MuiTablePagination-toolbar": {
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        padding: "4px",
+                        minHeight: "unset",
+                      },
+                      "& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows":
+                        {
+                          fontSize: "11px",
+                        },
+                      "& .MuiTablePagination-select": {
+                        fontSize: "11px",
+                      },
+                      "& .MuiSelect-icon": {
+                        color: "#fff",
+                        display: "block",
+                        fontSize: "18px",
+                      },
+                    }}
+                    rowsPerPageOptions={[5, 10, 20, 25]}
+                    count={count}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={(e, newPage) => setPage(newPage)}
+                    onRowsPerPageChange={(e) => {
+                      setRowsPerPage(parseInt(e.target.value, 10));
+                      setPage(0);
+                    }}
+                    ActionsComponent={(props) => (
+                      <TablePaginationActions {...props} isMobile={true} />
+                    )}
+                    SelectProps={{
+                      sx: {
+                        color: "#fff",
+                        "& .MuiSelect-icon": {
+                          color: "#fff",
+                        },
+                      },
+                      MenuProps: {
+                        PaperProps: {
+                          sx: {
+                            bgcolor: "#3b3a3a",
+                            color: "#fff",
+                            "& .MuiMenuItem-root": {
+                              fontSize: "13px",
+                              minHeight: "unset",
+                            },
+                            "& .MuiMenuItem-root:hover": {
+                              bgcolor: "var(--dark-gray-color)",
+                              color: "#fff",
+                            },
+
+                            "& .Mui-selected": {
+                              bgcolor: "var(--dark-gray-color) !important",
+                              color: "#fff",
+                            },
+                          },
+                        },
+                      },
+                    }}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          )}
         </Box>
       ) : (
         /* Desktop View */
@@ -645,49 +675,49 @@ const downloadMutation = useDownloadSupervisorPDF();
           </TableBody>
 
           {!hidePagination && (
-          <TableFooter sx={{ bgcolor: "#232121b8" }}>
-            <TableRow>
-              <TablePagination
-                sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
-                rowsPerPageOptions={[5, 10, 25]}
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={(e, newPage) => setPage(newPage)}
-                onRowsPerPageChange={(e) => {
-                  setRowsPerPage(parseInt(e.target.value, 10));
-                  setPage(0);
-                }}
-                ActionsComponent={TablePaginationActions}
-                SelectProps={{
-                  sx: {
-                    color: "#fff",
-                    "& .MuiSelect-icon": {
+            <TableFooter sx={{ bgcolor: "#232121b8" }}>
+              <TableRow>
+                <TablePagination
+                  sx={{ color: "#fff", borderBottom: "1px solid #3b3a3a89" }}
+                  rowsPerPageOptions={[5, 10, 20, 25]}
+                  count={count}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={(e, newPage) => setPage(newPage)}
+                  onRowsPerPageChange={(e) => {
+                    setRowsPerPage(parseInt(e.target.value, 10));
+                    setPage(0);
+                  }}
+                  ActionsComponent={TablePaginationActions}
+                  SelectProps={{
+                    sx: {
                       color: "#fff",
-                    },
-                  },
-                  MenuProps: {
-                    PaperProps: {
-                      sx: {
-                        bgcolor: "#3b3a3a",
+                      "& .MuiSelect-icon": {
                         color: "#fff",
-
-                        "& .MuiMenuItem-root:hover": {
-                          bgcolor: "var(--dark-gray-color)",
+                      },
+                    },
+                    MenuProps: {
+                      PaperProps: {
+                        sx: {
+                          bgcolor: "#3b3a3a",
                           color: "#fff",
-                        },
 
-                        "& .Mui-selected": {
-                          bgcolor: "var(--dark-gray-color) !important",
-                          color: "#fff",
+                          "& .MuiMenuItem-root:hover": {
+                            bgcolor: "var(--dark-gray-color)",
+                            color: "#fff",
+                          },
+
+                          "& .Mui-selected": {
+                            bgcolor: "var(--dark-gray-color) !important",
+                            color: "#fff",
+                          },
                         },
                       },
                     },
-                  },
-                }}
-              />
-            </TableRow>
-          </TableFooter>
+                  }}
+                />
+              </TableRow>
+            </TableFooter>
           )}
         </Table>
       )}

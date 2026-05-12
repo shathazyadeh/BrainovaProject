@@ -17,7 +17,7 @@ export default function UsersFilters({
         sx={{
           minWidth: 150,
           marginRight: { xs: "10px", md: "0" },
-          "@media (max-width:440.98px)": {
+          "@media (max-width:391.6px)": {
             marginBottom: "17px",
           },
         }}

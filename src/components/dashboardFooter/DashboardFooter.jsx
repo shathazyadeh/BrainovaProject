@@ -12,16 +12,27 @@ function DashboardFooter() {
             paddingX: { xs: "0px", md: "200px" },
             textAlign: "center",
             marginTop: "60px",
+            "@media (max-width:1087px)": {
+              paddingX: "100px",
+            }
           }}
         >
           <Typography
             component={"p"}
-            sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
+            sx={{ color: "var(--mid-gray-color)", paddingY: "30px","@media (max-width:700px)": {
+              fontSize: "14px",
+            },"@media (max-width:430px)": {
+              fontSize: "12px",
+            } }}
           >
             © 2026{" "}
             <Typography
               component={"span"}
-              sx={{ color: "var(--dark-red-color)" }}
+              sx={{ color: "var(--dark-red-color)","@media (max-width:700px)": {
+              fontSize: "14px",
+            },"@media (max-width:430px)": {
+                fontSize: "12px",
+              }, }}
             >
               Brainova
             </Typography>

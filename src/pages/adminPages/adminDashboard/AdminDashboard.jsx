@@ -9,6 +9,7 @@ import {
   LinearProgress,
   Typography,
   Link,
+  useMediaQuery,
 } from "@mui/material";
 import { FaUserDoctor } from "react-icons/fa6";
 import { TbUsers } from "react-icons/tb";
@@ -30,6 +31,10 @@ import ActivityStatusBarChart from "../../../components/xChartComponents/barChar
 
 function AdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
+
+  const isBelow1110px = useMediaQuery("(max-width:1110px)");
+  const isBelow1000px = useMediaQuery("(max-width:1000px)");
+
   const activeUsers = data?.filter(
     (user) =>
       !user.isBlocked &&
@@ -70,6 +75,65 @@ function AdminDashboard() {
   const studentsPercent = Math.round((studentsNo / totalUsers) * 100);
   const supervisorsPercent = Math.round((supervisorsNo / totalUsers) * 100);
 
+  const summaryCards = [
+    {
+      icon: (
+        <Box
+          component={FiUsers}
+          sx={{
+            fontSize: "30px",
+            color: "#fff",
+            "@media (max-width:1150px)": { fontSize: "25px" },
+          }}
+        />
+      ),
+      label: "Total Members",
+      value: totalUsers,
+    },
+    {
+      icon: (
+        <Box
+          component={FiCheckCircle}
+          sx={{
+            fontSize: "30px",
+            color: "#fff",
+            "@media (max-width:1150px)": { fontSize: "25px" },
+          }}
+        />
+      ),
+      label: "Active Roles",
+      value: activeUsers,
+    },
+    {
+      icon: (
+        <Box
+          component={FiSlash}
+          sx={{
+            fontSize: "30px",
+            color: "#fff",
+            "@media (max-width:1150px)": { fontSize: "25px" },
+          }}
+        />
+      ),
+      label: "Blocked Roles",
+      value: blockedUsers,
+    },
+    {
+      icon: (
+        <Box
+          component={FiAlertCircle}
+          sx={{
+            fontSize: "30px",
+            color: "#fff",
+            "@media (max-width:1150px)": { fontSize: "25px" },
+          }}
+        />
+      ),
+      label: "Unverified Members",
+      value: unverifiedUsers,
+    },
+  ];
+
   const rolesData = [
     {
       title: "Supervisor",
@@ -81,7 +145,7 @@ function AdminDashboard() {
         "Review Results",
         "Review and Manage Student Feedback",
       ],
-      icon: <FaUserDoctor size={35} />,
+      icon: FaUserDoctor,
     },
     {
       title: "Student",
@@ -93,7 +157,7 @@ function AdminDashboard() {
         "Upload Reports",
         "Explore 3D Brain Models for Learning",
       ],
-      icon: <PiStudentFill size={35} />,
+      icon: PiStudentFill,
     },
   ];
 
@@ -105,12 +169,12 @@ function AdminDashboard() {
           sx={{
             display: "flex",
             justifyContent: "center",
-            height:"100vh",
+            height: "100vh",
           }}
         >
           <Box sx={{ marginTop: "290px" }}>
-                <Loader />
-              </Box>
+            <Loader />
+          </Box>
         </Box>
       </>
     );
@@ -121,28 +185,28 @@ function AdminDashboard() {
       <>
         <DashboardNavbar />
         <Box
-              component={"section"}
-              className="server_error_section flex_column"
-              sx={{
-            height:"100vh"
+          component={"section"}
+          className="server_error_section flex_column"
+          sx={{
+            height: "100vh",
           }}
-            >
-              <Typography
-                component={"h1"}
-                variant="h5"
-                sx={{
-                  marginTop: "290px",
-                  color: "white",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  "@media (max-width:456px)": {
-                    fontSize: "20px",
-                  },
-                }}
-              >
-                {error?.message || "Something went wrong"}
-              </Typography>
-            </Box>
+        >
+          <Typography
+            component={"h1"}
+            variant="h5"
+            sx={{
+              marginTop: "290px",
+              color: "white",
+              fontWeight: "700",
+              textAlign: "center",
+              "@media (max-width:456px)": {
+                fontSize: "20px",
+              },
+            }}
+          >
+            {error?.message || "Something went wrong"}
+          </Typography>
+        </Box>
       </>
     );
   }
@@ -159,7 +223,10 @@ function AdminDashboard() {
         }}
       >
         <Container maxWidth="lg">
-          <Box className="section_titel" sx={{ marginBottom: "23px" }}>
+          <Box
+            className="section_titel"
+            sx={{ marginBottom: "23px", paddingTop: { xs: "30px", md: "0px" } }}
+          >
             <Typography
               component={"h1"}
               variant="h4"
@@ -181,238 +248,84 @@ function AdminDashboard() {
               behind clear, auditable scopes.
             </Typography>
           </Box>
-          <Box className="dashboard_summary"
+          <Box
+            className="dashboard_summary"
             sx={{ display: "flex", gap: "10px", marginBottom: "23px" }}
           >
             <Grid container spacing={1} sx={{ width: "100%" }}>
-              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
-                <Box
-                  className="total_members"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    borderRadius: "50px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "15px",
-                    padding: "10px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
+              {summaryCards.map((card, index) => (
+                <Grid
+                  key={index}
+                  item
+                  size={{ xs: 12, sm: 6, md: isBelow1110px ? 6 : 3 }}
                 >
-                  <Typography
+                  <Box
                     sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "50%",
-                      padding: "15px",
+                      bgcolor: "#232121b8",
+                      borderRadius: "50px",
                       display: "flex",
-                    }}
-                  >
-                    <FiUsers size={30} color="#fff" />
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "var(--secondary-color)",
-                      textTransform: "uppercase",
-                      fontSize: "15px",
-                      textAlign: "center",
-                      fontFamily: "var(--primary-font)",
-                      "@media (max-width:700px)": {
-                        fontSize: "11px",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "15px",
+                      padding: "10px",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        bgcolor: "#4e4e4e7f",
+                        transform: "translateY(-3px)",
                       },
                     }}
                   >
-                    Total Members
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      textTransform: "uppercase",
-                      fontSize: "25px",
-                      fontWeight: "600",
-                      fontFamily: "var(--primary-font)",
-                    }}
-                  >
-                    {totalUsers}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
-                <Box
-                  className="active_roles"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    borderRadius: "50px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "15px",
-                    padding: "10px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "50%",
-                      padding: "15px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiCheckCircle size={30} color="#fff" />
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "var(--secondary-color)",
-                      textTransform: "uppercase",
-                      fontSize: "15px",
-                      textAlign: "center",
-                      fontFamily: "var(--primary-font)",
-                      "@media (max-width:700px)": {
-                        fontSize: "11px",
-                      },
-                    }}
-                  >
-                    Active Roles
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      textTransform: "uppercase",
-                      fontSize: "25px",
-                      fontWeight: "600",
-                      fontFamily: "var(--primary-font)",
-                    }}
-                  >
-                    {activeUsers}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
-                <Box
-                  className="blocked_users"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    borderRadius: "50px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "15px",
-                    padding: "10px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "50%",
-                      padding: "15px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiSlash size={30} color="#fff" />
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "var(--secondary-color)",
-                      textTransform: "uppercase",
-                      fontSize: "15px",
-                      textAlign: "center",
-                      fontFamily: "var(--primary-font)",
-                      "@media (max-width:700px)": {
-                        fontSize: "11px",
-                      },
-                    }}
-                  >
-                    Blocked Roles
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      textTransform: "uppercase",
-                      fontSize: "25px",
-                      fontWeight: "600",
-                      fontFamily: "var(--primary-font)",
-                    }}
-                  >
-                    {blockedUsers}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item size={{ xs:12, sm:6 , md: 3 }}>
-                <Box
-                  className="unverified_members"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    borderRadius: "50px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "15px",
-                    padding: "10px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "50%",
-                      padding: "15px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiAlertCircle size={30} color="#fff" />
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "var(--secondary-color)",
-                      textTransform: "uppercase",
-                      textAlign: "center",
-                      fontSize: "15px",
-                      fontFamily: "var(--primary-font)",
-                      "@media (max-width:700px)": {
-                        fontSize: "11px",
-                      },
-                    }}
-                  >
-                    Unverified Members
-                  </Typography>
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      textTransform: "uppercase",
-                      fontSize: "25px",
-                      fontWeight: "600",
-                      fontFamily: "var(--primary-font)",
-                    }}
-                  >
-                    {unverifiedUsers}
-                  </Typography>
-                </Box>
-              </Grid>
+                    <Typography
+                      sx={{
+                        bgcolor: "var(--primary-color)",
+                        boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                        borderRadius: "50%",
+                        padding: "15px",
+                        display: "flex",
+                        "@media (max-width:1230px)": { padding: "12px" },
+                        "@media (max-width:1150px)": { padding: "10px" },
+                        "@media (max-width:1110px)": { padding: "15px" },
+                        "@media (max-width:700px)": { padding: "10px" },
+                      }}
+                    >
+                      {card.icon}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "var(--secondary-color)",
+                        textTransform: "uppercase",
+                        fontSize: "15px",
+                        textAlign: "center",
+                        fontFamily: "var(--primary-font)",
+                        "@media (max-width:1230px)": { fontSize: "13px" },
+                        "@media (max-width:1110px)": { fontSize: "15px" },
+                        "@media (max-width:700px)": { fontSize: "13px" },
+                      }}
+                    >
+                      {card.label}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        textTransform: "uppercase",
+                        fontSize: "25px",
+                        fontWeight: "600",
+                        fontFamily: "var(--primary-font)",
+                        "@media (max-width:1230px)": { fontSize: "20px" },
+                        "@media (max-width:1110px)": { fontSize: "25px" },
+                        "@media (max-width:700px)": { fontSize: "20px" },
+                      }}
+                    >
+                      {card.value}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
             </Grid>
           </Box>
 
-          <Box className="charts"
+          <Box
+            className="charts"
             sx={{
               marginY: "50px",
             }}
@@ -420,9 +333,12 @@ function AdminDashboard() {
             <Grid
               container
               spacing={3}
-              sx={{ alignItems: "center", height: "400px" }}
+              sx={{
+                alignItems: "center",
+                height: isBelow1110px ? "" : "400px",
+              }}
             >
-              <Grid item size={{ xs: 12, sm: 5 }}>
+              <Grid item size={{ xs: isBelow1110px ? 12 : 5 }}>
                 <Box className="role_distribution">
                   <Box
                     className="header"
@@ -430,23 +346,32 @@ function AdminDashboard() {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "flex-start",
+                      "@media (max-width:380px)": { flexDirection: "column" },
                     }}
                   >
                     <Box>
                       <Typography
+                        component={"h2"}
                         variant="h5"
-                        sx={{ color: "#fff", fontWeight: "600" }}
+                        sx={{
+                          color: "#fff",
+                          fontWeight: "600",
+                          "@media (max-width:700px)": { fontSize: "22px" },
+                        }}
                       >
                         Role Distribution
                       </Typography>
 
                       <Typography
-                        sx={{ color: "#9ca3af", marginBottom: "30px" }}
+                        sx={{
+                          color: "var(--secondary-color)",
+                          marginBottom: "30px",
+                          "@media (max-width:380px)": { marginBottom: "7px" },
+                        }}
                       >
                         Who's on the platform
                       </Typography>
                     </Box>
-
                     <Typography
                       sx={{
                         border: "1px solid #9ca3af",
@@ -454,7 +379,8 @@ function AdminDashboard() {
                         paddingY: "3px",
                         paddingX: "10px",
                         color: "#9ca3af",
-                        fontSize: "12px",
+                        fontSize: { xs: "10px", sm: "12px" },
+                        "@media (max-width:380px)": { marginBottom: "30px" },
                       }}
                     >
                       {studentsNo + supervisorsNo} total
@@ -462,7 +388,7 @@ function AdminDashboard() {
                   </Box>
                   {/*الدوائر */}
                   <Grid container>
-                    <Grid item size={{ xs: 12, md: 6 }}>
+                    <Grid item size={{ xs: 12, sm: 6 }}>
                       <RoleCircularChart
                         value={supervisorsPercent}
                         color="#00d034"
@@ -471,7 +397,7 @@ function AdminDashboard() {
                         icon={<FaStethoscope size={24} color="#00d034" />}
                       />
                     </Grid>
-                    <Grid item size={{ xs: 12, md: 6 }}>
+                    <Grid item size={{ xs: 12, sm: 6 }}>
                       <RoleCircularChart
                         value={studentsPercent}
                         color="#ff3737"
@@ -483,7 +409,10 @@ function AdminDashboard() {
                   </Grid>
                   {/*الخطوط */}
                   <Box className="percents">
-                    <Box className="supervisors_percent" sx={{ marginBottom: "20px" }}>
+                    <Box
+                      className="supervisors_percent"
+                      sx={{ marginBottom: "20px" }}
+                    >
                       <Box
                         sx={{
                           display: "flex",
@@ -582,13 +511,14 @@ function AdminDashboard() {
               </Grid>
               <Grid
                 item
-                size={{ xs: 12, sm: 7 }}
+                size={{ xs: isBelow1110px ? 12 : 7 }}
                 sx={{
                   bgcolor: "#232121b8",
                   borderRadius: "12px",
                   height: "100%",
                   display: "flex",
                   alignItems: "center",
+                  marginTop: isBelow1110px ? "23px" : "0px",
                 }}
               >
                 <ActivityStatusBarChart
@@ -601,18 +531,24 @@ function AdminDashboard() {
           </Box>
 
           <Box className="system_roles" sx={{ color: "#fff", marginY: "40px" }}>
-            <Box className="title"
+            <Box
+              className="title"
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "flex-end",
                 paddingBottom: "14px",
+                "@media (max-width:400px)": {
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                },
               }}
             >
               <Typography
+                component={"h2"}
+                variant="h5"
                 sx={{
                   color: "#fff",
-                  fontSize: "23px",
                   fontFamily: "var(--primary-font)",
                   fontWeight: "600",
                   display: "inline",
@@ -632,9 +568,6 @@ function AdminDashboard() {
                   fontWeight: "600",
                   display: "inline",
                   marginRight: "10px",
-                  "@media (max-width:700px)": {
-                    fontSize: "22px",
-                  },
                 }}
               >
                 2 roles . {totalUsers} members
@@ -642,22 +575,30 @@ function AdminDashboard() {
             </Box>
             <Grid container spacing={3}>
               {rolesData.map((role, index) => (
-                <Grid key={index} item size={{ xs: 12, md: 6 }}>
+                <Grid
+                  key={index}
+                  item
+                  size={{ xs: 12, md: isBelow1000px ? 12 : 6 }}
+                >
                   <Box
                     sx={{
                       bgcolor: "#464646",
                       height: "100%",
                       borderRadius: "25px",
                       display: "flex",
-                      alignItems: "center",
                       gap: "30px",
                       paddingY: "10px",
                       color: "#fff",
                       transition: "0.2s",
+                      flexDirection: { xs: "column", sm: "row" },
+                      alignItems: { xs: "flex-start", sm: "center" },
+                      paddingBottom: { xs: "15px", sm: "10px" },
                       "&:hover": {
                         background: "rgba(255,255,255,0.15)",
                         transform: "translateY(-1px)",
                       },
+                      "@media (max-width:1300px)": { gap: "30px" },
+                      "@media (max-width:1150px)": { gap: "0px" },
                     }}
                   >
                     <Box
@@ -671,24 +612,36 @@ function AdminDashboard() {
                         alignItems: "center",
                         gap: "12px",
                         boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.55)",
+                        "@media (max-width:1150px)": { padding: "10px" },
+                        "@media (max-width:600px)": { padding: "5px" },
                       }}
                     >
                       <Box
-                        component={"span"}
+                        component={role.icon}
                         sx={{
+                          fontSize:
+                            role.icon === FaUserDoctor ? "28px" : "33px",
                           color: "#fff",
+                          "@media (max-width:1150px)": {
+                            fontSize:
+                              role.title === "Supervisor" ? "25px" : "30px",
+                          },
+                          "@media (max-width:600px)": {
+                            fontSize:
+                              role.title === "Supervisor" ? "20px" : "25px",
+                          },
                         }}
-                      >
-                        {role.icon}
-                      </Box>
+                      />
 
                       <Box>
                         <Typography
                           sx={{
-                            fontSize: "23px",
+                            fontSize: "20px",
                             fontWeight:
                               role.title === "Supervisor" ? "800" : "500",
                             color: "#fff",
+                            "@media (max-width:1150px)": { fontSize: "17px" },
+                            "@media (max-width:600px)": { fontSize: "13px" },
                           }}
                         >
                           {role.title}
@@ -700,18 +653,16 @@ function AdminDashboard() {
                           <Box
                             component={TbUsers}
                             sx={{
-                              fontSize:
-                                role.title === "Supervisor" ? "16px" : "15px",
                               marginRight: "4px",
                               color: "#fff",
+                              "@media (max-width:600px)": { fontSize: "13px" },
                             }}
                           />
                           <Typography
                             component={"span"}
                             sx={{
-                              fontWeight:
-                                role.title === "Supervisor" ? "800" : "500",
                               color: "#fff",
+                              "@media (max-width:600px)": { fontSize: "13px" },
                             }}
                           >
                             {role.count}
@@ -725,10 +676,17 @@ function AdminDashboard() {
                       sx={{
                         display: "flex",
                         flexWrap: "wrap",
-                        alignItems: "center",
                         gap: "6px",
+                        alignItems: "flex-start",
+                        padding: "10px 12px",
                         fontSize: "13px",
                         color: "rgba(255,255,255,0.6)",
+                        "@media (max-width:1424px)": {
+                          flexDirection: "column",
+                        },
+                        "@media (max-width:1000px)": { flexDirection: "row" },
+                        "@media (max-width:600px)": { paddingTop: "15px" },
+                        "@media (max-width:453px)": { flexDirection: "column" },
                       }}
                     >
                       <Typography

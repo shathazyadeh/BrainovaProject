@@ -64,6 +64,7 @@ function RoleCircularChart({ value, color, title, number, icon }) {
           marginTop: "5px",
           fontWeight: "600",
           fontSize: "20px",
+          "@media (max-width:400px)": { fontSize: "18px" },
         }}
       >
         {title}
