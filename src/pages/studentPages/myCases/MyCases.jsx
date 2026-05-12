@@ -14,7 +14,7 @@ import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
 import { FiFilter } from "react-icons/fi";
 import style from './MyCases.module.css';
 import { TbReportSearch } from "react-icons/tb";
-import useGetSupervisorFeedbackByReportId from '../../../hooks/studentHooks/useGetSupervisorFeedbackByReportid.js';
+import useGetSupervisorFeedbackByReportId from '../../../hooks/studentHooks/useGetSupervisorFeedbackByReportId.js';
 
 function FeedbackCommet({ Id, isReviewed, feedbackId }) {
   const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
