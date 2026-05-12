@@ -75,63 +75,63 @@ function ReportDetails() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        position:"relative"
+        position: "relative"
       }}
     >
       <DashboardNavbar />
       <Container maxWidth="lg">
         {isError && (
-            <Box
-              component={"section"}
-              className="server_error_section flex_column"
+          <Box
+            component={"section"}
+            className="server_error_section flex_column"
+            sx={{
+              bgcolor: "var(--navy-color)",
+              position: "absolute",
+              inset: 0,
+              top: "88px",
+              zIndex: 1,
+            }}
+          >
+            <Typography
+              component={"h1"}
+              variant="h5"
               sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "88px",
-                zIndex: 1,
+                marginTop: "290px",
+                color: "white",
+                fontWeight: "700",
+                textAlign: "center",
+                "@media (max-width:456px)": {
+                  fontSize: "20px",
+                },
               }}
             >
-              <Typography
-                component={"h1"}
-                variant="h5"
-                sx={{
-                  marginTop:"290px",
-                  color: "white",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  "@media (max-width:456px)": {
-                    fontSize: "20px",
-                  },
-                }}
-              >
-                {error?.message}
-              </Typography>
-            </Box>
-          )}
-          {isLoading && (
-            <Box
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "88px",
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 1,
-              }}
-            >
-              <Box sx={{marginTop:"290px"}}>
+              {error?.message}
+            </Typography>
+          </Box>
+        )}
+        {isLoading && (
+          <Box
+            sx={{
+              bgcolor: "var(--navy-color)",
+              position: "absolute",
+              inset: 0,
+              top: "88px",
+              display: "flex",
+              justifyContent: "center",
+              zIndex: 1,
+            }}
+          >
+            <Box sx={{ marginTop: "290px" }}>
               <Loader />
-              </Box>
             </Box>
-          )}
+          </Box>
+        )}
         <Grid container spacing={1.5} alignItems="flex-start">
           <Grid item size={{ xs: 12, md: 9 }}>
             {/*اول بوكسين */}
             <Box
               className="student-info_and_ai_prediction"
-              sx={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", paddingTop:{xs:"30px",md:"0px"},}}
+              sx={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", paddingTop: { xs: "30px", md: "0px" }, }}
             >
               <Box
                 className="student-info"
@@ -192,13 +192,13 @@ function ReportDetails() {
                   </Typography>
                   <Typography sx={{ color: "#fff", fontSize: { xs: '12px', md: "14px" }, }}>
                     {data?.submittedAt.split("T")[0]}
-                    <Typography component={'span'} sx={{color:"#7e8a9a",fontSize:"13px"}}>
+                    <Typography component={'span'} sx={{ color: "#7e8a9a", fontSize: "13px" }}>
                       {" ( "}
                       {new Date(data?.submittedAt).toLocaleTimeString('en-US', {
-                         hour: '2-digit',
-                         minute: '2-digit',
-                         hour12: true,
-                       })} {")"}
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                      })} {")"}
                     </Typography>
                   </Typography>
                 </Box>
@@ -422,10 +422,28 @@ function ReportDetails() {
                     <Box key={question.questionId}
                       className="questions_and_answers"
                       sx={{
-                       bgcolor: "#49494957",
+                        bgcolor: "#49494957",
                         borderRadius: "20px",
                         marginBottom: "10px",
                         padding: "20px",
+                        wordBreak: "break-word",
+                        overflowWrap: "break-word",
+                        maxHeight: "110px",
+                        overflowY: "auto",
+                        clipPath: "inset(0 round 20px)",
+                        "&::-webkit-scrollbar": {
+                          width: "6px",
+                          borderRadius: "20px",
+                        },
+                        "&::-webkit-scrollbar-track": {
+                          bgcolor: "#232327c3",
+                          borderRadius: "20px",
+                          marginY: "18px ",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                          bgcolor: "var(--primary-color)",
+                          borderRadius: "20px",
+                        },
                       }}
                     >
                       <Typography
@@ -433,9 +451,11 @@ function ReportDetails() {
                           color: "#da2828",
                           paddingBottom: "7px",
                           fontFamily: "var(--primary-font)",
+                          wordBreak: "break-all",
+                          overflowWrap: "break-word",
                         }}
                       >
-                        Q{index + 1}: {question.question}
+                        Q{index + 1} : {question.question}
                       </Typography>
                       <Typography
                         sx={{
@@ -536,7 +556,7 @@ function ReportDetails() {
                     }}
                     sx={{
 
-                     bgcolor: "#65656547",
+                      bgcolor: "#65656547",
                       color: "#f0f2f5",
                       display: "flex",
                       gap: '10px',
@@ -648,17 +668,17 @@ function ReportDetails() {
                       color: "#ffffff",
                       fontSize: "11px",
                       paddingBottom: "10px",
-                      whiteSpace:"nowrap"
+                      whiteSpace: "nowrap"
                     }}
                   >
                     {data?.submittedAt.split("T")[0]}
-                    <Typography component={'span'} sx={{fontSize:"11px"}}>
+                    <Typography component={'span'} sx={{ fontSize: "11px" }}>
                       {" ( "}
                       {new Date(data?.submittedAt).toLocaleTimeString('en-US', {
-                         hour: '2-digit',
-                         minute: '2-digit',
-                         hour12: true,
-                       })} {")"}
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true,
+                      })} {")"}
                     </Typography>
                   </Typography>
                   <Typography sx={{ color: "#7e8a9a", fontSize: { xs: "15px", md: "13px" }, }}>
@@ -778,28 +798,28 @@ function ReportDetails() {
                       </Typography>
                     </Box>
                     <Box
-                    className="action_icons"
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                      gap: "5px",
-                      marginY:"10px"
-                    }}
-                  >
-                    <DeleteIcon
-                      sx={{ color: "var(--primary-color)", cursor: "pointer", fontSize:"20px" }}
-                      onClick={() => handleDeleteFeedback(feedbackData?.id)}
-                    />
-                    <FaRegEdit
-                      size={16}
-                      style={{
-                        color: "var(--secondary-color)",
-                        cursor: "pointer",
+                      className="action_icons"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        gap: "5px",
+                        marginY: "10px"
                       }}
-                      onClick={() => handleChangeFeedback(feedbackData)}
-                    />
-                  </Box>
+                    >
+                      <DeleteIcon
+                        sx={{ color: "var(--primary-color)", cursor: "pointer", fontSize: "20px" }}
+                        onClick={() => handleDeleteFeedback(feedbackData?.id)}
+                      />
+                      <FaRegEdit
+                        size={16}
+                        style={{
+                          color: "var(--secondary-color)",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => handleChangeFeedback(feedbackData)}
+                      />
+                    </Box>
                   </Box>
                 ) : (
                   <Typography
@@ -817,7 +837,7 @@ function ReportDetails() {
           </Grid>
         </Grid>
 
-     <DashboardFooter/>
+        <DashboardFooter />
       </Container>
     </Box>
   );

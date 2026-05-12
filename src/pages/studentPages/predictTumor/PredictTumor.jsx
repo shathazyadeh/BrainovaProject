@@ -572,6 +572,8 @@ function PredictTumor() {
                       "&.Mui-focused": { color: "#fff" },
                       mb: 2,
                       fontSize: "17px",
+                     wordBreak: "break-word",      
+                     overflowWrap: "break-word",   
                     }}
                   >
                     <Typography
@@ -591,7 +593,7 @@ function PredictTumor() {
                     >
                       {index + 1}
                     </Typography>
-                    {q.text}
+                      {q.text}
                     {q.isRequired === false && (
                       <Typography
                         component="span"
@@ -686,6 +688,16 @@ function PredictTumor() {
                         },
                         "& .MuiInputBase-root.Mui-disabled textarea": {
                           cursor: "not-allowed !important",
+                        },
+                       
+                        "& textarea": {
+                          "&::-webkit-scrollbar": { width: "6px" },
+                          "&::-webkit-scrollbar-track": { background: "#171717" },
+                          "&::-webkit-scrollbar-thumb": {
+                            background: "#ff0000",
+                            borderRadius: "10px"
+                          },
+                          "&::-webkit-scrollbar-thumb:hover": { background: "#cc0000" },
                         },
                       }}
                       InputProps={{
