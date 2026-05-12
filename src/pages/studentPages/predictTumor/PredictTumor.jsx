@@ -79,8 +79,6 @@ function PredictTumor() {
   } = useSubmitReport();
   const [showGradCam, setShowGradCam] = useState(false); //عشان اخفي او اظهر الجراد كام من خلال البوتون
   const [analysisTime, setAnalysisTime] = useState(null); //لحساب وقت التحليل
-
-  const [showResult, setShowResult] = useState(false); // البوكس الي بتظهر فيه اجابات المودل
   const [isSubmitted, setIsSubmitted] = useState(false);
   const isLocked = isSubmitted; //عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
 
@@ -91,7 +89,6 @@ function PredictTumor() {
     setPreviewGradCam(null);
     setFileValue(null);
     setShowGradCam(null);
-    setShowResult(false);
     setFileError("");
     setIsSubmitted(false);
 
@@ -143,7 +140,7 @@ function PredictTumor() {
       const startTime = Date.now(); //عشان ابلش احسب الوقت
       const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
       console.log("model res ", modelResponse);
-      setShowResult(true);
+     
 
       const endTime = Date.now(); //نهاية الوقت
       const duration = ((endTime - startTime) / 1000).toFixed(2); //حولناها لثواني
@@ -572,8 +569,6 @@ function PredictTumor() {
                       "&.Mui-focused": { color: "#fff" },
                       mb: 2,
                       fontSize: "17px",
-                     wordBreak: "break-word",      
-                     overflowWrap: "break-word",   
                     }}
                   >
                     <Typography
@@ -593,7 +588,7 @@ function PredictTumor() {
                     >
                       {index + 1}
                     </Typography>
-                      {q.text}
+                    {q.text}
                     {q.isRequired === false && (
                       <Typography
                         component="span"
@@ -651,7 +646,7 @@ function PredictTumor() {
                                         transform: "scale(1.02)",
                                       },
                                       "&.Mui-disabled .MuiTypography-root": {
-                                        color: "#4e4c4c",
+                                        color: "#9c9898",
                                       },
                                       "&:has(input:checked)": {
                                         backgroundColor: "#ff2d2d",
@@ -688,16 +683,6 @@ function PredictTumor() {
                         },
                         "& .MuiInputBase-root.Mui-disabled textarea": {
                           cursor: "not-allowed !important",
-                        },
-                       
-                        "& textarea": {
-                          "&::-webkit-scrollbar": { width: "6px" },
-                          "&::-webkit-scrollbar-track": { background: "#171717" },
-                          "&::-webkit-scrollbar-thumb": {
-                            background: "#ff0000",
-                            borderRadius: "10px"
-                          },
-                          "&::-webkit-scrollbar-thumb:hover": { background: "#cc0000" },
                         },
                       }}
                       InputProps={{
@@ -904,7 +889,7 @@ function PredictTumor() {
           </Box>
         </Box>
       </Box>
-      {showResult && preview ? (
+      {predictMRIMutation.isSuccess && predictMRIMutation.data? (
         <Box component={"section"} sx={{ bgcolor: "#fff" }}>
           <Box
             className="ai_result flex_column"

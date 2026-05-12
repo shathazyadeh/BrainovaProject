@@ -345,8 +345,11 @@ function SupervisorDashboard() {
                   justifyContent: "flex-end",
                   paddingTop: "10px",
                   paddingRight: "10px",
-                  "@media (max-width:768px)": {
+                     "@media (max-width:768px)": {
                     paddingTop: "0px",
+                  },
+                     "@media (max-width:1280px)": {
+                    paddingBottom:"10px"
                   },
                 }}
               >
@@ -356,11 +359,11 @@ function SupervisorDashboard() {
                   sx={{
                     color: "var(--primary-color)",
                     fontSize: "13px",
-                    fontWeight: "600",
+                    fontWeight: "600"
                   }}
                   className="auth_link"
                 >
-                  View All <HiOutlineArrowNarrowRight />
+                  View All <HiOutlineArrowNarrowRight  style={{ verticalAlign: "middle" }} />
                 </Link>
               </Box>
             </Grid>
