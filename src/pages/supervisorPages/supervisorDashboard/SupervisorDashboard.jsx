@@ -92,6 +92,34 @@ function SupervisorDashboard() {
     count,
   }));
 
+  const dashboardCards = [
+    {
+      className: "total_students",
+      title: "Total Students",
+      value: dashboardSummaryData?.totalStudents,
+      icon: FiUsers,
+    },
+    {
+      className: "total_reports",
+      title: "Total Reports",
+      value: dashboardSummaryData?.totalReports,
+      icon: FiFileText,
+      extra: `+${thisWeekCount} this week`,
+    },
+    {
+      className: "new_reports",
+      title: "New Reports",
+      value: dashboardSummaryData?.newReports,
+      icon: FiFilePlus,
+    },
+    {
+      className: "feedback_given",
+      title: "Feedback Given",
+      value: dashboardSummaryData?.feedbackGiven,
+      icon: FiMessageSquare,
+    },
+  ];
+
   return (
     <Box
       sx={{
@@ -194,260 +222,90 @@ function SupervisorDashboard() {
                 sx={{ display: "flex", gap: "10px", marginBottom: "23px" }}
               >
                 <Grid container spacing={1} sx={{ width: "100%" }}>
-                  <Grid item size={{ xs: 6, sm: 3 }}>
-                    <Box
-                      className="total_students"
-                      sx={{
-                        bgcolor: "#232121b8",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          bgcolor: "#4e4e4e7f",
-                          transform: "translateY(-3px)",
-                        },
-                      }}
-                    >
-                      <Box className="details flex_column" sx={{ gap: "10px" }}>
-                        <Typography
-                          sx={{
-                            color: "var(--secondary-color)",
-                            textTransform: "uppercase",
-                            fontSize: "13px",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:700px)": {
-                              fontSize: "11px",
-                            },
-                          }}
-                        >
-                          Total Students
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "#fff",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "600",
-                            fontFamily: "var(--primary-font)",
-                          }}
-                        >
-                          {dashboardSummaryData?.totalStudents}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--primary-color)",
-                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <FiUsers size={20} color="#fff" />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item size={{ xs: 6, sm: 3 }}>
-                    <Box
-                      className="total_reports"
-                      sx={{
-                        bgcolor: "#232121b8",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          bgcolor: "#4e4e4e7f",
-                          transform: "translateY(-3px)",
-                        },
-                      }}
-                    >
+                  {dashboardCards.map((card, index) => (
+                    <Grid key={index} item size={{ xs: 6, sm: 3 }}>
                       <Box
-                        className="details flex_column"
-                        sx={{ gap: "10px", position: "relative" }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "var(--secondary-color)",
-                            textTransform: "uppercase",
-                            fontSize: "13px",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:700px)": {
-                              fontSize: "11px",
-                            },
-                          }}
-                        >
-                          Total Reports
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "#fff",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "600",
-                            fontFamily: "var(--primary-font)",
-                          }}
-                        >
-                          {dashboardSummaryData?.totalReports}
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "#00ff88",
-                            fontSize: "10px",
-                            position: "absolute",
-                            bottom: "-20px",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          +{thisWeekCount} this week
-                        </Typography>
-                      </Box>
-                      <Typography
+                        className={card.className}
                         sx={{
-                          bgcolor: "var(--primary-color)",
-                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                          bgcolor: "#232121b8",
+                          height: "100%",
                           borderRadius: "12px",
-                          padding: "8px",
                           display: "flex",
+                          justifyContent: "space-around",
+                          alignItems: "center",
+                          gap: "15px",
+                          paddingX: "15px",
+                          paddingTop: "18px",
+                          paddingBottom: "27px",
+                          transition: "all 0.3s ease",
+                          "&:hover": {
+                            bgcolor: "#4e4e4e7f",
+                            transform: "translateY(-3px)",
+                          },
                         }}
                       >
-                        <FiFileText size={20} color="#fff" />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item size={{ xs: 6, sm: 3 }}>
-                    <Box
-                      className="new_reports"
-                      sx={{
-                        bgcolor: "#232121b8",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          bgcolor: "#4e4e4e7f",
-                          transform: "translateY(-3px)",
-                        },
-                      }}
-                    >
-                      <Box className="details flex_column" sx={{ gap: "10px" }}>
-                        <Typography
+                        <Box
+                          className="details flex_column"
                           sx={{
-                            color: "var(--secondary-color)",
-                            textTransform: "uppercase",
-                            fontSize: "13px",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:700px)": {
-                              fontSize: "11px",
-                            },
+                            gap: "10px",
+                            position: card.extra ? "relative" : "static",
                           }}
                         >
-                          New Reports
-                        </Typography>
+                          <Typography
+                            sx={{
+                              color: "var(--secondary-color)",
+                              textTransform: "uppercase",
+                              fontSize: "13px",
+                              fontFamily: "var(--primary-font)",
+                              "@media (max-width:700px)": {
+                                fontSize: "11px",
+                              },
+                            }}
+                          >
+                            {card.title}
+                          </Typography>
+
+                          <Typography
+                            sx={{
+                              color: "#fff",
+                              textTransform: "uppercase",
+                              fontSize: "20px",
+                              fontWeight: "600",
+                              fontFamily: "var(--primary-font)",
+                            }}
+                          >
+                            {card.value}
+                          </Typography>
+
+                          {card.extra && (
+                            <Typography
+                              sx={{
+                                color: "#00ff88",
+                                fontSize: "10px",
+                                position: "absolute",
+                                bottom: "-20px",
+                                whiteSpace: "nowrap",
+                              }}
+                            >
+                              {card.extra}
+                            </Typography>
+                          )}
+                        </Box>
+
                         <Typography
                           sx={{
-                            color: "#fff",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "600",
-                            fontFamily: "var(--primary-font)",
+                            bgcolor: "var(--primary-color)",
+                            boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                            borderRadius: "12px",
+                            padding: "8px",
+                            display: "flex",
                           }}
                         >
-                          {dashboardSummaryData?.newReports}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--primary-color)",
-                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <FiFilePlus size={20} color="#fff" />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item size={{ xs: 6, sm: 3 }}>
-                    <Box
-                      className="feedback_given"
-                      sx={{
-                        bgcolor: "#232121b8",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          bgcolor: "#4e4e4e7f",
-                          transform: "translateY(-3px)",
-                        },
-                      }}
-                    >
-                      <Box className="details flex_column" sx={{ gap: "10px" }}>
-                        <Typography
-                          sx={{
-                            color: "var(--secondary-color)",
-                            textTransform: "uppercase",
-                            fontSize: "13px",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:700px)": {
-                              fontSize: "11px",
-                            },
-                          }}
-                        >
-                          Feedback Given
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "#fff",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "600",
-                            fontFamily: "var(--primary-font)",
-                          }}
-                        >
-                          {dashboardSummaryData?.feedbackGiven}
+                          <card.icon size={20} color="#fff" />
                         </Typography>
                       </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--primary-color)",
-                          boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <FiMessageSquare size={20} color="#fff" />
-                      </Typography>
-                    </Box>
-                  </Grid>
+                    </Grid>
+                  ))}
                 </Grid>
               </Box>
               <Box
@@ -767,7 +625,7 @@ function SupervisorDashboard() {
         </Container>
       </Box>
 
-      <DashboardFooter/>
+      <DashboardFooter />
     </Box>
   );
 }
