@@ -696,9 +696,8 @@ function PredictTumor() {
                           "&::-webkit-scrollbar-thumb": {
                             background: "#ff0000",
                             borderRadius: "10px"
-                          },
-                          "&::-webkit-scrollbar-thumb:hover": { background: "#cc0000" },
-                        },
+                          },"&::-webkit-scrollbar-thumb:hover": { background: "#cc0000", cursor:"grab" },
+                        }
                       }}
                       InputProps={{
                         disableUnderline: true,

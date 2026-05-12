@@ -27,7 +27,7 @@ import useGetFeedbackByReportId from "../../../hooks/supervisorHooks/useGetFeedb
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { toast } from "react-toastify";
 import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
-import DashboardFooter from "../../../components/dashboardFooter/dashboardFooter";
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 
 function ReportDetails() {
   const { id } = useParams();

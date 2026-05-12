@@ -21,7 +21,8 @@ import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearc
 import ReportsFilters from "../../../components/filterInputs/reportsFilters/ReportsFilters";
 import useDownloadSupervisorPDF from "../../../hooks/supervisorHooks/useDownloadSupervisorPDF";
 import { BsFillExclamationOctagonFill } from "react-icons/bs";
-import DashboardFooter from "../../../components/dashboardFooter/dashboardFooter";
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+
 
 function StudentReports() {
   const { studentId } = useParams();
