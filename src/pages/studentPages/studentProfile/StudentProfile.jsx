@@ -120,6 +120,27 @@ function StudentProfile() {
     count,
   }));
 
+  const summaryCards = [
+  {
+    className: "reports_submitted",
+    title: "Total Cases",
+    value: summaryData?.reportsSubmitted,
+    icon: FiUsers,
+  },
+  {
+    className: "feedback_received",
+    title: "Feedbacks",
+    value: summaryData?.feedbackReceived,
+    icon: FiFileText,
+  },
+  {
+    className: "this_week",
+    title: "This Week",
+    value: recentSubmitted?.length,
+    icon: FaArrowTrendUp,
+  },
+];
+
   if (isLoading || isAllMyCasesLoading || isSummaryLoading) {
     return (
       <Box
@@ -431,211 +452,78 @@ function StudentProfile() {
               </Box>
               <Box className="summary" sx={{ marginTop: "10px" }}>
                 <Grid container spacing={1}>
-                  <Grid item size={{ xs: 12, sm: 4 }}>
-                    <Box
-                      className="reports_submitted"
-                      sx={{
-                        bgcolor: "var(--primary-color)",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          bgcolor: "#fff",
-                          transform: "translateY(-3px)",
-                        },
-                      }}
-                    >
-                      <Box className="details flex_column" sx={{ gap: "10px" }}>
-                        <Typography
-                          sx={{
-                            color: "var(--dark-gray-color)",
-                            textTransform: "uppercase",
-                            fontSize: "18px",
-                            fontWeight: "700",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:1198px)": { fontSize: "14px" },
-                          }}
-                        >
-                          Total Cases
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "var(--dark-gray-color)",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "700",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:1198px)": { fontSize: "17px" },
-                          }}
-                        >
-                          {summaryData?.reportsSubmitted}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--dark-gray-color)",
-                          boxShadow: "0 0 15px rgba(16, 16, 16, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <Box
-                          component={FiUsers}
-                          sx={{
-                            fontSize: "34px",
-                            color: "#fff",
-                            "@media (max-width:1198px)": { fontSize: "27px" },
-                          }}
-                        />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item size={{ xs: 12, sm: 4 }}>
-                    <Box
-                      className="feedback_received"
-                      sx={{
-                        bgcolor: "var(--primary-color)",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          bgcolor: "#fff",
-                          transform: "translateY(-3px)",
-                        },
-                      }}
-                    >
-                      <Box
-                        className="details flex_column"
-                        sx={{ gap: "10px", position: "relative" }}
-                      >
-                        <Typography
-                          sx={{
-                            color: "var(--dark-gray-color)",
-                            textTransform: "uppercase",
-                            fontSize: "18px",
-                            fontWeight: "700",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:1198px)": { fontSize: "14px" },
-                          }}
-                        >
-                          Feedbacks
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "var(--dark-gray-color)",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "700",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:1198px)": { fontSize: "17px" },
-                          }}
-                        >
-                          {summaryData?.feedbackReceived}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--dark-gray-color)",
-                          boxShadow: "0 0 15px rgba(16, 16, 16, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <Box
-                          component={FiFileText}
-                          sx={{
-                            fontSize: "34px",
-                            color: "#fff",
-                            "@media (max-width:1198px)": { fontSize: "27px" },
-                          }}
-                        />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item size={{ xs: 12, sm: 4 }}>
-                    <Box
-                      className="this_week"
-                      sx={{
-                        bgcolor: "var(--primary-color)",
-                        height: "100%",
-                        borderRadius: "12px",
-                        display: "flex",
-                        justifyContent: "space-around",
-                        alignItems: "center",
-                        gap: "15px",
-                        paddingX: "15px",
-                        paddingTop: "18px",
-                        paddingBottom: "27px",
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                          bgcolor: "#fff",
-                          transform: "translateY(-3px)",
-                        },
-                      }}
-                    >
-                      <Box className="details flex_column" sx={{ gap: "10px" }}>
-                        <Typography
-                          sx={{
-                            color: "var(--dark-gray-color)",
-                            textTransform: "uppercase",
-                            fontSize: "18px",
-                            fontWeight: "700",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:1198px)": { fontSize: "14px" },
-                          }}
-                        >
-                          This Week
-                        </Typography>
-                        <Typography
-                          sx={{
-                            color: "var(--dark-gray-color)",
-                            textTransform: "uppercase",
-                            fontSize: "20px",
-                            fontWeight: "700",
-                            fontFamily: "var(--primary-font)",
-                            "@media (max-width:1198px)": { fontSize: "17px" },
-                          }}
-                        >
-                          {recentSubmitted?.length}
-                        </Typography>
-                      </Box>
-                      <Typography
-                        sx={{
-                          bgcolor: "var(--dark-gray-color)",
-                          boxShadow: "0 0 15px rgba(16, 16, 16, 0.51)",
-                          borderRadius: "12px",
-                          padding: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        <Box
-                          component={FaArrowTrendUp}
-                          sx={{
-                            fontSize: "34px",
-                            color: "#fff",
-                            "@media (max-width:1198px)": { fontSize: "27px" },
-                          }}
-                        />
-                      </Typography>
-                    </Box>
-                  </Grid>
-                </Grid>
+  {summaryCards.map((card, index) => (
+    <Grid key={index} item size={{ xs: 12, sm: 4 }}>
+      <Box
+        className={card.className}
+        sx={{
+          bgcolor: "var(--primary-color)",
+          height: "100%",
+          borderRadius: "12px",
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+          gap: "15px",
+          paddingX: "15px",
+          paddingTop: "18px",
+          paddingBottom: "27px",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            bgcolor: "#fff",
+            transform: "translateY(-3px)",
+          },
+        }}
+      >
+        <Box className="details flex_column" sx={{ gap: "10px" }}>
+          <Typography
+            sx={{
+              color: "var(--dark-gray-color)",
+              textTransform: "uppercase",
+              fontSize: "18px",
+              fontWeight: "700",
+              fontFamily: "var(--primary-font)",
+              "@media (max-width:1198px)": { fontSize: "14px" },
+            }}
+          >
+            {card.title}
+          </Typography>
+
+          <Typography
+            sx={{
+              color: "var(--dark-gray-color)",
+              textTransform: "uppercase",
+              fontSize: "20px",
+              fontWeight: "700",
+              fontFamily: "var(--primary-font)",
+              "@media (max-width:1198px)": { fontSize: "17px" },
+            }}
+          >
+            {card.value}
+          </Typography>
+        </Box>
+
+        <Typography
+          sx={{
+            bgcolor: "var(--dark-gray-color)",
+            boxShadow: "0 0 15px rgba(16, 16, 16, 0.51)",
+            borderRadius: "12px",
+            padding: "8px",
+            display: "flex",
+          }}
+        >
+          <Box
+            component={card.icon}
+            sx={{
+              fontSize: "34px",
+              color: "#fff",
+              "@media (max-width:1198px)": { fontSize: "27px" },
+            }}
+          />
+        </Typography>
+      </Box>
+    </Grid>
+  ))}
+</Grid>
               </Box>
               <RecentlySubmitted
                 recentSubmitted={recentSubmitted}
