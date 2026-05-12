@@ -1,66 +1,69 @@
 /*كود النقطة المضيئة*/
 .pulse_wrapper {
-    position: relative;
-    display: inline-flex;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .pulse_wrapper::after {
-    content: "";
-    position: absolute;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: var(--pulse-color); /* عشان السوبرفايزر يوخد لون غير عن الثانيات */
-    animation: pulse 1.5s infinite;
-    left: 11px;
-    top:9px;
-    opacity: 0.6;
+  content: "";
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--pulse-color);
+  top: 3px;
+  right: 2px;
+  opacity: 0.8;
+  z-index: 2;
+  animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.6;
-    }
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
 
-    70% {
-        transform: scale(2.5);
-        opacity: 0;
-    }
+  70% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
 
-    100% {
-        transform: scale(2.5);
-        opacity: 0;
-    }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
 }
 
 .card_hover_effect {
   position: relative;
   overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: box-shadow 0.6s ease, transform 0.6s ease;
 }
 
 .card_hover_effect:hover {
-  box-shadow: 0 8px 20px rgba(207, 25, 25, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .card_hover_effect::before {
   content: "";
   position: absolute;
   top: 0;
-  left: -120%;
-  width: 60%;
+  left: -160%;
+  width: 40%;
   height: 100%;
   background: linear-gradient(
     120deg,
     transparent,
-    var(--shine-color),
+    rgba(255,255,255,0.08),
     transparent
   );
   transform: skewX(-20deg);
-  transition: all 0.7s ease;
+  transition: all 1.2s ease;
 }
 
 .card_hover_effect:hover::before {
-  left: 120%;
+  left: 160%;
 }

@@ -56,6 +56,33 @@ function SuperAdminDashboard() {
   const { filteredArr, studentsNo, supervisorsNo, adminNo } =
     useFilteredArray(data); //هاي عشان فلترة المستخدمين بعد الحصول عالداتا
 
+  const summaryCards = [
+    {
+      className: "total_members",
+      title: "Total Members",
+      value: data?.length - 1,
+      icon: FiUsers,
+    },
+    {
+      className: "active_roles",
+      title: "Active Roles",
+      value: activeUsers,
+      icon: FiCheckCircle,
+    },
+    {
+      className: "blocked_users",
+      title: "Blocked Roles",
+      value: blockedUsers,
+      icon: FiSlash,
+    },
+    {
+      className: "unverified_members",
+      title: "Unverified Members",
+      value: unverifiedUsers,
+      icon: FiAlertCircle,
+    },
+  ];
+
   const rolesData = [
     {
       title: "Admin",
@@ -95,56 +122,56 @@ function SuperAdminDashboard() {
     },
   ];
 
-    if (isLoading) {
-      return (
-        <>
-          <DashboardNavbar />
-          <Box
+  if (isLoading) {
+    return (
+      <>
+        <DashboardNavbar />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            height: "100vh",
+          }}
+        >
+          <Box sx={{ marginTop: "290px" }}>
+            <Loader />
+          </Box>
+        </Box>
+      </>
+    );
+  }
+
+  if (isError) {
+    return (
+      <>
+        <DashboardNavbar />
+        <Box
+          component={"section"}
+          className="server_error_section flex_column"
+          sx={{
+            height: "100vh",
+          }}
+        >
+          <Typography
+            component={"h1"}
+            variant="h5"
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              height:"100vh",
+              marginTop: "290px",
+              color: "white",
+              fontWeight: "700",
+              textAlign: "center",
+              "@media (max-width:456px)": {
+                fontSize: "20px",
+              },
             }}
           >
-            <Box sx={{ marginTop: "290px" }}>
-                  <Loader />
-                </Box>
-          </Box>
-        </>
-      );
-    }
-  
-    if (isError) {
-      return (
-        <>
-          <DashboardNavbar />
-          <Box
-                component={"section"}
-                className="server_error_section flex_column"
-                sx={{
-              height:"100vh"
-            }}
-              >
-                <Typography
-                  component={"h1"}
-                  variant="h5"
-                  sx={{
-                    marginTop: "290px",
-                    color: "white",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    "@media (max-width:456px)": {
-                      fontSize: "20px",
-                    },
-                  }}
-                >
-                  {error?.message || "Something went wrong"}
-                </Typography>
-              </Box>
-        </>
-      );
-    }
-    
+            {error?.message || "Something went wrong"}
+          </Typography>
+        </Box>
+      </>
+    );
+  }
+
   return (
     <>
       <DashboardNavbar />
@@ -152,7 +179,7 @@ function SuperAdminDashboard() {
         component={"section"}
         className="superadmin_dashboard"
         sx={{
-          paddingBottom: "50px",
+          paddingTop: { xs: "30px", md: "0px" },
         }}
       >
         <Container maxWidth="lg">
@@ -183,249 +210,70 @@ function SuperAdminDashboard() {
             sx={{ display: "flex", gap: "10px", marginBottom: "23px" }}
           >
             <Grid container spacing={1} sx={{ width: "100%" }}>
-              <Grid item size={{ xs: 6, sm: 3 }}>
-                <Box
-                  className="total_members"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height: "100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
-                >
-                  <Box className="details flex_column" sx={{ gap: "10px" }}>
-                    <Typography
-                      sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "15px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                          fontSize: "11px",
-                        },
-                      }}
-                    >
-                      Total Members
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {data?.length - 1} {/* طرحنا السوبر ادمن نفسه */}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "12px",
-                      padding: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiUsers size={30} color="#fff" />
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item size={{ xs: 6, sm: 3 }}>
-                <Box
-                  className="active_roles"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height: "100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
-                >
+              {summaryCards.map((card, index) => (
+                <Grid key={index} item size={{ xs: 6, sm: 3 }}>
                   <Box
-                    className="details flex_column"
-                    sx={{ gap: "10px", position: "relative" }}
-                  >
-                    <Typography
-                      sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "15px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                          fontSize: "11px",
-                        },
-                      }}
-                    >
-                      Active Roles
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {activeUsers}
-                    </Typography>
-                  </Box>
-                  <Typography
+                    className={card.className}
                     sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                      bgcolor: "#232121b8",
+                      height: "100%",
                       borderRadius: "12px",
-                      padding: "8px",
                       display: "flex",
+                      justifyContent: "space-around",
+                      alignItems: "center",
+                      gap: "15px",
+                      paddingX: "15px",
+                      paddingTop: "18px",
+                      paddingBottom: "27px",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        bgcolor: "#4e4e4e7f",
+                        transform: "translateY(-3px)",
+                      },
                     }}
                   >
-                    <FiCheckCircle size={30} color="#fff" />
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item size={{ xs: 6, sm: 3 }}>
-                <Box
-                  className="blocked_users"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height: "100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
-                >
-                  <Box className="details flex_column" sx={{ gap: "10px" }}>
+                    <Box className="details flex_column" sx={{ gap: "10px" }}>
+                      <Typography
+                        sx={{
+                          color: "var(--secondary-color)",
+                          textTransform: "uppercase",
+                          fontSize: "15px",
+                          fontFamily: "var(--primary-font)",
+                          "@media (max-width:700px)": {
+                            fontSize: "11px",
+                          },
+                        }}
+                      >
+                        {card.title}
+                      </Typography>
+
+                      <Typography
+                        sx={{
+                          color: "#fff",
+                          textTransform: "uppercase",
+                          fontSize: "20px",
+                          fontWeight: "600",
+                          fontFamily: "var(--primary-font)",
+                        }}
+                      >
+                        {card.value}
+                      </Typography>
+                    </Box>
+
                     <Typography
                       sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "15px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                          fontSize: "11px",
-                        },
+                        bgcolor: "var(--primary-color)",
+                        boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
+                        borderRadius: "12px",
+                        padding: "8px",
+                        display: "flex",
                       }}
                     >
-                      Blocked Roles
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {blockedUsers}
+                      <card.icon size={30} color="#fff" />
                     </Typography>
                   </Box>
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "12px",
-                      padding: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiSlash size={30} color="#fff" />
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid item size={{ xs: 6, sm: 3 }}>
-                <Box
-                  className="unverified_members"
-                  sx={{
-                    bgcolor: "#232121b8",
-                    height: "100%",
-                    borderRadius: "12px",
-                    display: "flex",
-                    justifyContent: "space-around",
-                    alignItems: "center",
-                    gap: "15px",
-                    paddingX: "15px",
-                    paddingTop: "18px",
-                    paddingBottom: "27px",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      bgcolor: "#4e4e4e7f",
-                      transform: "translateY(-3px)",
-                    },
-                  }}
-                >
-                  <Box className="details flex_column" sx={{ gap: "10px" }}>
-                    <Typography
-                      sx={{
-                        color: "var(--secondary-color)",
-                        textTransform: "uppercase",
-                        fontSize: "15px",
-                        fontFamily: "var(--primary-font)",
-                        "@media (max-width:700px)": {
-                          fontSize: "11px",
-                        },
-                      }}
-                    >
-                      Unverified Members
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        textTransform: "uppercase",
-                        fontSize: "20px",
-                        fontWeight: "600",
-                        fontFamily: "var(--primary-font)",
-                      }}
-                    >
-                      {unverifiedUsers}
-                    </Typography>
-                  </Box>
-                  <Typography
-                    sx={{
-                      bgcolor: "var(--primary-color)",
-                      boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      borderRadius: "12px",
-                      padding: "8px",
-                      display: "flex",
-                    }}
-                  >
-                    <FiAlertCircle size={30} color="#fff" />
-                  </Typography>
-                </Box>
-              </Grid>
+                </Grid>
+              ))}
             </Grid>
           </Box>
           <Box
@@ -436,8 +284,16 @@ function SuperAdminDashboard() {
               borderRadius: "12px",
             }}
           >
-            <Grid container spacing={3} sx={{ alignItems: "flex-end" }}>
-              <Grid item size={{ xs: 12, sm: 4.5 }}>
+            <Grid container columnSpacing={3} sx={{ alignItems: "flex-end" }}>
+              <Grid
+                item
+                size={{ xs: 12, sm: 4.5 }}
+                sx={{
+                  marginBottom: { xs: "15px", sm: "5px" },
+                  paddingLeft: "8px",
+                  paddingTop: { xs: "20px", sm: "0px" },
+                }}
+              >
                 <TitanicPie
                   students={studentsNo}
                   supervisors={supervisorsNo}
@@ -453,7 +309,7 @@ function SuperAdminDashboard() {
               </Grid>
             </Grid>
           </Box>
-          <Box className="system_roles" sx={{ color: "#fff", marginY: "40px" }}>
+          <Box className="system_roles" sx={{ color: "#fff", marginY: "30px" }}>
             <Box
               className="title"
               sx={{
@@ -461,12 +317,17 @@ function SuperAdminDashboard() {
                 justifyContent: "space-between",
                 alignItems: "flex-end",
                 paddingBottom: "14px",
+                "@media (max-width:400px)": {
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                },
               }}
             >
               <Typography
+                component={"h2"}
+                variant="h5"
                 sx={{
                   color: "#fff",
-                  fontSize: "23px",
                   fontFamily: "var(--primary-font)",
                   fontWeight: "600",
                   display: "inline",
@@ -486,15 +347,13 @@ function SuperAdminDashboard() {
                   fontWeight: "600",
                   display: "inline",
                   marginRight: "10px",
-                  "@media (max-width:700px)": {
-                    fontSize: "22px",
-                  },
                 }}
               >
                 3 roles . {data?.length - 1} members
               </Typography>
             </Box>
-            <Grid container spacing={3}>
+
+            <Grid container spacing={2}>
               {rolesData.map((role, index) => (
                 <Grid key={index} item size={{ xs: 12, md: 4 }}>
                   <Box
@@ -502,46 +361,48 @@ function SuperAdminDashboard() {
                     sx={{
                       "--shine-color":
                         role.title === "Supervisor"
-                          ? "rgba(18, 18, 18, 0.14)"
-                          : "rgba(255, 255, 255, 0.12)",
-                      ...((role.title === "Admin" ||
-                        role.title === "Student") && {
-                        bgcolor: "rgba(255, 255, 255, 0.22)",
-                        border: "1px solid #d0cccc36",
-                        boxShadow: "0 0 15px rgba(255, 255, 255, 0.15)",
-                      }),
-                      ...(role.title === "Supervisor" && {
-                        bgcolor: "var(--primary-color)",
-                        boxShadow: "0 0 15px rgba(207, 25, 25, 0.51)",
-                      }),
+                          ? "rgba(207,25,25,0.25)"
+                          : "rgba(255,255,255,0.15)",
+
                       height: "100%",
-                      padding: "30px",
-                      borderRadius: "25px",
-                      color:
+                      padding: "20px",
+                      borderRadius: "18px",
+
+                      background:
                         role.title === "Supervisor"
-                          ? "var(--navy-color)"
-                          : "#fff",
+                          ? "rgba(207, 25, 25, 0.18)"
+                          : "rgba(255,255,255,0.08)",
+
+                      border:
+                        role.title === "Supervisor"
+                          ? "1px solid rgba(207,25,25,0.4)"
+                          : "1px solid rgba(255,255,255,0.15)",
+
+                      backdropFilter: "blur(12px)",
                     }}
                   >
                     <Box
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        gap: "12px",
-                        marginBottom: "30px",
+                        gap: "10px",
+                        marginBottom: "18px",
                       }}
                     >
                       <Box
-                        component={"span"}
                         sx={{
-                          bgcolor:
-                            role.title === "Admin" || role.title === "Student"
-                              ? "#524e4e"
-                              : "var(--navy-color)",
-                          padding: "13px",
-                          borderRadius: "14px",
-                          boxShadow: "0 0 15px rgb(15, 14, 14)",
+                          "--pulse-color":
+                            role.title === "Supervisor" ? "#ff4d4d" : "#fff",
+                          padding: "10px",
+                          borderRadius: "12px",
+                          background:
+                            role.title === "Supervisor"
+                              ? "var(--primary-color)"
+                              : "rgba(255,255,255,0.2)",
                           color: "#fff",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
                         {role.icon}
@@ -549,91 +410,78 @@ function SuperAdminDashboard() {
 
                       <Box>
                         <Typography
-                          sx={{
-                            fontSize: "23px",
-                            fontWeight:
-                              role.title === "Supervisor" ? "800" : "500",
-                          }}
+                          sx={{ fontSize: "18px", fontWeight: "600" }}
                         >
                           {role.title}
                         </Typography>
-                        <Box
-                          className="role_counts"
-                          sx={{ display: "flex", alignItems: "center" }}
+
+                        <Typography
+                          sx={{
+                            fontSize: "13px",
+                            color: "rgba(255,255,255,0.75)",
+                          }}
                         >
-                          <Box
-                            component={TbUsers}
-                            sx={{
-                              fontSize:
-                                role.title === "Supervisor" ? "16px" : "15px",
-                              marginRight: "4px",
-                            }}
-                          />
-                          <Typography
-                            component={"span"}
-                            sx={{
-                              fontWeight:
-                                role.title === "Supervisor" ? "800" : "500",
-                            }}
-                          >
-                            {role.count}
-                          </Typography>
-                        </Box>
+                          {role.count} members
+                        </Typography>
                       </Box>
                     </Box>
 
                     <Box>
                       <Typography
                         sx={{
-                          fontSize:
-                            role.title === "Supervisor" ? "16px" : "15px",
-                          fontWeight:
-                            role.title === "Supervisor" ? "800" : "500",
-                          marginBottom: "6px",
+                          fontSize: "13px",
+                          marginBottom: "10px",
+                          color: "rgba(255,255,255,0.7)",
                         }}
                       >
-                        Permissions:
+                        Permissions
                       </Typography>
 
                       <Box
                         sx={{
                           display: "flex",
                           flexWrap: "wrap",
-                          gap: "9px",
-                          flexDirection: "column",
+                          gap: "7px",
                         }}
                       >
                         {role.permissions.map((perm, i) => (
-                          <Typography
-                            className={style.pulse_wrapper}
+                          <Box
                             key={i}
                             sx={{
-                              "--pulse-color":
+                              fontSize: "12px",
+                              padding: "5px 10px",
+                              borderRadius: "999px",
+                              background:
                                 role.title === "Supervisor"
-                                  ? "var(--navy-color)"
-                                  : "#fff",
-                              borderRadius: "20px",
-                              paddingX: "10px",
-                              paddingY: "4px",
-                              fontSize:
-                                role.title === "Supervisor" ? "16px" : "15px",
-                              fontWeight:
-                                role.title === "Supervisor" ? "800" : "500",
-                              whiteSpace: "nowrap",
+                                  ? "rgba(207, 25, 25, 0.25)"
+                                  : "rgba(255,255,255,0.15)",
+                              color: "#fff",
                               display: "flex",
                               alignItems: "center",
+                              gap: "6px",
+                              transition: "all 0.3s ease",
+                              "&:hover": {
+                                bgcolor:
+                                  role.title === "Supervisor"
+                                    ? "rgba(255,255,255,0.15)"
+                                    : "rgba(80, 79, 79, 0.25)",
+                                transform: "translateY(-1px)",
+                              },
                             }}
                           >
                             <Box
-                              component={IoMdCheckmarkCircleOutline}
+                              className={style.pulse_wrapper}
                               sx={{
-                                fontSize:
-                                  role.title === "Supervisor" ? "16px" : "15px",
-                                marginRight: "8px",
+                                "--pulse-color":
+                                  role.title === "Supervisor"
+                                    ? "var(--primary-color)"
+                                    : "rgba(255,255,255,0.9)",
                               }}
-                            />
+                            >
+                              <IoMdCheckmarkCircleOutline size={14} />
+                            </Box>
                             {perm}
-                          </Typography>
+                          </Box>
                         ))}
                       </Box>
                     </Box>
@@ -650,15 +498,18 @@ function SuperAdminDashboard() {
             hidePagination={true}
             hideCheckbox={true}
           />
-
           <Box
             className="link"
             sx={{
               display: "flex",
               justifyContent: "flex-end",
+              paddingTop: "10px",
               paddingRight: "10px",
               "@media (max-width:768px)": {
                 paddingTop: "0px",
+              },
+              "@media (max-width:1280px)": {
+                paddingBottom: "10px",
               },
             }}
           >
@@ -672,7 +523,8 @@ function SuperAdminDashboard() {
               }}
               className="auth_link"
             >
-              View All <HiOutlineArrowNarrowRight />
+              View All{" "}
+              <HiOutlineArrowNarrowRight style={{ verticalAlign: "middle" }} />
             </Link>
           </Box>
 

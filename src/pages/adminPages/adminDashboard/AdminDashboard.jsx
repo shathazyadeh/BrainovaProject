@@ -751,15 +751,18 @@ function AdminDashboard() {
             hidePagination={true}
             hideCheckbox={true}
           />
-
           <Box
             className="link"
             sx={{
               display: "flex",
               justifyContent: "flex-end",
+              paddingTop: "10px",
               paddingRight: "10px",
               "@media (max-width:768px)": {
                 paddingTop: "0px",
+              },
+              "@media (max-width:1280px)": {
+                paddingBottom: "10px",
               },
             }}
           >
@@ -773,7 +776,8 @@ function AdminDashboard() {
               }}
               className="auth_link"
             >
-              View All <HiOutlineArrowNarrowRight />
+              View All{" "}
+              <HiOutlineArrowNarrowRight style={{ verticalAlign: "middle" }} />
             </Link>
           </Box>
 
