@@ -3,7 +3,7 @@ import useAuthStore from "../store/useAuthStore";
 import { jwtDecode } from "jwt-decode";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL
+  baseURL: import.meta.env.VITE_API_BASE_URL || "https://brainova-backend-grb6egdgg2d8epdw.israelcentral-01.azurewebsites.net/api"
 });
 // استيراد مكتبة axios لإرسال الطلبات (requests) إلى الـ API
 
