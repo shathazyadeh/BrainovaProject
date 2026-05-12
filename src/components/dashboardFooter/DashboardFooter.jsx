@@ -14,6 +14,8 @@ function DashboardFooter() {
             marginTop: "60px",
             "@media (max-width:1087px)": {
               paddingX: "100px",
+            }, "@media (max-width:425px)": {
+              paddingX: "50px",
             }
           }}
         >

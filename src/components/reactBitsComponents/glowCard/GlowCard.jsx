@@ -24,11 +24,13 @@ const createParticle = (x, y, color) => {
 
 function GlowCard({
   children,
+  className = "",
   particleCount = DEFAULT_PARTICLE_COUNT,
   glowColor = DEFAULT_GLOW_COLOR,
   enableTilt = true,
   enableParticles = true,
-  glowIntensity = "strong" // strong | soft | none
+  glowIntensity = "strong", // strong | soft | none
+  style = {}
 }) {
   const cardRef = useRef(null);
 
@@ -137,8 +139,8 @@ function GlowCard({
   return (
     <div
       ref={cardRef}
-      className="glow-card"
-      style={{ "--glow-shadow": glowStyles[glowIntensity] }}
+      className={`glow-card ${className}`}
+      style={{ "--glow-shadow": glowStyles[glowIntensity] , ...style,}}
     >
       {children}
     </div>
