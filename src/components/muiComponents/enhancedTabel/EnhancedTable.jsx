@@ -400,10 +400,8 @@ function CardRow({
               flexShrink: 0,
             }}
             checked={isItemSelected}
-            onChange={(e) => {
-              e.stopPropagation();
-              handleClick(e, row.id);
-            }}
+            onChange={(e) => {handleClick(e, row.id);}}
+            onClick={(e) => e.stopPropagation()}
             inputProps={{ "aria-labelledby": labelId }}
           />
         )}
