@@ -6,6 +6,7 @@ export const UpdateUserInfoSchema = yup.object({
     .trim()
     .required("Full Name is required")
     .min(3, "Full Name must be at least 3 characters")
+    .max(30, "Full Name must be at most 30 characters")
     .matches(
       /^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/,
       "Start each word with a capital letter and use letters only",
@@ -15,12 +16,14 @@ export const UpdateUserInfoSchema = yup.object({
     .string()
     .required("User Name is required")
     .min(3, "User Name must be at least 3 characters")
+    .max(30, "User Name must be at most 30 characters")
     .matches(/^\S+$/, "User Name must not contain spaces"),
 
   email: yup
     .string()
     .required("Email is required")
-    .email("Please enter a valid email"),
+    .email("Please enter a valid email")
+    .max(120, "Email must be at most 120 characters"),
 
   phoneNumber: yup
     .string()
@@ -33,13 +36,13 @@ export const UpdateUserInfoSchema = yup.object({
 
   password: yup
     .string()
-    // نحدد أن الحقل من نوع string
-
-    .nullable()
-    // يسمح أن تكون القيمة null (يعني لا يوجد باسورد)
-
-    .notRequired()
-    // الحقل غير إجباري في الفورم (المستخدم ممكن ما يغير الباسورد)
+    .min(8, "Password must be at least 8 characters")
+    .max(100, "Password must be at most 100 characters")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    .matches(/[0-9]/, "Password must contain at least one number")
+    .nullable() // يسمح أن تكون القيمة null (يعني لا يوجد باسورد)
+    .notRequired() // الحقل غير إجباري في الفورم (المستخدم ممكن ما يغير الباسورد)
 
     .test(
       "password-validation",

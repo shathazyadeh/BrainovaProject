@@ -5,4 +5,5 @@ export const ForgetPasswordSchema = yup.object({
         .string()
         .required("Email is required")
         .email("Please enter a valid email")
-}); 
+        .max(120, "Email must be at most 120 characters")
+});

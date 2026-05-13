@@ -6,6 +6,7 @@ export const CreateSupervisorSchema = yup.object({
     .trim()
     .required("Full Name is required")
     .min(3, "Full Name must be at least 3 characters")
+    .max(30, "Full Name must be at most 30 characters")
     .matches(
       /^([A-Z][a-z]+)(\s[A-Z][a-z]+)*$/,
       "Start each word with a capital letter and use letters only",
@@ -15,12 +16,14 @@ export const CreateSupervisorSchema = yup.object({
       .string()
       .required("User Name is required")
       .min(3, "User Name must be at least 3 characters")
+      .max(30, "User Name must be at most 30 characters")
       .matches(/^\S+$/, "User Name must not contain spaces"),
 
   email: yup
     .string()
     .required("Email is required")
-    .email("Please enter a valid email"),
+    .email("Please enter a valid email")
+    .max(120, "Email must be at most 120 characters"),
 
   phoneNumber: yup
     .string()

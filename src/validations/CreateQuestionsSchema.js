@@ -6,8 +6,8 @@ export const CreateQuestionSchema = yup.object({
   .trim()
   .required("Question text is required")
   .min(5, "Question must be at least 5 characters")
-  .matches(/.\p{L}./u, "Question must contain letters")
-  .max(2000, "Question must not exceed 2000 characters"),
+  .max(2000, "Question must not exceed 2000 characters")
+  .matches(/.\p{L}./u, "Question must contain letters"),
 
   code: yup
     .string()
