@@ -1,6 +1,7 @@
 import { Box, Button, Container, Grid, Modal, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
+import useGetSupervisorFeedbackByReportId from '../../../hooks/studentHooks/useGetSupervisorFeedbackByReportId.js';
 import { LuNotebookPen } from "react-icons/lu";
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import { IoMdClose } from "react-icons/io";
@@ -14,7 +15,6 @@ import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
 import { FiFilter } from "react-icons/fi";
 import style from './MyCases.module.css';
 import { TbReportSearch } from "react-icons/tb";
-import useGetSupervisorFeedbackByReportId from '../../../hooks/studentHooks/useGetSupervisorFeedbackByReportId.js';
 
 function FeedbackCommet({ Id, isReviewed, feedbackId }) {
   const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
@@ -199,8 +199,8 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
 function MyCases() {
   const { isError, isLoading, error, data } = useGetAllMyCases();
   const totalCases = data?.items?.length || 0;
-  const reviewedCount = data?.items?.filter(item => item.isReviewed).length || 0;
-  const noFeedbackCount = data?.items?.filter(item => !item.isReviewed).length || 0;
+  const reviewedCount = data?.items?.filter(item => item.isReviewed)?.length || 0;
+  const noFeedbackCount = data?.items?.filter(item => !item.isReviewed)?.length || 0;
   console.log('data5:', data);
   const [filter, setFilter] = useState("all");//للفلترة
   const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
@@ -372,7 +372,7 @@ function MyCases() {
                   fontFamily: "var(--primary-font)",
                 }}
               >
-                {data?.items?.length}
+                {data?.items?.length || 0}
               </Typography>{" "}
               cases found
             </Typography>

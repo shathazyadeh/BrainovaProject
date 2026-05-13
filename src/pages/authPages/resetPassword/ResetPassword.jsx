@@ -19,6 +19,7 @@ import { useState } from "react";
 import OtpInput from "react-otp-input"; //مربعات ادخال كود تغيير كلمة السر من مكتبة react-otp-input
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import style from "./ResetPassword.module.css";
 
 function ResetPassword() {
   const resetEmail = localStorage.getItem("resetEmail");
@@ -66,7 +67,12 @@ function ResetPassword() {
           }}
         >
           <Box className="img" sx={{ textAlign: "center" }}>
-            <Box component={"img"} src={resetPasswordPic} width="150px" alt="Red padlock with check mark" />
+            <Box
+              component={"img"}
+              src={resetPasswordPic}
+              width="150px"
+              alt="Red padlock with check mark"
+            />
           </Box>
           <Typography
             component={"h1"}
@@ -124,18 +130,22 @@ function ResetPassword() {
               }}
               numInputs={4}
               renderSeparator={null} // null عشان ما يكون فيه أي خط بين المربعات
-              renderInput={(props) => <input {...props} />}
+              renderInput={(props) => (
+                <input {...props} className={style.otpinput} inputMode="numeric" pattern="[0-9]*" />
+              )}
               inputStyle={{
-                width: "60px", // عرض المربع
-                height: "60px", // ارتفاع المربع
-                margin: "0 10px", // المسافة بين المربعات
-                fontSize: "24px", // حجم الرقم داخل المربع
-                borderRadius: "12px", // زوايا المربع
-                border: "2px solid var(--primary-color)", // لون وسمك الحد
-                textAlign: "center", // الرقم في وسط المربع
+                width: "60px",
+                height: "60px",
+                margin: "0 10px",
+                fontSize: "24px",
+                borderRadius: "12px",
+                border: "2px solid var(--primary-color)",
+                textAlign: "center",
+                outline: "none",
+                WebkitAppearance: "none", //  منع اختلاف الموبايل بالتصرف الافتراضي
               }}
               containerStyle={{
-                justifyContent: "center", // ترتيب المربعات في الوسط
+                justifyContent: "center",
               }}
             />
             {/* رسالة الخطأ لحقل الكود (الي هو ربطها بمكتبة يب)*/}
@@ -156,19 +166,21 @@ function ResetPassword() {
               error={errors.newPassword}
               helperText={errors.newPassword?.message}
               type={showPass ? "text" : "password"}
-                            InputProps={{
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <IconButton onClick={handleClickShowPassword} edge="end">
-                                    {showPass ? (
-                                      <VisibilityOff sx={{ color: "var(--secondary-color)" }} />
-                                    ) : (
-                                      <Visibility sx={{ color: "var(--secondary-color)" }} />
-                                    )}
-                                  </IconButton>
-                                </InputAdornment>
-                              ),
-                            }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClickShowPassword} edge="end">
+                      {showPass ? (
+                        <VisibilityOff
+                          sx={{ color: "var(--secondary-color)" }}
+                        />
+                      ) : (
+                        <Visibility sx={{ color: "var(--secondary-color)" }} />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
               className="textfield_light"
             />
             <TextField
@@ -215,9 +227,9 @@ function ResetPassword() {
                 border: "none",
                 color: "#000",
                 textDecorationColor: "#000",
-                cursor:'pointer',
-                width:"fit-content",
-                margin:"auto"
+                cursor: "pointer",
+                width: "fit-content",
+                margin: "auto",
               }}
             >
               Resend Code
