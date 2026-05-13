@@ -133,7 +133,6 @@ function SupervisorReports() {
                 display: "inline-block",
                 marginRight: "10px",
                 paddingTop: { xs: "30px", md: "0px" },
-                paddingLeft: { xs: "13px", md: "0px" },
                 "@media (max-width:700px)": {
                   fontSize: "22px",
                 },
@@ -166,7 +165,7 @@ function SupervisorReports() {
           </Box>
           <Box
             className="search_and_filter"
-            sx={{ paddingTop: "23px", paddingLeft: { xs: "13px", md: "0px" } }}
+            sx={{ paddingTop: "23px" }}
           >
             <Grid container rowSpacing={0.1} columnSpacing={1}>
               <Grid item>

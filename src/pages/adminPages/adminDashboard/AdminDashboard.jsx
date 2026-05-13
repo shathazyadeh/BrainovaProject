@@ -219,7 +219,6 @@ function AdminDashboard() {
         component={"section"}
         className="admin_dashboard"
         sx={{
-          paddingX: "30px",
           paddingTop: "10px",
         }}
       >
@@ -761,7 +760,7 @@ function AdminDashboard() {
               paddingRight: "10px",
               "@media (max-width:768px)": {
                 paddingTop: "0px",
-              }
+              },
             }}
           >
             <Link
@@ -785,10 +784,9 @@ function AdminDashboard() {
             user={selectedUser} // بيانات المستخدم المختار
             type="editUser"
           />
-
         </Container>
       </Box>
-    <DashboardFooter/>
+      <DashboardFooter />
     </>
   );
 }

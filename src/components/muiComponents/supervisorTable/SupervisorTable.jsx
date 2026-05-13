@@ -418,7 +418,7 @@ export default function CustomPaginationActionsTable({
     >
       {/* Mobile View */}
       {isMobile ? (
-        <Box sx={{ p: 1.5 }}>
+        <Box>
           {displayedRows.length === 0 ? (
             <Typography
               sx={{

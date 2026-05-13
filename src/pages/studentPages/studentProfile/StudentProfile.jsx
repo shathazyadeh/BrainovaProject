@@ -191,7 +191,7 @@ function StudentProfile() {
     >
       <Box
         sx={{
-          paddingX: "30px",
+          paddingX: {xs:"15px",sm:"30px"},
         }}
       >
         <Grid container spacing={4}>

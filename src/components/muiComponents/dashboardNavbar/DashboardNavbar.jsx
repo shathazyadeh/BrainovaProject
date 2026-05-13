@@ -74,7 +74,12 @@ export default function DashboardNavbar() {
       >
         {" "}
         {/*عشان يطلع فوق الدروار */}
-        <Toolbar>
+        <Toolbar
+          sx={{
+            paddingLeft: {xs:"5px",sm:"18px"},
+            paddingRight: "15px",
+          }}
+        >
           {auth && (
             <div style={{ display: "flex", flexGrow: 1, alignItems: "center" }}>
               <IconButton
@@ -89,8 +94,9 @@ export default function DashboardNavbar() {
                 <Avatar
                   sx={{
                     bgcolor: "var(--secondary-color)",
-                    fontSize: {xs:"25px",md:"30px"},
-                    width: {xs:40,sm:49}, height: {xs:40,sm:49}
+                    fontSize: { xs: "25px", md: "30px" },
+                    width: { xs: 40, sm: 49 },
+                    height: { xs: 40, sm: 49 },
                   }}
                 >
                   {user?.userName?.charAt(0).toUpperCase()}
@@ -99,19 +105,20 @@ export default function DashboardNavbar() {
               <Typography
                 component={"span"}
                 sx={{
-                  fontSize: {xs:"15px",md:"18px"},
+                  fontSize: { xs: "15px", md: "18px" },
                   fontWeight: "300",
                   paddingLeft: "5px",
                   letterSpacing: "2px",
                   display: { md: "none" },
                 }}
               >
-                Welcome back,<br/>
+                Welcome back,
+                <br />
                 <Typography
                   component={"span"}
                   sx={{
                     color: "var( --primary-color)",
-                    fontSize: {xs:"15px",md:"18px"},
+                    fontSize: { xs: "15px", md: "18px" },
                     fontWeight: "300",
                     letterSpacing: "2px",
                   }}
@@ -189,16 +196,32 @@ export default function DashboardNavbar() {
                       </MenuItem>
                     ))
                   : [
-                      <MenuItem key="dashboard" sx={{color: "#fff"}} onClick={handleDashboard}>
+                      <MenuItem
+                        key="dashboard"
+                        sx={{ color: "#fff" }}
+                        onClick={handleDashboard}
+                      >
                         Dashboard
                       </MenuItem>,
-                      <MenuItem key="users" sx={{color: "#fff"}} onClick={handleUserManagement}>
+                      <MenuItem
+                        key="users"
+                        sx={{ color: "#fff" }}
+                        onClick={handleUserManagement}
+                      >
                         User Management
                       </MenuItem>,
-                      <MenuItem key="profile" sx={{color: "#fff"}} onClick={handleProfile}>
+                      <MenuItem
+                        key="profile"
+                        sx={{ color: "#fff" }}
+                        onClick={handleProfile}
+                      >
                         Profile
                       </MenuItem>,
-                      <MenuItem key="logout" sx={{color: "#fff"}} onClick={handleLogout}>
+                      <MenuItem
+                        key="logout"
+                        sx={{ color: "#fff" }}
+                        onClick={handleLogout}
+                      >
                         Logout
                       </MenuItem>,
                     ]}
@@ -209,7 +232,7 @@ export default function DashboardNavbar() {
             component={"span"}
             sx={{
               bgcolor: "rgba(43, 25, 25)",
-              padding: {xs:"6px",sm:"10px"},
+              padding: { xs: "6px", sm: "10px" },
               borderRadius: "15px",
               display: "inline-flex",
               justifyContent: "center",
