@@ -59,7 +59,7 @@ function ChildModal({ role, onCloseParent }) {
     }, 150);
   };
 
-  const isCustomScreen = useMediaQuery("(max-width:500px)");
+  const isBelow500px = useMediaQuery("(max-width:500px)");
 
   return (
     <React.Fragment>
@@ -117,7 +117,7 @@ function ChildModal({ role, onCloseParent }) {
                 useHook={useCreateStudent}
                 showPassword={false}
                 textfieldColor={"textfield_black"}
-                fullWidthInput={isCustomScreen ? true : false}
+                fullWidthInput={isBelow500px ? true : false}
                 onSuccess={handleSuccess}
               />
             </>
@@ -131,7 +131,7 @@ function ChildModal({ role, onCloseParent }) {
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
                 onSuccess={handleSuccess}
-                fullWidthInput={isCustomScreen ? true : false}
+                fullWidthInput={isBelow500px ? true : false}
               />
             </>
           ) : // else role is admin
@@ -144,7 +144,7 @@ function ChildModal({ role, onCloseParent }) {
                 showSupervisors={false}
                 textfieldColor={"textfield_black"}
                 onSuccess={handleSuccess}
-                fullWidthInput={isCustomScreen ? true : false}
+                fullWidthInput={isBelow500px ? true : false}
               />
             </>
           ) : (
@@ -157,6 +157,7 @@ function ChildModal({ role, onCloseParent }) {
 }
 
 export default function NestedModal() {
+  const isMobile = useMediaQuery("(max-width:600px)");
   const currentUser = useAuthStore((state) => state.user);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -191,11 +192,11 @@ export default function NestedModal() {
             paddingX: "20px",
           },
           "@media (max-width:600px)": {
-            fontSize: "0px",
             borderRadius: "50%",
             minWidth: "55px",
             height: "55px",
             padding: 0,
+            justifyContent: "center",
           },
         }}
       >
@@ -203,16 +204,15 @@ export default function NestedModal() {
           component={FaPlus}
           sx={{
             fontSize: "19px",
-            paddingRight: "6px",
-            "@media (max-width:1280px)": {
+            paddingRight: isMobile ? "0px" : "6px",
+            "@media (max-width:400px)": {
               fontSize: "16px",
-            },
-            "@media (max-width:600px)": {
-              fontSize: "19px",
             },
           }}
         />
-        Add User
+
+        {/* النص */}
+        {!isMobile && "Add User"}
       </Button>
       <Modal
         open={open}

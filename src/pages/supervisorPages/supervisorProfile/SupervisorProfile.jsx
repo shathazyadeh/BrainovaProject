@@ -21,7 +21,7 @@ function SupervisorProfile() {
           height: { xs: "100%", md: "90vh" },
           display: "flex",
           justifyContent: "center",
-          paddingBottom:{xs:'30px',sm:'0px'}
+          paddingBottom: { xs: "30px", sm: "0px" },
         }}
       >
         <Container maxWidth="lg">
@@ -58,6 +58,7 @@ function SupervisorProfile() {
                 fontWeight: "600",
                 fontSize: "34px",
                 textAlign: "center",
+                wordBreak: "break-word",
                 "@media (max-width:700px)": { fontSize: "26px" },
               }}
             >
@@ -140,7 +141,8 @@ function SupervisorProfile() {
           </Box>
         </Container>
       </Box>
-     <DashboardFooter/>
+
+      <DashboardFooter />
     </>
   );
 }
