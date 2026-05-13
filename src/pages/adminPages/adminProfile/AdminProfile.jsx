@@ -17,173 +17,174 @@ import { TiAttachment } from "react-icons/ti";
 import { MdOutlinePhone } from "react-icons/md";
 import { PiUserBold } from "react-icons/pi";
 import { FaLocationArrow } from "react-icons/fa6";
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 
 
 function PermissionsBox({ permissions }) {
   return (
     <Box className='super_permissions flex_column' sx={{
-                      height: '100', paddingX: { lg: "40px" }, paddingBottom: '23px', paddingTop: '30px', gap: "10px", bgcolor: '#3e27274d', borderRadius: '20px',
-                      "@media (max-width:1335px)": {
-                        paddingBottom: "60px",
-                        paddingX: '10px',
-                      },
-                      "@media (max-width:1304px)": {
-                        paddingBottom: "40px",
-                        paddingX: '12px'
-                      },
-                      "@media (max-width:1246px)": {
-                        paddingBottom: "60px",
-                        paddingX: '12px'
-                      }, "@media (max-width:1449px)": {
+      height: '100', paddingX: { lg: "40px" }, paddingBottom: '23px', paddingTop: '30px', gap: "10px", bgcolor: '#3e27274d', borderRadius: '20px',
+      "@media (max-width:1335px)": {
+        paddingBottom: "60px",
+        paddingX: '10px',
+      },
+      "@media (max-width:1304px)": {
+        paddingBottom: "40px",
+        paddingX: '12px'
+      },
+      "@media (max-width:1246px)": {
+        paddingBottom: "60px",
+        paddingX: '12px'
+      }, "@media (max-width:1449px)": {
 
-                        paddingY: "37px",
-                        paddingX: '13px'
+        paddingY: "37px",
+        paddingX: '13px'
 
-                      }, "@media (max-width:1422px)": {
-                        paddingBottom: "58px",
-                      }, "@media (max-width:1313px)": {
-                        paddingY: "36px",
-                      }, "@media (max-width:1225px)": {
-                        paddingY: "65px",
-                      }, "@media (max-width:1200px)": {
-                        paddingX: '60px',
-                      },
-                      "@media (max-width:999px)": {
-                        paddingX: '60px',
-                      }, "@media (max-width:900px)": {
-                        paddingX: '0px',
-                      },
-                      "@media (max-width:600px)": {
-                        paddingX: '35px',
-
-
-                      }, "@media (max-width:423px)": {
-                        paddingY: '30px',
-                        paddingX: '10px'
-                      }
+      }, "@media (max-width:1422px)": {
+        paddingBottom: "58px",
+      }, "@media (max-width:1313px)": {
+        paddingY: "36px",
+      }, "@media (max-width:1225px)": {
+        paddingY: "65px",
+      }, "@media (max-width:1200px)": {
+        paddingX: '60px',
+      },
+      "@media (max-width:999px)": {
+        paddingX: '60px',
+      }, "@media (max-width:900px)": {
+        paddingX: '0px',
+      },
+      "@media (max-width:600px)": {
+        paddingX: '35px',
 
 
-                    }}>
-                      <Typography
-                        component={"h1"}
-                        variant="h4"
-                        sx={{
-                          fontSize: { xs: '18px', sm: '25px', lg: '30px' },
-                          color: "#ffffff",
-                          fontFamily: "var(--primary-font)",
-                          fontWeight: "600",
-                          display: "flex",
-                          gap: '15px',
-                          whiteSpace: "nowrap",
-                        
-                          marginBottom: { xs: '15px', md: "25px", },
-                          paddingBottom: { xs: '10px', sm: "25px" },
-                          borderBottom: "1px solid #ffffff2a",
-                          alignItems: 'center'
-                          , "@media (max-width:1225px)": {
-                            fontSize: '29px'
-                          },
-                          "@media (max-width:500px)": {
-                            fontSize: '23px',
-                            paddingBottom: '15px',
-                            
-                          }, "@media (max-width:423px)": {
-                            fontSize: '16px',paddingX:'5px'
-                          },
-                        }}
-                      >  <Box
-                          component={LuCrown}
-                          sx={{
-                            padding: '5px',
-                            fontSize: { xs: '30px', sm: '37px', lg: '45px' },
-                            borderRadius: "50%",
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            bgcolor: "var(--primary-color)",
-                            color: "#fff",
-                            flexShrink: 0,
-                            boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
-                            border: "1px solid rgb(255, 0, 0)",
-                            transition: "0.5s ease",
-                            
-                            marginLeft: { xs: '10px', sm: '40px',md:'15px' },
-                            "&:hover": {
-                              color: "var(--primary-color)",
-                              bgcolor: '#fffffff0',
-                              transform: "scale(1.05)",
-                              boxShadow: "0 6px 18px rgba(255, 0, 0, 0.56)",
-                            }, "@media (max-width:1225px)": {
-                              fontSize: '35px'
-                            }, "@media (max-width:423px)": {
-                              fontSize: '30px'
-                            },
-
-                          }}
-                        />
-                        Permissions :
-                      </Typography>
-
-                      <Grid container spacing={2}>
-                        {permissions.map((perm, index) => (
-                          <Grid item size={{ xs: 12, md: 6, lg: 12 }} key={index}>
+      }, "@media (max-width:423px)": {
+        paddingY: '30px',
+        paddingX: '10px'
+      }
 
 
-                            <Typography
-                              key={index}
-                              sx={{
-                                height: '100%',
-                                alignSelf: "stretch",
-                                color: "#fff",
-                                fontSize: { xs: '12px', sm: '15px', md: "17px" },
-                                fontWeight: "600",
-                                paddingLeft: { lg: "15px" },
-                                fontFamily: "var(--primary-font)",
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '5px',
-                                paddingY: { xs: '10px', md: "10px", lg: '4px' },
-                                paddingX: { xs: '10px', md: "10px", lg: '6px' },
-                                marginX: { xs: "5px", sm: '40px', md: "0px" },
-                                borderRadius: '15px',
-                                bgcolor: '#ffffff18',
-                                transition: "all 0.5s ease",
-                                "&:hover": {
-                                  color: "var(--primary-color)",
-                                  transform: "scale(1.05)",
-                                  boxShadow: "0 6px 18px rgba(255, 0, 0, 0.25)",
-                                }, "@media (max-width:1422px)": {
-                                  fontSize: '15px'
-                                }, "@media (max-width:1224px)": {
-                                  fontSize: '13px'
-                                }, "@media (max-width:600px)": {
-                                  fontSize: '12px'
-                                },
+    }}>
+      <Typography
+        component={"h1"}
+        variant="h4"
+        sx={{
+          fontSize: { xs: '18px', sm: '25px', lg: '30px' },
+          color: "#ffffff",
+          fontFamily: "var(--primary-font)",
+          fontWeight: "600",
+          display: "flex",
+          gap: '15px',
+          whiteSpace: "nowrap",
 
-                              }}
-                            >
+          marginBottom: { xs: '15px', md: "25px", },
+          paddingBottom: { xs: '10px', sm: "25px" },
+          borderBottom: "1px solid #ffffff2a",
+          alignItems: 'center'
+          , "@media (max-width:1225px)": {
+            fontSize: '29px'
+          },
+          "@media (max-width:500px)": {
+            fontSize: '23px',
+            paddingBottom: '15px',
+
+          }, "@media (max-width:423px)": {
+            fontSize: '16px', paddingX: '5px'
+          },
+        }}
+      >  <Box
+          component={LuCrown}
+          sx={{
+            padding: '5px',
+            fontSize: { xs: '30px', sm: '37px', lg: '45px' },
+            borderRadius: "50%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            bgcolor: "var(--primary-color)",
+            color: "#fff",
+            flexShrink: 0,
+            boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
+            border: "1px solid rgb(255, 0, 0)",
+            transition: "0.5s ease",
+
+            marginLeft: { xs: '10px', sm: '40px', md: '15px' },
+            "&:hover": {
+              color: "var(--primary-color)",
+              bgcolor: '#fffffff0',
+              transform: "scale(1.05)",
+              boxShadow: "0 6px 18px rgba(255, 0, 0, 0.56)",
+            }, "@media (max-width:1225px)": {
+              fontSize: '35px'
+            }, "@media (max-width:423px)": {
+              fontSize: '30px'
+            },
+
+          }}
+        />
+        Permissions :
+      </Typography>
+
+      <Grid container spacing={2}>
+        {permissions.map((perm, index) => (
+          <Grid item size={{ xs: 12, md: 6, lg: 12 }} key={index}>
+
+
+            <Typography
+              key={index}
+              sx={{
+                height: '100%',
+                alignSelf: "stretch",
+                color: "#fff",
+                fontSize: { xs: '12px', sm: '15px', md: "17px" },
+                fontWeight: "600",
+                paddingLeft: { lg: "15px" },
+                fontFamily: "var(--primary-font)",
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+                paddingY: { xs: '10px', md: "10px", lg: '4px' },
+                paddingX: { xs: '10px', md: "10px", lg: '6px' },
+                marginX: { xs: "5px", sm: '40px', md: "0px" },
+                borderRadius: '15px',
+                bgcolor: '#ffffff18',
+                transition: "all 0.5s ease",
+                "&:hover": {
+                  color: "var(--primary-color)",
+                  transform: "scale(1.05)",
+                  boxShadow: "0 6px 18px rgba(255, 0, 0, 0.25)",
+                }, "@media (max-width:1422px)": {
+                  fontSize: '15px'
+                }, "@media (max-width:1224px)": {
+                  fontSize: '13px'
+                }, "@media (max-width:600px)": {
+                  fontSize: '12px'
+                },
+
+              }}
+            >
 
 
 
-                              <Box
-                                component={FaLocationArrow}
-                                sx={{
-                                  color: "var(--secondary-color)",
-                                  marginRight: "8px",
-                                  flexShrink: '0'
-                                }}
-                              /> {perm}
-                            </Typography>
+              <Box
+                component={FaLocationArrow}
+                sx={{
+                  color: "var(--secondary-color)",
+                  marginRight: "8px",
+                  flexShrink: '0'
+                }}
+              /> {perm}
+            </Typography>
 
 
-                          </Grid>
-                        ))}
+          </Grid>
+        ))}
 
 
-                      </Grid>
+      </Grid>
 
 
-                    </Box>
+    </Box>
   );
 }
 function AdminProfile() {
@@ -226,6 +227,7 @@ function AdminProfile() {
           justifyContent: "center",
           paddingTop: "30px",
           marginLeft: { md: '10px' },
+      
         }}
       >
         <Container maxWidth="lg">
@@ -577,23 +579,23 @@ function AdminProfile() {
 
 
 
-          <Box className="profile-info" sx={{ marginTop: '70px', }}>
+          <Box className="profile-info" sx={{ marginTop: '60px', }}>
             <GlowCard enableTilt={false} glowIntensity="soft" className="admin-glow-card" >
 
               <Grid container rowSpacing={2} sx={{ alignItems: 'center' }}>
 
                 <Grid item size={{ xs: 12, lg: 5 }}>
                   {user.role === "Admin" ? (
-                     <PermissionsBox
-  
-    permissions={adminPermissions[0].permissions}
-  />
+                    <PermissionsBox
+
+                      permissions={adminPermissions[0].permissions}
+                    />
                   ) : (
-<PermissionsBox
-   
-    permissions={superAdminPermissions[0].permissions}
-  />
-                   
+                    <PermissionsBox
+
+                      permissions={superAdminPermissions[0].permissions}
+                    />
+
                   )}
 
                 </Grid>
@@ -651,39 +653,15 @@ function AdminProfile() {
                 </Grid>
               </Grid>
             </GlowCard>
-            
+
           </Box>
+        
+     
         </Container>
       </Box>
+<DashboardFooter/> 
 
 
-
-      <Box
-        className="lower_footer"
-        sx={{
-          borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-          width: "fit-content",
-          margin: "auto",
-          paddingX: { xs: "0px", md: "200px" },
-          textAlign: "center",
-          marginTop: { xs: "60px", md: "60px" },
-        }}
-      >
-        <Typography
-          component={"p"}
-          sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
-        >
-          © 2026{" "}
-          <Typography
-            component={"span"}
-            sx={{ color: "var(--dark-red-color)" }}
-          >
-            Brainova
-          </Typography>
-          . All rights reserved. | Built for medical education and research
-          purposes.
-        </Typography>
-      </Box>
     </>
   );
 }

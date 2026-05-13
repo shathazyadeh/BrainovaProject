@@ -26,6 +26,7 @@ import BasicModal from "../../../components/muiComponents/basicModal/BasicModal"
 import style from "./SuperAdminDashboard.module.css";
 import ActivityStatusBarChart from "../../../components/xChartComponents/barChart/ActivityStatusBarChart";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
+import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 
 function SuperAdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
@@ -554,10 +555,7 @@ function SuperAdminDashboard() {
               paddingRight: "10px",
               "@media (max-width:768px)": {
                 paddingTop: "0px",
-              },
-              "@media (max-width:1280px)": {
-                paddingBottom: "10px",
-              },
+              }
             }}
           >
             <Link
@@ -582,34 +580,11 @@ function SuperAdminDashboard() {
             type="editUser"
           />
 
-          <Box
-            className="lower_footer"
-            sx={{
-              borderTop: "1px solid rgba(53, 53, 53, 0.93)",
-              width: "fit-content",
-              margin: "auto",
-              paddingX: { xs: "0px", md: "200px" },
-              textAlign: "center",
-              marginTop: "60px",
-            }}
-          >
-            <Typography
-              component={"p"}
-              sx={{ color: "var(--mid-gray-color)", paddingY: "30px" }}
-            >
-              © 2026{" "}
-              <Typography
-                component={"span"}
-                sx={{ color: "var(--dark-red-color)" }}
-              >
-                Brainova
-              </Typography>
-              . All rights reserved. | Built for medical education and research
-              purposes.
-            </Typography>
-          </Box>
         </Container>
       </Box>
+ 
+         <DashboardFooter/>
+
     </>
   );
 }
