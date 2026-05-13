@@ -903,7 +903,7 @@ function PredictTumor() {
           </Box>
         </Box>
       </Box>
-      {showResult && preview ? (
+     {showResult && predictMRIMutation.data && preview ? (
         <Box component={"section"} sx={{ bgcolor: "#fff" }}>
           <Box
             className="ai_result flex_column"
