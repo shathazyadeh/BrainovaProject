@@ -223,9 +223,12 @@ function PredictTumor() {
               "@media (max-width:700px)": {
                 fontSize: "14px",
               },
-              "@media (max-width:430px)": {
+              "@media (max-width:900px)": {
                 fontSize: "12px",
               },
+              "@media (max-width:600px)": {
+                fontSize: "12px",
+              }
             }}
           >
             <Typography component={"span"} className={style.pulse_wrapper}>
@@ -243,7 +246,7 @@ function PredictTumor() {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               textAlign: "center",
-              fontSize: { xs: "35px", sm: "55px", md: "96px" },
+              fontSize: { xs: "38px", sm: "60px", md: "88px" ,lg:"96px"},
               lineHeight: { xs: "70px", sm: "100px" },
             }}
           >
@@ -253,7 +256,7 @@ function PredictTumor() {
             sx={{
               color: "var(--secondary-color)",
               fontFamily: "var(--secondary-font)",
-              fontSize: "24px",
+              fontSize: {xs:"14px",sm:'15px',md:"19px",lg:"24px"},
               textAlign: "center",
             }}
           >
@@ -273,9 +276,10 @@ function PredictTumor() {
             paddingTop: "30px",
             paddingBottom: "30px",
             borderRadius: "29px",
-            minHeight: "540px",
+            minHeight:{ xs:"500px",md:"540px"},
             marginTop: "60px",
             marginBottom: "100px",
+            marginX:{xs:"3px",sm:"0px"}
           }}
         >
           <Typography
@@ -284,7 +288,7 @@ function PredictTumor() {
               color: "#fff",
               fontWeight: "500",
               paddingBottom: "20px",
-              fontSize: "30px",
+              fontSize: {xs:"16px",sm:"21px",md:"25px",lg:"30px"},
               fontFamily: "var(--secondary-font)",
             }}
           >
@@ -296,7 +300,7 @@ function PredictTumor() {
               className="flex_column"
               component={"form"}
               sx={{
-                minHeight: "450px",
+                minHeight: {xs:"370px",md:"450px"},
               }}
             >
               <Box
@@ -329,18 +333,19 @@ function PredictTumor() {
                     }
                   }}
                 />
-                <FaCloudUploadAlt
+                <Box
+                  component={FaCloudUploadAlt}
                   className={style.animatedIcon}
-                  color="var(--primary-color)"
-                  size={100}
-                  style={{
-                    filter: "drop-shadow(0 0 6px rgba(232, 6, 6, 0.44))",
-                  }}
+                  sx={{color:"var(--primary-color)",filter: "drop-shadow(0 0 6px rgba(232, 6, 6, 0.44))",fontSize:{xs:"50px",sm:"70px",md:"90px",lg:"100px"}}}
+                  
+                    
+                 
                 />
                 <Typography
                   component={"p"}
                   variant="h5"
                   sx={{
+                    fontSize:{xs:"15px",sm:"18px",md:"24px"},
                     color: "#fff",
                     letterSpacing: "1px",
                     fontFamily: "var(--secondary-font)",
@@ -350,18 +355,18 @@ function PredictTumor() {
                 </Typography>
                 <Button
                   component={"span"}
-                  startIcon={<FaFolderOpen size={18} />}
+                 
                   sx={{
                     bgcolor: "var(--primary-color)",
                     color: "#fff",
                     textTransform: "capitalize",
-                    fontSize: "18px",
+                    fontSize: {xs:"11px",sm:"15px",md:"16px",lg:"18px"},
                     paddingY: "7px",
                     paddingX: "35px",
                     borderRadius: "8px",
                     boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
                   }}
-                >
+                > <Box component={FaFolderOpen} sx={{marginRight:'7px',fontSize:{xs:"14px",sm:"18px",md:"23px"}}}/>
                   Browse File
                 </Button>
               </Box>
@@ -433,7 +438,7 @@ function PredictTumor() {
                     <Typography
                       component={"h3"}
                       sx={{
-                        fontSize: "25px",
+                        fontSize: {xs:'18px',sm:"25px"},
                         textAlign: "center",
                         fontWeight: "600",
                         color: "var(--primary-color)",
@@ -451,6 +456,10 @@ function PredictTumor() {
                         textAlign: "center",
                         marginTop: "3px",
                         marginBottom: "20px",
+                        fontSize:{xs:'14px',sm:"16px"},
+            "@media (max-width:698px)": {
+               fontSize:'13px'
+            },
                       }}
                     >
                       Click the button below to
@@ -471,7 +480,8 @@ function PredictTumor() {
       <Box
         component={"section"}
         className="predict_tumor_form"
-        sx={{ bgcolor: "#fff" }}
+        sx={{ bgcolor: "#fff" ,
+               }}
       >
         <Box
           className="student_diagnosis_form"
@@ -488,7 +498,7 @@ function PredictTumor() {
             },
             "@media (max-width:1080px)": {
               paddingX: "20px",
-              paddingBottom: "0px",
+              paddingBottom: "25px",
             },
           }}
         >
@@ -498,7 +508,7 @@ function PredictTumor() {
               color: "#fff",
               fontWeight: "500",
               paddingBottom: "20px",
-              fontSize: "30px",
+              fontSize:{xs:"22px",sm: "30px"},
               fontFamily: "var(--secondary-font)",
             }}
           >
@@ -535,6 +545,7 @@ function PredictTumor() {
                     px: "18px",
                     py: "10px",
                     bgcolor: "#171717",
+                        fontSize:{xs:"12px",sm:"15px"},
                   }}
                 >
                   {error?.message}
@@ -571,7 +582,7 @@ function PredictTumor() {
                       color: "#fff",
                       "&.Mui-focused": { color: "#fff" },
                       mb: 2,
-                      fontSize: "17px",
+                      fontSize:{ xs:"15px",sm:"17px"},
                      wordBreak: "break-word",      
                      overflowWrap: "break-word",   
                     }}
@@ -652,6 +663,7 @@ function PredictTumor() {
                                       },
                                       "&.Mui-disabled .MuiTypography-root": {
                                         color: "#4e4c4c",
+                                        fontWeight:"500"
                                       },
                                       "&:has(input:checked)": {
                                         backgroundColor: "#ff2d2d",
@@ -731,7 +743,7 @@ function PredictTumor() {
           <Box
             className="send_btn_and_errors flex_column"
             sx={{
-              "@media (min-width:1080px)": {
+              "@media (min-width:1080.1px)": {
                 display: "none",
               },
               alignItems: "center",
@@ -761,9 +773,12 @@ function PredictTumor() {
                   gap: "8px",
                   boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
                   marginTop: "40px",
+                      fontSize:{xs:"12px",sm:"15px"},
                 }}
               >
-                <Typography component={"span"} className={style.pulse_wrapper}>
+                <Typography component={"span"} className={style.pulse_wrapper} sx={{
+                   "--pulse-size": "14px",          
+                   "--pulse-wrapper-size": "14px",  "--pulse-scale": "0.1"  }}  >
                   <FaCircle size={18} color="ff2d2d" />
                 </Typography>
                 {serverErrors}
@@ -788,9 +803,12 @@ function PredictTumor() {
                   gap: "8px",
                   boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
                   marginTop: "40px",
+                  fontSize:{xs:"12px",sm:"15px"},
                 }}
               >
-                <Typography component={"span"} className={style.pulse_wrapper}>
+                <Typography component={"span"} className={style.pulse_wrapper} sx={{
+                   "--pulse-size": "14px",          
+                   "--pulse-wrapper-size": "14px",  "--pulse-scale": "0.1"  }} >
                   <FaCircle size={18} color="ff2d2d" />
                 </Typography>
                 {fileError}
@@ -865,9 +883,13 @@ function PredictTumor() {
                   gap: "8px",
                   boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
                   marginTop: "40px",
+                      fontSize:{xs:"12px",sm:"15px"},
+                  
                 }}
               >
-                <Typography component={"span"} className={style.pulse_wrapper}>
+                <Typography component={"span"} className={style.pulse_wrapper} sx={{
+                "--pulse-size": "14px",          
+                "--pulse-wrapper-size": "14px",  "--pulse-scale": "0.1"  }} >
                   <FaCircle size={18} color="ff2d2d" />
                 </Typography>
                 {serverErrors}
@@ -882,7 +904,7 @@ function PredictTumor() {
                   border: "1px solid var(--primary-color)",
                   width: "fit-content",
                   borderRadius: "60px",
-                  color: "#fff",
+                  color: "#ffffff",
                   px: "18px",
                   py: "10px",
                   bgcolor: "#171717",
@@ -892,9 +914,13 @@ function PredictTumor() {
                   gap: "8px",
                   boxShadow: "0 0 15px rgba(255, 0, 0, 0.6)",
                   marginTop: "40px",
+                      fontSize:{xs:"12px",sm:"15px"},
+                  
                 }}
               >
-                <Typography component={"span"} className={style.pulse_wrapper}>
+                <Typography component={"span"} className={style.pulse_wrapper} sx={{
+                  "--pulse-size": "14px",          
+                  "--pulse-wrapper-size": "14px",  "--pulse-scale": "0.1"  }} >
                   <FaCircle size={18} color="ff2d2d" />
                 </Typography>
                 {fileError}
@@ -911,13 +937,14 @@ function PredictTumor() {
               bgcolor: "#171717",
               paddingTop: "25px",
               paddingBottom: "150px",
-              paddingX: "30px",
+              paddingX: {xs:"0px",sm:"30px"},
               gap: "10px",
               justifyContent: "center",
               borderTopRightRadius: "15%",
               "@media (max-width:1080px)": {
                 borderTopRightRadius: "0",
-              },
+              }
+              
             }}
           >
             <Grid
@@ -926,18 +953,19 @@ function PredictTumor() {
               sx={{ display: "flex", justifyContent: "center" }}
             >
               <Grid item size={{ xs: 10, sm: 8, md: 5 }}>
-                <Box className="left_side" sx={{ marginBottom: "40px" }}>
+                <Box className="left_side" sx={{ marginBottom: "40px",marginTop:{xs:"40px",sm:"50px",md:"0px"} }}>
                   <Typography
                     component={"h3"}
                     sx={{
                       color: "#fff",
                       fontWeight: "500",
-                      fontSize: "30px",
+                      fontSize:{xs:"22px",sm: "30px"},
                       paddingBottom: "25px",
                       fontFamily: "var(--secondary-font)",
                     }}
-                  >
-                    <SlEnergy size={"30"} color="red" />
+                  > 
+                  <Box component={SlEnergy} sx={{color:"var(--primary-color)",fontSize:{xs:"27px",sm:"30px"}}} />
+                    
                     Grad-CAM Heatmap
                   </Typography>
                   <Box
@@ -1006,7 +1034,7 @@ function PredictTumor() {
                         color: "#fff",
                         textTransform: "capitalize",
                         paddingY: "5px",
-                        paddingX: "20px",
+                        paddingX: {xs:'15px',sm:"20px"},
                         marginTop: "30px",
                         display: "flex",
                         gap: "20px",
@@ -1015,7 +1043,7 @@ function PredictTumor() {
                       }}
                     >
                       <GiCycle size={20} />
-                      <Typography sx={{ fontSize: "17px", fontWeight: "500" }}>
+                      <Typography sx={{ fontSize: {xs:'14px',sm:"17px"}, fontWeight: "500" }}>
                         {showGradCam ? (
                           <>
                             {" "}
@@ -1033,7 +1061,7 @@ function PredictTumor() {
                 </Box>
               </Grid>
               <Grid item size={{ xs: 12, md: 7 }}>
-                <Box className="right_side">
+                <Box className="right_side" sx={{padding:{xs:'20px',sm:"0px"},}}>
                   <Box
                     component={"span"}
                     sx={{
@@ -1041,13 +1069,13 @@ function PredictTumor() {
                       display: "flex",
                       gap: "10px",
                       fontWeight: "500",
-                      fontSize: "30px",
+                       fontSize:{xs:"22px",sm: "30px"},
                       marginBottom: "40px",
                       alignItems: "center",
                       fontFamily: "var(--secondary-font)",
                     }}
                   >
-                    <LuBrain size={30} color="red" />
+                    <Box component={LuBrain} sx={{color:"var(--primary-color)",fontSize:{xs:"25px",sm:"30px"}}} />
                     AI Diagnosis Result
                   </Box>
                   <Box
@@ -1064,6 +1092,7 @@ function PredictTumor() {
                         color: "var(--secondary-color)",
                         paddingBottom: "10px",
                         fontWeight: "600",
+                        fontSize:{xs:'14px',sm:'16px'}
                       }}
                     >
                       Predicted Condition
@@ -1074,7 +1103,7 @@ function PredictTumor() {
                         border: "2px solid #343434",
                         borderRadius: "5px",
                         padding: "10px",
-                        fontSize: "20px",
+                        fontSize: {xs:'15px',sm:"20px"},
                         fontWeight: "500",
                         textTransform: "capitalize",
                         paddingLeft: "20px",
@@ -1096,6 +1125,7 @@ function PredictTumor() {
                           color: "var(--secondary-color)",
                           fontWeight: "600",
                           flexGrow: "1",
+                          fontSize:{xs:'14px',sm:'16px'}
                         }}
                       >
                         Confidence Level
@@ -1104,7 +1134,7 @@ function PredictTumor() {
                         sx={{
                           color: "rgb(249, 10, 10)",
                           mb: 1,
-                          fontSize: "20px",
+                          fontSize: {xs:'15px',sm:"20px"},
                           fontWeight: "400",
                         }}
                       >
@@ -1136,6 +1166,7 @@ function PredictTumor() {
                         fontWeight: "600",
                         marginTop: "22px",
                         marginBottom: "10px",
+                        fontSize:{xs:'14px',sm:'16px'}
                       }}
                     >
                       Detection Status
@@ -1150,8 +1181,9 @@ function PredictTumor() {
                         borderRadius: "5px",
                         bgcolor: "#79030334",
                         color: "#ff0000",
-                        paddingY: "5px",
-                        paddingX: "25px",
+                        paddingY:{xs:'5px',sm: "5px"},
+                        paddingX:{xs:'13px',sm: "25px"},
+                        fontSize:{xs:'14px',sm:'16px'}
                       }}
                     >
                       <IoIosCheckmarkCircleOutline size={18} color="#ff0000" />
@@ -1206,7 +1238,7 @@ function PredictTumor() {
               borderTopRightRadius: "15%",
               "@media (max-width:1080px)": {
                 borderTopRightRadius: "0",
-              },
+              }
             }}
           >
             <Box
@@ -1218,16 +1250,18 @@ function PredictTumor() {
                 fontWeight: "500",
                 fontSize: "30px",
                 marginBottom: "50px",
-                alignItems: "center",
+                alignItems: "center", "@media (max-width:900px)": {
+                    marginTop:'35px'
+              },
               }}
             >
-              <LuBrain size={30} color="red" />
+              <Box component={LuBrain} sx={{color:"var(--primary-color)",fontSize:{xs:"25px",sm:"30px"}}} />
               <Typography
                 sx={{
                   fontFamily: "var(--secondary-font)",
                   fontWeight: "500",
-                  fontSize: { xs: "30px", sm: "40px" },
-                  flex: "0 0 auto",
+                  fontSize: { xs: "22px", sm: "40px" },
+                  flex: "0 0 auto"
                 }}
               >
                 AI Diagnosis Result
@@ -1245,6 +1279,7 @@ function PredictTumor() {
                 marginY: "50px",
                 letterSpacing: "2px",
                 textAlign: "center",
+                 fontSize: { xs: "14px", sm: "18px" },
               }}
             >
               AI result will appear after submitting the report

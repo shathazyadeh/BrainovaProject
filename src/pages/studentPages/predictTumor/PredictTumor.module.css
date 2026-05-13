@@ -46,17 +46,22 @@
 .pulse_wrapper {
     position: relative;
     display: inline-flex;
+    width: var(--pulse-wrapper-size, auto);
+    height: var(--pulse-wrapper-size, auto);
 }
 
 .pulse_wrapper::after {
     content: "";
     position: absolute;
-    width: 18px;
-    height: 18px;
+    width: var(--pulse-size, 18px);   /* default */
+    height: var(--pulse-size, 18px);  
+    top:1px;
+    left:0px;
     border-radius: 50%;
     background: var(--light-red-color);
     animation: pulse 1.5s infinite;
     opacity: 0.6;
+    transform: scale(var(--pulse-scale, 1));
 }
 
 @keyframes pulse {

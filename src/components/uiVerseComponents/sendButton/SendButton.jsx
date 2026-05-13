@@ -186,6 +186,16 @@ const Root = styled(ButtonBase, {
     filter: "blur(0.5px)",
     zIndex: 1,
   },
+  "@media (max-width:600px)": {
+  minWidth: 170,
+  height: 60,
+  padding: "20px 25px",
+},
+  "@media (max-width:416px)": {
+   minWidth: 150,
+  height: 60,
+  padding: "20px 20x",
+},
 }));
 
 const Outline = styled(Box)(({ theme }) => ({
@@ -228,7 +238,9 @@ const TextRow = styled(Typography)({
   lineHeight: 1,
   letterSpacing: 0,
   color: "#111",
-  whiteSpace: "pre",
+  whiteSpace: "pre", "@media (max-width:600px)": {
+    fontSize: 15,
+  },
 });
 
 function PlaneIcon() {

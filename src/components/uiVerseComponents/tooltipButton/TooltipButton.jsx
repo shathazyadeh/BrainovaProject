@@ -18,8 +18,8 @@ export default function TooltipButton({ onClick }) {
           alignItems: "center",
           background: "linear-gradient(-90deg, #fa0505 0%, #bebbbb 100%)",
           borderRadius: "50px",
-          height: 50,
-          width: hovered ? "190px" : "50px",
+          height:{ xs:"20",sm:"50"},
+          width: hovered ? {xs:"150px",sm:"190px"} : {xs:"40px",sm:"50px"},
           transition: "all 0.3s ease",
           overflow: "hidden",
           cursor: "pointer",
@@ -29,8 +29,8 @@ export default function TooltipButton({ onClick }) {
         {/* الدائرة */}
         <Box
           sx={{
-            width: 50,
-            height: 50,
+            width: {xs:40,sm:50},
+            height: {xs:40,sm:50},
             borderRadius: "50%",
             backgroundColor: "var(--primary-color)",
             display: "flex",
@@ -40,7 +40,13 @@ export default function TooltipButton({ onClick }) {
             boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
           }}
         >
-          <FaExchangeAlt color="#fff" size={20} />
+           <Box
+            component={FaExchangeAlt}
+            sx={{
+              color: "#fff",
+              fontSize: { xs: "15px",  sm: "20px" },
+            }}
+          />
         </Box>
 
         {/* النص */}
@@ -52,6 +58,7 @@ export default function TooltipButton({ onClick }) {
             transform: hovered ? "translateX(0)" : "translateX(-10px)",
             transition: "all 0.3s ease",
             whiteSpace: "nowrap",
+             fontSize: { xs: "12px", sm: "16px" },
           }}
         >
           Change Image
