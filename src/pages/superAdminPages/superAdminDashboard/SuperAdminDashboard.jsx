@@ -7,6 +7,7 @@ import {
   Grid,
   Typography,
   Link,
+  useMediaQuery,
 } from "@mui/material";
 import useGetUsers from "../../../hooks/getUsersHooks/useGetUsers";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -28,6 +29,11 @@ import Loader from "../../../components/uiVerseComponents/loader/Loader";
 
 function SuperAdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
+
+  const isBelow1110px = useMediaQuery("(max-width:1110px)");
+  const isBelow1010px = useMediaQuery("(max-width:1010px)");
+  const isBelow770px = useMediaQuery("(max-width:770px)");
+
   const activeUsers = data?.filter(
     (user) => !user.isBlocked && user.roleName !== "SuperAdmin",
   ).length;
@@ -94,7 +100,7 @@ function SuperAdminDashboard() {
         "Block / Unblock Users",
         "Delete Users",
       ],
-      icon: <RiAdminFill size={35} />,
+      icon: RiAdminFill,
     },
     {
       title: "Supervisor",
@@ -106,7 +112,7 @@ function SuperAdminDashboard() {
         "Review Analysis Results",
         "Review and Manage Student Feedback",
       ],
-      icon: <FaUserDoctor size={35} />,
+      icon: FaUserDoctor,
     },
     {
       title: "Student",
@@ -118,7 +124,7 @@ function SuperAdminDashboard() {
         "Upload Reports",
         "Explore 3D Brain Models for Learning",
       ],
-      icon: <PiStudentFill size={35} />,
+      icon: PiStudentFill,
     },
   ];
 
@@ -211,7 +217,11 @@ function SuperAdminDashboard() {
           >
             <Grid container spacing={1} sx={{ width: "100%" }}>
               {summaryCards.map((card, index) => (
-                <Grid key={index} item size={{ xs: 6, sm: 3 }}>
+                <Grid
+                  key={index}
+                  item
+                  size={{ xs: 6, md: isBelow1110px ? 6 : 3 }}
+                >
                   <Box
                     className={card.className}
                     sx={{
@@ -219,7 +229,7 @@ function SuperAdminDashboard() {
                       height: "100%",
                       borderRadius: "12px",
                       display: "flex",
-                      justifyContent: "space-around",
+                      justifyContent: "space-between",
                       alignItems: "center",
                       gap: "15px",
                       paddingX: "15px",
@@ -239,7 +249,16 @@ function SuperAdminDashboard() {
                           textTransform: "uppercase",
                           fontSize: "15px",
                           fontFamily: "var(--primary-font)",
+                          "@media (max-width:1250px)": {
+                            fontSize: "13px",
+                          },
+                          "@media (max-width:1110px)": {
+                            fontSize: "15px",
+                          },
                           "@media (max-width:700px)": {
+                            fontSize: "13px",
+                          },
+                          "@media (max-width:520px)": {
                             fontSize: "11px",
                           },
                         }}
@@ -269,7 +288,17 @@ function SuperAdminDashboard() {
                         display: "flex",
                       }}
                     >
-                      <card.icon size={30} color="#fff" />
+                      <Box
+                        component={card.icon}
+                        sx={{
+                          fontSize: "30px",
+                          color: "#fff",
+                          "@media (max-width:1250px)": { fontSize: "25px" },
+                          "@media (max-width:1110px)": { fontSize: "30px" },
+                          "@media (max-width:700px)": { fontSize: "27px" },
+                          "@media (max-width:520px)": { fontSize: "25px" },
+                        }}
+                      />
                     </Typography>
                   </Box>
                 </Grid>
@@ -353,9 +382,17 @@ function SuperAdminDashboard() {
               </Typography>
             </Box>
 
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ justifyContent: "center" }}>
               {rolesData.map((role, index) => (
-                <Grid key={index} item size={{ xs: 12, md: 4 }}>
+                <Grid
+                  key={index}
+                  item
+                  size={{
+                    xs: 12,
+                    sm: isBelow770px ? 6 : 4,
+                    md: isBelow1010px ? 6 : 4,
+                  }}
+                >
                   <Box
                     className={style.card_hover_effect}
                     sx={{
@@ -390,6 +427,7 @@ function SuperAdminDashboard() {
                       }}
                     >
                       <Box
+                        component={role.icon}
                         sx={{
                           "--pulse-color":
                             role.title === "Supervisor" ? "#ff4d4d" : "#fff",
@@ -403,14 +441,21 @@ function SuperAdminDashboard() {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
+                          fontSize: "53px",
+                          "@media (max-width:1150px)": {
+                            fontSize: "45px",
+                          },
                         }}
-                      >
-                        {role.icon}
-                      </Box>
+                      />
 
                       <Box>
                         <Typography
-                          sx={{ fontSize: "18px", fontWeight: "600" }}
+                          sx={{
+                            fontSize: "18px",
+                            fontWeight: "600",
+                            "@media (max-width:1150px)": { fontSize: "17px" },
+                            "@media (max-width:400px)": { fontSize: "15px" },
+                          }}
                         >
                           {role.title}
                         </Typography>
@@ -419,6 +464,7 @@ function SuperAdminDashboard() {
                           sx={{
                             fontSize: "13px",
                             color: "rgba(255,255,255,0.75)",
+                            "@media (max-width:600px)": { fontSize: "11px" },
                           }}
                         >
                           {role.count} members
@@ -457,7 +503,7 @@ function SuperAdminDashboard() {
                                   : "rgba(255,255,255,0.15)",
                               color: "#fff",
                               display: "flex",
-                              alignItems: "center",
+                              alignItems: "flex-start",
                               gap: "6px",
                               transition: "all 0.3s ease",
                               "&:hover": {
@@ -476,6 +522,7 @@ function SuperAdminDashboard() {
                                   role.title === "Supervisor"
                                     ? "var(--primary-color)"
                                     : "rgba(255,255,255,0.9)",
+                                marginTop: "2px",
                               }}
                             >
                               <IoMdCheckmarkCircleOutline size={14} />
