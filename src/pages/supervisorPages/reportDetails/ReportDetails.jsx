@@ -67,6 +67,85 @@ function ReportDetails() {
     setOpenModal(true);
     setSelectedFeedback(feedback);
   };
+  function PredictionBadge({ value }) {
+    if (value === "meningioma")
+      return (
+        <Typography
+          sx={{
+            width: "fit-content",
+            paddingY: "5px",
+            paddingX: "10px",
+            borderRadius: "20px",
+            bgcolor: "rgb(55, 44, 28)",
+            color: "rgb(218, 148, 14)",
+            fontSize: "13px",
+            display: "flex",
+            whiteSpace: "nowrap",
+            "@media (max-width:353px)": { fontSize: "10px" },
+          }}
+        >
+          ● {value}
+        </Typography>
+      );
+    if (value === "glioma")
+      return (
+        <Typography
+          sx={{
+            width: "fit-content",
+            paddingY: "5px",
+            paddingX: "10px",
+            borderRadius: "20px",
+            bgcolor: "rgb(51, 26, 32)",
+            color: "rgb(196, 36, 38)",
+            fontSize: "13px",
+            display: "flex",
+            whiteSpace: "nowrap",
+            "@media (max-width:353px)": { fontSize: "10px" },
+          }}
+        >
+          ● {value}
+        </Typography>
+      );
+    if (value === "notumor")
+      return (
+        <Typography
+          sx={{
+            width: "fit-content",
+            paddingY: "5px",
+            paddingX: "10px",
+            borderRadius: "20px",
+            bgcolor: "rgb(23, 49, 40)",
+            color: "rgb(30, 167, 69)",
+            fontSize: "13px",
+            display: "flex",
+            whiteSpace: "nowrap",
+            "@media (max-width:353px)": { fontSize: "10px" },
+          }}
+        >
+          ● {value}
+        </Typography>
+      );
+    if (value === "pituitary")
+      return (
+        <Typography
+          sx={{
+            width: "fit-content",
+            paddingY: "5px",
+            paddingX: "10px",
+            borderRadius: "20px",
+            backgroundColor: "#23272f",
+            color: "#718296",
+            fontSize: "13px",
+            display: "flex",
+            whiteSpace: "nowrap",
+            "@media (max-width:353px)": { fontSize: "10px" },
+          }}
+        >
+          ● {value}
+        </Typography>
+      );
+    return null;
+  }
 
   return (
     <Box
@@ -244,20 +323,7 @@ function ReportDetails() {
                     alignItems: "center",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      fontSize: "15px",
-                      color: "var(--primary-color)",
-                      bgcolor: "#291a1f",
-                      paddingY: "5px",
-                      paddingX: "10px",
-                      borderRadius: "15px",
-                      display: "inline-flex",
-                      marginTop: "10px",
-                    }}
-                  >
-                    {data?.predictionResult}
-                  </Typography>
+                  <PredictionBadge value={data?.predictionResult} />
 
                   <Box
                     sx={{

@@ -5,7 +5,6 @@ import useGetUsers from "../../hooks/getUsersHooks/useGetUsers";
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   Grid,
   Typography,
@@ -185,8 +184,7 @@ function UserManagement() {
         </Container>
       </Box>
 
-          
-     <DashboardFooter/>
+      <DashboardFooter />
     </Box>
   );
 }

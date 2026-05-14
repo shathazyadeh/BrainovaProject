@@ -177,7 +177,7 @@ function StarsNavbar({ linkColor }) {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              <MenuIcon sx={{ color: linkColor }} />
             </IconButton>
             <Menu
               id="menu-appbar"

@@ -206,7 +206,7 @@ function ResetPassword() {
               }}
             >
               {isSubmitting ? (
-                <CircularProgress
+                <CircularProgress size={25}
                   sx={{
                     "& .MuiCircularProgress-circle": {
                       stroke: "#fff",

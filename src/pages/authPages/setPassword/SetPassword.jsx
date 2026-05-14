@@ -153,8 +153,6 @@ function SetPassword() {
               spellCheck={false}
             />
 
-
-
             <Button
               className="fx_fill"
               type="submit"
@@ -167,7 +165,7 @@ function SetPassword() {
               }}
             >
               {isSubmitting ? (
-                <CircularProgress
+                <CircularProgress size={25}
                   sx={{
                     "& .MuiCircularProgress-circle": {
                       stroke: "#fff",

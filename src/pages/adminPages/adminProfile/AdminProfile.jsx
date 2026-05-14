@@ -19,84 +19,95 @@ import { PiUserBold } from "react-icons/pi";
 import { FaLocationArrow } from "react-icons/fa6";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 
-
 function PermissionsBox({ permissions }) {
   return (
-    <Box className='super_permissions flex_column' sx={{
-      height: '100', paddingX: { lg: "40px" }, paddingBottom: '23px', paddingTop: '30px', gap: "10px", bgcolor: '#3e27274d', borderRadius: '20px',
-      "@media (max-width:1335px)": {
-        paddingBottom: "60px",
-        paddingX: '10px',
-      },
-      "@media (max-width:1304px)": {
-        paddingBottom: "40px",
-        paddingX: '12px'
-      },
-      "@media (max-width:1246px)": {
-        paddingBottom: "60px",
-        paddingX: '12px'
-      }, "@media (max-width:1449px)": {
-
-        paddingY: "37px",
-        paddingX: '13px'
-
-      }, "@media (max-width:1422px)": {
-        paddingBottom: "58px",
-      }, "@media (max-width:1313px)": {
-        paddingY: "36px",
-      }, "@media (max-width:1225px)": {
-        paddingY: "65px",
-      }, "@media (max-width:1200px)": {
-        paddingX: '60px',
-      },
-      "@media (max-width:999px)": {
-        paddingX: '60px',
-      }, "@media (max-width:900px)": {
-        paddingX: '0px',
-      },
-      "@media (max-width:600px)": {
-        paddingX: '35px',
-
-
-      }, "@media (max-width:423px)": {
-        paddingY: '30px',
-        paddingX: '10px'
-      }
-
-
-    }}>
+    <Box
+      className="super_permissions flex_column"
+      sx={{
+        height: "100",
+        paddingX: { lg: "40px" },
+        paddingBottom: "23px",
+        paddingTop: "30px",
+        gap: "10px",
+        bgcolor: "#3e27274d",
+        borderRadius: "20px",
+        "@media (max-width:1335px)": {
+          paddingBottom: "60px",
+          paddingX: "10px",
+        },
+        "@media (max-width:1304px)": {
+          paddingBottom: "40px",
+          paddingX: "12px",
+        },
+        "@media (max-width:1246px)": {
+          paddingBottom: "60px",
+          paddingX: "12px",
+        },
+        "@media (max-width:1449px)": {
+          paddingY: "37px",
+          paddingX: "13px",
+        },
+        "@media (max-width:1422px)": {
+          paddingBottom: "58px",
+        },
+        "@media (max-width:1313px)": {
+          paddingY: "36px",
+        },
+        "@media (max-width:1225px)": {
+          paddingY: "65px",
+        },
+        "@media (max-width:1200px)": {
+          paddingX: "60px",
+        },
+        "@media (max-width:999px)": {
+          paddingX: "60px",
+        },
+        "@media (max-width:900px)": {
+          paddingX: "0px",
+        },
+        "@media (max-width:600px)": {
+          paddingX: "35px",
+        },
+        "@media (max-width:423px)": {
+          paddingY: "30px",
+          paddingX: "10px",
+        },
+      }}
+    >
       <Typography
         component={"h1"}
         variant="h4"
         sx={{
-          fontSize: { xs: '18px', sm: '25px', lg: '30px' },
+          fontSize: { xs: "18px", sm: "25px", lg: "30px" },
           color: "#ffffff",
           fontFamily: "var(--primary-font)",
           fontWeight: "600",
           display: "flex",
-          gap: '15px',
+          gap: "15px",
           whiteSpace: "nowrap",
-
-          marginBottom: { xs: '15px', md: "25px", },
-          paddingBottom: { xs: '10px', sm: "25px" },
+          marginBottom: { xs: "15px", md: "25px" },
+          paddingBottom: { xs: "10px", sm: "25px" },
           borderBottom: "1px solid #ffffff2a",
-          alignItems: 'center'
-          , "@media (max-width:1225px)": {
-            fontSize: '29px'
+          alignItems: "center",
+          "@media (max-width:1225px)": {
+            fontSize: "29px",
           },
           "@media (max-width:500px)": {
-            fontSize: '23px',
-            paddingBottom: '15px',
-
-          }, "@media (max-width:423px)": {
-            fontSize: '16px', paddingX: '5px'
+            fontSize: "23px",
+            paddingBottom: "15px",
+          },
+          "@media (max-width:423px)": {
+            fontSize: "16px",
+            paddingX: "5px",
           },
         }}
-      >  <Box
+      >
+        {" "}
+        <Box
           component={LuCrown}
           sx={{
-            padding: '5px',
-            fontSize: { xs: '30px', sm: '37px', lg: '45px' },
+            padding: "5px",
+            fontSize: { xs: "30px", sm: "37px", lg: "45px" },
             borderRadius: "50%",
             display: "flex",
             justifyContent: "center",
@@ -107,19 +118,19 @@ function PermissionsBox({ permissions }) {
             boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
             border: "1px solid rgb(255, 0, 0)",
             transition: "0.5s ease",
-
-            marginLeft: { xs: '10px', sm: '40px', md: '15px' },
+            marginLeft: { xs: "10px", sm: "40px", md: "15px" },
             "&:hover": {
               color: "var(--primary-color)",
-              bgcolor: '#fffffff0',
+              bgcolor: "#fffffff0",
               transform: "scale(1.05)",
               boxShadow: "0 6px 18px rgba(255, 0, 0, 0.56)",
-            }, "@media (max-width:1225px)": {
-              fontSize: '35px'
-            }, "@media (max-width:423px)": {
-              fontSize: '30px'
             },
-
+            "@media (max-width:1225px)": {
+              fontSize: "35px",
+            },
+            "@media (max-width:423px)": {
+              fontSize: "30px",
+            },
           }}
         />
         Permissions :
@@ -128,62 +139,54 @@ function PermissionsBox({ permissions }) {
       <Grid container spacing={2}>
         {permissions.map((perm, index) => (
           <Grid item size={{ xs: 12, md: 6, lg: 12 }} key={index}>
-
-
             <Typography
               key={index}
               sx={{
-                height: '100%',
+                height: "100%",
                 alignSelf: "stretch",
                 color: "#fff",
-                fontSize: { xs: '12px', sm: '15px', md: "17px" },
+                fontSize: { xs: "12px", sm: "15px", md: "17px" },
                 fontWeight: "600",
                 paddingLeft: { lg: "15px" },
                 fontFamily: "var(--primary-font)",
-                display: 'flex',
-                alignItems: 'center',
-                gap: '5px',
-                paddingY: { xs: '10px', md: "10px", lg: '4px' },
-                paddingX: { xs: '10px', md: "10px", lg: '6px' },
-                marginX: { xs: "5px", sm: '40px', md: "0px" },
-                borderRadius: '15px',
-                bgcolor: '#ffffff18',
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                paddingY: { xs: "10px", md: "10px", lg: "4px" },
+                paddingX: { xs: "10px", md: "10px", lg: "6px" },
+                marginX: { xs: "5px", sm: "40px", md: "0px" },
+                borderRadius: "15px",
+                bgcolor: "#ffffff18",
                 transition: "all 0.5s ease",
                 "&:hover": {
                   color: "var(--primary-color)",
                   transform: "scale(1.05)",
                   boxShadow: "0 6px 18px rgba(255, 0, 0, 0.25)",
-                }, "@media (max-width:1422px)": {
-                  fontSize: '15px'
-                }, "@media (max-width:1224px)": {
-                  fontSize: '13px'
-                }, "@media (max-width:600px)": {
-                  fontSize: '12px'
                 },
-
+                "@media (max-width:1422px)": {
+                  fontSize: "15px",
+                },
+                "@media (max-width:1224px)": {
+                  fontSize: "13px",
+                },
+                "@media (max-width:600px)": {
+                  fontSize: "12px",
+                },
               }}
             >
-
-
-
               <Box
                 component={FaLocationArrow}
                 sx={{
                   color: "var(--secondary-color)",
                   marginRight: "8px",
-                  flexShrink: '0'
+                  flexShrink: "0",
                 }}
-              /> {perm}
+              />{" "}
+              {perm}
             </Typography>
-
-
           </Grid>
         ))}
-
-
       </Grid>
-
-
     </Box>
   );
 }
@@ -202,7 +205,8 @@ function AdminProfile() {
         "Block / Unblock Users",
         "Delete Users",
       ],
-    }];
+    },
+  ];
   const superAdminPermissions = [
     {
       permissions: [
@@ -213,7 +217,8 @@ function AdminProfile() {
         "Block / Unblock Users .",
         "Delete Users .",
       ],
-    }];
+    },
+  ];
   return (
     <>
       <DashboardNavbar />
@@ -226,45 +231,44 @@ function AdminProfile() {
           display: "flex",
           justifyContent: "center",
           paddingTop: "30px",
-          marginLeft: { md: '10px' },
-      
+          marginLeft: { md: "10px" },
         }}
       >
         <Container maxWidth="lg">
-
-
           <Box
             className="avatar "
             sx={{
-              display: 'flex',
+              display: "flex",
               bgcolor: "#201f1f",
-              paddingY: '30px',
+              paddingY: "30px",
               paddingLeft: { lg: "40px" },
-              alignItems: 'flex-start',
-              borderBottom: '8px solid var(--primary-color)',
+              alignItems: "flex-start",
+              borderBottom: "8px solid var(--primary-color)",
               boxShadow: "0 0 15px rgba(207, 201, 201, 0.25)",
-              justifyContent: 'space-between',
-
+              justifyContent: "space-between",
             }}
           >
-            <Grid container columnSpacing={1} alignItems="flex-start" sx={{
-              width: '100%',
-              "@media (max-width:1237px)": {
-                alignItems: 'center',
-                display: 'flex'
-                , flexDirection: "column",
-                justifyContent: 'center',
-                paddingX: '15px'
-
-              }
-            }}
+            <Grid
+              container
+              columnSpacing={1}
+              alignItems="flex-start"
+              sx={{
+                width: "100%",
+                "@media (max-width:1237px)": {
+                  alignItems: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  paddingX: "15px",
+                },
+              }}
             >
-
-              <Grid item  >
-                <Box className='user_avatar'
+              <Grid item>
+                <Box
+                  className="user_avatar"
                   sx={{
-                    width: { xs: '140px', sm: '150px', md: "170px" },
-                    height: { xs: '140px', sm: '150px', md: "170px" },
+                    width: { xs: "140px", sm: "150px", md: "170px" },
+                    height: { xs: "140px", sm: "150px", md: "170px" },
                     borderRadius: "50%",
                     overflow: "hidden",
 
@@ -288,25 +292,33 @@ function AdminProfile() {
                 </Box>
               </Grid>
 
-
-              <Grid item  >
-                <Box className='flex_column admin_info' sx={{
-                  alignItems: 'flex-start', marginLeft: { lg: '20px' }, marginTop: '20px', "@media (max-width:1237px)": {
-                    alignItems: 'center',
-                    display: 'flex'
-                    , justifyContent: 'center',
-
-                  }
-                }}>
-
+              <Grid item>
+                <Box
+                  className="flex_column admin_info"
+                  sx={{
+                    alignItems: "flex-start",
+                    marginLeft: { lg: "20px" },
+                    marginTop: "20px",
+                    "@media (max-width:1237px)": {
+                      alignItems: "center",
+                      display: "flex",
+                      justifyContent: "center",
+                    },
+                  }}
+                >
                   {user.role === "Admin" ? (
                     <Typography
                       component={"h1"}
                       sx={{
                         color: "#fff",
-                        fontSize: { xs: '20px', sm: '32px', md: "25px", lg: "32px" },
+                        fontSize: {
+                          xs: "20px",
+                          sm: "32px",
+                          md: "25px",
+                          lg: "32px",
+                        },
                         textAlign: "center",
-                        fontWeight: '500',
+                        fontWeight: "500",
                         fontFamily: "var(--primary-font)",
                       }}
                     >
@@ -316,17 +328,20 @@ function AdminProfile() {
                     <Typography
                       component={"h1"}
                       sx={{
-                        display: 'flex',
+                        display: "flex",
                         color: "#fff",
-                        fontSize: { xs: '20px', sm: '32px', md: "25px", lg: "32px" },
+                        fontSize: {
+                          xs: "20px",
+                          sm: "32px",
+                          md: "25px",
+                          lg: "32px",
+                        },
                         textAlign: "center",
-                        fontWeight: '500',
+                        fontWeight: "500",
                         fontFamily: "var(--primary-font)",
                       }}
                     >
                       Super Administrator
-
-
                     </Typography>
                   )}
 
@@ -334,64 +349,83 @@ function AdminProfile() {
                     component={"p"}
                     sx={{
                       color: "var(--secondary-color)",
-                      fontSize: { xs: '12px', sm: '15px', md: '13px', lg: '15px' },
+                      fontSize: {
+                        xs: "12px",
+                        sm: "15px",
+                        md: "13px",
+                        lg: "15px",
+                      },
                       letterSpacing: "1px",
                       fontWeight: "400",
                       marginBottom: "25px",
                       marginTop: "5px",
                       fontFamily: "var(--primary-font)",
                       "@media (max-width:1237px)": {
-                        textAlign: 'center',
-                      }
+                        textAlign: "center",
+                      },
                     }}
                   >
                     Keep your profile information updated and manage
                     <br /> your account settings seamlessly .
                   </Typography>
-                  <Box className='user_info' sx={{
-                    display: 'flex', color: '#ffffff', gap: '10px', "@media (max-width:1237px)": {
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      flexWrap: 'wrap',
-                      width: '100%',
-                    }
-                  }}>
-
+                  <Box
+                    className="user_info"
+                    sx={{
+                      display: "flex",
+                      color: "#ffffff",
+                      gap: "10px",
+                      "@media (max-width:1237px)": {
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexWrap: "wrap",
+                        width: "100%",
+                      },
+                    }}
+                  >
                     <Typography
                       component={"h1"}
                       variant="h4"
                       sx={{
                         display: "flex",
-                        gap: '5px',
-                        alignItems: 'center',
-                        paddingX: '10px',
-                        paddingY: '5px',
-                        borderRadius: '15px',
-                        fontWeight: '500',
-                        fontFamily: 'var(--primary-font)',
-                        fontSize: { xs: '12px', sm: '15px', md: '13px', lg: '15px' },
+                        gap: "5px",
+                        alignItems: "center",
+                        paddingX: "10px",
+                        paddingY: "5px",
+                        borderRadius: "15px",
+                        fontWeight: "500",
+                        fontFamily: "var(--primary-font)",
+                        fontSize: {
+                          xs: "12px",
+                          sm: "15px",
+                          md: "13px",
+                          lg: "15px",
+                        },
                         color: "var(--primary-color)",
-                        bgcolor: '#fffffff0', boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)", transition: "all 0.3s ease",
+                        bgcolor: "#fffffff0",
+                        boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)",
+                        transition: "all 0.3s ease",
                         "&:hover": {
                           transform: "scale(1.05)",
                         },
                       }}
-                    >  <Typography
-                      component={"span"}
-                      sx={{
-                        width: "21px",
-                        height: "21px",
-                        borderRadius: "50%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "var(--primary-color)",
-                        color: "#fff",
-                        boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
-                        border: "1px solid rgb(255, 0, 0)",
-                      }}
                     >
-                        <TiAttachment size={20} style={{ flexShrink: 0, }} />
+                      {" "}
+                      <Typography
+                        component={"span"}
+                        sx={{
+                          width: "21px",
+                          height: "21px",
+                          borderRadius: "50%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "var(--primary-color)",
+                          color: "#fff",
+                          boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
+                          border: "1px solid rgb(255, 0, 0)",
+                        }}
+                      >
+                        <TiAttachment size={20} style={{ flexShrink: 0 }} />
                       </Typography>
                       {user?.fullName}
                     </Typography>
@@ -400,37 +434,45 @@ function AdminProfile() {
                       variant="h4"
                       sx={{
                         display: "flex",
-                        gap: '5px',
-                        alignItems: 'center',
-                        paddingX: '10px',
-                        paddingY: '5px',
-                        borderRadius: '15px',
-                        fontWeight: '500',
-                        fontFamily: 'var(--primary-font)',
-                        fontSize: { xs: '12px', sm: '15px', md: '13px', lg: '15px' },
+                        gap: "5px",
+                        alignItems: "center",
+                        paddingX: "10px",
+                        paddingY: "5px",
+                        borderRadius: "15px",
+                        fontWeight: "500",
+                        fontFamily: "var(--primary-font)",
+                        fontSize: {
+                          xs: "12px",
+                          sm: "15px",
+                          md: "13px",
+                          lg: "15px",
+                        },
                         color: "var(--primary-color)",
-                        bgcolor: '#fffffff0', boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)", transition: "all 0.3s ease",
+                        bgcolor: "#fffffff0",
+                        boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)",
+                        transition: "all 0.3s ease",
                         "&:hover": {
                           transform: "scale(1.05)",
                         },
                       }}
-                    >  <Typography
-                      component={"span"}
-                      sx={{
-                        width: "21px",
-                        height: "21px",
-                        borderRadius: "50%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "var(--primary-color)",
-                        color: "#fff",
-                        boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
-                        border: "1px solid rgb(255, 0, 0)",
-                      }}
                     >
-
-                        <PiUserBold style={{ flexShrink: 0, }} />
+                      {" "}
+                      <Typography
+                        component={"span"}
+                        sx={{
+                          width: "21px",
+                          height: "21px",
+                          borderRadius: "50%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "var(--primary-color)",
+                          color: "#fff",
+                          boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
+                          border: "1px solid rgb(255, 0, 0)",
+                        }}
+                      >
+                        <PiUserBold style={{ flexShrink: 0 }} />
                       </Typography>
                       {user?.userName}
                     </Typography>
@@ -439,36 +481,45 @@ function AdminProfile() {
                       variant="h4"
                       sx={{
                         display: "flex",
-                        gap: '5px',
-                        alignItems: 'center',
-                        paddingX: '10px',
-                        paddingY: '5px',
-                        borderRadius: '15px',
-                        fontWeight: '500',
-                        fontFamily: 'var(--primary-font)',
-                        fontSize: { xs: '12px', sm: '15px', md: '13px', lg: '15px' },
+                        gap: "5px",
+                        alignItems: "center",
+                        paddingX: "10px",
+                        paddingY: "5px",
+                        borderRadius: "15px",
+                        fontWeight: "500",
+                        fontFamily: "var(--primary-font)",
+                        fontSize: {
+                          xs: "12px",
+                          sm: "15px",
+                          md: "13px",
+                          lg: "15px",
+                        },
                         color: "var(--primary-color)",
-                        bgcolor: '#fffffff0', boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)", transition: "all 0.3s ease",
+                        bgcolor: "#fffffff0",
+                        boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)",
+                        transition: "all 0.3s ease",
                         "&:hover": {
                           transform: "scale(1.05)",
                         },
                       }}
-                    >  <Typography
-                      component={"span"}
-                      sx={{
-                        width: "21px",
-                        height: "21px",
-                        borderRadius: "50%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "var(--primary-color)",
-                        color: "#fff",
-                        boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
-                        border: "1px solid rgb(255, 0, 0)",
-                      }}
                     >
-                        <MdOutlinePhone style={{ flexShrink: 0, }} />
+                      {" "}
+                      <Typography
+                        component={"span"}
+                        sx={{
+                          width: "21px",
+                          height: "21px",
+                          borderRadius: "50%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "var(--primary-color)",
+                          color: "#fff",
+                          boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
+                          border: "1px solid rgb(255, 0, 0)",
+                        }}
+                      >
+                        <MdOutlinePhone style={{ flexShrink: 0 }} />
                       </Typography>
                       {user?.phoneNumber}
                     </Typography>
@@ -477,54 +528,64 @@ function AdminProfile() {
                       variant="h4"
                       sx={{
                         display: "flex",
-                        gap: '5px',
-                        alignItems: 'center',
-                        paddingX: '10px',
-                        paddingY: '5px',
-                        borderRadius: '15px',
-                        fontWeight: '500',
-                        fontFamily: 'var(--primary-font)',
-                        fontSize: { xs: '12px', sm: '15px', md: '13px', lg: '15px' },
+                        gap: "5px",
+                        alignItems: "center",
+                        paddingX: "10px",
+                        paddingY: "5px",
+                        borderRadius: "15px",
+                        fontWeight: "500",
+                        fontFamily: "var(--primary-font)",
+                        fontSize: {
+                          xs: "12px",
+                          sm: "15px",
+                          md: "13px",
+                          lg: "15px",
+                        },
                         color: "var(--primary-color)",
-                        bgcolor: '#fffffff0', boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)", transition: "all 0.3s ease",
+                        bgcolor: "#fffffff0",
+                        boxShadow: "0 6px 18px rgba(255, 0, 0, 0.26)",
+                        transition: "all 0.3s ease",
                         "&:hover": {
                           transform: "scale(1.05)",
                         },
                       }}
-                    >  <Typography
-                      component={"span"}
-                      sx={{
-                        width: "21px",
-                        height: "21px",
-                        borderRadius: "50%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "var(--primary-color)",
-                        color: "#fff",
-                        boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
-                        border: "1px solid rgb(255, 0, 0)",
-                      }}
                     >
-                        <MdOutlineMail style={{ flexShrink: 0, }} />
+                      {" "}
+                      <Typography
+                        component={"span"}
+                        sx={{
+                          width: "21px",
+                          height: "21px",
+                          borderRadius: "50%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "var(--primary-color)",
+                          color: "#fff",
+                          boxShadow: "0 4px 15px rgba(250, 4, 4, 0.74)",
+                          border: "1px solid rgb(255, 0, 0)",
+                        }}
+                      >
+                        <MdOutlineMail style={{ flexShrink: 0 }} />
                       </Typography>
                       {user?.email}
                     </Typography>
-
                   </Box>
-
                 </Box>
               </Grid>
 
-
-              <Grid item   >
-                <Box className='update_btn ' sx={{
-                  color: '#fff', display: 'flex', marginX: '20px',
-                  "@media (max-width:1424px) ": {
-                    marginTop: '35px',
-
-                  }
-                }}>
+              <Grid item>
+                <Box
+                  className="update_btn "
+                  sx={{
+                    color: "#fff",
+                    display: "flex",
+                    marginX: "20px",
+                    "@media (max-width:1424px) ": {
+                      marginTop: "35px",
+                    },
+                  }}
+                >
                   <Typography
                     onClick={() => {
                       formRef.current?.scrollIntoView({
@@ -538,7 +599,7 @@ function AdminProfile() {
                       gap: "8px",
                       color: "#fff",
                       fontWeight: "500",
-                      fontSize: { xs: '12px', sm: '15px', lg: '15px' },
+                      fontSize: { xs: "12px", sm: "15px", lg: "15px" },
                       cursor: "pointer",
                       padding: "10px 20px",
                       borderRadius: "20px",
@@ -554,70 +615,56 @@ function AdminProfile() {
                       },
                       "@media (max-width:1393px)": {
                         padding: "7px 16px",
-                        justifyContent: 'flex-end',
-                        width: '100%'
-                      }
+                        justifyContent: "flex-end",
+                        width: "100%",
+                      },
                     }}
                   >
-                    <FaEdit style={{ flexShrink: 0, }} />
+                    <FaEdit style={{ flexShrink: 0 }} />
                     Update
                   </Typography>
                 </Box>
               </Grid>
-
-
-
             </Grid>
           </Box>
 
-
-
-
-
-
-
-
-
-
-          <Box className="profile-info" sx={{ marginTop: '60px', }}>
-            <GlowCard enableTilt={false} glowIntensity="soft" className="admin-glow-card" >
-
-              <Grid container rowSpacing={2} sx={{ alignItems: 'center' }}>
-
+          <Box className="profile-info" sx={{ marginTop: "60px" }}>
+            <GlowCard
+              enableTilt={false}
+              glowIntensity="soft"
+              className="admin-glow-card"
+            >
+              <Grid container rowSpacing={2} sx={{ alignItems: "center" }}>
                 <Grid item size={{ xs: 12, lg: 5 }}>
                   {user.role === "Admin" ? (
                     <PermissionsBox
-
                       permissions={adminPermissions[0].permissions}
                     />
                   ) : (
                     <PermissionsBox
-
                       permissions={superAdminPermissions[0].permissions}
                     />
-
                   )}
-
                 </Grid>
                 <Grid item size={{ xs: 12, lg: 7 }}>
-
                   <Box
                     ref={formRef}
                     className="edit_user_info_form flex_column"
                     sx={{
-                      bgcolor: '#3e27274d',
-                      borderRadius: '20px',
+                      bgcolor: "#3e27274d",
+                      borderRadius: "20px",
                       paddingY: "20px",
-                      paddingX: { xs: '40px', md: '60px', lg: "20px" },
+                      paddingX: { xs: "40px", md: "60px", lg: "20px" },
                       paddingTop: { sm: "30px", md: "35px" },
-                      marginLeft: { lg: "10px" }, "@media (max-width:1225px)": {
+                      marginLeft: { lg: "10px" },
+                      "@media (max-width:1225px)": {
                         paddingY: "35px",
-                      }, "@media (max-width:423px)": {
-                        paddingX: '13px'
+                      },
+                      "@media (max-width:423px)": {
+                        paddingX: "13px",
                       },
                     }}
                   >
-
                     <RegisterForm
                       useHook={useUpdateUserInfo}
                       userId={userId}
@@ -636,14 +683,14 @@ function AdminProfile() {
                     />
                     <Link
                       component={RouterLink}
-                      to={"/auth/security-verification"}
+                      to={"/auth/forget-password"}
                       sx={{
                         color: "var(--primary-color)",
                         fontFamily: "sans-serif",
                         fontSize: "15px",
                         fontWeight: "600",
                         width: "fit-content",
-                        marginTop: '30px'
+                        marginTop: "30px",
                       }}
                       className="auth_link"
                     >
@@ -653,15 +700,10 @@ function AdminProfile() {
                 </Grid>
               </Grid>
             </GlowCard>
-
           </Box>
-        
-     
         </Container>
       </Box>
-<DashboardFooter/> 
-
-
+      <DashboardFooter />
     </>
   );
 }

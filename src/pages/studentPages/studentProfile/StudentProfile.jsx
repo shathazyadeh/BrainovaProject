@@ -606,7 +606,7 @@ function StudentProfile() {
                 </Typography>
                 <Link
                   component={RouterLink}
-                  to={"/auth/security-verification"}
+                  to={"/auth/forget-password"}
                   sx={{
                     color: "var(--primary-color)",
                     fontFamily: "sans-serif",

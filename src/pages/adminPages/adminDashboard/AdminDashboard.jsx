@@ -3,7 +3,6 @@ import useGetUsers from "../../../hooks/getUsersHooks/useGetUsers";
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   Grid,
   LinearProgress,

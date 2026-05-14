@@ -164,7 +164,7 @@ function Login() {
               />
               <Link
                 component={RouterLink}
-                to={"/auth/security-verification"}
+                to={"/auth/forget-password"}
                 sx={{
                   color: "var(--primary-color)",
                   fontFamily: "sans-serif",
@@ -184,7 +184,7 @@ function Login() {
                 sx={{ bgcolor: "var(--primary-color)", fontWeight: "600" }}
               >
                 {isSubmitting ? (
-                  <CircularProgress
+                  <CircularProgress size={25}
                     sx={{
                       "& .MuiCircularProgress-circle": {
                         stroke: "white",

@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   Grid,
   Typography,
@@ -555,7 +554,7 @@ function SuperAdminDashboard() {
               paddingRight: "10px",
               "@media (max-width:768px)": {
                 paddingTop: "0px",
-              }
+              },
             }}
           >
             <Link
@@ -579,12 +578,10 @@ function SuperAdminDashboard() {
             user={selectedUser} // بيانات المستخدم المختار
             type="editUser"
           />
-
         </Container>
       </Box>
- 
-         <DashboardFooter/>
 
+      <DashboardFooter />
     </>
   );
 }

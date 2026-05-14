@@ -61,7 +61,7 @@ const router = createBrowserRouter([
             element:<Register/>
         },
         {
-            path:"security-verification",
+            path:"forget-password",
             element:<ForgetPassword/>
         },
         {
