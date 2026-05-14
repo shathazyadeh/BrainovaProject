@@ -4,6 +4,7 @@ import { Box } from "@mui/material";
 import StarsNavbar from "../components/muiComponents/starsNavbar/StarsNavbar.jsx";
 import ScrollToTop from "../components/scrollToTop/ScrollToTop.jsx";
 
+
 function MainLayout() {
   const location = useLocation();
 
@@ -18,7 +19,7 @@ function MainLayout() {
       <Box sx={{bgcolor: navbarBg, paddingTop:"20px"}}>
         <StarsNavbar linkColor={linkColor} />
       </Box>
-      <ScrollToTop />
+       <ScrollToTop/>
       <Outlet />
       <Box sx={{ bgcolor: footerBg }}>
         <Footer />

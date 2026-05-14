@@ -3,13 +3,14 @@ import { Outlet, useLocation } from "react-router-dom";
 import TemporaryDrawer from "../components/muiComponents/temporaryDrawer/TemporaryDrawer";
 import ScrollToTop from "../components/scrollToTop/ScrollToTop";
 
+
 function DashboardLayout() {
     const location = useLocation();
 
   return (
     <Box sx={{bgcolor: "var(--navy-color)"}}>
 
-      <ScrollToTop />
+      <ScrollToTop/>
       
       <Box sx={{ display: { xs: "none", md: "block"  } }}> {/*لانه تيمب ما بتوخذ sx لفيناها ببوكس */}
         <TemporaryDrawer />

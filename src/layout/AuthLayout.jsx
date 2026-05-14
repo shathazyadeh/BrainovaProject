@@ -5,7 +5,7 @@ import ScrollToTop from '../components/scrollToTop/ScrollToTop'
 function AuthLayout() {
   return (
     <Box>
-      <ScrollToTop />
+       <ScrollToTop/>
       <Outlet/>
     </Box>
   )
