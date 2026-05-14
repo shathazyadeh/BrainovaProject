@@ -1,4 +1,4 @@
-import { Box, Container, Pagination, Typography } from "@mui/material";
+import { Box, Container, Grid, Pagination, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -369,149 +369,268 @@ function SupervisorFeedback() {
               </Box>
             </Box>
           ) : (
-            <Box sx={{ minHeight: "650px" }}>
 
 
-              {paginatedData.map((feedback) => (
-                <Box className="feedback_card" key={feedback.id} >
-                  <Box
-                    component={"section"}
-                    className="Supervisor_feedback"
-                    sx={{
-                      borderLeft: "5px solid red",
-                      borderRadius: "10px",
-                      bgcolor: "#3636365b",
-                      padding: "11px",
-                      marginBottom: "30px",
-                      transition: "all 0.5s ease",
-                      "&:hover": { transform: "scale(1.03)" },
-                    }}
-                  >
-                    <Box sx={{ display: "flex", paddingY: "10px" }}>
+            <Box sx={{ minHeight: "1073px" }}>
+              <Grid container spacing={3}>
+
+                {paginatedData.map((feedback) => (
+                  <Grid item size={{ xs: 12, md: 6 }} key={feedback.id}>
+                    <Box className="feedback_card"  >
                       <Box
+                        component={"section"}
+                        className="Supervisor_feedback"
                         sx={{
-                          display: "flex",
-                          flexDirection: "column",
-                          flexGrow: "1",
+                          borderLeft: "5px solid red",
+                          borderRadius: "10px",
+                          bgcolor: "#3636365b",
+                          padding: "11px",
+
+                          transition: "all 0.5s ease",
+                          "&:hover": { transform: "scale(1.03)" },
                         }}
                       >
-                        <Typography
-                          sx={{
-                            color: "#fff",
-                            flexGrow: "1",
-                            fontFamily: "var(--primary-font)",
-                            fontWeight: "600",
-                            fontSize: "20px",
-                          }}
-                        >
-                          {feedback.supervisorName}
-                        </Typography>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            marginBottom: "18px",
-                            "@media (max-width:410px)": {
-                              flexDirection: "column",
-                            },
-                          }}
-                        >
+                        <Box sx={{ display: "flex", paddingY: "10px" }}>
                           <Box
-                            className="student_info"
-                            onClick={() =>
-                              navigate(
-                                `/dashboard/supervisor/report-details/${feedback.reportId}`,
-                              )
-                            }
                             sx={{
-                              cursor: "pointer",
                               display: "flex",
-                              "@media (max-width:718px)": {
-                                flexDirection: "column",
-                              },
+                              flexDirection: "column",
+                              flexGrow: "1",
                             }}
                           >
                             <Typography
                               sx={{
-                                color: "#758492",
-                                fontWeight: "400",
-                                fontSize: "13px",
-                                "@media (max-width:550px)": {
-                                  fontSize: "11px",
+                                color: "#fff",
+                                flexGrow: "1",
+                                fontFamily: "var(--primary-font)",
+                                fontWeight: "600",
+                                fontSize: "20px",
+                                "@media (max-width:701px)": {
+                                  fontSize: "17px"
+                                }, "@media (max-width:400px)": {
+                                  fontSize: "15px"
                                 },
                               }}
                             >
-                              Student: {feedback.studentName} ·
+                              {feedback.supervisorName}
                             </Typography>
-
-                            <Typography
+                            <Box
                               sx={{
-                                color: "#758492",
-                                fontWeight: "400",
-                                fontSize: "13px",
-                                paddingX: "5px",
+                                display: "flex",
+                                marginBottom: "18px",
                                 "@media (max-width:410px)": {
-                                  paddingLeft: "0px",
-                                },
-                                "@media (max-width:550px)": {
-                                  fontSize: "11px",
+                                  flexDirection: "column",
                                 },
                               }}
                             >
-                              {feedback.predictionResult}{" "}
-                            </Typography>
+                              <Box
+                                className="student_info"
+                                onClick={() =>
+                                  navigate(
+                                    `/dashboard/supervisor/report-details/${feedback.reportId}`,
+                                  )
+                                }
+                                sx={{
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  "@media (max-width:718px)": {
+                                    flexDirection: "column",
+                                  },
+                                }}
+                              >
+                                <Typography
+                                  sx={{
+                                    display: "flex",
+                                    flexWrap: "wrap",
+                                    color: "#758492",
+                                    fontWeight: "400",
+                                    fontSize: "13px",
+
+                                    "@media (max-width:1120px)": {
+                                      fontSize: "12px",
+                                    }, "@media (min-width:1277px)": {
+                                      paddingTop: "18px",
+                                    }, "@media (max-width:1306px)": {
+                                      paddingTop: "15px",
+                                    }, "@media (max-width:1277px)": {
+                                      paddingTop: "5px",
+                                    }, "@media (max-width:550px)": {
+                                      fontSize: "11px",
+                                    }, "@media (max-width:1056px)": {
+                                      flexDirection: "column",
+                                      alignItems: "flex-start", paddingRight: "38px",
+                                    }, "@media (max-width:899.6px)": {
+                                      paddingTop: "16px"
+                                    },
+                                  }}
+                                >
+                                  Student: {feedback.studentName} · {feedback.predictionResult}{" "}
+                                </Typography>
+
+
+                              </Box>
+                            </Box>
+                          </Box>
+                          <Box sx={{ display: "flex", flexDirection: "column" }}>
+                            <Box
+                              className="seen_unseen"
+                              sx={{
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                marginTop: "8px",
+                              }}
+                            >
+                              {feedback.isSeen ? (
+                                <Typography
+                                  sx={{
+                                    fontSize: "12px",
+                                    color: "#e0e9e3",
+                                    backgroundColor: "#01b413",
+                                    paddingX: "18px",
+                                    paddingY: "4px",
+                                    borderRadius: "15px",
+                                    marginBottom: "12px",
+                                    fontWeight: "600",
+                                    boxShadow: "0 0 15px rgba(7, 242, 15, 0.35)",
+                                    "@media (max-width:1120px)": {
+                                      fontSize: "10px",
+                                    },
+                                  }}
+                                >
+                                  Seen
+                                </Typography>
+                              ) : (
+                                <Typography
+                                  sx={{
+                                    fontSize: "12px",
+                                    color: "#ffffff",
+                                    boxShadow: "0 0 15px rgba(207, 25, 25, 0.5)",
+                                    backgroundColor: "#ff0000b1",
+                                    paddingX: "15px",
+                                    paddingY: "4px",
+                                    borderRadius: "15px",
+                                    marginBottom: "12px",
+                                    fontWeight: "600",
+                                    "@media (max-width:1120px)": {
+                                      fontSize: "10px",
+                                    },
+                                  }}
+                                >
+                                  Unseen
+                                </Typography>
+                              )}
+                            </Box>
+
+                            <Box
+                              className="date_time_of_feedback"
+                              sx={{
+                                display: "flex",
+                                "@media (max-width:418px)": {
+                                  flexDirection: "column",
+                                  alignItems: "flex-end",
+                                }, "@media (max-width:1277px)": {
+                                  display: "none"
+                                }, "@media (max-width:899.6px)": {
+                                  display: "flex"
+                                }, "@media (max-width:578px)": {
+                                  display: "none"
+                                }
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  color: "red",
+                                  fontSize: "15px",
+                                  "@media (max-width:550px)": {
+                                    fontSize: "11px",
+                                  }, "@media (max-width:1356px)": {
+                                    fontSize: "14px",
+                                  }, "@media (max-width:1306px)": {
+                                    fontSize: "12px",
+                                  }, "@media (max-width:900px)": {
+                                    fontSize: "16px",
+                                  }, "@media (max-width:701px)": {
+                                    fontSize: "13px"
+                                  },
+                                }}
+                              >
+                                {" "}
+                                {feedback.createdAt.split("T")[0]}
+                              </Typography>
+                              <Typography
+                                sx={{
+                                  color: "#758492",
+                                  paddingLeft: "6px",
+                                  fontSize: "15px",
+                                  "@media (max-width:550px)": {
+                                    fontSize: "11px",
+                                  }, "@media (max-width:1356px)": {
+                                    fontSize: "14px",
+                                  }, "@media (max-width:1306px)": {
+                                    fontSize: "12px",
+                                  }, "@media (max-width:900px)": {
+                                    fontSize: "16px",
+                                  }, "@media (max-width:701px)": {
+                                    fontSize: "13px"
+                                  },
+                                }}
+                              >
+                                {" "}
+                                {new Date(feedback.createdAt).toLocaleTimeString(
+                                  "en-US",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    hour12: true,
+                                  },
+                                )}
+                              </Typography>
+                            </Box>
                           </Box>
                         </Box>
-                      </Box>
-                      <Box sx={{ display: "flex", flexDirection: "column" }}>
-                        <Box
-                          className="seen_unseen"
+
+                        <Typography
                           sx={{
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            marginTop: "8px",
+                            color: "#d3d9de",
+                            fontWeight: "300",
+                            wordBreak: "break-word",
+                            paddingRight: "10px",
+                            height: "38px",
+                            overflowY: "auto",
+                            "&::-webkit-scrollbar": {
+                              width: "6px",
+                            },
+                            "&::-webkit-scrollbar-thumb": {
+                              backgroundColor: "var(--primary-color)",
+                              borderRadius: "3px",
+                              cursor: "grab"
+                            },
+                            "&::-webkit-scrollbar-track": {
+                              backgroundColor: "#2a2a3d",
+                            }, "@media (max-width:701px)": {
+                              fontSize: "15px"
+                            }, "@media (max-width:400px)": {
+                              fontSize: "14px"
+                            },
                           }}
                         >
-                          {feedback.isSeen ? (
-                            <Typography
-                              sx={{
-                                fontSize: "12px",
-                                color: "#1FA143",
-                                backgroundColor: "#173128b8",
-                                paddingX: "10px",
-                                paddingY: "3px",
-                                borderRadius: "15px",
-                                marginBottom: "12px",
-                              }}
-                            >
-                              Seen
-                            </Typography>
-                          ) : (
-                            <Typography
-                              sx={{
-                                fontSize: "12px",
-                                color: "#ffffff",
-                                boxShadow: "0 0 15px rgba(207, 25, 25, 0.5)",
-                                backgroundColor: "#ff0000b1",
-                                paddingX: "15px",
-                                paddingY: "4px",
-                                borderRadius: "15px",
-                                marginBottom: "12px",
-                                fontWeight: "600",
-                              }}
-                            >
-                              Unseen
-                            </Typography>
-                          )}
-                        </Box>
-
+                          {feedback.comment}{" "}
+                        </Typography>
                         <Box
                           className="date_time_of_feedback"
                           sx={{
                             display: "flex",
+                            marginTop: "18px",
                             "@media (max-width:418px)": {
                               flexDirection: "column",
                               alignItems: "flex-end",
-                            },
+                            }, "@media (min-width:1277px)": {
+                              display: "none"
+                            }, "@media (max-width:899px)": {
+                              display: "none"
+                            }, "@media (max-width:899.6px)": {
+                              display: "flex"
+                            }
                           }}
                         >
                           <Typography
@@ -519,7 +638,11 @@ function SupervisorFeedback() {
                               color: "red",
                               "@media (max-width:550px)": {
                                 fontSize: "11px",
-                              },
+                              }, "@media (max-width:1356px)": {
+                                fontSize: "14px",
+                              }, "@media (max-width:1306px)": {
+                                fontSize: "12px",
+                              }
                             }}
                           >
                             {" "}
@@ -531,6 +654,10 @@ function SupervisorFeedback() {
                               paddingLeft: "6px",
                               "@media (max-width:550px)": {
                                 fontSize: "11px",
+                              }, "@media (max-width:1356px)": {
+                                fontSize: "14px",
+                              }, "@media (max-width:1306px)": {
+                                fontSize: "12px",
                               },
                             }}
                           >
@@ -545,74 +672,49 @@ function SupervisorFeedback() {
                             )}
                           </Typography>
                         </Box>
+
+                        <Box
+                          className="action_icons"
+                          sx={{
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                            gap: "5px",
+                            marginTop: "10px",
+                          }}
+                        >
+                          <DeleteIcon
+                            sx={{
+                              color: "var(--primary-color)",
+                              cursor: "pointer",
+                              fontSize: "20px",
+                            }}
+                            onClick={() => handleDeleteFeedback(feedback.id)}
+                          />
+                          <FaRegEdit
+                            size={16}
+                            style={{
+                              color: "var(--secondary-color)",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => handleChangeFeedback(feedback)}
+                          />
+                        </Box>
+                        <BasicModal
+                          open={open}
+                          handleClose={handleClose}
+                          reportId={selectedFeedback?.reportId}
+                          feedback={selectedFeedback}
+                          type="feedback"
+                        />
                       </Box>
                     </Box>
+                  </Grid>
+                ))}
 
-                    <Typography
-                      sx={{
-                        color: "#d3d9de",
-                        fontWeight: "300",
-                        wordBreak: "break-word",
-                        paddingRight: "10px",
-                        height: "38px",
-                        overflowY: "auto",
-                        "&::-webkit-scrollbar": {
-                          width: "6px",
-                        },
-                        "&::-webkit-scrollbar-thumb": {
-                          backgroundColor: "var(--primary-color)",
-                          borderRadius: "3px",
-                          cursor: "grab"
-                        },
-                        "&::-webkit-scrollbar-track": {
-                          backgroundColor: "#2a2a3d",
-                        },
-                      }}
-                    >
-                      {feedback.comment}{" "}
-                    </Typography>
-
-                    <Box
-                      className="action_icons"
-                      sx={{
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        gap: "5px",
-                        marginTop: "10px",
-                      }}
-                    >
-                      <DeleteIcon
-                        sx={{
-                          color: "var(--primary-color)",
-                          cursor: "pointer",
-                          fontSize: "20px",
-                        }}
-                        onClick={() => handleDeleteFeedback(feedback.id)}
-                      />
-                      <FaRegEdit
-                        size={16}
-                        style={{
-                          color: "var(--secondary-color)",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => handleChangeFeedback(feedback)}
-                      />
-                    </Box>
-                    <BasicModal
-                      open={open}
-                      handleClose={handleClose}
-                      reportId={selectedFeedback?.reportId}
-                      feedback={selectedFeedback}
-                      type="feedback"
-                    />
-                  </Box>
-                </Box>
-              ))}
+              </Grid>
             </Box>
           )}
-
-
 
           {filteredData?.length > 0 && (
             <Box
@@ -644,7 +746,6 @@ function SupervisorFeedback() {
           )}
         </Container>
       </Box>
-
       <DashboardFooter />
     </Box>
   );
