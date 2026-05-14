@@ -528,7 +528,7 @@ function MyCases() {
             minHeight: "500px",
             display: "flex",
             flexDirection: "column",
-            justifyContent:  paginatedData?.length === 0? "center":"space-between",
+            justifyContent: paginatedData?.length === 0 ? "center" : "space-between",
           }}
         >
           <Grid container spacing={2}>
@@ -578,7 +578,11 @@ function MyCases() {
                       fontFamily: "var(--primary-font)",
                     }}
                   >
-                    You haven’t submitted any cases yet
+                    {filter === "noFeedback"
+                      ? "Your cases are pending supervisor feedback."
+                      : filter === "reviewed"
+                        ? "No reviewed cases yet, your submitted cases are awaiting supervisor feedback."
+                        : "You haven't submitted any cases yet."}
                   </Typography>
                 </Box>
               </Box>

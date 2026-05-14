@@ -653,6 +653,8 @@ function PredictTumor() {
                                       color: "#fff",
                                       py: 2,
                                       px: 2,
+                                      
+
                                       textTransform: "capitalize",
                                       "&.Mui-disabled": {
                                         cursor: "not-allowed !important",
@@ -668,6 +670,8 @@ function PredictTumor() {
                                       "&:has(input:checked)": {
                                         backgroundColor: "#ff2d2d",
                                         borderColor: "#ff2d2d",
+                                        },"& .MuiFormControlLabel-label": {
+                                        fontSize: { xs: "13px", sm: "16px" },
                                       },
                                     }}
                                   />{" "}
