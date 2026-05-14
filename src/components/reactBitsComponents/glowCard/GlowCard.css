@@ -1,7 +1,7 @@
 .glow-card {
   position: relative;
   width: 100%;
- padding: var(--card-padding, 40px);
+  padding: var(--card-padding, 40px);
   border-radius: 20px;
   background: linear-gradient(
     145deg,
@@ -25,14 +25,10 @@
   border-radius: 50%;
   pointer-events: none;
 }
-/*فقط لصفحة بروفايل الادمن*/
-.admin-glow-card {
-  --card-padding: 40px;
-}
 
-/*  فقطxs (موبايل) */
+/*  mobile */
 @media (max-width: 600px) {
-  .admin-glow-card {
+  .glow-card {
     --card-padding: 25px;
   }
 }

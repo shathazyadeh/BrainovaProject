@@ -188,6 +188,14 @@ function RegisterForm({
               helperText={errors.fullName?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
             <TextField
               {...register("userName")}
@@ -198,6 +206,14 @@ function RegisterForm({
               helperText={errors.userName?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
           </>
         ) : (
@@ -211,6 +227,14 @@ function RegisterForm({
               helperText={errors.fullName?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
             <TextField
               {...register("userName")}
@@ -221,6 +245,14 @@ function RegisterForm({
               helperText={errors.userName?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
           </Box>
         )}
@@ -235,6 +267,14 @@ function RegisterForm({
               helperText={errors.email?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
             <TextField
               {...register("phoneNumber")}
@@ -245,6 +285,14 @@ function RegisterForm({
               helperText={errors.phoneNumber?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
           </>
         ) : (
@@ -258,6 +306,14 @@ function RegisterForm({
               helperText={errors.email?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
             <TextField
               {...register("phoneNumber")}
@@ -268,6 +324,14 @@ function RegisterForm({
               helperText={errors.phoneNumber?.message}
               className={textfieldColor}
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
           </Box>
         )}
@@ -286,9 +350,9 @@ function RegisterForm({
                 <InputAdornment position="end">
                   <IconButton onClick={handleClickShowPassword} edge="end">
                     {showPass ? (
-                      <VisibilityOff sx={{ color: "var(--secondary-color)" }} />
+                      <VisibilityOff sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }} />
                     ) : (
-                      <Visibility sx={{ color: "var(--secondary-color)" }} />
+                      <Visibility sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }} />
                     )}
                   </IconButton>
                 </InputAdornment>
@@ -296,6 +360,14 @@ function RegisterForm({
             }}
             className={textfieldColor}
             spellCheck={false}
+            sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+            }}
           />
         )}
         {/* Dropdown للدكاترة */}
@@ -310,6 +382,7 @@ function RegisterForm({
             helperText={errors.supervisorUserId?.message}
             sx={{
               "& .MuiSelect-icon": { color: "var(--secondary-color)" },
+              "& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px"}},
             }}
             SelectProps={{
               MenuProps: {
@@ -416,6 +489,7 @@ function RegisterForm({
           sx={{
             bgcolor: "var(--primary-color)",
             fontWeight: "600",
+            fontSize:{xs:"13px",sm:"14px"},
             alignSelf: fullWidthButton ? "stretch" : "flex-end",
             "&.Mui-disabled": {
               backgroundColor: "#2f2e2ea2",

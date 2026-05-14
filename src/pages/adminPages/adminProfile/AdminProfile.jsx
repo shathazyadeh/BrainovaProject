@@ -632,7 +632,6 @@ function AdminProfile() {
             <GlowCard
               enableTilt={false}
               glowIntensity="soft"
-              className="admin-glow-card"
             >
               <Grid container rowSpacing={2} sx={{ alignItems: "center" }}>
                 <Grid item size={{ xs: 12, lg: 5 }}>

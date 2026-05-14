@@ -18,6 +18,7 @@ import GlowCard from "../../../components/reactBitsComponents/glowCard/GlowCard"
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
+import { LuBrain } from "react-icons/lu";
 
 function Login() {
   const {
@@ -59,44 +60,38 @@ function Login() {
               sx={{
                 display: "flex",
                 justifyContent: "center",
+                alignItems: "baseline",
                 gap: "6px",
                 marginBottom: "70px",
               }}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="35"
-                height="35"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="var(--primary-color)"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-brain w-8 h-8 text-red-500"
-                data-fg-caxq9="1.21:1.9465:/src/app/components/Login.tsx:32:17:1540:42:e:Brain::::::42K"
-              >
-                <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path>
-                <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"></path>
-                <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"></path>
-                <path d="M17.599 6.5a3 3 0 0 0 .399-1.375"></path>
-                <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"></path>
-                <path d="M3.477 10.896a4 4 0 0 1 .585-.396"></path>
-                <path d="M19.938 10.5a4 4 0 0 1 .585.396"></path>
-                <path d="M6 18a4 4 0 0 1-1.967-.516"></path>
-                <path d="M19.967 17.484A4 4 0 0 1 18 18"></path>
-              </svg>
+              <Box
+                component={LuBrain}
+                sx={{
+                  fontSize: { xs: "28px", sm: "34px" },
+                  color: "var(--primary-color)",
+                  position: "relative",
+                  top: "4px",
+                }}
+              />
               <Typography
                 component={"h1"}
-                variant="h4"
-                sx={{ color: "white", fontWeight: "700" }}
+                sx={{
+                  color: "white",
+                  fontWeight: "700",
+                  fontSize: { xs: "28px", sm: "34px" },
+                }}
               >
                 Brainova
               </Typography>
             </Box>
             <Typography
               component={"h2"}
-              sx={{ fontWeight: "700", fontSize: "25px", color: "white" }}
+              sx={{
+                fontWeight: "700",
+                fontSize: { xs: "20px", sm: "25px" },
+                color: "white",
+              }}
             >
               Welcome Back
             </Typography>
@@ -105,6 +100,7 @@ function Login() {
               sx={{
                 color: "var(--secondary-color)",
                 marginBottom: "60px",
+                fontSize: { xs: "14px", sm: "16px" },
               }}
             >
               Sign in to continue your medical training
@@ -133,6 +129,14 @@ function Login() {
                 helperText={errors.emailOrUserName?.message}
                 className="textfield_dark"
                 spellCheck={false}
+                sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+                }}
               />
               <TextField
                 {...register("password")}
@@ -148,11 +152,11 @@ function Login() {
                       <IconButton onClick={handleClickShowPassword} edge="end">
                         {showPass ? (
                           <VisibilityOff
-                            sx={{ color: "var(--secondary-color)" }}
+                            sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }}
                           />
                         ) : (
                           <Visibility
-                            sx={{ color: "var(--secondary-color)" }}
+                            sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }}
                           />
                         )}
                       </IconButton>
@@ -161,6 +165,14 @@ function Login() {
                 }}
                 className="textfield_dark"
                 spellCheck={false}
+                sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+                }}
               />
               <Link
                 component={RouterLink}
@@ -181,10 +193,11 @@ function Login() {
                 type="submit"
                 variant="contained"
                 disabled={isSubmitting}
-                sx={{ bgcolor: "var(--primary-color)", fontWeight: "600" }}
+                sx={{ bgcolor: "var(--primary-color)", fontWeight: "600",fontSize:{xs:"13px",sm:"14px"} }}
               >
                 {isSubmitting ? (
-                  <CircularProgress size={25}
+                  <CircularProgress
+                    size={25}
                     sx={{
                       "& .MuiCircularProgress-circle": {
                         stroke: "white",
@@ -196,7 +209,11 @@ function Login() {
                 )}
               </Button>
               <Typography
-                sx={{ textAlign: "center", color: "var(--secondary-color)" }}
+                sx={{
+                  textAlign: "center",
+                  color: "var(--secondary-color)",
+                  fontSize: { xs: "14px", sm: "16px" },
+                }}
               >
                 Don't have an account?
                 <Link
