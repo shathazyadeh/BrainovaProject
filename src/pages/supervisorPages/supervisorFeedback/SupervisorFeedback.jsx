@@ -1,6 +1,6 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Pagination, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { FaRegEdit } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
@@ -28,6 +28,25 @@ function SupervisorFeedback() {
   const [open, setOpen] = useState(false);
   const [selectedFeedback, setSelectedFeedback] = useState(null);
   const navigate = useNavigate();
+
+
+
+  const filteredData =
+    data?.items?.filter((feedback) =>
+      feedback.studentName?.toLowerCase().includes(search.toLowerCase()) ||
+      feedback.supervisorName?.toLowerCase().includes(search.toLowerCase())
+    ) || [];
+  const [page, setPage] = useState(1);//رقم الصفحة الحالي بالبداية خليته 1
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+  const itemsPerPage = 9;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
+  const paginatedData = filteredData?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+  const totalPages = Math.ceil((filteredData?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
+
 
   const reportsWithoutFeedback =
     getAllCasesData?.items?.filter((report) => !report.isReviewed) || [];
@@ -145,7 +164,7 @@ function SupervisorFeedback() {
                   fontFamily: "var(--primary-font)",
                 }}
               >
-                {data?.totalCount}
+                {filteredData?.length}
               </Typography>{" "}
               feedback entries
             </Typography>
@@ -159,6 +178,7 @@ function SupervisorFeedback() {
               borderRadius: "10px",
               padding: "20px",
               marginTop: "23px",
+
             }}
           >
             <Typography
@@ -194,6 +214,7 @@ function SupervisorFeedback() {
                   alignItems: "center",
                   justifyContent: "center",
                   height: "60px",
+
                 }}
               >
                 <Typography
@@ -280,7 +301,7 @@ function SupervisorFeedback() {
             )}
           </Box>
 
-          {data?.items.length > 0 && (
+          {data?.items?.length > 0 && (
             <>
               <Box className="search" sx={{ paddingTop: "23px" }}>
                 <UsersSearch search={search} setSearch={setSearch} />
@@ -288,18 +309,18 @@ function SupervisorFeedback() {
             </>
           )}
 
-          {data?.items.length === 0 ? (
+          {paginatedData?.length === 0 ? (
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                minHeight: "60vh",
+                minHeight: "75vh",
               }}
             >
               <Box
                 sx={{
-                  marginTop: "100px",
+                  marginTop: "50px",
                   textAlign: "center",
                   bgcolor: "#5959594e",
                   paddingY: "50px",
@@ -308,6 +329,7 @@ function SupervisorFeedback() {
                   boxShadow: "0 0 15px rgba(228, 1, 1, 0.22)",
                   fontFamily: "var(--primary-font)",
                   fontWeight: "500",
+                  borderBottom: "5px solid var(--primary-color)"
                 }}
               >
                 <Box
@@ -315,6 +337,7 @@ function SupervisorFeedback() {
                   sx={{
                     color: "red",
                     fontSize: "50px",
+
                     "@media (max-width:600px)": { fontSize: "40px" },
                   }}
                 />
@@ -327,7 +350,8 @@ function SupervisorFeedback() {
                     fontFamily: "var(--primary-font)",
                   }}
                 >
-                  No Feedbacks Found
+                  {search ? "No Results Found" : "No Feedbacks Found"}
+
                 </Typography>
 
                 <Typography
@@ -338,22 +362,18 @@ function SupervisorFeedback() {
                     fontFamily: "var(--primary-font)",
                   }}
                 >
-                  You haven’t added any feedback for your students yet.
+                  {search
+                    ? `There is no feedback matching "${search}"`
+                    : "You haven't added any feedback for your students yet."}
                 </Typography>
               </Box>
             </Box>
           ) : (
-            data?.items
-              .filter(
-                (
-                  feedbacks, //لفتلترة الداتا حسب السيرش
-                ) =>
-                  feedbacks.studentName
-                    ?.toLowerCase()
-                    .includes(search.toLowerCase()),
-              )
-              .map((feedback) => (
-                <Box className="feedback_card" key={feedback.id}>
+            <Box sx={{ minHeight: "650px" }}>
+
+
+              {paginatedData.map((feedback) => (
+                <Box className="feedback_card" key={feedback.id} >
                   <Box
                     component={"section"}
                     className="Supervisor_feedback"
@@ -588,7 +608,39 @@ function SupervisorFeedback() {
                     />
                   </Box>
                 </Box>
-              ))
+              ))}
+            </Box>
+          )}
+
+
+
+          {filteredData?.length > 0 && (
+            <Box
+              className="pagination"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+                padding: "20px",
+
+              }}
+            >
+              <Pagination
+                count={totalPages} // عدد الصفحات وهن الارقام اللي مبينات بالباجينيشن
+                page={page} // الصفحة الحالية
+                onChange={(event, value) => setPage(value)} //  تغيير الصفحة لما نكبس عالباجينيشن جيب رقمها وحطها بسيت البيج عشان نرجع نعيد الموضوع من الاول للصفحة الجديدة
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#fff",
+                    borderRadius: "10px",
+                  },
+                  "& .Mui-selected": {
+                    backgroundColor: "#ff0000 !important",
+                    color: "#fff",
+                  },
+                }}
+              />
+            </Box>
           )}
         </Container>
       </Box>

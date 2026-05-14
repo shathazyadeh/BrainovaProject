@@ -1,10 +1,10 @@
-import { Box, Button, Container, Typography } from '@mui/material'
+import { Box, Button, Container, Pagination, Typography } from '@mui/material'
 import QuestionsTabel from '../../../components/muiComponents/questionsTabel/QuestionsTabel'
 import useGetQuestions from '../../../hooks/supervisorHooks/useGetQuestions';
 import DashboardNavbar from '../../../components/muiComponents/dashboardNavbar/DashboardNavbar';
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import { FiPlus } from "react-icons/fi";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RightDrawer from '../../../components/muiComponents/rightDrawer/RightDrawer';
 import QuestionSearch from '../../../components/filterSearch/questionSearch/QuestionSearch';
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
@@ -13,6 +13,27 @@ function ReportQuestions() {
     console.log("data  ", data);
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
+
+    const [page, setPage] = useState(1);//رقم الصفحة الحالي بالبداية خليته 1
+
+    const filteredData =
+    data?.filter((question) =>
+        question.text?.toLowerCase().includes(search.toLowerCase()) ||
+        question.code?.toLowerCase().includes(search.toLowerCase())
+    ) || [];
+
+
+    useEffect(() => {
+        setPage(1);
+    }, [search]);
+
+    const itemsPerPage = 12;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
+    const paginatedData = filteredData?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
+        (page - 1) * itemsPerPage,
+        page * itemsPerPage
+    );
+    const totalPages = Math.ceil((filteredData?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
+
 
 
     return (
@@ -33,7 +54,7 @@ function ReportQuestions() {
                     display: "block",
                     minHeight: "100vh",
                 }}
-                 >
+            >
                 <Container maxWidth="lg">
                     {/* server errors */}
                     {isError && (
@@ -82,7 +103,7 @@ function ReportQuestions() {
                             </Box>
                         </Box>
                     )}
-                    <Box className="section_titel" sx={{ marginBottom: "23px", paddingTop:{xs:"30px",md:"0px"}}}>
+                    <Box className="section_titel" sx={{ marginBottom: "23px", paddingTop: { xs: "30px", md: "0px" } }}>
                         <Typography
                             component={"h1"}
                             variant="h4"
@@ -100,32 +121,32 @@ function ReportQuestions() {
                             Report Questions
                         </Typography>
                         <Typography
-                           component={"span"}
-                           sx={{
-                             color: "#fff",
-                             fontFamily: "var(--primary-font)",
-                fontSize: "20px",
-                "@media (max-width:700px)": {
-                               fontSize: "15px",
-                             },
-                             "@media (max-width:379px)": {
-                               display:"block",
-                             },
-                               }}
-                             >
-                             <Typography
-                               component={"span"}
-                               sx={{
-                                 color: "var(--primary-color)",
-                                 fontFamily: "var(--primary-font)",
-                               }}
-                             >
-                               {data?.length}
-                             </Typography>{" "}
-                             questions found
-                         </Typography>
-                        <Box  sx={{ display: 'flex', justifyContent:"space-between", alignItems: { xs: "flex-start",  }, "@media (max-width:1142px)": {flexDirection:'column'} ,marginBottom:'20px'}}>
-                            <Typography sx={{ color: "var(--secondary-color)",marginTop:"4px" }}>
+                            component={"span"}
+                            sx={{
+                                color: "#fff",
+                                fontFamily: "var(--primary-font)",
+                                fontSize: "20px",
+                                "@media (max-width:700px)": {
+                                    fontSize: "15px",
+                                },
+                                "@media (max-width:379px)": {
+                                    display: "block",
+                                },
+                            }}
+                        >
+                            <Typography
+                                component={"span"}
+                                sx={{
+                                    color: "var(--primary-color)",
+                                    fontFamily: "var(--primary-font)",
+                                }}
+                            >
+                                {filteredData?.length}
+                            </Typography>{" "}
+                            questions found
+                        </Typography>
+                        <Box sx={{ display: 'flex', justifyContent: "space-between", alignItems: { xs: "flex-start", }, "@media (max-width:1142px)": { flexDirection: 'column' }, marginBottom: '20px' }}>
+                            <Typography sx={{ color: "var(--secondary-color)", marginTop: "4px" }}>
                                 Managing and organizing the questions used for report evaluation.
                             </Typography>
                             <Button
@@ -134,8 +155,8 @@ function ReportQuestions() {
                                     bgcolor: "#ed2c2c",
                                     color: "#f0f2f5",
                                     display: "flex",
-                                    paddingX: {xs:'10px',md:'15px'},
-                                    paddingY: {xs:'5px',md:'10px'},
+                                    paddingX: { xs: '10px', md: '15px' },
+                                    paddingY: { xs: '5px', md: '10px' },
                                     gap: '10px',
                                     justifyContent: "center",
                                     textAlign: "center",
@@ -144,41 +165,73 @@ function ReportQuestions() {
                                     boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
                                     transition: "all 0.2s ease-in-out",
                                     "&:hover": {
-                                    transform: "scale(1.05)",
-                                    boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
+                                        transform: "scale(1.05)",
+                                        boxShadow: "0 6px 15px rgba(0,0,0,0.25)",
                                     },
-                                     "@media (max-width:1142px)": {marginY:'20px'} ,
-                                    
+                                    "@media (max-width:1142px)": { marginY: '20px' },
+
                                 }}
                             > <Box sx={{ alignItems: 'center', display: 'flex' }}>
                                     <FiPlus size={20} style={{ flexShrink: 0 }} />
                                 </Box>
-                                <Typography sx={{ fontSize: "17px", 
-                                                  justifyContent: "flex-start", 
-                                                  display: 'flex', 
-                                                  textTransform: "capitalize", 
-                                                  fontWeight: "500", 
-                                                  "@media (max-width:1140px)": {
-                                                   fontSize: "15px",
-                                                   }
-                                                  }}>
-                                Create Question
+                                <Typography sx={{
+                                    fontSize: "17px",
+                                    justifyContent: "flex-start",
+                                    display: 'flex',
+                                    textTransform: "capitalize",
+                                    fontWeight: "500",
+                                    "@media (max-width:1140px)": {
+                                        fontSize: "15px",
+                                    }
+                                }}>
+                                    Create Question
                                 </Typography>
                             </Button>
                         </Box>
                     </Box>
                     <QuestionSearch
-                    search={search}
-                    setSearch={setSearch}
+                        search={search}
+                        setSearch={setSearch}
                     />
+
                     <RightDrawer open={open} setOpen={setOpen} />
 
-                    <QuestionsTabel data={data} search={search}/>
+                    <Box sx={{ minHeight: "768px" }}>
+                        <QuestionsTabel data={paginatedData} search={search} />
+                    </Box>
+                    {filteredData.length > 0 && totalPages > 1 && (
+                    <Box
+                        className="pagination"
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center",
+                            marginTop: "30px",
+                            padding: "20px",
+
+                        }}
+                    >
+                        <Pagination
+                            count={totalPages} // عدد الصفحات وهن الارقام اللي مبينات بالباجينيشن
+                            page={page} // الصفحة الحالية
+                            onChange={(event, value) => setPage(value)} //  تغيير الصفحة لما نكبس عالباجينيشن جيب رقمها وحطها بسيت البيج عشان نرجع نعيد الموضوع من الاول للصفحة الجديدة
+                            sx={{
+                                "& .MuiPaginationItem-root": {
+                                    color: "#fff",
+                                    borderRadius: "10px",
+                                },
+                                "& .Mui-selected": {
+                                    backgroundColor: "#ff0000 !important",
+                                    color: "#fff",
+                                },
+                            }}
+                        />
+                    </Box>
+                    )}
                 </Container>
             </Box>
 
-            
-           <DashboardFooter/>                                       
+
+            <DashboardFooter />
         </Box>
     )
 }

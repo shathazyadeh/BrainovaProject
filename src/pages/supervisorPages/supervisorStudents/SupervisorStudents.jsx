@@ -9,10 +9,33 @@ import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearc
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import Pagination from '@mui/material/Pagination';
+import { useEffect } from "react";
+import { BsFillExclamationOctagonFill } from "react-icons/bs";
+
 function SupervisorStudents() {
   const { isError, error, isLoading, data } = useGetMyStudentsInfo();
   console.log("students info:", data);
+
   const [search, setSearch] = useState("");
+
+  const filteredData = data?.filter(
+    (student) =>
+      student.fullName?.toLowerCase().includes(search.toLowerCase()) ||
+      student.userName?.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const [page, setPage] = useState(1);//رقم الصفحة الحالي بالبداية خليته 1
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+  const itemsPerPage = 9;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
+  const paginatedData = filteredData?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+  const totalPages = Math.ceil((filteredData?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
+
 
   return (
     <Box
@@ -21,7 +44,8 @@ function SupervisorStudents() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        position:"relative"
+        position: "relative",
+
       }}
     >
       {" "}
@@ -30,14 +54,14 @@ function SupervisorStudents() {
       <Box
         component={"section"}
         sx={{
-          paddingBottom:'20px',
+          paddingBottom: '20px',
           flexGrow: 1,
           alignItems: "flex-start",
           display: "block",
           minHeight: "100vh",
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="lg"  sx={{ display: "flex", flexDirection: "column", minHeight: "1020px" }}>
           {/* server errors */}
           {isError && (
             <Box
@@ -55,7 +79,7 @@ function SupervisorStudents() {
                 component={"h1"}
                 variant="h5"
                 sx={{
-                  marginTop:"290px",
+                  marginTop: "290px",
                   color: "white",
                   fontWeight: "700",
                   textAlign: "center",
@@ -80,8 +104,8 @@ function SupervisorStudents() {
                 zIndex: 1,
               }}
             >
-              <Box sx={{marginTop:"290px"}}>
-              <Loader />
+              <Box sx={{ marginTop: "290px" }}>
+                <Loader />
               </Box>
             </Box>
           )}
@@ -95,7 +119,7 @@ function SupervisorStudents() {
                 fontWeight: "600",
                 display: "inline-block",
                 marginRight: "10px",
-                paddingTop:{xs:"30px",md:"0px"},
+                paddingTop: { xs: "30px", md: "0px" },
                 "@media (max-width:700px)": {
                   fontSize: "22px",
                 },
@@ -121,7 +145,7 @@ function SupervisorStudents() {
                   fontFamily: "var(--primary-font)",
                 }}
               >
-                {data?.length}
+                {filteredData?.length}
               </Typography>{" "}
               enrolled students
             </Typography>
@@ -129,24 +153,74 @@ function SupervisorStudents() {
           <Box className="search" sx={{ paddingTop: "23px" }}>
             <UsersSearch search={search} setSearch={setSearch} />
           </Box>
-          <Grid container spacing={2}>
-            {data
-              ?.filter(
-                (
-                  student, //لفتلترة الداتا حسب السيرش
-                ) =>
-                  student.fullName
-                    ?.toLowerCase()
-                    .includes(search.toLowerCase()) ||
-                  student.userName
-                    ?.toLowerCase()
-                    .includes(search.toLowerCase()),
-              )
-              .map((student) => (
+          {filteredData?.length === 0 ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+
+
+              }}
+            >
+              <Box
+                sx={{
+                  marginTop: "200px",
+                  textAlign: "center",
+                  bgcolor: "#5959594e",
+                  paddingY: "50px",
+                  paddingX: { xs: "30px", sm: "90px" },
+                  borderRadius: "15px",
+                  boxShadow: "0 0 15px rgba(228, 1, 1, 0.22)",
+                  fontFamily: "var(--primary-font)",
+                  fontWeight: '500',
+                  borderBottom: "5px solid var(--primary-color)"
+                }}
+              >
+                <Box
+                  component={BsFillExclamationOctagonFill}
+                  sx={{
+                    color: "red",
+                    fontSize: "50px",
+                    "@media (max-width:600px)": {
+                      fontSize: "40px",
+                    },
+                  }}
+                />
+
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: { xs: "18px", sm: "22px", md: "28" },
+                    fontWeight: "700",
+                    marginBottom: "10px",
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
+                  No Results Found
+                </Typography>
+
+                <Typography
+                  sx={{
+                    color: "#7e8a9a",
+                    fontSize: { xs: "12px", sm: "14px", lg: "16" },
+                    lineHeight: 1.8,
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
+                  No students matching "{search}"
+                </Typography>
+              </Box>
+            </Box>
+          ) : (
+             <Box sx={{ flex: 1 }}>
+            <Grid container spacing={2} >
+              {paginatedData?.map((student) => (
                 <Grid item size={{ xs: 12, sm: 6, md: 4 }} key={student.studentId}>
                   <Box
                     className="student_info"
                     sx={{
+
                       bgcolor: "#5655554c",
                       padding: "25px",
                       borderRadius: "10px",
@@ -173,7 +247,7 @@ function SupervisorStudents() {
                       <Avatar sx={{ bgcolor: "#e20404" }}>
                         {student.userName?.charAt(0).toUpperCase()}
                       </Avatar>
-                      <Typography sx={{ color: "#fff" , wordBreak: "break-all",}}>
+                      <Typography sx={{ color: "#fff", wordBreak: "break-all", }}>
                         {student.fullName}
                       </Typography>
                     </Box>
@@ -211,7 +285,7 @@ function SupervisorStudents() {
                     </Box>
                     <Button
                       component={RouterLink}
-                    to={`/dashboard/supervisor/student-reports/${student.studentId}`}
+                      to={`/dashboard/supervisor/student-reports/${student.studentId}`}
                       sx={{
                         borderRadius: "15px",
                         bgcolor: "#6f6e6e3b",
@@ -233,12 +307,43 @@ function SupervisorStudents() {
                   </Box>
                 </Grid>
               ))}
-          </Grid>
+            </Grid></Box>
+          )}
+
+          {filteredData?.length > 0 && (
+            <Box
+              className="pagination"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+                padding: "20px",
+
+              }}
+            >
+              <Pagination
+                count={totalPages} // عدد الصفحات وهن الارقام اللي مبينات بالباجينيشن
+                page={page} // الصفحة الحالية
+                onChange={(event, value) => setPage(value)} //  تغيير الصفحة لما نكبس عالباجينيشن جيب رقمها وحطها بسيت البيج عشان نرجع نعيد الموضوع من الاول للصفحة الجديدة
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#fff",
+                    borderRadius: "10px",
+                  },
+                  "& .Mui-selected": {
+                    backgroundColor: "#ff0000 !important",
+                    color: "#fff",
+                  },
+                }}
+              />
+            </Box>
+
+          )}
         </Container>
       </Box>
-      
-          
-      <DashboardFooter/>
+
+
+      <DashboardFooter />
     </Box>
   );
 }

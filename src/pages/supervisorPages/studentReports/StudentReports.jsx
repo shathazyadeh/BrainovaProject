@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { useNavigate, useParams } from "react-router-dom";
 import useGetAllOfMyStudentsCases from "../../../hooks/supervisorHooks/useGetAllOfMyStudnetsCases";
@@ -8,6 +8,7 @@ import {
   Button,
   Container,
   Grid,
+  Pagination,
   Typography,
 } from "@mui/material";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
@@ -27,32 +28,45 @@ import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter
 function StudentReports() {
   const { studentId } = useParams();
   const navigate = useNavigate();
-  const { isError, error, isLoading, data } =
-    useGetAllOfMyStudentsCases(studentId);
+  const { isError, error, isLoading, data } = useGetAllOfMyStudentsCases(studentId);
   console.log("useGetAllOfMyStudentsCases:", data);
   const downloadMutation = useDownloadSupervisorPDF();
+  const [search, setSearch] = useState("");
+  const [feedbackFilter, setFeedbackFilter] = useState("all"); // "all" | "reviewed" | "noFeedback"
+  const [page, setPage] = useState(1);//رقم الصفحة الحالي بالبداية خليته 1
   const reviewedCount =
     data?.items?.filter((report) => report.isReviewed)?.length || 0; // لعرض عدد الريفيود
+
   const totalReports = data?.items.length || 0;
   const digits = Math.max(3, String(totalReports).length); //لكتابة اي دي التقرير
   console.log("digit:", digits); // كم اكبر عدد ديجيت ممكن اوصله في كتابة رقم التقرير
-  const [search, setSearch] = useState("");
-  const [feedbackFilter, setFeedbackFilter] = useState("all"); // "all" | "reviewed" | "noFeedback"
 
-  let filteredReports = data?.items?.filter((report) => {
-    if (!search) return true;
 
-    return (
-      report.reportCode?.toLowerCase().includes(search.toLowerCase())
-    );
-  });
+  const filteredReports =   //دمجنا فلترة السيرش والفيدباك فلتر مع بعض بخطوة وحدة عشان الباجينيشن 
+    data?.items?.filter((report) => {
+      const matchesSearch = report.reportCode
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
 
-  // نفلتر حسب feedback
-  if (feedbackFilter !== "all") {
-    filteredReports = filteredReports.filter((report) =>
-      feedbackFilter === "noFeedback" ? !report.isReviewed : report.isReviewed,
-    );
-  }
+      const matchesFeedback =
+        feedbackFilter === "all"
+          ? true
+          : feedbackFilter === "noFeedback"
+            ? !report.isReviewed
+            : report.isReviewed;
+
+      return matchesSearch && matchesFeedback;
+    }) || [];
+  useEffect(() => {
+    setPage(1);
+  }, [search, feedbackFilter]);
+  const itemsPerPage = 9;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
+  const paginatedData = filteredReports?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+  const totalPages = Math.ceil((filteredReports?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
+
 
   return (
     <Box
@@ -69,7 +83,7 @@ function StudentReports() {
       <Box
         component={"section"}
         sx={{
-          
+
           flexGrow: 1,
           alignItems: "flex-start",
           display: "block",
@@ -311,7 +325,7 @@ function StudentReports() {
                       <UsersSearch
                         search={search}
                         setSearch={setSearch}
-                        label="Search reports..."
+                        label="Search by report ID..."
                       />
                     </Grid>
                   </Grid>
@@ -326,8 +340,10 @@ function StudentReports() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                minHeight: "60vh",
-                position: "relative"
+
+                position: "relative",
+
+
               }}
             >
               <FaArrowLeft
@@ -346,7 +362,8 @@ function StudentReports() {
                   borderRadius: "15px",
                   boxShadow: "0 0 15px rgba(228, 1, 1, 0.22)",
                   fontFamily: "var(--primary-font)",
-                  fontWeight: '500'
+                  fontWeight: '500',
+                  borderBottom: "5px solid var(--primary-color)"
                 }}
               >
                 <Box component={BsFillExclamationOctagonFill}
@@ -378,9 +395,64 @@ function StudentReports() {
                 </Typography>
               </Box>
             </Box>
+          ) : paginatedData.length === 0 ? (
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "560px",
+              }}
+            >
+              <Box
+                sx={{
+                  textAlign: "center",
+                  bgcolor: "#5959594e",
+                  paddingY: "50px",
+                  paddingX: { xs: "30px", sm: "90px" },
+                  borderRadius: "15px",
+                  boxShadow: "0 0 15px rgba(228, 1, 1, 0.22)",
+                  fontFamily: "var(--primary-font)",
+                  fontWeight: "500",
+                }}
+              >
+                <Box
+                  component={BsFillExclamationOctagonFill}
+                  sx={{
+                    color: "red",
+                    fontSize: "50px",
+                    "@media (max-width:600px)": { fontSize: "40px" }
+                  }}
+                />
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: { xs: "18px", sm: "22px", md: '28' },
+                    fontWeight: "700",
+                    marginBottom: "10px",
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
+                  No Results Found
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "#7e8a9a",
+                    fontSize: { xs: "12px", sm: "14px", lg: "16" },
+                    lineHeight: 1.8,
+                    fontFamily: "var(--primary-font)",
+                  }}
+                >
+                  {search
+                    ? `No reports matching "${search}"`
+                    : "No reports match the selected filter."}
+                </Typography>
+              </Box>
+            </Box>
           ) : (
-            <Grid container spacing={2}>
-              {filteredReports?.map((report) => (
+            <Grid container spacing={2} sx={{ minHeight: "1030px", alignContent: "flex-start" }}>
+              {paginatedData?.map((report) => (
                 <Grid item size={{ xs: 12, sm: 6, lg: 4 }} key={report.reportId}>
                   <Box
                     className="report"
@@ -583,10 +655,38 @@ function StudentReports() {
               ))}
             </Grid>
           )}
+          {filteredReports?.length > 0 && (
+            <Box
+              className="pagination"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+                padding: "20px",
+
+              }}
+            >
+              <Pagination
+                count={totalPages} // عدد الصفحات وهن الارقام اللي مبينات بالباجينيشن
+                page={page} // الصفحة الحالية
+                onChange={(event, value) => setPage(value)} //  تغيير الصفحة لما نكبس عالباجينيشن جيب رقمها وحطها بسيت البيج عشان نرجع نعيد الموضوع من الاول للصفحة الجديدة
+                sx={{
+                  "& .MuiPaginationItem-root": {
+                    color: "#fff",
+                    borderRadius: "10px",
+                  },
+                  "& .Mui-selected": {
+                    backgroundColor: "#ff0000 !important",
+                    color: "#fff",
+                  },
+                }}
+              />
+            </Box>
+          )}
         </Container>
       </Box>
 
-     <DashboardFooter/>
+      <DashboardFooter />
     </Box>
   );
 }

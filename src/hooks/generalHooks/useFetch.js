@@ -9,7 +9,6 @@ import axiosInstance from "../../Api/axiosInstance";
         queryFn: async()=>{
             const response = await axiosInstance.get(url);
             return response.data;
-        
         },
         ...options // بتخلي أي قيمة بنبعتها من برا تستبدل القيمة الأصلية
        

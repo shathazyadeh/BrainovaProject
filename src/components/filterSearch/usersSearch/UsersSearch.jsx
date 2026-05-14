@@ -22,25 +22,26 @@ export default function UsersSearch({
         "& input": {
           "&::placeholder": {
             color: "var(--secondary-color)",
+            fontSize: { xs: "14px", sm: "16px" },
           },
         },
         "& .MuiOutlinedInput-root": {
           height: 55, // ارتفاع الـ box الخارجي
           "& fieldset": {
-            borderRadius: "15px", // هنا نشيل البوردر الخارجي
+            borderRadius: "15px", 
           },
           "&:hover fieldset": {
-            border: "1px red solid", // نشيل البوردر عند الهور أيضاً
+            border: "1px red solid",
           },
           "&.Mui-focused fieldset": {
-            border: "1px red solid", // نشيل البوردر لما يكون فوكس
+            border: "1px red solid", 
           },
         },
       }}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
-            <SearchIcon style={{ color: "var(--secondary-color)" }} />
+            <SearchIcon sx={{ color: "var(--secondary-color)" }} />
           </InputAdornment>
         ),
       }}
