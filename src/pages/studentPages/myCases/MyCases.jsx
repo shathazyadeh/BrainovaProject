@@ -166,6 +166,7 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
             "&::-webkit-scrollbar-thumb": {
               backgroundColor: "#c21313",
               borderRadius: "10px",
+              cursor: "grab"
             },
           }}>
             {feedback?.comment}
@@ -524,7 +525,7 @@ function MyCases() {
 
         <Box
           sx={{
-            minHeight: "500px", // جربي الرقم المناسب حسب التصميم
+            minHeight: "500px",
             display: "flex",
             flexDirection: "column",
             justifyContent:  paginatedData?.length === 0? "center":"space-between",

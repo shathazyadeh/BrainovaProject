@@ -509,6 +509,7 @@ function ReportDetails() {
                         "&::-webkit-scrollbar-thumb": {
                           bgcolor: "var(--primary-color)",
                           borderRadius: "20px",
+                          cursor: "grab"
                         },
                       }}
                     >

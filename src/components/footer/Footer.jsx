@@ -130,9 +130,6 @@ function Footer() {
                   component={RouterLink}
                   to="/predict-tumor"
                   sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
-                  onClick={() =>
-                    window.scrollTo({ top: 0, behavior: "smooth" })
-                  }
                 >
                   Upload MRI
                 </Link>
@@ -145,9 +142,6 @@ function Footer() {
                   component={RouterLink}
                   to="/learning-hub"
                   sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
-                  onClick={() =>
-                    window.scrollTo({ top: 0, behavior: "smooth" })
-                  }
                 >
                   Learning Hub
                 </Link>

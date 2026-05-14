@@ -1,10 +1,13 @@
+import { Box } from '@mui/material'
 import { Outlet } from 'react-router-dom'
+import ScrollToTop from '../components/scrollToTop/ScrollToTop'
 
 function AuthLayout() {
   return (
-    <div>
+    <Box>
+      <ScrollToTop />
       <Outlet/>
-    </div>
+    </Box>
   )
 }
 

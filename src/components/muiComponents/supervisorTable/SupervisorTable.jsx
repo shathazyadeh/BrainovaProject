@@ -413,6 +413,7 @@ export default function CustomPaginationActionsTable({
         "&::-webkit-scrollbar-thumb": {
           background: "#777575",
           borderRadius: "10px",
+          cursor: "grab"
         },
       }}
     >

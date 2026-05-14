@@ -136,6 +136,7 @@ export default function UsersFilters({
                 },
                 "&::-webkit-scrollbar-thumb:hover": {
                   background: "#ff4d4d",
+                  cursor: "grab",
                 },
                 scrollbarWidth: "thin",
                 scrollbarColor: "var(--secondary-color) #2a2a2a",

@@ -542,6 +542,7 @@ function SupervisorFeedback() {
                         "&::-webkit-scrollbar-thumb": {
                           backgroundColor: "var(--primary-color)",
                           borderRadius: "3px",
+                          cursor: "grab"
                         },
                         "&::-webkit-scrollbar-track": {
                           backgroundColor: "#2a2a3d",

@@ -33,6 +33,13 @@ export default function ReportsFilters({
                   "&:hover": {
                     bgcolor: "var(--primary-color)",
                   },
+                  "&.Mui-selected": {
+                    bgcolor: "#0000002d !important",
+                    color: "#fff",
+                  },
+                  "& .MuiTouchRipple-root": {
+                    color: "var(--secondary-color) !important",
+                  },
                 },
               },
             },
@@ -77,6 +84,13 @@ export default function ReportsFilters({
                   "&:hover": {
                     bgcolor: "var(--primary-color)",
                   },
+                  "&.Mui-selected": {
+                    bgcolor: "#0000002d !important",
+                    color: "#fff",
+                  },
+                  "& .MuiTouchRipple-root": {
+                    color: "var(--secondary-color) !important",
+                  },
                 },
 
                 "&::-webkit-scrollbar": {
@@ -92,6 +106,7 @@ export default function ReportsFilters({
                 },
                 "&::-webkit-scrollbar-thumb:hover": {
                   background: "#ff4d4d",
+                  cursor: "grab"
                 },
 
                 scrollbarWidth: "thin",

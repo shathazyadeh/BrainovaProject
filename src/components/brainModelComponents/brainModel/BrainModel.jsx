@@ -7,6 +7,7 @@ import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
 import BrainCard from "../brainCard/BrainCard";
 import { BsFillBadge3dFill } from "react-icons/bs";
 import style from "./BrainModel.module.css";
+import Loader from "../../uiVerseComponents/loader/Loader";
 
 const HOTSPOTS = [
   {
@@ -57,6 +58,7 @@ export default function BrainModel() {
   const [labelsVisible, setLabelsVisible] = useState(true);
   const [activeLabel, setActiveLabel] = useState(null);
   const [dots, setDots] = useState([]);
+  const [loading, setLoading] = useState(true); //لأنه الدماغ اولها بكون يحمل
 
   const setActiveLabelRef = useRef(setActiveLabel);
   setActiveLabelRef.current = setActiveLabel;
@@ -200,6 +202,8 @@ export default function BrainModel() {
       camera.position.set(cameraZ * 1.3, 0, 0);
       controls.target.set(0, 0, 0);
       controls.update();
+
+      setLoading(false); //  البرين خلص تحميل
     });
     const onClickTemp = (event) => {
       setLabelsVisible(false);
@@ -307,6 +311,21 @@ export default function BrainModel() {
             }}
             onClick={() => setActiveLabel(null)}
           >
+            {loading && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "#000",
+                  zIndex: 50,
+                }}
+              >
+                <Loader />
+              </Box>
+            )}
             <Box
               ref={mountRef}
               sx={{
@@ -518,7 +537,7 @@ export default function BrainModel() {
           >
             <BrainCard activeLabel={activeLabel} />
           </Box>
-        </Grid> 
+        </Grid>
       </Grid>
     </Box>
   );

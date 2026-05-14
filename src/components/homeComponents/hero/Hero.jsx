@@ -22,7 +22,7 @@ function Hero() {
         spacing={3}
         rowSpacing={10}
         sx={{
-          display: "flix",
+          display: "flex",
           alignItems: "center",
         }}
       >
@@ -142,6 +142,8 @@ function Hero() {
               Upload MRI Scan
             </Button>
             <Button
+              component={RouterLink}
+              to="/learning-hub"
               className={`${style.learn_btn} upper_case`}
               sx={{
                 color: "white",

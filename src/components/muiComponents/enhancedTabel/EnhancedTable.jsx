@@ -732,7 +732,7 @@ export default function EnhancedTable({
                 background: "#ffffff55",
                 borderRadius: "10px",
               },
-              "&::-webkit-scrollbar-thumb:hover": { background: "#ffffff88" },
+              "&::-webkit-scrollbar-thumb:hover": { background: "#ffffff88",cursor: "grab" },
             }}
           >
             <Table
