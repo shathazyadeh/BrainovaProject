@@ -164,7 +164,7 @@ function RegisterForm({
     <Box>
       {serverErrors?.length > 0 ? (
         <Typography
-          sx={{ color: "var(--primary-color)", marginBottom: "20px" }}
+          sx={{ color: "var(--primary-color)", marginBottom: "20px",fontSize:{xs:"13px",sm:"14px"}, }}
         >
           {serverErrors}
         </Typography>
@@ -388,8 +388,8 @@ function RegisterForm({
               MenuProps: {
                 PaperProps: {
                   sx: {
-                    backgroundColor: "rgb(8,13,22)", // لون خلفية القائمة
-                    color: "var(--secondary-color)", // لون النص
+                    backgroundColor: "rgb(8,13,22)",
+                    color: "var(--secondary-color)",
                     maxHeight: 48 * 3 + 8,
                     borderRadius: "10px",
                     "&::-webkit-scrollbar": { width: "8px" },
@@ -417,12 +417,13 @@ function RegisterForm({
                     value={sup.id}
                     sx={{
                       "&:hover": {
-                        backgroundColor: "#3a3f47", // لون سكني عند الهوفر
+                        backgroundColor: "#3a3f47",
                         color: "#ffffff",
                       },
+                      fontSize:{xs:"14px",sm:"16px"}
                     }}
                   >
-                    {sup.fullName} {/* الاسم اللي يظهر */}
+                    {sup.fullName}
                   </MenuItem>
                 ),
               )}
@@ -441,7 +442,7 @@ function RegisterForm({
             className={textfieldColor}
             sx={{
               "& .MuiSelect-icon": {
-                color: "var(--secondary-color)", // 👈 لون السهم
+                color: "var(--secondary-color)",
               },
             }}
             SelectProps={{

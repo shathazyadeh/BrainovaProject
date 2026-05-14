@@ -45,12 +45,20 @@ function ForgetPassword() {
           sx={{ paddingBottom: "60px", paddingTop: "30px" }}
         >
           <Box className="img" sx={{ textAlign: "center" }}>
-            <Box component={"img"} src={forgetPasswordPic} alt="Password help lock icon" width="150px" />
+            <Box
+              component={"img"}
+              src={forgetPasswordPic}
+              sx={{width:{xs:"120px",sm:"150px"}}}
+              alt="Password help lock icon"
+            />
           </Box>
           <Typography
             component={"h1"}
-            variant="h5"
-            sx={{ fontWeight: "700", textAlign: "center" }}
+            sx={{
+              fontWeight: "700",
+              textAlign: "center",
+              fontSize: { xs: "18px", sm: "24px" },
+            }}
           >
             Security Verification
           </Typography>
@@ -61,14 +69,20 @@ function ForgetPassword() {
               color: "var(--secondary-color)",
               marginBottom: "45px",
               marginTop: "15px",
+              fontSize: { xs: "14px", sm: "16px" },
+              maxWidth: {
+                xs: "250px",
+                sm: "320px",
+                md: "400px",
+              },
+              marginX: "auto",
             }}
           >
-            Please Enter Your Email Address To Receive <br /> a Verification
-            Code.
+            Please Enter Your Email Address To Receive a Verification Code.
           </Typography>
           {serverErrors?.length > 0 ? (
             <Typography
-              sx={{ color: "var(--primary-color)", marginBottom: "20px" }}
+              sx={{ color: "var(--primary-color)", marginBottom: "20px", fontSize:{xs:"13px",sm:"14px"}, }}
             >
               {serverErrors}
             </Typography>
@@ -89,6 +103,14 @@ function ForgetPassword() {
               error={errors.email}
               helperText={errors.email?.message}
               className="textfield_light"
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
             <Button
               className="fx_fill"
@@ -99,6 +121,7 @@ function ForgetPassword() {
                 bgcolor: "var(--primary-color)",
                 fontWeight: "600",
                 paddingY: "8px",
+                fontSize:{xs:"13px",sm:"14px"},
               }}
             >
               {isSubmitting ? (
@@ -121,6 +144,7 @@ function ForgetPassword() {
                 justifyContent: "center",
                 alignItems: "center",
                 gap: "3px",
+                fontSize: { xs: "14px", sm: "16px" },
               }}
             >
               <FaLongArrowAltLeft /> {/*ايقونة السهم من مكتبة رياكت ايكونز*/}

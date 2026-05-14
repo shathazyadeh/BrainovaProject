@@ -107,7 +107,7 @@ function Login() {
             </Typography>
             {serverErrors?.length > 0 ? (
               <Typography
-                sx={{ color: "var(--primary-color)", marginBottom: "20px" }}
+                sx={{ color: "var(--primary-color)", marginBottom: "20px", fontSize:{xs:"13px",sm:"14px"}, }}
               >
                 {serverErrors}
               </Typography>

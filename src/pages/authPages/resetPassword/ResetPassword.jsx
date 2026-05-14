@@ -9,6 +9,8 @@ import {
   Link,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { ResetPasswordSchema } from "../../../validations/ResetPasswordSchema";
@@ -23,6 +25,9 @@ import style from "./ResetPassword.module.css";
 
 function ResetPassword() {
   const resetEmail = localStorage.getItem("resetEmail");
+
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
 
   const {
     register, // لتسجيل الحقول العادية في الفورم
@@ -70,14 +75,14 @@ function ResetPassword() {
             <Box
               component={"img"}
               src={resetPasswordPic}
-              width="150px"
+              sx={{width:{xs:"100px",sm:"130px"}}}
               alt="Red padlock with check mark"
             />
           </Box>
           <Typography
             component={"h1"}
             variant="h5"
-            sx={{ fontWeight: "700", textAlign: "center" }}
+            sx={{ fontWeight: "700", textAlign: "center",fontSize: { xs: "18px", sm: "24px" }, }}
           >
             Reset Password
           </Typography>
@@ -88,15 +93,21 @@ function ResetPassword() {
               color: "var(--secondary-color)",
               marginBottom: "20px",
               marginTop: "15px",
+              fontSize: { xs: "14px", sm: "16px" },
+              maxWidth: {
+                xs: "240px",
+                sm: "310px",
+                md: "390px",
+              },
+              marginX: "auto",
             }}
           >
             Your New Password Must Be Different from
-            <br />
             Previously Used Password.
           </Typography>
           {serverErrors?.length > 0 ? (
             <Typography
-              sx={{ color: "var(--primary-color)", marginBottom: "20px" }}
+              sx={{ color: "var(--primary-color)", marginBottom: "20px" ,fontSize: { xs: "14px", sm: "16px" },}}
             >
               {serverErrors}
             </Typography>
@@ -106,12 +117,13 @@ function ResetPassword() {
           <Typography
             component={"span"}
             sx={{
-              color: "var(--secondary-color)",
+              color: "var(--dark-gray-color)",
               textAlign: "center",
               marginBottom: "8px",
+              fontSize: { xs: "14px", sm: "16px" },
             }}
           >
-            Code Recieved :{" "}
+            Verification code sent to your email :
           </Typography>
           <Box
             className="flex_column"
@@ -134,10 +146,10 @@ function ResetPassword() {
                 <input {...props} className={style.otpinput} inputMode="numeric" pattern="[0-9]*" />
               )}
               inputStyle={{
-                width: "60px",
-                height: "60px",
-                margin: "0 10px",
-                fontSize: "24px",
+                width: isXs ? "45px" : "60px",
+                height: isXs ? "45px" : "60px",
+                margin: isXs ? "0 5px" : "0 10px",
+                fontSize: isXs ? "19px" : "24px",
                 borderRadius: "12px",
                 border: "2px solid var(--primary-color)",
                 textAlign: "center",
@@ -151,7 +163,7 @@ function ResetPassword() {
             {/* رسالة الخطأ لحقل الكود (الي هو ربطها بمكتبة يب)*/}
             {errors.code ? (
               <Typography
-                sx={{ color: "var(--primary-color)", textAlign: "center" }}
+                sx={{ color: "var(--primary-color)", textAlign: "center", fontSize: { xs: "14px", sm: "16px" },}}
               >
                 {errors.code.message}
               </Typography>
@@ -172,16 +184,24 @@ function ResetPassword() {
                     <IconButton onClick={handleClickShowPassword} edge="end">
                       {showPass ? (
                         <VisibilityOff
-                          sx={{ color: "var(--secondary-color)" }}
+                          sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }}
                         />
                       ) : (
-                        <Visibility sx={{ color: "var(--secondary-color)" }} />
+                        <Visibility sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }} />
                       )}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
               className="textfield_light"
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
             <TextField
               {...register("email")}
@@ -203,6 +223,7 @@ function ResetPassword() {
                 bgcolor: "var(--primary-color)",
                 fontWeight: "600",
                 paddingY: "8px",
+                fontSize:{xs:"13px",sm:"14px"},
               }}
             >
               {isSubmitting ? (
@@ -230,6 +251,7 @@ function ResetPassword() {
                 cursor: "pointer",
                 width: "fit-content",
                 margin: "auto",
+                fontSize: { xs: "14px", sm: "16px" },
               }}
             >
               Resend Code

@@ -64,12 +64,12 @@ function SetPassword() {
           sx={{ paddingBottom: "60px", paddingTop: "30px" }}
         >
           <Box className="img" sx={{ textAlign: "center" }}>
-            <Box component={"img"} src={setPasswordImg} width="80px" alt="Shield with padlock" />
+            <Box component={"img"} src={setPasswordImg} sx={{width:{xs:"43px",sm:"60px"}}} alt="Shield with padlock" />
           </Box>
           <Typography
             component={"h1"}
             variant="h5"
-            sx={{ fontWeight: "700", textAlign: "center" }}
+            sx={{ fontWeight: "700", textAlign: "center", fontSize: { xs: "18px", sm: "24px" }, }}
           >
             Set your password
           </Typography>
@@ -81,13 +81,14 @@ function SetPassword() {
               color: "var(--secondary-color)",
               marginBottom: "45px",
               marginTop: "15px",
+              fontSize: { xs: "14px", sm: "16px" },
             }}
           >
             Please enter your new password below to secure your account.
           </Typography>
           {serverErrors?.length > 0 ? (
             <Typography
-              sx={{ color: "var(--primary-color)", marginBottom: "20px" }}
+              sx={{ color: "var(--primary-color)", marginBottom: "20px", fontSize:{xs:"13px",sm:"14px"}, }}
             >
               {serverErrors}
             </Typography>
@@ -100,8 +101,6 @@ function SetPassword() {
             onSubmit={handleSubmit(setPassword)}
             sx={{ gap: "23px" }}
           >
-
-
             <TextField
               {...register("newPassword")}
               label="New password"
@@ -115,17 +114,24 @@ function SetPassword() {
                   <InputAdornment position="end">
                     <IconButton onClick={handleClickShowPassword} edge="end">
                       {showPass ? (
-                        <VisibilityOff sx={{ color: "var(--secondary-color)" }} />
+                        <VisibilityOff sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }} />
                       ) : (
-                        <Visibility sx={{ color: "var(--secondary-color)" }} />
+                        <Visibility sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }} />
                       )}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-
               className="textfield_light "
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
             <TextField
               {...register("confirmPassword")}
@@ -140,17 +146,24 @@ function SetPassword() {
                   <InputAdornment position="end">
                     <IconButton onClick={handleClickConfirmPass} edge="end">
                       {showConfirmPass ? (
-                        <VisibilityOff sx={{ color: "var(--secondary-color)" }} />
+                        <VisibilityOff sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }} />
                       ) : (
-                        <Visibility sx={{ color: "var(--secondary-color)" }} />
+                        <Visibility sx={{ color: "var(--secondary-color)",fontSize: {xs: "20px",sm: "24px"} }} />
                       )}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-
               className="textfield_light "
               spellCheck={false}
+              sx={{
+                  "& .MuiInputLabel-root": {
+                    fontSize: {
+                      xs: "13px",
+                      sm: "16px",
+                    },
+                  },
+              }}
             />
 
             <Button
@@ -162,6 +175,7 @@ function SetPassword() {
                 bgcolor: "var(--primary-color)",
                 fontWeight: "600",
                 paddingY: "8px",
+                fontSize:{xs:"13px",sm:"14px"},
               }}
             >
               {isSubmitting ? (
