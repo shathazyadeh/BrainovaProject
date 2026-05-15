@@ -81,7 +81,6 @@ function ResetPassword() {
           </Box>
           <Typography
             component={"h1"}
-            variant="h5"
             sx={{ fontWeight: "700", textAlign: "center",fontSize: { xs: "18px", sm: "24px" }, }}
           >
             Reset Password

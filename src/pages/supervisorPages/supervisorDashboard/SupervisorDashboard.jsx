@@ -16,6 +16,9 @@ import { Link as RouterLink } from "react-router-dom";
 import { useMediaQuery } from "@mui/material";
 import ReportsLineChart from "../../../components/xChartComponents/lineChart/ReportsLineChart";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
+
 function SupervisorDashboard() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
   const {
@@ -32,8 +35,7 @@ function SupervisorDashboard() {
   } = useGetDashboardSummary();
 
   const isCustomScreen = useMediaQuery("(max-width:1281px)");
-  const isPageLoading =
-    isLoading || isNewReportsLoading || isDashboardSummaryLoading;
+  const isPageLoading = isLoading || isNewReportsLoading || isDashboardSummaryLoading;
   const pageError = error || newReportsError || newDashboardSummaryError;
 
   function timeAgo(dateString) {
@@ -120,6 +122,9 @@ function SupervisorDashboard() {
     },
   ];
 
+  if (isPageLoading) return <DashboardLoadingState />;
+  if (pageError) return <DashboardErrorState error={pageError} />;
+
   return (
     <Box
       sx={{
@@ -142,54 +147,6 @@ function SupervisorDashboard() {
         }}
       >
         <Container maxWidth="lg">
-          {/* server errors */}
-          {pageError && (
-            <Box
-              component={"section"}
-              className="server_error_section flex_column"
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                zIndex: 1,
-              }}
-            >
-              <Typography
-                component={"h1"}
-                variant="h5"
-                sx={{
-                  marginTop: "290px",
-                  color: "white",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  "@media (max-width:456px)": {
-                    fontSize: "20px",
-                  },
-                }}
-              >
-                {pageError?.message || "Something went wrong"}
-              </Typography>
-            </Box>
-          )}
-          {isPageLoading && (
-            <Box
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 1,
-              }}
-            >
-              <Box sx={{ marginTop: "290px" }}>
-                <Loader />
-              </Box>
-            </Box>
-          )}
-
           <Grid container columnSpacing={3}>
             <Grid
               item

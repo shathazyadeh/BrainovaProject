@@ -2,16 +2,14 @@ import { RouterProvider } from "react-router-dom";
 import router from "./route.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Bounce, ToastContainer } from "react-toastify";
-import AuthLoader from "./components/authLoader/AuthLoader.jsx";
+import AuthSessionInitializer from "./components/authSession/authSessionInitializer/AuthSessionInitializer.jsx";
+
+const queryClient = new QueryClient(); /*عشان نستعمل مكتبة رياكت كويري بنعمل كرييت كلاينت*/
 
 function App() {
-  const queryClient = new QueryClient();
-  {
-    /*عشان نستعمل مكتبة رياكت كويري بنعمل كرييت كلاينت*/
-  }
   return (
     <QueryClientProvider client={queryClient}>
-    <AuthLoader>
+    <AuthSessionInitializer>
       {/*عملنا بروفايد للكلاينت في مشروعنا عشان اي كومبوننت تقدر تستعملها*/}
       <ToastContainer 
         position="top-center"
@@ -25,7 +23,7 @@ function App() {
         transition={Bounce}
       />
       <RouterProvider router={router}></RouterProvider>{" "}
-      </AuthLoader>
+      </AuthSessionInitializer>
       {/*استدعينا الراوتر من route.jsx*/}
     </QueryClientProvider>
   );

@@ -3,10 +3,16 @@ import Footer from "../components/footer/Footer.jsx";
 import { Box } from "@mui/material";
 import StarsNavbar from "../components/muiComponents/starsNavbar/StarsNavbar.jsx";
 import ScrollToTop from "../components/scrollToTop/ScrollToTop.jsx";
-
+import useAuthStore from "../store/useAuthStore.js";
+import AuthFallback from "../components/authSession/authFallback/AuthFallback.jsx";
 
 function MainLayout() {
   const location = useLocation();
+  const { user, isAuthLoading } = useAuthStore();
+  
+  if (!user && !isAuthLoading) {
+    return <AuthFallback />;
+  }
 
   let footerBg = "#171717";
   let navbarBg = "#171717";
@@ -19,7 +25,7 @@ function MainLayout() {
       <Box sx={{bgcolor: navbarBg, paddingTop:"20px"}}>
         <StarsNavbar linkColor={linkColor} />
       </Box>
-       <ScrollToTop/>
+      <ScrollToTop />
       <Outlet />
       <Box sx={{ bgcolor: footerBg }}>
         <Footer />

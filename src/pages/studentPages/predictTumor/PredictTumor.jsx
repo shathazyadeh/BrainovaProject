@@ -84,8 +84,6 @@ function PredictTumor() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const isLocked = isSubmitted; //عشان ما يشوف الجواب ويرجع فوق يعبي الفورم ويسلم
 
-  console.log("data ", data);
-
   const resetImage = () => {
     setPreview(null);
     setPreviewGradCam(null);
@@ -142,7 +140,6 @@ function PredictTumor() {
       setIsSubmittedSuccessfully(true);
       const startTime = Date.now(); //عشان ابلش احسب الوقت
       const modelResponse = await predictMRIMutation.mutateAsync(newCaseId);
-      console.log("model res ", modelResponse);
       setShowResult(true);
 
       const endTime = Date.now(); //نهاية الوقت

@@ -3,9 +3,10 @@ import { create } from 'zustand';
 const useAuthStore = create((set) => ({
 
   user: null,
+  isAuthLoading: true,
 
   setUser: (user) => {
-    set({ user });
+    set({ user, isAuthLoading: false })
   },
 
   updateUser: (updatedData) =>
@@ -17,7 +18,7 @@ const useAuthStore = create((set) => ({
     })),
 
   logout: () => {
-    set({ user: null });
+    set({ user: null, isAuthLoading: false })
   }
 
 }));

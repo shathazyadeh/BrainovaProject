@@ -26,6 +26,8 @@ import style from "./SuperAdminDashboard.module.css";
 import ActivityStatusBarChart from "../../../components/xChartComponents/barChart/ActivityStatusBarChart";
 import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
 
 function SuperAdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
@@ -128,55 +130,8 @@ function SuperAdminDashboard() {
     },
   ];
 
-  if (isLoading) {
-    return (
-      <>
-        <DashboardNavbar />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            height: "100vh",
-          }}
-        >
-          <Box sx={{ marginTop: "290px" }}>
-            <Loader />
-          </Box>
-        </Box>
-      </>
-    );
-  }
-
-  if (isError) {
-    return (
-      <>
-        <DashboardNavbar />
-        <Box
-          component={"section"}
-          className="server_error_section flex_column"
-          sx={{
-            height: "100vh",
-          }}
-        >
-          <Typography
-            component={"h1"}
-            variant="h5"
-            sx={{
-              marginTop: "290px",
-              color: "white",
-              fontWeight: "700",
-              textAlign: "center",
-              "@media (max-width:456px)": {
-                fontSize: "20px",
-              },
-            }}
-          >
-            {error?.message || "Something went wrong"}
-          </Typography>
-        </Box>
-      </>
-    );
-  }
+  if (isLoading) return <DashboardLoadingState />;
+  if (isError) return <DashboardErrorState error={error} />;
 
   return (
     <>

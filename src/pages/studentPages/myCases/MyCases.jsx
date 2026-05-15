@@ -15,13 +15,15 @@ import useMarksAsSeen from '../../../hooks/studentHooks/useMarksAsSeen.js';
 import { FiFilter } from "react-icons/fi";
 import style from './MyCases.module.css';
 import { TbReportSearch } from "react-icons/tb";
+import ErrorState from '../../../components/requestStates/error/errorState/ErrorState.jsx';
+import LoadingState from '../../../components/requestStates/loading/loadingState/LoadingState.jsx';
 
 function FeedbackCommet({ Id, isReviewed, feedbackId }) {
   const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
 
-  const { markAsSeen, serverErrors, isLoading: isMarkSeenLoading } = useMarksAsSeen(); //؟
+  const { markAsSeen, serverErrors, isLoading: isMarkSeenLoading } = useMarksAsSeen();
   const { isError, isLoading, error, data: feedback } = useGetSupervisorFeedbackByReportId(Id);
-  console.log("feedbackkkk:", feedback);
+
   const handleOpen = async () => { // عشان نفتح المودال ونعمل مارك از سيين 
     setOpen(true);
     if (feedbackId) {
@@ -199,14 +201,16 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
 }
 function MyCases() {
   const { isError, isLoading, error, data } = useGetAllMyCases();
+  const downloadMutation = useDownloadStudentPDF();
+  
   const totalCases = data?.items?.length || 0;
   const reviewedCount = data?.items?.filter(item => item.isReviewed)?.length || 0;
   const noFeedbackCount = data?.items?.filter(item => !item.isReviewed)?.length || 0;
-  console.log('data5:', data);
+  
   const [filter, setFilter] = useState("all");//للفلترة
   const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
+  
   const { refetch, isFetching } = useGetStudentPdf(selectedId);
-  const downloadMutation = useDownloadStudentPDF();
 
   const filteredData = data?.items?.filter((item) => {   //للفلترة
     if (filter === "all") return true;
@@ -252,6 +256,9 @@ function MyCases() {
     loadPdf();
   }, [selectedId]);
 
+  if (isLoading) return <LoadingState />;
+  if (isError) return <ErrorState error={error} />;
+
   return (
     <Box
       className="section"
@@ -264,57 +271,6 @@ function MyCases() {
       }}
     >
       <Container maxWidth="lg">
-        {/* server errors */}
-        {isError && (
-          <Box
-            component={"section"}
-            className="server_error_section flex_column"
-            sx={{
-              bgcolor: "var(--navy-color)",
-              position: "absolute",
-              inset: 0,
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 1,
-              "@media (max-width:899px)": {
-                left: "0px",
-              },
-            }}
-          >
-            <Typography
-              component={"h1"}
-              variant="h5"
-              sx={{
-                color: "white",
-                fontWeight: "700",
-                textAlign: "center",
-                "@media (max-width:456px)": {
-                  fontSize: "20px",
-                },
-              }}
-            >
-              {error?.message}
-            </Typography>
-          </Box>
-        )}
-        {isLoading && (
-          <Box
-            sx={{
-              bgcolor: "var(--navy-color)",
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              zIndex: 1,
-              "@media (max-width:899px)": {
-                left: "0px",
-              },
-            }}
-          >
-            <Loader />
-          </Box>
-        )}
         <Box
           className={style.section_titel}
           sx={{

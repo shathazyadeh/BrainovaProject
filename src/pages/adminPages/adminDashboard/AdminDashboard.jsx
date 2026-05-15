@@ -1,5 +1,4 @@
 import { useState } from "react";
-import useGetUsers from "../../../hooks/getUsersHooks/useGetUsers";
 import {
   Box,
   Container,
@@ -19,6 +18,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { RiAdminFill } from "react-icons/ri";
 import { FaStethoscope } from "react-icons/fa";
 import { Link as RouterLink } from "react-router-dom";
+import useGetUsers from "../../../hooks/getUsersHooks/useGetUsers";
 import useFilteredArray from "../../../hooks/getUsersHooks/useFilteredArray";
 import EnhancedTable from "../../../components/muiComponents/enhancedTabel/EnhancedTable";
 import DashboardNavbar from "../../../components/muiComponents/dashboardNavbar/DashboardNavbar";
@@ -27,6 +27,8 @@ import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import RoleCircularChart from "../../../components/xChartComponents/circularChart/RoleCircularChart";
 import ActivityStatusBarChart from "../../../components/xChartComponents/barChart/ActivityStatusBarChart";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
 
 function AdminDashboard() {
   const { isError, error, isLoading, data } = useGetUsers(); //ممنوع نغير اسمها هاي ديستراكتينج للكويري الي بترجع من يوس كويري
@@ -160,55 +162,8 @@ function AdminDashboard() {
     },
   ];
 
-  if (isLoading) {
-    return (
-      <>
-        <DashboardNavbar />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            height: "100vh",
-          }}
-        >
-          <Box sx={{ marginTop: "290px" }}>
-            <Loader />
-          </Box>
-        </Box>
-      </>
-    );
-  }
-
-  if (isError) {
-    return (
-      <>
-        <DashboardNavbar />
-        <Box
-          component={"section"}
-          className="server_error_section flex_column"
-          sx={{
-            height: "100vh",
-          }}
-        >
-          <Typography
-            component={"h1"}
-            variant="h5"
-            sx={{
-              marginTop: "290px",
-              color: "white",
-              fontWeight: "700",
-              textAlign: "center",
-              "@media (max-width:456px)": {
-                fontSize: "20px",
-              },
-            }}
-          >
-            {error?.message || "Something went wrong"}
-          </Typography>
-        </Box>
-      </>
-    );
-  }
+  if (isLoading) return <DashboardLoadingState />;
+  if (isError) return <DashboardErrorState error={error} />;
 
   return (
     <>

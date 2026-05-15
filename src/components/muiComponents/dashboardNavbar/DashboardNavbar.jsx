@@ -70,7 +70,7 @@ export default function DashboardNavbar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="relative"
-        sx={{ bgcolor: "transparent", paddingY: "12px", boxShadow: "none" }}
+        sx={{ bgcolor: "transparent", paddingY: "12px", boxShadow: "none" ,zIndex:2}}
       >
         {" "}
         {/*عشان يطلع فوق الدروار */}

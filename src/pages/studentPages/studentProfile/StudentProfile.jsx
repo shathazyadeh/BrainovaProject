@@ -27,6 +27,8 @@ import { LuSparkles } from "react-icons/lu";
 import { FaArrowTrendUp } from "react-icons/fa6";
 import RecentlySubmitted from "../../../components/recentlySubmitted/RecentlySubmitted";
 import ReportsLineChart from "../../../components/xChartComponents/lineChart/ReportsLineChart";
+import ErrorState from "../../../components/requestStates/error/errorState/ErrorState";
+import LoadingState from "../../../components/requestStates/loading/loadingState/LoadingState";
 
 function StudentProfile() {
   const isCustomScreen = useMediaQuery("(max-width:500px)");
@@ -35,7 +37,6 @@ function StudentProfile() {
 
   const { isError, isLoading, error, data } = useGetUserById();
   const userId = data?.id;
-    console.log("data",data);
   const {
     isError: isAllMyCasesError,
     isLoading: isAllMyCasesLoading,
@@ -140,44 +141,8 @@ function StudentProfile() {
   },
 ];
 
-  if (isLoading || isAllMyCasesLoading || isSummaryLoading) {
-    return (
-      <Box
-        sx={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          bgcolor: "var(--navy-color)",
-        }}
-      >
-        <Loader></Loader>
-      </Box>
-    );
-  }
-  if (isError || isAllMyCasesError || isSummaryError) {
-    return (
-      <Box
-        sx={{
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          bgcolor: "var(--navy-color)",
-        }}
-      >
-        <Typography
-          sx={{
-            color: "#fff",
-            fontWeight: "600",
-            fontSize: { xs: "14px", md: "20px" },
-          }}
-        >
-          {error?.message || allMyCasesError?.message || summaryError?.message}
-        </Typography>
-      </Box>
-    );
-  }
+  if (isLoading || isAllMyCasesLoading || isSummaryLoading) return <LoadingState />;
+  if (isError || isAllMyCasesError || isSummaryError) return <ErrorState error={error || allMyCasesError || summaryError} />;
   return (
     <Box
       component={"section"}

@@ -14,15 +14,12 @@ import { useNavigate } from "react-router-dom";
 import { BsFillExclamationOctagonFill } from "react-icons/bs";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 import useGetAllOfMyStudentsCases from "../../../hooks/supervisorHooks/useGetAllOfMyStudnetsCases";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
 
 function SupervisorFeedback() {
   const { isError, error, isLoading, data } = useGetMyallFeedbacks();
-  const {
-    isError: isGetAllCasesError,
-    error: getAllCasesError,
-    isLoading: isGetAllCasesLoading,
-    data: getAllCasesData,
-  } = useGetAllOfMyStudentsCases();
+  const { isError: isGetAllCasesError, error: getAllCasesError, isLoading: isGetAllCasesLoading, data: getAllCasesData } = useGetAllOfMyStudentsCases();
   const { deleteFeedbackMutation } = useDeleteFeedback();
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
@@ -40,7 +37,7 @@ function SupervisorFeedback() {
   useEffect(() => {
     setPage(1);
   }, [search]);
-  const itemsPerPage = 10;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
+  const itemsPerPage = 9;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
   const paginatedData = filteredData?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
     (page - 1) * itemsPerPage,
     page * itemsPerPage
@@ -51,7 +48,6 @@ function SupervisorFeedback() {
   const reportsWithoutFeedback =
     getAllCasesData?.items?.filter((report) => !report.isReviewed) || [];
 
-  console.log("getAllCasesData", getAllCasesData);
 
   const handleDeleteFeedback = async (feedbackId) => {
     await deleteFeedbackMutation.mutateAsync(feedbackId);
@@ -65,6 +61,9 @@ function SupervisorFeedback() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  if (isLoading || isGetAllCasesLoading) return <DashboardLoadingState />;
+  if (isError || isGetAllCasesError) return <DashboardErrorState error={error || getAllCasesError} />;
 
   return (
     <Box
@@ -87,51 +86,6 @@ function SupervisorFeedback() {
         }}
       >
         <Container maxWidth="lg">
-          {isLoading || isGetAllCasesLoading ? (
-            <Box
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 1,
-              }}
-            >
-              <Box sx={{ marginTop: "290px" }}>
-                <Loader />
-              </Box>
-            </Box>
-          ) : isError || isGetAllCasesError ? (
-            <Box
-              component={"section"}
-              className="server_error_section flex_column"
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                zIndex: 1,
-              }}
-            >
-              <Typography
-                component={"h1"}
-                variant="h5"
-                sx={{
-                  marginTop: "290px",
-                  color: "white",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  "@media (max-width:456px)": {
-                    fontSize: "20px",
-                  },
-                }}
-              >
-                {error?.message || getAllCasesError?.message}
-              </Typography>
-            </Box>
-          ) : null}
           <Box className="section_titel">
             <Typography
               component={"h1"}

@@ -23,14 +23,17 @@ import ReportsFilters from "../../../components/filterInputs/reportsFilters/Repo
 import useDownloadSupervisorPDF from "../../../hooks/supervisorHooks/useDownloadSupervisorPDF";
 import { BsFillExclamationOctagonFill } from "react-icons/bs";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
 
 
 function StudentReports() {
   const { studentId } = useParams();
   const navigate = useNavigate();
+
   const { isError, error, isLoading, data } = useGetAllOfMyStudentsCases(studentId);
-  console.log("useGetAllOfMyStudentsCases:", data);
   const downloadMutation = useDownloadSupervisorPDF();
+
   const [search, setSearch] = useState("");
   const [feedbackFilter, setFeedbackFilter] = useState("all"); // "all" | "reviewed" | "noFeedback"
   const [page, setPage] = useState(1);//رقم الصفحة الحالي بالبداية خليته 1
@@ -39,7 +42,7 @@ function StudentReports() {
 
   const totalReports = data?.items.length || 0;
   const digits = Math.max(3, String(totalReports).length); //لكتابة اي دي التقرير
-  console.log("digit:", digits); // كم اكبر عدد ديجيت ممكن اوصله في كتابة رقم التقرير
+  // كم اكبر عدد ديجيت ممكن اوصله في كتابة رقم التقرير
 
 
   const filteredReports =   //دمجنا فلترة السيرش والفيدباك فلتر مع بعض بخطوة وحدة عشان الباجينيشن 
@@ -67,6 +70,8 @@ function StudentReports() {
   );
   const totalPages = Math.ceil((filteredReports?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
 
+  if (isLoading) return <DashboardLoadingState />;
+  if (isError) return <DashboardErrorState error={error} />;
 
   return (
     <Box
@@ -91,53 +96,6 @@ function StudentReports() {
         }}
       >
         <Container maxWidth="lg">
-          {/* server errors */}
-          {isError && (
-            <Box
-              component={"section"}
-              className="server_error_section flex_column"
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                zIndex: 1,
-              }}
-            >
-              <Typography
-                component={"h1"}
-                variant="h5"
-                sx={{
-                  marginTop: "290px",
-                  color: "white",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  "@media (max-width:456px)": {
-                    fontSize: "20px",
-                  },
-                }}
-              >
-                {error?.message}
-              </Typography>
-            </Box>
-          )}
-          {isLoading && (
-            <Box
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 1,
-              }}
-            >
-              <Box sx={{ marginTop: "290px" }}>
-                <Loader />
-              </Box>
-            </Box>
-          )}
           {totalReports > 0 && (
             <>
               <Box

@@ -8,6 +8,9 @@ import UsersSearch from "../../../components/filterSearch/usersSearch/UsersSearc
 import ReportsFilters from "../../../components/filterInputs/reportsFilters/ReportsFilters";
 import BasicModal from "../../../components/muiComponents/basicModal/BasicModal";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
+
 function SupervisorReports() {
   const { isError, error, isLoading, data } = useGetAllOfMyStudnetsCases();
   const [search, setSearch] = useState("");
@@ -21,7 +24,6 @@ function SupervisorReports() {
     setSelectedReport(row);
     setOpen(true);
   };
-  console.log("selected Report : ", selectedReport);
 
   const handleClose = () => {
     setOpen(false);
@@ -52,7 +54,8 @@ function SupervisorReports() {
     );
   }
 
-  console.log("my students : ", data);
+  if (isLoading) return <DashboardLoadingState />;
+  if (isError) return <DashboardErrorState error={error} />;
 
   return (
     <Box
@@ -67,61 +70,6 @@ function SupervisorReports() {
 
       <Box sx={{ flex: 1, paddingBottom: { md: "20px" } }}>
         <Container maxWidth="lg">
-          {/* server errors */}
-          {isError && (
-            <Box
-              component={"section"}
-              className="server_error_section flex_column"
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                left: "200px",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
-              }}
-            >
-              <Typography
-                component={"h1"}
-                variant="h5"
-                sx={{
-                  color: "white",
-                  fontWeight: "700",
-                  textAlign: "center",
-                  "@media (max-width:456px)": {
-                    fontSize: "20px",
-                  },
-                }}
-              >
-                {error?.message}
-              </Typography>
-            </Box>
-          )}
-          {isLoading && (
-            <Box
-              sx={{
-                bgcolor: "var(--navy-color)",
-                position: "absolute",
-                inset: 0,
-                top: "90px",
-                left: "200px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                zIndex: 1,
-                "@media (max-width:899px)": {
-                  left: "0px",
-                },
-              }}
-            >
-              <Loader />
-            </Box>
-          )}
           <Box className="section_titel">
             <Typography
               component={"h1"}

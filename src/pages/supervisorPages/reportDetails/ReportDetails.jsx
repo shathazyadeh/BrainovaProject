@@ -28,18 +28,15 @@ import Loader from "../../../components/uiVerseComponents/loader/Loader";
 import { toast } from "react-toastify";
 import useDeleteFeedback from "../../../hooks/supervisorHooks/useDeleteFeedback";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
 
 function ReportDetails() {
   const { id } = useParams();
   const { isError, isLoading, error, data } = useGetReportDetails(id); //بعتله اي دي التقرير اللي بالرابط
   const { deleteFeedbackMutation } = useDeleteFeedback(id);
-  const {
-    isError: isFeedbackError,
-    isLoading: isFeedbackLoading,
-    error: feedbackError,
-    data: feedbackData,
-  } = useGetFeedbackByReportId(id);
-  console.log("report details:", data);
+  const { isError: isFeedbackError, isLoading: isFeedbackLoading, error: feedbackError, data: feedbackData } = useGetFeedbackByReportId(id);
+
   const navigate = useNavigate();
   const [open, setOpen] = useState(false); // عشان اتحكم بالسهم اللي عبوكس الاسئلة
   const [openModal, setOpenModal] = useState(false);
@@ -147,6 +144,9 @@ function ReportDetails() {
     return null;
   }
 
+  if (isLoading) return <DashboardLoadingState />;
+    if (isError) return <DashboardErrorState error={error} />;
+
   return (
     <Box
       sx={{
@@ -159,52 +159,6 @@ function ReportDetails() {
     >
       <DashboardNavbar />
       <Container maxWidth="lg">
-        {isError && (
-          <Box
-            component={"section"}
-            className="server_error_section flex_column"
-            sx={{
-              bgcolor: "var(--navy-color)",
-              position: "absolute",
-              inset: 0,
-              top: "88px",
-              zIndex: 1,
-            }}
-          >
-            <Typography
-              component={"h1"}
-              variant="h5"
-              sx={{
-                marginTop: "290px",
-                color: "white",
-                fontWeight: "700",
-                textAlign: "center",
-                "@media (max-width:456px)": {
-                  fontSize: "20px",
-                },
-              }}
-            >
-              {error?.message}
-            </Typography>
-          </Box>
-        )}
-        {isLoading && (
-          <Box
-            sx={{
-              bgcolor: "var(--navy-color)",
-              position: "absolute",
-              inset: 0,
-              top: "88px",
-              display: "flex",
-              justifyContent: "center",
-              zIndex: 1,
-            }}
-          >
-            <Box sx={{ marginTop: "290px" }}>
-              <Loader />
-            </Box>
-          </Box>
-        )}
         <Grid container spacing={1.5} alignItems="flex-start">
           <Grid item size={{ xs: 12, md: 9 }}>
             {/*اول بوكسين */}
@@ -509,7 +463,7 @@ function ReportDetails() {
                         "&::-webkit-scrollbar-thumb": {
                           bgcolor: "var(--primary-color)",
                           borderRadius: "20px",
-                          cursor:"grab"
+                          cursor: "grab"
                         },
                       }}
                     >

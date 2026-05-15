@@ -5,8 +5,6 @@ import useAuthStore from "../store/useAuthStore";
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   withCredentials: true,
-  xsrfCookieName: "XSRF-TOKEN",
-  xsrfHeaderName: "X-XSRF-TOKEN",
 });
 
 // request interceptor
@@ -28,11 +26,9 @@ axiosInstance.interceptors.response.use(
 
     // اذا المستخدم مش مصرح (401)
     if (status === 401) {
-      console.log("Unauthorized - logging out");
-
-      // بنسوي logout من ال store
       // غالبا التوكن منتهي أو مش صحيح
       useAuthStore.getState().logout();
+      window.location.href = "/auth/login";
     }
 
     // لازم نرجع ال error عشان ينمسك بالمكان اللي استدعى ال request

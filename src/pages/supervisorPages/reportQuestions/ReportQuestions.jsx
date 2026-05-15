@@ -8,9 +8,11 @@ import { useEffect, useState } from 'react';
 import RightDrawer from '../../../components/muiComponents/rightDrawer/RightDrawer';
 import QuestionSearch from '../../../components/filterSearch/questionSearch/QuestionSearch';
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import DashboardErrorState from '../../../components/requestStates/error/dashboardErrorState/DashboardErrorState.jsx';
+import DashboardLoadingState from "../../../components/requestStates/loading/dashboardLoadingState/DashboardLoadingState.jsx";
+
 function ReportQuestions() {
     const { isError, error, isLoading, data } = useGetQuestions();
-    console.log("data  ", data);
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
 
@@ -34,7 +36,8 @@ function ReportQuestions() {
     );
     const totalPages = Math.ceil((filteredData?.length || 0) / itemsPerPage); // عشان احسب عدد الصفحات الجديدة مثلا 20 عنصر /6=3.33 استعملت من مكتبة ماث سيل عشان اجبر اللي بعد الفاصلة العشرية وافتحلهن صفحة 
 
-
+    if (isLoading) return <DashboardLoadingState />;
+    if (isError) return <DashboardErrorState error={error} />;
 
     return (
         <Box sx={{
@@ -56,53 +59,6 @@ function ReportQuestions() {
                 }}
             >
                 <Container maxWidth="lg">
-                    {/* server errors */}
-                    {isError && (
-                        <Box
-                            component={"section"}
-                            className="server_error_section flex_column"
-                            sx={{
-                                bgcolor: "var(--navy-color)",
-                                position: "absolute",
-                                inset: 0,
-                                top: "90px",
-                                zIndex: 1,
-                            }}
-                        >
-                            <Typography
-                                component={"h1"}
-                                variant="h5"
-                                sx={{
-                                    marginTop: "290px",
-                                    color: "white",
-                                    fontWeight: "700",
-                                    textAlign: "center",
-                                    "@media (max-width:456px)": {
-                                        fontSize: "20px",
-                                    },
-                                }}
-                            >
-                                {error?.message}
-                            </Typography>
-                        </Box>
-                    )}
-                    {isLoading && (
-                        <Box
-                            sx={{
-                                bgcolor: "var(--navy-color)",
-                                position: "absolute",
-                                inset: 0,
-                                top: "90px",
-                                display: "flex",
-                                justifyContent: "center",
-                                zIndex: 1,
-                            }}
-                        >
-                            <Box sx={{ marginTop: "290px" }}>
-                                <Loader />
-                            </Box>
-                        </Box>
-                    )}
                     <Box className="section_titel" sx={{ marginBottom: "23px", paddingTop: { xs: "30px", md: "0px" } }}>
                         <Typography
                             component={"h1"}
