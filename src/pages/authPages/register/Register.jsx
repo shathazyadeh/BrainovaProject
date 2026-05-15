@@ -28,7 +28,8 @@ function Register() {
         <Box className="flex_column"
           sx={{
             justifyContent: "center",
-            height: "100vh",
+            minHeight: "100vh",
+            paddingY:{xs:"20px",sm:"0px"},
           }}
         >
           <GlowCard>
