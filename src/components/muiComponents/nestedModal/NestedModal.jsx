@@ -287,7 +287,7 @@ export default function NestedModal() {
                 }
                 label="Supervisor"
               />
-              {currentUser.role === "SuperAdmin" ? (
+              {currentUser?.roles[0] === "SuperAdmin" ? (
                 <FormControlLabel
                   value="admin"
                   sx={{ width: "fit-content" }}

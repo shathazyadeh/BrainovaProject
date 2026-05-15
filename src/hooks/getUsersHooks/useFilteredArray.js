@@ -11,10 +11,10 @@ export default function useFilteredArray(data = []){
     let supervisorsNo=0;
     let adminNo=0;
 
-    if(currentUser?.role === "Admin" ){
+    if(currentUser?.roles[0] === "Admin" ){
     filteredArr = data.filter((user)=>user.roleName!=="Admin" && user.roleName!=="SuperAdmin");
     }
-    else if(currentUser?.role === "SuperAdmin"){
+    else if(currentUser?.roles[0] === "SuperAdmin"){
     filteredArr = data.filter((user)=>user.roleName!=="SuperAdmin");
     }
 

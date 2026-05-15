@@ -2,6 +2,8 @@ import { RouterProvider } from "react-router-dom";
 import router from "./route.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Bounce, ToastContainer } from "react-toastify";
+import AuthLoader from "./components/authLoader/AuthLoader.jsx";
+
 function App() {
   const queryClient = new QueryClient();
   {
@@ -9,6 +11,7 @@ function App() {
   }
   return (
     <QueryClientProvider client={queryClient}>
+    <AuthLoader>
       {/*عملنا بروفايد للكلاينت في مشروعنا عشان اي كومبوننت تقدر تستعملها*/}
       <ToastContainer 
         position="top-center"
@@ -22,6 +25,7 @@ function App() {
         transition={Bounce}
       />
       <RouterProvider router={router}></RouterProvider>{" "}
+      </AuthLoader>
       {/*استدعينا الراوتر من route.jsx*/}
     </QueryClientProvider>
   );

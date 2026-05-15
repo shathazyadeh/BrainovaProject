@@ -91,8 +91,8 @@ export default function BasicModal({
               userId={user?.id}
               formMethods={formMethods}
               schema={UpdateUserInfoSchema}
-              showRoleSelect={currentUser?.role === "SuperAdmin"}
-              showPassword={currentUser?.role === "SuperAdmin"}
+              showRoleSelect={currentUser?.roles[0] === "SuperAdmin"}
+              showPassword={currentUser?.roles[0] === "SuperAdmin"}
               btnLabel="Update Profile"
               textfieldColor={"textfield_black"}
               rowUser={user}

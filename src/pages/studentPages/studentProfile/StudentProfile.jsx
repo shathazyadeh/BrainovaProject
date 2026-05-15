@@ -18,7 +18,6 @@ import useUpdateUserInfo from "../../../hooks/userManagementHooks/useUpdateUserI
 import useGetAllMyCases from "../../../hooks/studentHooks/useGetAllMyCases";
 import useGetStudentPdf from "../../../hooks/studentHooks/useGetStudentPdf";
 import { UpdateUserInfoSchema } from "../../../validations/UpdateUserInfoSchema";
-import useAuthStore from "../../../store/useAuthStore";
 import studentImg from "./../../../assets/images/profile/studentImg.webp";
 import sparklesNotebookImg from "./../../../assets/images/profile/sparklesNotebookImg.webp";
 import { IoIosCheckmarkCircle, IoIosCloseCircle } from "react-icons/io";
@@ -30,12 +29,13 @@ import RecentlySubmitted from "../../../components/recentlySubmitted/RecentlySub
 import ReportsLineChart from "../../../components/xChartComponents/lineChart/ReportsLineChart";
 
 function StudentProfile() {
-  const user = useAuthStore((state) => state.user);
-  const userId = user?.id;
   const isCustomScreen = useMediaQuery("(max-width:500px)");
   const isBelow1000px = useMediaQuery("(max-width:1000px)");
 
+
   const { isError, isLoading, error, data } = useGetUserById();
+  const userId = data?.id;
+    console.log("data",data);
   const {
     isError: isAllMyCasesError,
     isLoading: isAllMyCasesLoading,
@@ -51,7 +51,6 @@ function StudentProfile() {
 
   const [selectedId, setSelectedId] = useState(null); // حتى ابعت اي دي كل تقرير لهوك البي دي اف
   const { refetch, isFetching } = useGetStudentPdf(selectedId);
-  console.log(data);
 
   function timeAgo(dateString) {
     const now = new Date();
@@ -298,7 +297,7 @@ function StudentProfile() {
                           "@media (max-width:1198px)": { fontSize: "10px" },
                         }}
                       />
-                      {user?.role}
+                      {data?.roleName}
                     </Typography>
                     <Typography
                       className="user_full_name"
@@ -319,9 +318,9 @@ function StudentProfile() {
                                 "@media (max-width:450px)": { display:"none" },
                                 "@media (max-width:350px)": { display:"block" }
                                 }}></Box>
-                      {user?.fullName?.length > 20
-                        ? user.fullName.slice(0, 16) + "..."
-                        : user?.fullName}
+                      {data?.fullName?.length > 20
+                        ? data.fullName.slice(0, 16) + "..."
+                        : data?.fullName}
                     </Typography>
                     <Typography
                       className="email"
@@ -331,7 +330,7 @@ function StudentProfile() {
                         "@media (max-width:1198px)": { fontSize: "14px" },
                       }}
                     >
-                      {user?.email}
+                      {data?.email}
                     </Typography>
                     <Typography
                       className="user_name"
@@ -351,7 +350,7 @@ function StudentProfile() {
                       >
                         User Name:{" "}
                       </Typography>
-                      {user?.userName}
+                      {data?.userName}
                     </Typography>
                     <Typography
                       className="phone_number"
@@ -371,7 +370,7 @@ function StudentProfile() {
                       >
                         Phone:{" "}
                       </Typography>
-                      {user?.phoneNumber}
+                      {data?.phoneNumber}
                     </Typography>
                     <Typography
                       className="supervisor_name"
@@ -583,10 +582,10 @@ function StudentProfile() {
                   btnLabel="Update Profile"
                   textfieldColor={"textfield_black"}
                   defaultValues={{
-                    fullName: user.fullName,
-                    userName: user.userName,
-                    email: user.email,
-                    phoneNumber: user.phoneNumber,
+                    fullName: data?.fullName,
+                    userName: data?.userName,
+                    email: data?.email,
+                    phoneNumber: data?.phoneNumber,
                     supervisorUserId: data?.supervisorId,
                   }}
                 />

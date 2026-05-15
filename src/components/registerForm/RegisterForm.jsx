@@ -14,7 +14,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import useAuthStore from "../../store/useAuthStore";
 
 function RegisterForm({
   schema,
@@ -75,8 +74,6 @@ function RegisterForm({
     //يعني اذا ما في حقل رول اصلا خلص بنغلف حقل السوبرفايزرس نيم بالبروب الي وصلني وهو شو سوبرفايزرز
     displaySupervisorField = showSupervisors;
   }
-
-  const currentUser = useAuthStore((state) => state.user); //المستخدم الحالي عشان نفحص هل الميوتيشين هيكون لرجستر اي يوز اوث ولا ابديت ... حسب الرول
 
   const handleUser = async (values) => {
     console.log("FORM VALUES ", values);

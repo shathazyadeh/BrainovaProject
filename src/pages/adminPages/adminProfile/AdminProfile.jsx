@@ -192,7 +192,7 @@ function PermissionsBox({ permissions }) {
 }
 function AdminProfile() {
   const user = useAuthStore((state) => state.user);
-  const userId = user.id;
+  const userId = user?.id;
   const formRef = useRef(null);
 
   const adminPermissions = [
@@ -306,7 +306,7 @@ function AdminProfile() {
                     },
                   }}
                 >
-                  {user.role === "Admin" ? (
+                  {user?.roles[0] === "Admin" ? (
                     <Typography
                       component={"h1"}
                       sx={{
@@ -635,7 +635,7 @@ function AdminProfile() {
             >
               <Grid container rowSpacing={2} sx={{ alignItems: "center" }}>
                 <Grid item size={{ xs: 12, lg: 5 }}>
-                  {user.role === "Admin" ? (
+                  {user?.roles[0] === "Admin" ? (
                     <PermissionsBox
                       permissions={adminPermissions[0].permissions}
                     />
@@ -674,10 +674,10 @@ function AdminProfile() {
                       fullWidthInput={true}
                       textfieldColor={"textfield_black"}
                       defaultValues={{
-                        fullName: user.fullName,
-                        userName: user.userName,
-                        email: user.email,
-                        phoneNumber: user.phoneNumber,
+                        fullName: user?.fullName,
+                        userName: user?.userName,
+                        email: user?.email,
+                        phoneNumber: user?.phoneNumber,
                       }}
                     />
                     <Link

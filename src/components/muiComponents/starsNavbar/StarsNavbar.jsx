@@ -20,6 +20,7 @@ import { FiUpload } from "react-icons/fi";
 import style from "./StarsNavbar.module.css";
 import { TbReportSearch } from "react-icons/tb";
 import NotificationsMenu from "../../homeComponents/notificationsMenu/NotificationsMenu";
+import useLogout from "../../../hooks/authHooks/useLogout";
 
 const pages = [
   {
@@ -75,9 +76,8 @@ const settings = ["Profile", "Logout"];
 
 function StarsNavbar({ linkColor }) {
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const { authMutation } = useLogout();
   const navigate = useNavigate();
-
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -97,8 +97,7 @@ function StarsNavbar({ linkColor }) {
   };
 
   const handleLogout = () => {
-    logout();
-    navigate("/auth/login");
+    authMutation.mutate({});
   };
 
   const handleProfile = () => {

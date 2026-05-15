@@ -76,7 +76,7 @@ export default function UsersFilters({
           <MenuItem value="all">All</MenuItem>
           <MenuItem value="Student">Student</MenuItem>
           <MenuItem value="Supervisor">Supervisor</MenuItem>
-          {currentUser.role === "SuperAdmin" ? (
+          {currentUser?.roles[0] === "SuperAdmin" ? (
             <MenuItem value="Admin">Admin</MenuItem>
           ) : (
             ""

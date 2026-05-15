@@ -197,7 +197,7 @@ function ReportQuestions() {
                     <RightDrawer open={open} setOpen={setOpen} />
 
                     <Box sx={{ minHeight: "768px" }}>
-                        <QuestionsTabel data={paginatedData} search={search} />
+                        <QuestionsTabel data={paginatedData} search={search} totalCount={data?.length || 0}/>
                     </Box>
                     {filteredData.length > 0 && totalPages > 1 && (
                     <Box

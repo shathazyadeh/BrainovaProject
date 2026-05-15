@@ -10,29 +10,29 @@ import { LuBrain } from "react-icons/lu";
 import { Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../../../store/useAuthStore";
+import useLogout from "../../../hooks/authHooks/useLogout";
 
 export default function DashboardNavbar() {
   const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const { authMutation } = useLogout();
   const navigate = useNavigate();
   const handleLogout = () => {
-    logout();
-    navigate("/auth/login");
+    authMutation.mutate({});
   };
   const handleDashboard = () => {
-    if (user.role === "Admin") navigate("/dashboard/admin");
+    if (user?.roles[0] === "Admin") navigate("/dashboard/admin");
     else navigate("/dashboard/super-admin");
     handleClose();
   };
 
   const handleUserManagement = () => {
-    if (user.role === "Admin") navigate("/dashboard/admin/user-management");
+    if (user?.roles[0] === "Admin") navigate("/dashboard/admin/user-management");
     else navigate("/dashboard/super-admin/user-management");
     handleClose();
   };
 
   const handleProfile = () => {
-    if (user.role === "Admin") navigate("/dashboard/admin/profile");
+    if (user?.roles[0] === "Admin") navigate("/dashboard/admin/profile");
     else navigate("/dashboard/super-admin/profile");
     handleClose();
   };
@@ -156,7 +156,7 @@ export default function DashboardNavbar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {user?.role === "Supervisor"
+                {user?.roles[0] === "Supervisor"
                   ? [
                       "Dashboard",
                       "Reports",

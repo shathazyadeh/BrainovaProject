@@ -1,58 +1,44 @@
 import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
-import { jwtDecode } from "jwt-decode";
 
+// بنعمل instance مخصص من axios عشان نوحد كل ال requests
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
 });
-// استيراد مكتبة axios لإرسال الطلبات (requests) إلى الـ API
 
-// إنشاء نسخة خاصة من axios
-// baseURL يعني أن كل الطلبات ستبدأ تلقائيًا بهذا الرابط
-// مثال:
-// axiosInstance.get("Identity/Users/all")
-// سيصبح الرابط الكامل:
-// http://brainova.runasp.net/api/Identity/Users/all
-
+// request interceptor
+// هذا بيشتغل قبل ما أي request يطلع للسيرفر
 axiosInstance.interceptors.request.use((config) => {
-  // interceptor يعني اعتراض الطلب قبل إرساله للسيرفر
-  // نستخدمه غالبًا لإضافة الـ token أو أي headers لكل الطلبات تلقائيًا
-
-  const token = localStorage.getItem("accessToken");
-  // جلب الـ token المخزن في localStorage
-  // هذا الـ token عادة نحصل عليه بعد تسجيل الدخول
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-    // إذا كان الـ token موجود
-    // نقوم بإضافته داخل headers الطلب
-    // بالشكل الذي يتوقعه السيرفر:
-    // Authorization: Bearer token
-  }
-
   return config;
-  // إرجاع config بعد التعديل عليه
-  // حتى يتم إرسال الطلب للسيرفر مع الـ token
 });
 
-// إضافة interceptor جديد للردود (responses)
+// response interceptor
+// هذا بيشتغل بعد ما يرجع الرد من السيرفر
 axiosInstance.interceptors.response.use(
-  (response) => { return response; },
+  // اذا الرد ناجح، رجعيه زي ما هو
+  (response) => response,
+
+  // اذا في error
   (error) => {
+    // بنجيب status code اذا موجود
     const status = error.response?.status;
 
+    // اذا المستخدم مش مصرح (401)
     if (status === 401) {
       console.log("Unauthorized - logging out");
+
+      // بنسوي logout من ال store
+      // غالبا التوكن منتهي أو مش صحيح
       useAuthStore.getState().logout();
     }
 
-    if (status === 403) {
-      console.log("Forbidden - maybe blocked user");
-      return Promise.reject(error);
-    }
-
+    // لازم نرجع ال error عشان ينمسك بالمكان اللي استدعى ال request
     return Promise.reject(error);
   }
 );
+
+// بنصدر ال instance عشان نستخدمه بكل المشروع بدل axios العادي
 export default axiosInstance;
-// تصدير axiosInstance حتى نستطيع استخدامه في أي ملف داخل المشروع

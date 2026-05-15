@@ -15,20 +15,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegFile } from "react-icons/fa";
 import { MdOutlineFeedback } from "react-icons/md";
 import useAuthStore from "../../../store/useAuthStore";
+import useLogout from "../../../hooks/authHooks/useLogout";
 
 const drawerWidth = 240;
 
 export default function TemporaryDrawer() {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
-  if (!user) return null; // هاي بتحل مشكلة لما نعمل لوج اوت ما تختفي عناويين الدراور الي بتخص السوبرفايزر
-  const logout = useAuthStore((state) => state.logout);
-  const handleLogout = () => {
-    logout();
-    navigate("/auth/login");
-  };
+  const { authMutation } = useLogout();
 
+    const handleLogout = () => {
+      authMutation.mutate({});
+    };
   const location = useLocation();
+
+  if (!user) return null; // هاي بتحل مشكلة لما نعمل لوج اوت ما تختفي عناويين الدراور الي بتخص السوبرفايزر
+
 
   const routes = {
     Dashboard: [
@@ -96,7 +98,7 @@ export default function TemporaryDrawer() {
           </Typography>
         </Typography>
       </Box>
-      {user?.role === "Supervisor" ? (
+      {user?.roles[0] === "Supervisor" ? (
         <List sx={{ flexGrow: "1" }}>
           {[
             "Dashboard",
@@ -181,14 +183,14 @@ export default function TemporaryDrawer() {
                 }}
                 onClick={() => {
                   if (text === "Dashboard") {
-                    if (user.role == "Admin") navigate("/dashboard/admin");
+                    if (user?.roles[0] == "Admin") navigate("/dashboard/admin");
                     else navigate("/dashboard/super-admin");
                   } else if (text === "Profile") {
-                    if (user.role == "Admin")
+                    if (user?.roles[0] == "Admin")
                       navigate("/dashboard/admin/profile");
                     else navigate("/dashboard/super-admin/profile");
                   } else if (text === "User Management") {
-                    if (user.role == "Admin")
+                    if (user?.roles[0] == "Admin")
                       navigate("/dashboard/admin/user-management");
                     else navigate("/dashboard/super-admin/user-management");
                   }

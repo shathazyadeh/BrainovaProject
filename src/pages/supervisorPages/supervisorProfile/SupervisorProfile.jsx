@@ -9,7 +9,7 @@ import useAuthStore from "../../../store/useAuthStore";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
 function SupervisorProfile() {
   const user = useAuthStore((state) => state.user);
-  const userId = user.id;
+  const userId = user?.id;
   const isCustomScreen = useMediaQuery("(max-width:500px)");
   return (
     <>
@@ -74,7 +74,7 @@ function SupervisorProfile() {
                 }}
               >
                 {" "}
-                {user?.role}
+                {user?.roles[0]}
               </Typography>
             </Typography>
             <Typography
@@ -114,10 +114,10 @@ function SupervisorProfile() {
                 btnLabel="Update Profile"
                 textfieldColor={"textfield_black"}
                 defaultValues={{
-                  fullName: user.fullName,
-                  userName: user.userName,
-                  email: user.email,
-                  phoneNumber: user.phoneNumber,
+                  fullName: user?.fullName,
+                  userName: user?.userName,
+                  email: user?.email,
+                  phoneNumber: user?.phoneNumber,
                 }}
               />
               <Link
