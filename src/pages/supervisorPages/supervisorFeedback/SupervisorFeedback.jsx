@@ -40,7 +40,7 @@ function SupervisorFeedback() {
   useEffect(() => {
     setPage(1);
   }, [search]);
-  const itemsPerPage = 9;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
+  const itemsPerPage = 10;//عدد العناصر اللي بدي تنعرض بكل صفحة كم ؟ 
   const paginatedData = filteredData?.slice( // قسمت البيانات حسب الصفحة الجديدة عشان اعرف ايش رح اعرض   array.slice(start, end)
     (page - 1) * itemsPerPage,
     page * itemsPerPage

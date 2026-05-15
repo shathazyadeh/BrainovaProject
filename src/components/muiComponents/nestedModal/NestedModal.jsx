@@ -119,6 +119,9 @@ function ChildModal({ role, onCloseParent }) {
                 textfieldColor={"textfield_black"}
                 fullWidthInput={isBelow500px ? true : false}
                 onSuccess={handleSuccess}
+                 menuBgColor="#1e1d1d"
+              menuHoverColor="#0d0c0c62"
+              menuSelectedColor="#3838388b" 
               />
             </>
           ) : role === "supervisor" ? (

@@ -29,6 +29,9 @@ function RegisterForm({
   defaultValues = {},
   textfieldColor = "textfield_dark",
   rowUser,
+  menuSelectedColor = "rgb(8,13,22)",
+  menuHoverColor = "#3a3f47",//لتغير لون الهفر تبع الليست 
+  menuBgColor = "rgb(8,13,22)", // لتغير لون الليست 
   onSuccess, // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
 }) {
   const form =
@@ -385,7 +388,7 @@ function RegisterForm({
               MenuProps: {
                 PaperProps: {
                   sx: {
-                    backgroundColor: "rgb(8,13,22)",
+                    backgroundColor: menuBgColor,
                     color: "var(--secondary-color)",
                     maxHeight: 48 * 3 + 8,
                     borderRadius: "10px",
@@ -414,9 +417,15 @@ function RegisterForm({
                     value={sup.id}
                     sx={{
                       "&:hover": {
-                        backgroundColor: "#3a3f47",
+                         backgroundColor: menuHoverColor,
                         color: "#ffffff",
                       },
+    "&.Mui-selected": {
+      backgroundColor: menuSelectedColor, // أضف هاد
+    },
+    "&.Mui-selected:hover": {
+      backgroundColor: menuHoverColor, // عشان الهوفر يشتغل حتى لو سيليكتيد
+    },
                       fontSize:{xs:"14px",sm:"16px"}
                     }}
                   >
@@ -446,7 +455,7 @@ function RegisterForm({
               MenuProps: {
                 PaperProps: {
                   sx: {
-                    backgroundColor: "rgb(8,13,22)",
+                    backgroundColor: menuBgColor,
                     color: "var(--secondary-color)",
                   },
                 },
@@ -456,7 +465,8 @@ function RegisterForm({
             <MenuItem
               value="Student"
               sx={{
-                "&:hover": { backgroundColor: "#3a3f47", color: "#ffffff" },
+                "&:hover": {  backgroundColor: menuHoverColor, color: "#ffffff", },"&.Mui-selected": { backgroundColor: menuSelectedColor },
+      "&.Mui-selected:hover": { backgroundColor: menuHoverColor },
               }}
             >
               Student
@@ -464,7 +474,8 @@ function RegisterForm({
             <MenuItem
               value="Supervisor"
               sx={{
-                "&:hover": { backgroundColor: "#3a3f47", color: "#ffffff" },
+                "&:hover": {  backgroundColor: menuHoverColor, color: "#ffffff", },"&.Mui-selected": { backgroundColor: menuSelectedColor },
+      "&.Mui-selected:hover": { backgroundColor: menuHoverColor },
               }}
             >
               Supervisor
@@ -472,7 +483,8 @@ function RegisterForm({
             <MenuItem
               value="Admin"
               sx={{
-                "&:hover": { backgroundColor: "#3a3f47", color: "#ffffff" },
+                "&:hover": {  backgroundColor: menuHoverColor, color: "#ffffff" ,},"&.Mui-selected": { backgroundColor: menuSelectedColor },
+      "&.Mui-selected:hover": { backgroundColor: menuHoverColor },
               }}
             >
               Admin

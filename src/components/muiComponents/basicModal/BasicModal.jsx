@@ -98,6 +98,9 @@ export default function BasicModal({
               rowUser={user}
               onSuccess={handleClose} // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
               fullWidthInput ={isCustomScreen? true : false}
+              menuBgColor="#1e1d1d"
+              menuHoverColor="#0d0c0c62"
+              menuSelectedColor="#3838388b" 
             />
           </>
         )}
