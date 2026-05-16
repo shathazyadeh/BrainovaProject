@@ -673,6 +673,7 @@ function AdminProfile() {
                       btnLabel="Update Profile"
                       fullWidthInput={true}
                       textfieldColor={"textfield_black"}
+                      InputLabelProps={true}
                       defaultValues={{
                         fullName: user?.fullName,
                         userName: user?.userName,

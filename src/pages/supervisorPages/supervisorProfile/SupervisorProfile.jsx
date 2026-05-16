@@ -113,6 +113,7 @@ function SupervisorProfile() {
                 fullWidthInput={isCustomScreen ? true : false}
                 btnLabel="Update Profile"
                 textfieldColor={"textfield_black"}
+                InputLabelProps={true}
                 defaultValues={{
                   fullName: user?.fullName,
                   userName: user?.userName,
