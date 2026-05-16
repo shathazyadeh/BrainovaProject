@@ -152,6 +152,7 @@ function StarsNavbar({ linkColor }) {
               letterSpacing: ".3rem",
               color: linkColor,
               textDecoration: "none",
+              outline: "none",
               "@media (max-width:1000px)": { fontSize: "23px" },
             }}
           >
