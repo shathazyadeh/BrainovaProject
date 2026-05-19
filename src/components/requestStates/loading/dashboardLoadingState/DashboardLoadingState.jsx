@@ -1,25 +1,26 @@
 import { Box } from "@mui/material";
-import Loader from "../../../uiVerseComponents/loader/Loader";
-import DashboardNavbar from "../../../muiComponents/dashboardNavbar/DashboardNavbar";
-import useAuthStore from "../../../../store/useAuthStore";
+import DashboardNavbar from "./../../../muiComponents/dashboardNavbar/DashboardNavbar";
+import TemporaryDrawer from "./../../../muiComponents/temporaryDrawer/TemporaryDrawer";
+import Loader from "./../../../uiVerseComponents/loader/Loader";
+import Offline from "../../offline/Offline";
 
-function DashboardLoadingState() {
-  const user = useAuthStore((state) => state.user);
+export default function DashboardLoadingState() {
+  const isOffline = !navigator.onLine; // المتصفح بفحص اذا في اتصال بالشبكة اذا ما في برجع فولس
+  if (isOffline) return <Offline />;
 
   return (
     <>
-      <DashboardNavbar />
+      <Box sx={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+        <DashboardNavbar />
+      </Box>
 
       <Box
         sx={{
-          position: "fixed",
-          inset: 0,
+          height: "100vh",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          paddingLeft: user? "110px":"0px",
           bgcolor: "var(--navy-color)",
-          zIndex: 1,
         }}
       >
         <Loader />
@@ -27,5 +28,3 @@ function DashboardLoadingState() {
     </>
   );
 }
-
-export default DashboardLoadingState;

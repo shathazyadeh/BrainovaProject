@@ -20,21 +20,17 @@ function DashboardErrorState({ error }) {
 
   return (
     <>
-      <DashboardNavbar />
+      <Box sx={{position:"absolute",top: 0,left: 0, right: 0}}>
+              <DashboardNavbar />
+      </Box>
 
       <Box
         sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100%",
           height: "100vh",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          paddingLeft: user? "110px":"0px",
           bgcolor: "var(--navy-color)",
-          zIndex: 1,
         }}
       >
         <Typography
@@ -43,7 +39,6 @@ function DashboardErrorState({ error }) {
             fontWeight: "600",
             fontSize: { xs: "14px", md: "20px" },
             textAlign: "center",
-            paddingX: "20px",
           }}
         >
           {errorMessage}
@@ -54,3 +49,4 @@ function DashboardErrorState({ error }) {
 }
 
 export default DashboardErrorState;
+         // paddingLeft: user? "110px":"0px",

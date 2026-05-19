@@ -34,6 +34,7 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { LinearProgress } from "@mui/material";
 import { IoLockClosedOutline } from "react-icons/io5";
 import { SlEnergy } from "react-icons/sl";
+import Offline from "../../../components/requestStates/offline/Offline";
 
 function PredictTumor() {
   const { isError, error, isLoading, data } = useGetQuestions();
@@ -189,6 +190,8 @@ function PredictTumor() {
     return false;
   };
 
+  const isOffline = !navigator.onLine; // المتصفح بفحص اذا في اتصال بالشبكة اذا ما في برجع فولس
+    if (isOffline) return <Offline />;
   //////////////////////////////////////
 
   return (

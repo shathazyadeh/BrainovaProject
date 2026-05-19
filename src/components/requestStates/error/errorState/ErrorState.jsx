@@ -36,7 +36,6 @@ function ErrorState({ error }) {
           fontWeight: "600",
           fontSize: { xs: "14px", md: "20px" },
           textAlign: "center",
-          paddingX: "20px",
         }}
       >
         {errorMessage}

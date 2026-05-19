@@ -24,7 +24,7 @@ function DashboardLayout() {
       <Box
         component="main"
         sx={{
-          ml: {xs:"0px",md:"240px"} // نفس عرض الـ Drawer
+          ml: {xs:"0px", md: !isAuthLoading ? "240px" : "0px",} // نفس عرض الـ Drawer
         }}
       >
         <Outlet />
