@@ -1,7 +1,6 @@
 import { Box, Button, Container, Grid, Modal, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import useGetAllMyCases from '../../../hooks/studentHooks/useGetAllMyCases';
-import useGetSupervisorFeedbackByReportId from '../../../hooks/studentHooks/useGetSupervisorFeedbackByReportId.js';
 import { LuNotebookPen } from "react-icons/lu";
 import Loader from '../../../components/uiVerseComponents/loader/Loader';
 import { IoMdClose } from "react-icons/io";
@@ -17,12 +16,11 @@ import style from './MyCases.module.css';
 import { TbReportSearch } from "react-icons/tb";
 import ErrorState from '../../../components/requestStates/error/errorState/ErrorState.jsx';
 import LoadingState from '../../../components/requestStates/loading/loadingState/LoadingState.jsx';
+import useGetAllFeedbacks from '../../../hooks/studentHooks/useGetAllFeedbacks.js';
 
-function FeedbackCommet({ Id, isReviewed, feedbackId }) {
+function FeedbackCommet({feedback , isReviewed, feedbackId,getAllFeedbacksLoading,getAllFeedbacksIsError, }) {
   const [open, setOpen] = useState(false); //عشان نسكر ونفتح المودال
-
   const { markAsSeen, serverErrors, isLoading: isMarkSeenLoading } = useMarksAsSeen();
-  const { isError, isLoading, error, data: feedback } = useGetSupervisorFeedbackByReportId(Id);
 
   const handleOpen = async () => { // عشان نفتح المودال ونعمل مارك از سيين 
     setOpen(true);
@@ -30,7 +28,8 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
       await markAsSeen(feedbackId);
     }
   };
-
+if (getAllFeedbacksLoading) { return <Typography sx={{ color: "var(--secondary-color)" ,fontSize:"14px"}}>Loading...</Typography>; } 
+if (getAllFeedbacksIsError) { return <Typography sx={{ color: 'var(--primary-color)',fontSize:"13px" }}>Error loading feedback</Typography>; }
   if (!isReviewed) {
     return (
       <Box>
@@ -73,7 +72,7 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
 
             }}
           >
-            <Box className='modal_title' sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Box className='modal_title' sx={{ display: 'flex', justifyContent: 'space-between'}}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px', paddingTop: '4px', paddingBottom: '10px' }}>
                 <LuNotebookPen size={25} color='#c21313' />
                 <Typography sx={{ color: '#fff', fontWeight: '500', letterSpacing: "1px", paddingLeft: '10px', fontSize: { xs: "17px", sm: "20px" } }}>Feedback </Typography>
@@ -89,12 +88,6 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
     );
   }
 
-  if (isLoading) {
-    return <Typography sx={{ color: "var(--secondary-color)" }}>Loading...</Typography>;
-  }
-  if (isError) {
-    return <Typography sx={{ color: 'var(--primary-color)' }}>Error loading feedback</Typography>;
-  }
   return (
     <Box>
       <Typography sx={{ color: "var(--secondary-color)", fontSize: '13px', WebkitLineClamp: 1, display: '-webkit-box', WebkitBoxOrient: 'vertical', overflow: 'hidden', wordBreak: 'break-all', maxWidth: '100px', }}>
@@ -149,7 +142,7 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
                   paddingLeft: "10px",
                 }}
               >
-                {feedback.supervisorName}
+                {feedback?.supervisorName}
               </Typography>
             </Box>
             <IoMdClose size={20} onClick={() => setOpen(false)} style={{ cursor: 'pointer' }} />
@@ -201,8 +194,23 @@ function FeedbackCommet({ Id, isReviewed, feedbackId }) {
 }
 function MyCases() {
   const { isError, isLoading, error, data } = useGetAllMyCases();
+  console.log("dataaaa555:",data);
   const downloadMutation = useDownloadStudentPDF();
+  const { isError:getAllFeedbacksIsError, isLoading:getAllFeedbacksLoading, error:getAllFeedbacksError, data: allFeedbacks }=useGetAllFeedbacks();
+  console.log("shatha:",allFeedbacks);
+//هون 2
+   
+  const feedbackMap = useMemo(() => { //يوز ميمو عشان الماب تنعمل مرة وحدة ومش كل مرة يتعمل ري ريندر الصفحة ترجع تبني ماب من جديد 
+  const map = {}; //اوبجيكت فاضي
+
+  allFeedbacks?.items?.forEach((fb) => {  // لفينا ع العناصر وخزنا بالماب ال اف بي بكون فيه الريبورت اي دي والكومنت 
+    map[fb.reportId] = fb;
+  });
+
+  return map;
+}, [allFeedbacks]);
   
+   
   const totalCases = data?.items?.length || 0;
   const reviewedCount = data?.items?.filter(item => item.isReviewed)?.length || 0;
   const noFeedbackCount = data?.items?.filter(item => !item.isReviewed)?.length || 0;
@@ -569,6 +577,7 @@ function MyCases() {
                     <Box
                       className="img_container"
                       sx={{
+                        bgcolor:"#000",
                         width: 80,
                         height: 70,
                         flexShrink: 0,
@@ -766,9 +775,11 @@ function MyCases() {
                         </Typography>
                       </Box>
                       <FeedbackCommet
-                        Id={item?.reportId}
+                        feedback={feedbackMap[item.reportId]} // من الباجينيشن داتا بعتت الريبورت اي دي عشان اجيب الفييدباك تبعته 
                         isReviewed={item?.isReviewed}
                         feedbackId={item?.feedbackId}
+                        getAllFeedbacksLoading={getAllFeedbacksLoading}
+                        getAllFeedbacksIsError={getAllFeedbacksIsError}
                       />
                     </Box>
 
