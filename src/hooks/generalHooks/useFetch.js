@@ -5,16 +5,14 @@ import axiosInstance from "../../Api/axiosInstance";
 
     const query = useQuery({
         queryKey:queryKey,
-        staleTime:0, //كل 2 دقائق بعمل بحكي للكويري انه الرداتا بطلت فرش و اذا المستخدمم طلع من التاب ورجع بعمل ريكويست
+        staleTime:0,
         queryFn: async()=>{
             const response = await axiosInstance.get(url);
             return response.data;
         },
         ...options // بتخلي أي قيمة بنبعتها من برا تستبدل القيمة الأصلية
-       
     });
 
 
     return query;
  }
- 

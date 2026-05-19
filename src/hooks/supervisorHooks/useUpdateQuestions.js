@@ -1,10 +1,9 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import axiosInstance from "../../Api/axiosInstance";
 import { useState } from "react";
 
 export default function useUpdateQuestions(options = {}) {
-  const queryClient = useQueryClient();
   const [serverErrors, setServerErrors] = useState("");
 
   const updateQuestionsMutation = useMutation({
@@ -18,7 +17,6 @@ export default function useUpdateQuestions(options = {}) {
     onSuccess: (response) => {
       setServerErrors("");
       toast.success("Question updated successfully.");
-      queryClient.invalidateQueries({ queryKey: ["reportQuestions"] });
     },
  onError: (err) => {
       const data = err.response?.data;

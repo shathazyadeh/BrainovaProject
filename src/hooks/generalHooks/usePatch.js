@@ -1,9 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../../Api/axiosInstance"
 import { Bounce, toast } from "react-toastify";
 
 export default function usePatch(url) {
-  const queryClient = useQueryClient();
 
     const usePatchMutation = useMutation({
         mutationFn: async (userId) => {
@@ -22,7 +21,6 @@ export default function usePatch(url) {
                 theme: "dark",
                 transition: Bounce,
             });
-            queryClient.invalidateQueries(["users"]);
         },
         onError: (error) => {
 

@@ -14,14 +14,12 @@ import useMarksAsSeen from "../../../hooks/studentHooks/useMarksAsSeen";
 import useMarkAllAsSeen from "../../../hooks/studentHooks/useMarkAllAsSeen";
 import { Badge, Grid, Modal, useMediaQuery } from "@mui/material";
 import useGetUnseenFeedbacks from "../../../hooks/studentHooks/useGetUnseenFeedbacks";
-import { useQueryClient } from "@tanstack/react-query";
 
 const StyledListHeader = styled(ListSubheader)({
   backgroundImage: "var(--Paper-overlay)",
 });
 
 export default function NotificationsMenu() {
-  const queryClient = useQueryClient();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { isError, error, isLoading, data } = useGetAllFeedbacks();
@@ -57,8 +55,6 @@ export default function NotificationsMenu() {
 
   const handleMarkAllSeen = async () => {
     await markAllSeenMutation.mutateAsync();
-    queryClient.invalidateQueries({ queryKey: ["studentFeedbacks"] });
-    queryClient.invalidateQueries({ queryKey: ["studentUnseenFeedbacks"] });
   };
   const openUnreedList = async () => {
     setOpenUnseenOnly(true);

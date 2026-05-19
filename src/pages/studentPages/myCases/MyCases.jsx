@@ -24,8 +24,8 @@ function FeedbackCommet({feedback , isReviewed, feedbackId,getAllFeedbacksLoadin
 
   const handleOpen = async () => { // عشان نفتح المودال ونعمل مارك از سيين 
     setOpen(true);
-    if (feedbackId) {
-      await markAsSeen(feedbackId);
+   if (feedback?.feedbackId && !feedback?.isSeen) {
+      await markAsSeen(feedback.feedbackId);
     }
   };
 if (getAllFeedbacksLoading) { return <Typography sx={{ color: "var(--secondary-color)" ,fontSize:"14px"}}>Loading...</Typography>; } 

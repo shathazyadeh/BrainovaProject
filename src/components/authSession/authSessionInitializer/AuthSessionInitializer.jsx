@@ -34,23 +34,23 @@ function AuthSessionInitializer({ children }) {
   const user = useAuthStore((state) => state.user);
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-  if (!user) return; // اذا ما في يوزر (مش مسجل دخول) لا تشغل الاتصال أصلاً
+useEffect(() => {
+  if (!user) return;
+  registerSignalREvents(queryClient);
 
-  connection
-    .start() // بنفتح الاتصال مع السيرفر (SignalR)
-    .then(() => {
-      // بعد ما يتصل بنجاح
-      registerSignalREvents(queryClient); // بنربط الايفينتس عشان نسمع التحديثات
-    })
-    .catch((err) => console.log(err)); // لو صار خطأ بالاتصال اطبعه
-
-  return () => {
-    connection.stop(); // لما اليوزر يعمل logout او يتغير → سكّر الاتصال
+  const startConnection = async () => {
+    try {
+      if (connection.state === "Disconnected") {
+        await connection.start();
+      }
+    } catch (err) {
+      console.log("SignalR Error:", err);
+    }
   };
-}, [user]); // كل ما اليوزر يتغير (login / logout) الكود بنعاد
 
+  startConnection();
 
+}, [user]);
 
   return children; // كمل عرض باقي التطبيق
 }
