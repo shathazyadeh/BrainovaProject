@@ -197,7 +197,7 @@ function MyCases() {
   console.log("dataaaa555:",data);
   const downloadMutation = useDownloadStudentPDF();
   const { isError:getAllFeedbacksIsError, isLoading:getAllFeedbacksLoading, error:getAllFeedbacksError, data: allFeedbacks }=useGetAllFeedbacks();
-  console.log("shatha:",allFeedbacks);
+  console.log("ss:",allFeedbacks);
 //هون 2
    
   const feedbackMap = useMemo(() => { //يوز ميمو عشان الماب تنعمل مرة وحدة ومش كل مرة يتعمل ري ريندر الصفحة ترجع تبني ماب من جديد 

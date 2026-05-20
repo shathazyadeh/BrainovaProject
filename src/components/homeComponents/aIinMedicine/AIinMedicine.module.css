@@ -2,3 +2,40 @@
 .drop_shadow {
     filter: drop-shadow(15px 15px 70px rgba(189, 182, 182, 0.497));
 }
+
+.card_hover_effect {
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.1s ease, transform 0.5s ease;
+}
+
+.card_hover_effect {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card_hover_effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -160%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  transform: skewX(-30deg);
+  animation: shine 3s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 160%;
+  }
+}

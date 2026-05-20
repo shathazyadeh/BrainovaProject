@@ -59,25 +59,27 @@ function AIinMedicine() {
             </Typography>{" "}
           </Typography>
           <Box
+            className={style.card_hover_effect}
             sx={{
-              bgcolor: "#2827277d",
+              bgcolor: "#343333bf",
               padding: "15px",
               borderRadius: "10px",
-              boxShadow: "0 0 15px rgba(207, 25, 25, 0.81)",
+              boxShadow: "0 0 15px rgba(139, 130, 130, 0.33)",
+              borderTop:'3px solid red'
             }}
           >
             <Box sx={{ width: "fit-content", marginLeft: "auto" }}>
-              <RiDoubleQuotesR color="#ffffff48" />
+              <RiDoubleQuotesR color="#ffffff48" size={24} />
             </Box>
 
             <Typography
               component={"p"}
               sx={{
-                color: "rgba(250, 248, 243, .95)",
-                fontSize: "20px",
+                color: "rgba(255, 249, 249, 0.95)",
+                fontSize: "19px",
                 fontWeight: "300",
                 fontFamily: "var(--primary-font)",
-                fontStyle: "italic",
+              
                 "@media (max-width:700px)": {
                   fontSize: "15px",
                 },
@@ -86,7 +88,7 @@ function AIinMedicine() {
                 },
               }}
             >
-              Artificial intelligence is transforming medicine in a big way.
+             Artificial intelligence is transforming medicine in a big way.
               Today, smart systems help doctors analyze medical images and tests
               faster and more accurately, detecting details that may be hard for
               the human eye to see. Visual explanation tools also make it easier
