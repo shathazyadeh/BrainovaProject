@@ -7,6 +7,8 @@ export const registerSignalREvents = (queryClient) => {
   connection.off("FeedbackUpdated");
   connection.off("FeedbackDeleted");
   connection.off("UnseenCountChanged");
+  connection.off("SupervisorFeedbackChanged");
+  connection.off("FeedbackSeenByStudent");
   connection.off("NewReport");
   connection.off("QuestionsChanged");
   connection.off("StudentsChanged");
@@ -20,7 +22,6 @@ export const registerSignalREvents = (queryClient) => {
   });
 
   connection.on("FeedbackUpdated", (data) => {
-    console.log("updated");
     queryClient.invalidateQueries({ queryKey: ["studentFeedbacks"] });
     queryClient.invalidateQueries({ queryKey: ["studentUnseenFeedbacks"] });
     queryClient.invalidateQueries({ queryKey: ["myCases"] });
@@ -37,19 +38,22 @@ export const registerSignalREvents = (queryClient) => {
     queryClient.invalidateQueries({ queryKey: ["studentUnseenFeedbacks"] });
   });
 
+  connection.on("SupervisorFeedbackChanged", (data) => {
+    queryClient.invalidateQueries({ queryKey: ["mriCases"] });
+    queryClient.invalidateQueries({ queryKey: ['feedback'] });
+    if(data.kind === "Deleted") queryClient.removeQueries({queryKey: ['reportFeedback', data.reportId]});
+    else queryClient.invalidateQueries({ queryKey: ['reportFeedback',data.reportId] });
+  });
+
+  connection.on("FeedbackSeenByStudent", (data) => {
+    queryClient.invalidateQueries({ queryKey: ['feedback'] });
+  });
+
   connection.on("NewReport", (data) => {
   queryClient.invalidateQueries({ queryKey: ["dashboardSummary"] });
   queryClient.invalidateQueries({ queryKey: ["newReports"] });
-
-
- queryClient.invalidateQueries({
-  predicate: (q) => q.queryKey[0] === "mriCases"
-});
-
-queryClient.refetchQueries({
-  predicate: (q) => q.queryKey[0] === "mriCases"
-});
- ////////////////////////// 3
+  queryClient.refetchQueries({ queryKey: ['mriCases', 'all'] });
+  queryClient.refetchQueries({queryKey: ['mriCases', 'student', data.report.studentId]});
   queryClient.invalidateQueries({ queryKey: ["students"] });
 });
 
@@ -60,12 +64,12 @@ connection.on("QuestionsChanged", (data) => {
   });
 
 connection.on("StudentsChanged", (data) => {
-    console.log("StudentsChanged");
     queryClient.invalidateQueries({ queryKey: ["dashboardSummary"] });
     queryClient.invalidateQueries({ queryKey: ["mriCases"] });
     queryClient.invalidateQueries({ queryKey: ["newReports"] });
     queryClient.invalidateQueries({ queryKey: ["students"] });
     queryClient.invalidateQueries({ queryKey: ["feedback"] });
+    queryClient.invalidateQueries({ queryKey: ['reportDetails'] });
   });
 
   connection.on("UserUpdated", (data) => { //لما المستخدم يعدل معلوماته
@@ -78,6 +82,12 @@ connection.on("StudentsChanged", (data) => {
 
   connection.on("UserListChanged", (data) => {
     queryClient.invalidateQueries({ queryKey: ["users"] });
+    queryClient.invalidateQueries({ queryKey: ["mriCases"] });
+    queryClient.invalidateQueries({ queryKey: ["newReports"] });
+    queryClient.invalidateQueries({ queryKey: ["students"] });
+    queryClient.invalidateQueries({ queryKey: ["feedback"] });
+    queryClient.invalidateQueries({ queryKey: ['reportDetails'] });
 });
+
 
 };
