@@ -16,62 +16,12 @@ import StarsBackground from "../../reactBitsComponents/starsBackground/StarsBack
 import useAuthStore from "../../../store/useAuthStore";
 import { LuBrain } from "react-icons/lu";
 import { IoBookOutline } from "react-icons/io5";
-import { FiUpload } from "react-icons/fi";
+import { FiUpload, FiLogIn, FiUserPlus } from "react-icons/fi";
 import style from "./StarsNavbar.module.css";
 import { TbReportSearch } from "react-icons/tb";
 import NotificationsMenu from "../../homeComponents/notificationsMenu/NotificationsMenu";
 import useLogout from "../../../hooks/authHooks/useLogout";
 
-const pages = [
-  {
-    name: "Home",
-    icon: (
-      <Box
-        component={LuBrain}
-        sx={{
-          fontSize: "20px",
-          "@media (max-width:970px)": { fontSize: "16px" },
-        }}
-      />
-    ),
-  },
-  {
-    name: "Analysis",
-    icon: (
-      <Box
-        component={FiUpload}
-        sx={{
-          fontSize: "20px",
-          "@media (max-width:970px)": { fontSize: "16px" },
-        }}
-      />
-    ),
-  },
-  {
-    name: "Learning Hub",
-    icon: (
-      <Box
-        component={IoBookOutline}
-        sx={{
-          fontSize: "20px",
-          "@media (max-width:970px)": { fontSize: "16px" },
-        }}
-      />
-    ),
-  },
-  {
-    name: "My Cases",
-    icon: (
-      <Box
-        component={TbReportSearch}
-        sx={{
-          fontSize: "20px",
-          "@media (max-width:970px)": { fontSize: "16px" },
-        }}
-      />
-    ),
-  },
-];
 const settings = ["Profile", "Logout"];
 
 function StarsNavbar({ linkColor }) {
@@ -85,6 +35,7 @@ function StarsNavbar({ linkColor }) {
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
+    if (!user) return;
     setAnchorElUser(event.currentTarget);
   };
 
@@ -117,6 +68,87 @@ function StarsNavbar({ linkColor }) {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [anchorElNav, anchorElUser]);
+
+  const pages = user
+    ? [
+        {
+          name: "Home",
+          path: "/home",
+          icon: (
+            <Box
+              component={LuBrain}
+              sx={{
+                fontSize: "20px",
+                "@media (max-width:970px)": { fontSize: "16px" },
+              }}
+            />
+          ),
+        },
+        {
+          name: "Analysis",
+          path: "/predict-tumor",
+          icon: (
+            <Box
+              component={FiUpload}
+              sx={{
+                fontSize: "20px",
+                "@media (max-width:970px)": { fontSize: "16px" },
+              }}
+            />
+          ),
+        },
+        {
+          name: "Learning Hub",
+          path: "/learning-hub",
+          icon: (
+            <Box
+              component={IoBookOutline}
+              sx={{
+                fontSize: "20px",
+                "@media (max-width:970px)": { fontSize: "16px" },
+              }}
+            />
+          ),
+        },
+        {
+          name: "My Cases",
+          path: "/my-cases",
+          icon: (
+            <Box
+              component={TbReportSearch}
+              sx={{
+                fontSize: "20px",
+                "@media (max-width:970px)": { fontSize: "16px" },
+              }}
+            />
+          ),
+        },
+      ]
+    : [
+        {
+          name: "Home",
+          path: "/home",
+          icon: (
+            <Box
+              component={LuBrain}
+              sx={{
+                fontSize: "20px",
+                "@media (max-width:970px)": { fontSize: "16px" },
+              }}
+            />
+          ),
+        },
+        {
+          name: "Login",
+          path: "/auth/login",
+          icon: <FiLogIn />,
+        },
+        {
+          name: "Register",
+          path: "/auth/register",
+          icon: <FiUserPlus />,
+        },
+      ];
 
   return (
     <AppBar
@@ -220,17 +252,7 @@ function StarsNavbar({ linkColor }) {
                 >
                   <Typography
                     component={NavLink}
-                    to={
-                      page.name == "Home"
-                        ? "/home"
-                        : page.name == "Analysis"
-                          ? "/predict-tumor"
-                          : page.name == "Learning Hub"
-                            ? "/learning-hub"
-                            : page.name == "My Cases"
-                              ? "/my-cases"
-                              : "/"
-                    }
+                    to={page.path}
                     sx={{
                       textAlign: "center",
                       color: linkColor,
@@ -258,17 +280,7 @@ function StarsNavbar({ linkColor }) {
               <Button
                 component={NavLink}
                 key={page.name}
-                to={
-                  page.name == "Home"
-                    ? "/home"
-                    : page.name == "Analysis"
-                      ? "/predict-tumor"
-                      : page.name == "Learning Hub"
-                        ? "/learning-hub"
-                        : page.name == "My Cases"
-                          ? "/my-cases"
-                          : "/"
-                }
+                to={page.path}
                 className={`upper_case ${style.navbar_btn}`}
                 sx={{
                   my: 2,
@@ -292,7 +304,7 @@ function StarsNavbar({ linkColor }) {
             ))}
           </Box>
 
-          <NotificationsMenu></NotificationsMenu>
+          {user && <NotificationsMenu></NotificationsMenu>}
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

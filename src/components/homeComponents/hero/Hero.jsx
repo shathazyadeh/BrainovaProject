@@ -6,8 +6,10 @@ import { FiUpload } from "react-icons/fi";
 import { LuBrain } from "react-icons/lu";
 import { Link as RouterLink } from "react-router-dom";
 import style from "./Hero.module.css";
+import useAuthStore from "../../../store/useAuthStore";
 
 function Hero() {
+  const user = useAuthStore((state) => state.user);
   return (
     <Box
       component={"section"}
@@ -117,10 +119,11 @@ function Hero() {
             sx={{ marginTop: "30px", display: "flex", gap: "10px" }}
           >
             <Button
-              component={RouterLink}
-              to="/predict-tumor"
+              component={user ? RouterLink : "button"}  // اذا اليوزر مسجل دخول الراوتر لينك بنقلني عصفحة البريديكس اذا مش مسجل دخول بتتصرف كبوتون مابنقلني ع اشي
+               to={user ? "/predict-tumor" : undefined}
               className={`${style.upload_btn} upper_case`}
               sx={{
+                cursor: !user ? "not-allowed" : "pointer",
                 color: "white",
                 bgcolor: "rgb(190, 7, 7)",
                 paddingX: "15px",
@@ -142,10 +145,11 @@ function Hero() {
               Upload MRI Scan
             </Button>
             <Button
-              component={RouterLink}
-              to="/learning-hub"
+              component={user ? RouterLink : "button"}
+              to={user ? "/learning-hub" : undefined}
               className={`${style.learn_btn} upper_case`}
               sx={{
+                cursor: !user ? "not-allowed" : "pointer",
                 color: "white",
                 bgcolor: "rgba(61, 59, 59, 0.9)",
                 border: "1px solid rgba(115, 114, 114, 0.9)",

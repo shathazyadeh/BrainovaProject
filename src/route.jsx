@@ -1,8 +1,8 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import MainLayout from "./layout/MainLayout.jsx";
 import AuthLayout from "./layout/AuthLayout.jsx";
-import Login from "./pages/authPages/login/Login.jsx"
-import Register from "./pages/authPages/register/Register.jsx"
+import Login from "./pages/authPages/login/Login.jsx";
+import Register from "./pages/authPages/register/Register.jsx";
 import Home from "./pages/studentPages/home/Home.jsx";
 import ForgetPassword from "./pages/authPages/forgetPassword/ForgetPassword.jsx";
 import ResetPassword from "./pages/authPages/resetPassword/ResetPassword.jsx";
@@ -26,106 +26,125 @@ import MyCases from "./pages/studentPages/myCases/MyCases.jsx";
 import LearningHub from "./pages/studentPages/learningHub/LearningHub.jsx";
 import ReportQuestions from "./pages/supervisorPages/reportQuestions/ReportQuestions.jsx";
 
-
 const router = createBrowserRouter([
-  { path: "/",
-    element:<MainLayout/>,
-    children:[
-        {
-            path:"home",
-            element:<Home/>
-        },{
-            path:'predict-tumor',
-            element:<PredictTumor/>
-        },{
-            path:'profile',
-            element:<StudentProfile/>
-        },{
-            path:'my-cases',
-            element:<MyCases/>
-        },{
-            path:'learning-hub',
-            element:<LearningHub/>
-        }
-    ]
-   },
-   { path:"auth/", 
-     element:<AuthLayout/>,
-     children:[
-        {
-            path:"login",
-            element:<Login/>
-        },
-        {
-            path:"register",
-            element:<Register/>
-        },
-        {
-            path:"forget-password",
-            element:<ForgetPassword/>
-        },
-        {
-            path:"reset-password",
-            element:<ResetPassword/>
-        },
-        {
-            path:"set-password",
-            element:<SetPassword/>
-        },{
-            path:"confirm-email",
-            element:<ConfirmEmail/>
-        }
-     ]
-   },
-   { path:"dashboard/",
-    element: <DashboardLayout/>,
-    children:[
-       { 
-        path:"supervisor",
-        element:<SupervisorDashboard/>
-       },{
-        path:"admin",
-        element:<AdminDashboard/>
-       },{
-        path:"admin/profile",
-        element:<AdminProfile/>
-       },{
-        path:"admin/user-management",
-        element:<UserManagement/>
-       },{
-        path:"super-admin",
-        element:<SuperAdminDashboard/>
-       },
-       {path:"super-admin/profile",
-        element:<AdminProfile/>
-       },{
-        path:"super-admin/user-management",
-        element:<UserManagement/>
-       },{
-        path:"supervisor/profile",
-        element:<SupervisorProfile/>
-       },{
-        path:"supervisor/students",
-        element:<SupervisorStudents/>
-       },{
-        path:"supervisor/students-reports",
-        element:<SupervisorReports/>
-       },{
-        path:"supervisor/feedback",
-        element:<SupervisorFeedback/>
-       },{
-        path:"supervisor/report-details/:id",
-        element:<ReportDetails/>
-       },{
-        path:"supervisor/student-reports/:studentId",
-        element:<StudentReports/>
-       },{
-        path:"supervisor/report-questions",
-        element:<ReportQuestions/>
-       }
-     
-    ]
-
-   }
+  {
+    path: "/",
+    element: <Navigate to="/home" replace />,
+  },
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      {
+        path: "home",
+        element: <Home />,
+      },
+      {
+        path: "predict-tumor",
+        element: <PredictTumor />,
+      },
+      {
+        path: "profile",
+        element: <StudentProfile />,
+      },
+      {
+        path: "my-cases",
+        element: <MyCases />,
+      },
+      {
+        path: "learning-hub",
+        element: <LearningHub />,
+      },
+    ],
+  },
+  {
+    path: "auth/",
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "forget-password",
+        element: <ForgetPassword />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPassword />,
+      },
+      {
+        path: "set-password",
+        element: <SetPassword />,
+      },
+      {
+        path: "confirm-email",
+        element: <ConfirmEmail />,
+      },
+    ],
+  },
+  {
+    path: "dashboard/",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "supervisor",
+        element: <SupervisorDashboard />,
+      },
+      {
+        path: "admin",
+        element: <AdminDashboard />,
+      },
+      {
+        path: "admin/profile",
+        element: <AdminProfile />,
+      },
+      {
+        path: "admin/user-management",
+        element: <UserManagement />,
+      },
+      {
+        path: "super-admin",
+        element: <SuperAdminDashboard />,
+      },
+      { path: "super-admin/profile", element: <AdminProfile /> },
+      {
+        path: "super-admin/user-management",
+        element: <UserManagement />,
+      },
+      {
+        path: "supervisor/profile",
+        element: <SupervisorProfile />,
+      },
+      {
+        path: "supervisor/students",
+        element: <SupervisorStudents />,
+      },
+      {
+        path: "supervisor/students-reports",
+        element: <SupervisorReports />,
+      },
+      {
+        path: "supervisor/feedback",
+        element: <SupervisorFeedback />,
+      },
+      {
+        path: "supervisor/report-details/:id",
+        element: <ReportDetails />,
+      },
+      {
+        path: "supervisor/student-reports/:studentId",
+        element: <StudentReports />,
+      },
+      {
+        path: "supervisor/report-questions",
+        element: <ReportQuestions />,
+      },
+    ],
+  },
 ]);
 export default router;

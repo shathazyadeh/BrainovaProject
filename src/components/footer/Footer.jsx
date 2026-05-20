@@ -7,15 +7,24 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import { LuBrain } from "react-icons/lu";
 import style from "./Footer.module.css";
+import useAuthStore from "../../store/useAuthStore";
 
 function Footer() {
+  const navigate = useNavigate();
+const user = useAuthStore((state) => state.user);
+
   const location = useLocation();
   let footerBodyColor = "#000";
   if (location.pathname === "/home" || location.pathname === "/profile" ||location.pathname === "/my-cases") footerBodyColor = "#171717";
-
+const handleProtectedClick = (e, to) => {
+  if (!user) {
+    e.preventDefault();
+    navigate("/auth/login");
+  }
+};
   return (
     <Box
       component={"section"}
@@ -129,9 +138,10 @@ function Footer() {
                   className={style.footer_link}
                   component={RouterLink}
                   to="/predict-tumor"
+                  onClick={(e) => handleProtectedClick(e, "/predict-tumor")}
                   sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
                 >
-                  Upload MRI
+                  Analysis
                 </Link>
               </ListItemText>
             </ListItem>
@@ -141,6 +151,7 @@ function Footer() {
                   className={style.footer_link}
                   component={RouterLink}
                   to="/learning-hub"
+                  onClick={(e) => handleProtectedClick(e, "/learning-hub")}
                   sx={{ color: "var(--mid-gray-color)", fontWeight: "600" }}
                 >
                   Learning Hub

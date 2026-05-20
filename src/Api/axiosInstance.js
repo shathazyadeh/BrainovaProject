@@ -23,17 +23,20 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // بنجيب status code اذا موجود
     const status = error.response?.status;
+    const publicRoutes = ["/home"];
 
     // اذا المستخدم مش مصرح (401)
     if (status === 401) {
-      // غالبا التوكن منتهي أو مش صحيح
-      useAuthStore.getState().logout();
-      window.location.href = "/auth/login";
+      if (!publicRoutes.includes(window.location.pathname)) {
+        // غالبا التوكن منتهي أو مش صحيح
+        useAuthStore.getState().logout();
+        window.location.href = "/auth/login";
+      }
     }
 
     // لازم نرجع ال error عشان ينمسك بالمكان اللي استدعى ال request
     return Promise.reject(error);
-  }
+  },
 );
 
 // بنصدر ال instance عشان نستخدمه بكل المشروع بدل axios العادي

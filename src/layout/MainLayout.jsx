@@ -9,8 +9,10 @@ import AuthFallback from "../components/authSession/authFallback/AuthFallback.js
 function MainLayout() {
   const location = useLocation();
   const { user, isAuthLoading } = useAuthStore();
+
+  const publicRoutes = ["/home","/"];
   
-  if (!user && !isAuthLoading) {
+  if (!user && !isAuthLoading && !publicRoutes.includes(location.pathname)) {
     return <AuthFallback />;
   }
 
