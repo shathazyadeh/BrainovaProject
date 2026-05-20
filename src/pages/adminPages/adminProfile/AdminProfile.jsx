@@ -18,60 +18,22 @@ import { MdOutlinePhone } from "react-icons/md";
 import { PiUserBold } from "react-icons/pi";
 import { FaLocationArrow } from "react-icons/fa6";
 import DashboardFooter from "../../../components/dashboardFooter/DashboardFooter";
+import { AiOutlineCheckCircle } from "react-icons/ai";
 
 function PermissionsBox({ permissions }) {
   return (
     <Box
       className="super_permissions flex_column"
       sx={{
-        height: "100",
-        paddingX: { lg: "40px" },
+        height: "100%",
+        width: "100%",
+        paddingX: { xs: '20px', sm: '0px', md: "40px" },
         paddingBottom: "23px",
-        paddingTop: "30px",
+        paddingTop: "40px",
         gap: "10px",
         bgcolor: "#3e27274d",
         borderRadius: "20px",
-        "@media (max-width:1335px)": {
-          paddingBottom: "60px",
-          paddingX: "10px",
-        },
-        "@media (max-width:1304px)": {
-          paddingBottom: "40px",
-          paddingX: "12px",
-        },
-        "@media (max-width:1246px)": {
-          paddingBottom: "60px",
-          paddingX: "12px",
-        },
-        "@media (max-width:1449px)": {
-          paddingY: "37px",
-          paddingX: "13px",
-        },
-        "@media (max-width:1422px)": {
-          paddingBottom: "58px",
-        },
-        "@media (max-width:1313px)": {
-          paddingY: "36px",
-        },
-        "@media (max-width:1225px)": {
-          paddingY: "65px",
-        },
-        "@media (max-width:1200px)": {
-          paddingX: "60px",
-        },
-        "@media (max-width:999px)": {
-          paddingX: "60px",
-        },
-        "@media (max-width:900px)": {
-          paddingX: "0px",
-        },
-        "@media (max-width:600px)": {
-          paddingX: "35px",
-        },
-        "@media (max-width:423px)": {
-          paddingY: "30px",
-          paddingX: "10px",
-        },
+
       }}
     >
       <Typography
@@ -155,7 +117,7 @@ function PermissionsBox({ permissions }) {
                 paddingY: { xs: "10px", md: "10px", lg: "4px" },
                 paddingX: { xs: "10px", md: "10px", lg: "6px" },
                 marginX: { xs: "5px", sm: "40px", md: "0px" },
-                borderRadius: "15px",
+                borderRadius: "10px",
                 bgcolor: "#ffffff18",
                 transition: "all 0.5s ease",
                 "&:hover": {
@@ -175,11 +137,21 @@ function PermissionsBox({ permissions }) {
               }}
             >
               <Box
-                component={FaLocationArrow}
+                component={AiOutlineCheckCircle}
                 sx={{
-                  color: "var(--secondary-color)",
+                  color: "#ff0000",
                   marginRight: "8px",
                   flexShrink: "0",
+                  fontSize: '22px',
+                  bgcolor: '#fff',
+                  borderRadius: '10px',
+                  boxShadow: "0 6px 18px rgba(255, 255, 255, 0.16)",
+                  "@media (max-width:600px)": {
+                    fontSize: "16px",
+                  },
+
+
+
                 }}
               />{" "}
               {perm}
@@ -633,8 +605,10 @@ function AdminProfile() {
               enableTilt={false}
               glowIntensity="soft"
             >
-              <Grid container rowSpacing={2} sx={{ alignItems: "center" }}>
-                <Grid item size={{ xs: 12, lg: 5 }}>
+              <Grid container rowSpacing={2} sx={{ alignItems: "stretch", }}>
+                <Grid item size={{ xs: 12, lg: 5 }} sx={{
+                  display: "flex",
+                }}>
                   {user?.roles[0] === "Admin" ? (
                     <PermissionsBox
                       permissions={adminPermissions[0].permissions}
@@ -645,11 +619,15 @@ function AdminProfile() {
                     />
                   )}
                 </Grid>
-                <Grid item size={{ xs: 12, lg: 7 }}>
+                <Grid item size={{ xs: 12, lg: 7 }} sx={{
+                  display: "flex",
+                }}>
                   <Box
                     ref={formRef}
                     className="edit_user_info_form flex_column"
                     sx={{
+                      height: "100%",
+                      width: "100%",
                       bgcolor: "#3e27274d",
                       borderRadius: "20px",
                       paddingY: "20px",
