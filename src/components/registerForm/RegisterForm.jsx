@@ -189,13 +189,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
             <TextField
@@ -208,13 +203,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
           </>
@@ -230,13 +220,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
             <TextField
@@ -249,13 +234,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
           </Box>
@@ -272,13 +252,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
             <TextField
@@ -291,13 +266,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
           </>
@@ -313,13 +283,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
             <TextField
@@ -332,13 +297,8 @@ function RegisterForm({
               className={textfieldColor}
               spellCheck={false}
               InputLabelProps={{ shrink: InputLabelProps }}
-              sx={{
-                "& .MuiInputLabel-root": {
-                  fontSize: {
-                    xs: "13px",
-                    sm: "16px",
-                  },
-                },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                   "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
           </Box>
@@ -369,13 +329,8 @@ function RegisterForm({
             className={textfieldColor}
             spellCheck={false}
             InputLabelProps={{ shrink: InputLabelProps }}
-            sx={{
-              "& .MuiInputLabel-root": {
-                fontSize: {
-                  xs: "13px",
-                  sm: "16px",
-                },
-              },
+            sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                 "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
             }}
           />
         )}
@@ -392,6 +347,7 @@ function RegisterForm({
             sx={{
               "& .MuiSelect-icon": { color: "var(--secondary-color)" },
               "& .MuiInputLabel-root": { fontSize: { xs: "13px", sm: "16px" } },
+              "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
             }}
             SelectProps={{
               MenuProps: {

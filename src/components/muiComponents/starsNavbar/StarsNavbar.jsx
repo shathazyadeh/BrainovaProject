@@ -141,12 +141,28 @@ function StarsNavbar({ linkColor }) {
         {
           name: "Login",
           path: "/auth/login",
-          icon: <FiLogIn />,
+          icon: (
+            <Box
+              component={FiLogIn}
+              sx={{
+                fontSize: "20px",
+                "@media (max-width:970px)": { fontSize: "16px" },
+              }}
+            />
+          ),
         },
         {
           name: "Register",
           path: "/auth/register",
-          icon: <FiUserPlus />,
+          icon: (
+            <Box
+              component={FiUserPlus}
+              sx={{
+                fontSize: "20px",
+                "@media (max-width:970px)": { fontSize: "16px" },
+              }}
+            />
+          ),
         },
       ];
 

@@ -111,11 +111,15 @@ export default function NotificationsMenu() {
           max={99}
           sx={{
             "& .MuiBadge-badge": {
-              fontSize: "9px",
-              height: "16px",
-              minWidth: "16px",
+              fontSize: {xs:"10px",md:"12px"},
+              height: {xs:"16px",md:"17px"},
+              minWidth: {xs:"16px",md:"17px"},
               padding: "0 4px",
-              top: 6,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              lineHeight: 4,
+              top: 5,
               right: 2,
             },
           }}
@@ -432,8 +436,7 @@ export default function NotificationsMenu() {
                       bgcolor: "var(--primary-color)",
                       marginTop: "5px",
                     }}
-                  > 
-                  </Box>
+                  ></Box>
                 )}
                 <Box className="content flex_column">
                   <Typography
@@ -515,17 +518,17 @@ export default function NotificationsMenu() {
                 outline: "none",
               },
               "&::-webkit-scrollbar": {
-              width: "6px",
-            },
-            "&::-webkit-scrollbar-track": {
-              background: "transparent",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: "var(--primary-color)",
-              borderRadius: "10px",
-              transition: "0.3s",
-              cursor: "grab",
-            },
+                width: "6px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "transparent",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "var(--primary-color)",
+                borderRadius: "10px",
+                transition: "0.3s",
+                cursor: "grab",
+              },
             }}
           >
             <Box
@@ -545,7 +548,7 @@ export default function NotificationsMenu() {
                 <Typography
                   sx={{
                     color: "#fff",
-                    fontSize: { xs: "17px", sm: "20px"},
+                    fontSize: { xs: "17px", sm: "20px" },
                     fontWeight: "500",
                     letterSpacing: "1px",
                     paddingLeft: "10px",
@@ -560,7 +563,13 @@ export default function NotificationsMenu() {
                 style={{ cursor: "pointer" }}
               />
             </Box>
-            <Typography sx={{ color: "var(--secondary-color)" , fontSize: { xs: "13px", sm: "17px"}, wordBreak: "break-word"}}>
+            <Typography
+              sx={{
+                color: "var(--secondary-color)",
+                fontSize: { xs: "13px", sm: "17px" },
+                wordBreak: "break-word",
+              }}
+            >
               {selectedFeedback?.comment}
             </Typography>
             <Typography

@@ -193,13 +193,8 @@ function ResetPassword() {
                 ),
               }}
               className="textfield_light"
-              sx={{
-                  "& .MuiInputLabel-root": {
-                    fontSize: {
-                      xs: "13px",
-                      sm: "16px",
-                    },
-                  },
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
               }}
             />
             <TextField
@@ -212,6 +207,9 @@ function ResetPassword() {
               error={errors.email}
               helperText={errors.email?.message}
               className="textfield_light"
+              sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                    "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
+              }}
             />
             <Button
               className="fx_fill"

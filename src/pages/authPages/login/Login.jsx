@@ -129,13 +129,8 @@ function Login() {
                 helperText={errors.emailOrUserName?.message}
                 className="textfield_dark"
                 spellCheck={false}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    fontSize: {
-                      xs: "13px",
-                      sm: "16px",
-                    },
-                  },
+                sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                     "& .MuiInputLabel-shrink": {transform: {xs:"translate(17px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
                 }}
               />
               <TextField
@@ -165,13 +160,8 @@ function Login() {
                 }}
                 className="textfield_dark"
                 spellCheck={false}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    fontSize: {
-                      xs: "13px",
-                      sm: "16px",
-                    },
-                  },
+                sx={{"& .MuiInputLabel-root": {fontSize: {xs: "13px",sm: "16px",},},
+                     "& .MuiInputLabel-shrink": {transform: {xs:"translate(16px, -9px) scale(0.85)",sm:"translate(13px, -9px) scale(0.75)"}},
                 }}
               />
               <Link
