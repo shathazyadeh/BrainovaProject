@@ -17,7 +17,8 @@ export const UpdateUserInfoSchema = yup.object({
     .required("User Name is required")
     .min(3, "User Name must be at least 3 characters")
     .max(30, "User Name must be at most 30 characters")
-    .matches(/^\S+$/, "User Name must not contain spaces"),
+    .matches(/^\S+$/, "User Name must not contain spaces")
+    .matches(/^[a-z_]+$/,"User Name can contain lowercase letters and underscore only"),
 
   email: yup
     .string()
