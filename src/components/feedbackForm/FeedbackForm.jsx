@@ -149,7 +149,7 @@ export default function FeedbackForm({ reportId, handleClose, feedback }) {
           }}
         >
           <Typography sx={{ color: "#718296", fontSize: "12px" }}>
-            {commentValue.length} characters
+            {commentValue?.length || 0} characters
           </Typography>
 
           <Box sx={{ display: "flex", gap: 1 }}>

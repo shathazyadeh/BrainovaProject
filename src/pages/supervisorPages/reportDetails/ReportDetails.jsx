@@ -36,7 +36,6 @@ function ReportDetails() {
   const { isError, isLoading, error, data } = useGetReportDetails(id); //بعتله اي دي التقرير اللي بالرابط
   const { deleteFeedbackMutation } = useDeleteFeedback(id);
   const { isError: isFeedbackError, isLoading: isFeedbackLoading, error: feedbackError, data: feedbackData } = useGetFeedbackByReportId(id);
-
   const navigate = useNavigate();
   const [open, setOpen] = useState(false); // عشان اتحكم بالسهم اللي عبوكس الاسئلة
   const [openModal, setOpenModal] = useState(false);
@@ -780,7 +779,7 @@ function ReportDetails() {
                   >
                     {feedbackError?.message}
                   </Typography>
-                ) : feedbackData && feedbackData.comment ? (
+                ) : feedbackData && feedbackData?.data?.comment ? (
                   <Box
                     sx={{
                       color: "#fff",
@@ -815,7 +814,7 @@ function ReportDetails() {
                           whiteSpace: "pre-wrap",
                         }}
                       >
-                        {feedbackData.comment}
+                        {feedbackData?.data?.comment}
                       </Typography>
                     </Box>
                     <Box
@@ -830,7 +829,7 @@ function ReportDetails() {
                     >
                       <DeleteIcon
                         sx={{ color: "var(--primary-color)", cursor: "pointer", fontSize: "20px" }}
-                        onClick={() => handleDeleteFeedback(feedbackData?.id)}
+                        onClick={() => handleDeleteFeedback(feedbackData?.data?.id)}
                       />
                       <FaRegEdit
                         size={16}
@@ -838,7 +837,7 @@ function ReportDetails() {
                           color: "var(--secondary-color)",
                           cursor: "pointer",
                         }}
-                        onClick={() => handleChangeFeedback(feedbackData)}
+                        onClick={() => handleChangeFeedback(feedbackData?.data)}
                       />
                     </Box>
                   </Box>
