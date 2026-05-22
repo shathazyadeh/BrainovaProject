@@ -172,9 +172,9 @@ function AdminProfile() {
       permissions: [
         "View Supervisors & Students",
         "Create   Supervisors &  Students .",
-        "Update personal profile information .",
         "Edit users information .",
         "Block / Unblock Users",
+        "Update profile info.",
         "Delete Users",
       ],
     },
@@ -184,9 +184,9 @@ function AdminProfile() {
       permissions: [
         "View all users in the system .",
         "Create  Admins & Supervisors &  Students .",
-        "Update personal profile information .",
         "Edit users information .",
         "Block / Unblock Users .",
+        "Update profile info.",
         "Delete Users .",
       ],
     },
