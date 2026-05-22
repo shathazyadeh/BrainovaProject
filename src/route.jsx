@@ -25,11 +25,16 @@ import StudentReports from "./pages/supervisorPages/studentReports/StudentReport
 import MyCases from "./pages/studentPages/myCases/MyCases.jsx";
 import LearningHub from "./pages/studentPages/learningHub/LearningHub.jsx";
 import ReportQuestions from "./pages/supervisorPages/reportQuestions/ReportQuestions.jsx";
+import NotFound from "./../src/components/requestStates/notFound/NotFound.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Navigate to="/home" replace />,
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
   {
     path: "/",
