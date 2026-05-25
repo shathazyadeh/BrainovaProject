@@ -93,20 +93,25 @@ export default function BasicModal({
               schema={UpdateUserInfoSchema}
               showRoleSelect={currentUser?.roles[0] === "SuperAdmin"}
               showPassword={currentUser?.roles[0] === "SuperAdmin"}
+              showSupervisors={user?.roleName === "Student"}
               btnLabel="Update Profile"
               textfieldColor={"textfield_black"}
               rowUser={user}
               onSuccess={handleClose} // بس ينجح الفورم ينادي هاندل كلوز عشان يسكر البيسك مودل
-              fullWidthInput ={isCustomScreen? true : false}
+              fullWidthInput={isCustomScreen ? true : false}
               menuBgColor="#1e1d1d"
               menuHoverColor="#0d0c0c62"
-              menuSelectedColor="#3838388b" 
+              menuSelectedColor="#3838388b"
             />
           </>
         )}
 
         {type === "feedback" && reportId && (
-          <FeedbackForm reportId={reportId} handleClose={handleClose} feedback={feedback}/>
+          <FeedbackForm
+            reportId={reportId}
+            handleClose={handleClose}
+            feedback={feedback}
+          />
         )}
       </Box>
     </Modal>
