@@ -643,6 +643,10 @@ export default function EnhancedTable({
   const [rowsPerPage, setRowsPerPage] = React.useState(defaultRowsPerPage);
 
   React.useEffect(() => {
+    setPage(0);
+  }, [filteredRows]);
+
+  React.useEffect(() => {
     if (isTablet && !hidePagination) {
       setRowsPerPage(20);
     } else if (isTablet && hidePagination) {

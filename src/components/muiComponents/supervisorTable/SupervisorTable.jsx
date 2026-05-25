@@ -383,6 +383,10 @@ export default function CustomPaginationActionsTable({
     });
   }, [rows, order, orderBy]);
 
+  React.useEffect(() => {
+    setPage(0);
+  }, [rows]);
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
