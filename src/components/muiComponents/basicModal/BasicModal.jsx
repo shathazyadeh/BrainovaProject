@@ -93,7 +93,7 @@ export default function BasicModal({
               schema={UpdateUserInfoSchema}
               showRoleSelect={currentUser?.roles[0] === "SuperAdmin"}
               showPassword={currentUser?.roles[0] === "SuperAdmin"}
-              showSupervisors={user?.roleName === "Student"}
+              showSupervisors={true}
               btnLabel="Update Profile"
               textfieldColor={"textfield_black"}
               rowUser={user}

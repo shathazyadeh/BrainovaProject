@@ -73,7 +73,7 @@ function RegisterForm({
     // نقرر هل نظهر حقل supervisor:
     // 1. showSupervisors يجب أن يكون true
     // 2. currentRole يجب أن يكون "Student"
-    displaySupervisorField = showSupervisors && currentRole === "Student";
+    displaySupervisorField = currentRole === "Student";
   } else {
     //يعني اذا ما في حقل رول اصلا خلص بنغلف حقل السوبرفايزرس نيم بالبروب الي وصلني وهو شو سوبرفايزرز
     displaySupervisorField = showSupervisors;
