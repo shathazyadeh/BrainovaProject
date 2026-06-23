@@ -16,8 +16,11 @@ export const ResetPasswordSchema = yup.object({
         .matches(/[0-9]/, "Password must contain at least one number"),
 
     email: yup
-        .string()
-        .required("Email is required")
-        .email("Please enter a valid email")
-        .max(120, "Email must be at most 120 characters")
+      .string()
+      .required("Email is required")
+      .matches(
+        /^[a-z]\.[a-z]\.[a-z]+@students\.ptuk\.edu\.ps$/,
+        "Please enter a valid PTUK student email"
+      )
+      .max(120, "Email must be at most 120 characters")
 });
