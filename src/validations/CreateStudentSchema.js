@@ -25,7 +25,7 @@ export const CreateStudentSchema = yup.object({
     .required("Email is required")
     .matches(
       /^[a-z]\.[a-z]\.[a-z]+@students\.ptuk\.edu\.ps$/,
-      "Please enter a valid PTUK student email"
+      "Please enter a valid PTUK student email (e.g., a.m.hamad@students.ptuk.edu.ps)"
     )
     .max(120, "Email must be at most 120 characters"),
 

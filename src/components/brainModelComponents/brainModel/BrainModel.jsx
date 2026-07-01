@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls"; // اداة تسمح للمستخدم يلف الدماغ دونها بضب ثابت الدماغ
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment";
 import { Box, Grid, Typography, useMediaQuery } from "@mui/material";
@@ -67,53 +67,61 @@ export default function BrainModel() {
   const isSmall = useMediaQuery("(max-width:900px)");
   const isVerySmall = useMediaQuery("(max-width:749px)");
 
-  const moveCameraTo = (position) => {
+  const moveCameraTo = (position) => { // دالة للانتقال لبوزيشين جديد او موقع من الدماغ بشكل سموث
     const camera = cameraRef.current;
     const controls = controlsRef.current;
-    if (!camera || !controls) return;
+    if (!camera || !controls) return; //  لحماية الكود من الأخطاء لأنه بهاد الفنكشن هنستعملهن ك دوت
 
-    const target = new THREE.Vector3(0, 0, 0);
 
-    const startOffset = camera.position.clone().sub(target);
-    const startSpherical = new THREE.Spherical().setFromVector3(startOffset);
+    // هدفنا الأولي انه نخلي المستخدم لما يكبس على سبوت وسبوت ثانية تكون الحركة مرنة ويكون في تناسق بالمسافة
 
+    const target = new THREE.Vector3(0, 0, 0); // انشأنا متغير ثلاثي الأبعاد مركزي
+
+//camera.position هي إحداثيات الكاميرا في الفضاء ثلاثي الأبعاد، وتحدد من أي زاوية ومسافة أنت تشاهد المشهد.
+
+    const startOffset = camera.position.clone().sub(target); //  طرحت موقع الكاميرا الحالي من السنتر فصارت عندي المسافة والاتجاه من السنتر لموقع الكاميرا
+    const startSpherical = new THREE.Spherical().setFromVector3(startOffset); // حولنا الفيكتور من الخطوة السابقة من x,y,z الى distance, زاية عمةدية وزازية افقية
+// هاد الاشي بعطينا سموث اكثر بالحركة من اني انتقل بين فيكتورز خطية x  y z
     const endDir = position
       .clone()
       .normalize()
       .multiplyScalar(startOffset.length());
     const endSpherical = new THREE.Spherical().setFromVector3(endDir);
 
-    const startTime = performance.now();
-    const duration = 700;
+    const startTime = performance.now(); // بداية وقت تحرك الكاميرا بالدقائق
+    const duration = 700; // الوقت بالملي ثانية الي بدي الكاميرا توخذه لتلف للبوزيشين الي كبس عليه المستخدم
 
-    const animateCamera = (now) => {
-      const t = Math.min((now - startTime) / duration, 1);
-      const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    const animateCamera = (now) => { //الهدف منه تحريك الكاميرا من مكانها الحالي إلى اتجاه جديد (hotspot) بشكل ناعم خلال ~0.7 ثانية، بدون قفز.
+      const t = Math.min((now - startTime) / duration, 1); // بحسب كم بالمية من الديوريشين عند هاي الفريمة اذا اقل من مية بالمية بوخذها ك وقت اذا لا معناها اكتملت الحركة ووصلنا النقطة 
+      const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // ما بدنا الحركة تكون ثابتة لا بدنا تكون سلسة فعملنا حسابات انه تكون بالبداية بطيئة ثم سريعة ثم ترجع تبطئ
 
-      const current = new THREE.Spherical(
-        THREE.MathUtils.lerp(startSpherical.radius, endSpherical.radius, eased),
-        THREE.MathUtils.lerp(startSpherical.phi, endSpherical.phi, eased),
+      const current = new THREE.Spherical( // بدنا نحسب الموقع الحالي للفريمة عشان نحكي للكاميرا تنتقل عليه 
+        THREE.MathUtils.lerp(startSpherical.radius, endSpherical.radius, eased), // (10,20,0) --> 10 , (10,20,1) --> 20 ,(10,20,0.5) --> بحسب الرادياس بينهن بناءا على الايزد
+        THREE.MathUtils.lerp(startSpherical.phi, endSpherical.phi, eased),  //نفس الفكرة
         THREE.MathUtils.lerp(startSpherical.theta, endSpherical.theta, eased),
       );
-
+      // النظام الدائري اسهل للحسابات وسموث اكثر 
+      // لأنه الكاميرا بتتعامل معه x,y,z بس بنحول ل
       const newPos = new THREE.Vector3().setFromSpherical(current);
 
-      camera.position.copy(target.clone().add(newPos));
-      controls.target.copy(target);
-      controls.update();
+      camera.position.copy(target.clone().add(newPos)); // نقلنا بوزيشين الكاميرا عند الفريمة
+      controls.target.copy(target); // لضمان انه الكاميرا بتطلع على مركز الدماغ عنا هون ما هتفرق لأنه المركز عنا 0,0,0
+      controls.update(); 
 
-      if (t < 1) requestAnimationFrame(animateCamera);
+      if (t < 1) requestAnimationFrame(animateCamera); // اذا لسه ما اكتملت
     };
 
-    requestAnimationFrame(animateCamera);
+    requestAnimationFrame(animateCamera); // دالة من المتصفح تفسه بتنادي الفنكشن انيميت كاميرا كل ما يتغير الفريم
   };
-  useEffect(() => {
-    const container = mountRef.current;
-    if (!container || rendererRef.current) return;
-
-    const width = container.clientWidth;
-    const getCanvasHeight = () => {
-      const w = window.innerWidth;
+ useEffect(() => {
+    const container = mountRef.current;// الماونت ريف انا عرفتها فوق وهي المكان اللي رح نركب فيه الثري جي اس وهي ديف بالصفحة   
+//بالكود تحت عنا <Box ref={mountRef} />
+//شو صار هون؟ رياكت ربط هاد الديف مع الماونت ريف
+//يعني الكاونتر = الديف ليش بحتاجه لازم الثري يعرف وين ارسم ع الصفحة ؟
+    if (!container || rendererRef.current) return;// اذا مافي مكان ارسم فيه او  الريريندر موجود مسبقا وقف لانه مابدي اعيد انشاء ال 3 مرتين 
+    const width = container.clientWidth;// عرض الديف الحقيقي عالشاشة لو كان عرضه 800 بيكسل بكون الويدث= 800 وهيك 
+    const getCanvasHeight = () => {// فنكشن وظيفته يحدد ارتفاع الكانفس حسب حجم الشاشة 
+      const w = window.innerWidth;// عرض الشاشة الكلي مش الديف 
       if (w < 600) return window.innerHeight * 0.45;
       if (w < 900) return window.innerHeight * 0.55;
       if (w < 1200) return window.innerHeight * 0.7;
@@ -122,10 +130,10 @@ export default function BrainModel() {
 
     const height = getCanvasHeight();
 
-    const scene = new THREE.Scene();
+    const scene = new THREE.Scene(); // هذا ينشئ مشهد (Scene) في Three.js بنحط في كل الاشياء المودل الكام وكله
     scene.background = new THREE.Color("#000");
 
-    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000); // أنشأنا الكاميرا الي هي بمثابة عين الانسان والي بتعطي الرؤية
     camera.position.set(2, 0.5, 0.5);
     cameraRef.current = camera;
 
@@ -293,7 +301,7 @@ export default function BrainModel() {
     };
   }, []);
 
-  return (
+  return ( // واجهة المستخدم
     <Box
       sx={{
         bgcolor: isMobile ? "transparent" : "#000",
@@ -309,9 +317,9 @@ export default function BrainModel() {
               borderRadius: "30px",
               overflow: "hidden",
             }}
-            onClick={() => setActiveLabel(null)}
+            onClick={() => setActiveLabel(null)} // اذا المستخدم ضغط في اي مكان اغلق الليبل
           >
-            {loading && (
+            {loading && (  // الـ Loader بيشتغل من أول ما يفتح الـ Component وحتى يخلص تحميل موديل الدماغ.
               <Box
                 sx={{
                   position: "absolute",
@@ -327,7 +335,7 @@ export default function BrainModel() {
               </Box>
             )}
             <Box
-              ref={mountRef}
+              ref={mountRef} // صندوق رح تخلي ماونت ريف تأشر عليه بس تنرسم الصفحة
               sx={{
                 cursor: "grab",
                 margin: "auto",
@@ -340,8 +348,8 @@ export default function BrainModel() {
                 },
               }}
             />
-            {!isVerySmall && (
-              <svg
+            {!isVerySmall && ( // اذا الشاشة صغيرة لا تعرض الليبلز والخطوط
+              <svg //طبقة SVG فوق نموذج الدماغ هدفها ترسم “الليبلز + الخطوط” المرتبطة بكل نقطة (hotspot) بشكل ديناميكي فوق الـ 3D canvas.
                 style={{
                   position: "absolute",
                   top: 0,

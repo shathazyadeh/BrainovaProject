@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-const useAuthStore = create((set) => ({
+const useAuthStore = create((set) => ({  // اليوز اوث ستور بوفر متغير عام بحتوي ع معلومات اليوزر 
 
   user: null,
   isAuthLoading: true,

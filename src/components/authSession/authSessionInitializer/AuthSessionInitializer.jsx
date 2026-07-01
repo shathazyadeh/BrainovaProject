@@ -7,7 +7,7 @@ import { registerSignalREvents } from "../../../services/signalrEvents";
 
 function AuthSessionInitializer({ children }) {
 
-  const setUser = useAuthStore((state) => state.setUser);
+  const setUser = useAuthStore((state) => state.setUser); 
   const logout = useAuthStore((state) => state.logout);
   const currentPath = window.location.pathname;
   const shouldFetch = !currentPath.startsWith("/auth");

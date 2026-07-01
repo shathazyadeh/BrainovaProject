@@ -1,19 +1,16 @@
 import axios from "axios";
 import useAuthStore from "../store/useAuthStore";
-
+//الاكسيوس هي مكتبة في جافا سكريبت بتستخدم عشان تبعت وتستقبل طلبات من السيرفر
 // بنعمل instance مخصص من axios عشان نوحد كل ال requests
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL, //عنوان الموقع الرئيسي للسيرفر كل الطلبات بتروح عليه 
   withCredentials: true,
 });
 
-// request interceptor
-// هذا بيشتغل قبل ما أي request يطلع للسيرفر
-axiosInstance.interceptors.request.use((config) => {
-  return config;
-});
+
 
 // response interceptor
+//اي ريسبونس برجع من المباك بمر هون اذا كان ناجح بنستقبله  اذا فشل بنجيب الستاتس تبعته
 // هذا بيشتغل بعد ما يرجع الرد من السيرفر
 axiosInstance.interceptors.response.use(
   // اذا الرد ناجح، رجعيه زي ما هو
@@ -23,7 +20,7 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // بنجيب status code اذا موجود
     const status = error.response?.status;
-    const publicRoutes = ["/home"];
+    const publicRoutes = ["/home"]; // لانه عادي مايكون فيها يوزر
 
     // اذا المستخدم مش مصرح (401)
     if (status === 401) {

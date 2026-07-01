@@ -24,8 +24,8 @@ export const CreateSupervisorSchema = yup.object({
     .string()
     .required("Email is required")
     .matches(
-      /^[a-z]\.[a-z]\.[a-z]+@students\.ptuk\.edu\.ps$/,
-      "Please enter a valid PTUK student email"
+      /^[a-z]\.[a-z]+@ptuk\.edu\.ps$/,
+      "Please enter a valid PTUK supervisor email (e.g., a.hamad@ptuk.edu.ps)"
     )
     .max(120, "Email must be at most 120 characters"),
 

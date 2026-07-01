@@ -1,26 +1,26 @@
 import * as yup from 'yup'
 
 export const ResetPasswordSchema = yup.object({
-    code: yup
-        .string()
-        .length(4, "Code must be 4 digits")
-        .required("Code is required"),
+  code: yup
+    .string()
+    .length(4, "Code must be 4 digits")
+    .required("Code is required"),
 
-    newPassword: yup
-        .string()
-        .required("Password is required")
-        .min(8, "Password must be at least 8 characters")
-        .max(100, "Password must be at most 100 characters")
-        .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-        .matches(/[0-9]/, "Password must contain at least one number"),
+  newPassword: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .max(100, "Password must be at most 100 characters")
+    .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .matches(/[a-z]/, "Password must contain at least one lowercase letter")
+    .matches(/[0-9]/, "Password must contain at least one number"),
 
-    email: yup
-      .string()
-      .required("Email is required")
-      .matches(
-        /^[a-z]\.[a-z]\.[a-z]+@students\.ptuk\.edu\.ps$/,
-        "Please enter a valid PTUK student email"
-      )
-      .max(120, "Email must be at most 120 characters")
+  email: yup
+    .string()
+    .required("Email is required")
+    .matches(
+      /^(?:[a-z]\.[a-z]+@ptuk\.edu\.ps|[a-z]\.[a-z]\.[a-z]+@students\.ptuk\.edu\.ps)$/,
+      "Please enter a valid PTUK email (e.g., a.hamad@ptuk.edu.ps or a.m.hamad@students.ptuk.edu.ps)",
+    )
+    .max(120, "Email must be at most 120 characters"),
 });

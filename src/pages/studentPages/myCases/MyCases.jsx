@@ -246,7 +246,7 @@ function MyCases() {
     if (!selectedId) return;
 
     const loadPdf = async () => {
-      const result = await refetch(); //عملنا ريكويست جديد
+      const result = await refetch(); //عملنا ريكويست جديد للباك برجع بي دي اف ك بلوب
 
       if (result.isError) {
         toast.error("Failed to load PDF");
@@ -254,7 +254,7 @@ function MyCases() {
       }
 
       if (result.data) {
-        const url = window.URL.createObjectURL(result.data);
+        const url = window.URL.createObjectURL(result.data); // بحوله لرابط
         window.open(url, "_blank");
       }
 

@@ -24,8 +24,8 @@ export const UpdateUserInfoSchema = yup.object({
     .string()
     .required("Email is required")
     .matches(
-      /^[a-z]\.[a-z]\.[a-z]+@students\.ptuk\.edu\.ps$/,
-      "Please enter a valid PTUK student email"
+        /^[a-z]\.(?:[a-z]\.)?[a-z]+@students\.ptuk\.edu\.ps$/,
+        "Please enter a valid PTUK email (e.g., a.ahmad@students.ptuk.edu.ps or a.a.ahmad@students.ptuk.edu.ps)"
     )
     .max(120, "Email must be at most 120 characters"),
 
@@ -47,7 +47,7 @@ export const UpdateUserInfoSchema = yup.object({
       "password-validation",
       // اسم الاختبار (أي اسم فقط للتعريف)
 
-      "Password must be 8 characters with upper, lower and number",
+      "Password must be at least  8 characters with upper, lower and number",
       // رسالة الخطأ التي ستظهر إذا فشل التحقق
 
       (value) => {
